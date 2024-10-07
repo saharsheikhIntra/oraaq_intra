@@ -1,0 +1,350 @@
+{
+    "questionnaire": [
+        {
+            "level": 1,
+            "name": "Hair Services",
+            "prompt": "Unlock your best hair day! Choose from our range of expert services.",
+            "questions": [
+                {
+                    "level": 2,
+                    "name": "Haircuts",
+                    "prompt": "What's the length of your hair?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Long Hair"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Short Hair"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Medium Hair",
+                            "questions": [
+                                {
+                                    "level": 4,
+                                    "name": "Signature"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Trim"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Toddler Cut"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Front"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Bangs"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "level": 2,
+                    "name": "Hair Coloring",
+                    "prompt": "Which color service are you interested in?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Highlights"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Lowlights"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Full Color"
+                        }
+                    ]
+                },
+                {
+                    "level": 2,
+                    "name": "Hair Extensions"
+                },
+                {
+                    "level": 2,
+                    "name": "Hair Treatments",
+                    "prompt": "What specific care does your hair crave?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Herbal Treatment"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Protein Treatment"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Hairfall Treatment"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Extenso",
+                            "questions": [
+                                {
+                                    "level": 4,
+                                    "name": "Loreal"
+                                }
+                            ]
+                        },
+                        {
+                            "level": 3,
+                            "name": "Keratin",
+                            "questions": [
+                                {
+                                    "level": 4,
+                                    "name": "Brazillian"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 1,
+            "name": "Manicure Pedicure",
+            "prompt": "Pamper your hands and feet! Pick your perfect treatment.",
+            "questions": [
+                {
+                    "level": 2,
+                    "name": "Manicure",
+                    "prompt": "Select your manicure preference?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Basic"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Spa"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Polish"
+                        }
+                    ]
+                },
+                {
+                    "level": 2,
+                    "name": "Pedicures",
+                    "prompt": "Your pedicure choice?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Basic"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Polish"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Spa"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 1,
+            "name": "Skin Care Services",
+            "prompt": "Revitalize your skin! Select your rejuvenating service.",
+            "questions": [
+                {
+                    "level": 2,
+                    "name": "Facial",
+                    "prompt": "Desire a refreshing glow, deep cleanse, or targeted treatment?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Whitening"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Herbal"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Gold"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Hydra"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Cleansing and Exfoliation",
+                            "questions": [
+                                {
+                                    "level": 4,
+                                    "name": "Basic"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Jansen"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Guinot"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "level": 2,
+                    "name": "Waxing",
+                    "prompt": "Opting for smooth legs, precise brows, or silky skin elsewhere?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Body Wax",
+                            "questions": [
+                                {
+                                    "level": 4,
+                                    "name": "Full Arms"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Half Arms"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Full Legs"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Half Legs"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Full Back"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Half Back"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Full Front"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Half Front"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Under Arms"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Bikini Wax"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Full Body"
+                                }
+                            ]
+                        },
+                        {
+                            "level": 3,
+                            "name": "Face Wax",
+                            "questions": [
+                                {
+                                    "level": 4,
+                                    "name": "Each Part"
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Full Face"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "level": 2,
+                    "name": "Threading",
+                    "prompt": "Refined brows, fuzz-free face, or precise shaping? Your threading choice?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Eyebrows"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Facial Hair (Full Face)"
+                        },
+                        {
+                            "level": 3,
+                            "name": "Each part"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 1,
+            "name": "Makeup Services",
+            "prompt": "Enhance your beauty! Choose your makeup look",
+            "questions": [
+                {
+                    "level": 2,
+                    "name": "Model Makeup"
+                },
+                {
+                    "level": 2,
+                    "name": "Party and Event Makeup"
+                }
+            ]
+        },
+        {
+            "level": 1,
+            "name": "Henna and Mehndi Services",
+            "prompt": "Adorn with henna! Explore our designs.",
+            "questions": [
+                {
+                    "level": 2,
+                    "name": "Single Side"
+                },
+                {
+                    "level": 2,
+                    "name": "Double Side"
+                }
+            ]
+        },
+        {
+            "level": 1,
+            "name": "Bridal Services",
+            "prompt": "Bridal beauty perfected! Customize your dream look.",
+            "questions": [
+                {
+                    "level": 2,
+                    "name": "Bridal Hair Styling"
+                },
+                {
+                    "level": 2,
+                    "name": "Bridal Makeup"
+                },
+                {
+                    "level": 2,
+                    "name": "Bridal Henna"
+                },
+                {
+                    "level": 2,
+                    "name": "Bridal Full Package"
+                }
+            ]
+        }
+    ]
+}

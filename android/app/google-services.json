@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "204429620300",
+    "project_id": "oraaq-a7ff0",
+    "storage_bucket": "oraaq-a7ff0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204429620300:android:cbc18cb56c0530b41930e9",
+        "android_client_info": {
+          "package_name": "com.example.oraaq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "204429620300-9ks3ejv9009cpu7m5ngvms1hat4bbt1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3IwerZOp3qJb-924Gk3U6zdLY8NCloGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "204429620300-9ks3ejv9009cpu7m5ngvms1hat4bbt1o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "204429620300-a5018o7hlof3r0cqthg7vm94ovg1459s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.oraaq"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

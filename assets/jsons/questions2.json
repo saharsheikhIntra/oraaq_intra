@@ -1,0 +1,420 @@
+{
+    "questionnaire": [
+        {
+            "level": 1,
+            "name": "Hair Services",
+            "prompt": "Unlock your best hair day! Choose from our range of expert services.",
+            "questions": [
+                {
+                    "level": 2,
+                    "name": "Long Hair",
+                    "fee": 121
+                },
+                {
+                    "level": 2,
+                    "name": "Short Hair",
+                    "fee": 121
+                },
+                {
+                    "level": 2,
+                    "name": "Medium Hair",
+                    "fee": 121
+                }, {
+                    "level": 2,
+                    "name": "Haircuts",
+                    "prompt": "Which style are you looking for?",
+                    "questions": [
+                        {
+                            "level":4,
+                            "name": "Signature",
+                            "fee": 121
+                        },
+                        {
+                            "level": 4,
+                            "name": "Trim",
+                            "fee": 121
+                        },
+                        {
+                            "level": 4,
+                            "name": "Toddler Cut",
+                            "fee": 121
+                        },
+                        {
+                            "level": 4,
+                            "name": "Front",
+                            "fee": 121
+                        },
+                        {
+                            "level": 4,
+                            "name": "Bangs",
+                            "fee": 121
+                        }
+                       
+                    ]
+                }, {
+                    "level": 2,
+                    "name": "Hair Coloring",
+                    "prompt": "Which color service are you interested in?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Highlights",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Low Lights",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Full Color",
+                            "fee": 121
+                        }
+                    ]
+                },{
+                    "level": 2,
+                    "name": "Hair Extensions",
+                    "questions": []
+                },{
+                    "level": 2,
+                    "name": "Hair Treatments",
+                    "prompt": "What specific care does your hair crave?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Herbal Treatment",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Protein Treatment",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Hairfall Treatment",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Extenso",
+                            "questions": [
+                                {
+                                    "level": 4,
+                                    "name": "Loreal",
+                                    "fee": 121
+                                }
+                            ]
+                        },
+                        {
+                            "level": 3,
+                            "name": "Keratin",
+                            "questions": [
+                                {
+                                    "level": 4,
+                                    "name": "Brazillian",
+                                    "fee": 121
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+       
+        
+        
+        {
+            "level": 1,
+            "name": "Manicure Pedicure",
+            "prompt": "Pamper your hands and feet! Pick your perfect treatment.",
+            "questions": [
+                {
+                    "level": 2,
+                    "name": "Manicure",
+                    "prompt": "Select your manicure preference?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Basic",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Spa",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Polish",
+                            "fee": 121
+                        }
+                    ]
+                },
+                {
+                    "level": 2,
+                    "name": "Pedicures",
+                    "prompt": "Your pedicure choice?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Basic",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Polish",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Spa",
+                            "fee": 121
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 1,
+            "name": "Skin Care Services",
+            "prompt": "Revitalize your skin! Select your rejuvenating service.",
+            "questions": [
+                {
+                    "level": 2,
+                    "name": "Facial",
+                    "prompt": "Desire a refreshing glow, deep cleanse, or targeted treatment?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Whitening",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Herbal",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Gold",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Hydra",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Cleansing and exfoliation",
+                            "questions": [
+                                {
+                                    "level": 4,
+                                    "name": "Basic",
+                                    "fee": 121
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Jansen",
+                                    "fee": 121
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Guinot",
+                                    "fee": 121
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "level": 2,
+                    "name": "Waxing",
+                    "prompt": "Opting for smooth legs, precise brows, or silky skin elsewhere?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Body Wax",
+                            "questions": [
+                                {
+                                    "level": 4,
+                                    "name": "Full arms",
+                                    "fee": 121
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Half arms",
+                                    "fee": 121
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Full legs",
+                                    "fee": 121
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Half legs",
+                                    "fee": 121
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Full back",
+                                    "fee": 121
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Half Back",
+                                    "fee": 121
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Full front",
+                                    "fee": 121
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Half front",
+                                    "fee": 121
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Under arms",
+                                    "fee": 121
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Bikini wax",
+                                    "fee": 121
+                                }
+                                
+                            ]
+                        },{
+                            "level": 3,
+                            "name": "Face wax",
+                            "questions": [
+                                {
+                                    "level": 4,
+                                    "name": "Each part",
+                                    "fee": 121
+                                },
+                                {
+                                    "level": 4,
+                                    "name": "Full face",
+                                    "fee": 121
+                                }
+                            ]
+                        }
+                    ]
+                },{
+                    "level": 2,
+                    "name": "Threading",
+                    "prompt": "Refined brows, fuzz-free face, or precise shaping? Your threading choice?",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Eyebrows",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Facial hair (full face)",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Each part",
+                            "fee": 121
+                        }
+                    ]
+                }
+            ]
+        },
+     
+        
+        {
+            "level": 1,
+            "name": "Makeup Services",
+            "prompt": "Enhance your beauty! Choose your makeup look",
+            "questions": [
+                {
+                    "level": 2,
+                    "name": "Model makeup",
+                    "fee": 121
+                },
+                {
+                    "level": 2,
+                    "name": "Party and event makeup",
+                    "fee": 121
+                }
+            ]
+        },
+        {
+            "level": 1,
+            "name": "Henna and Mehndi Services",
+            "prompt": "Adorn with henna! Explore our designs.",
+            "questions": [
+                {
+                    "level": 2,
+                    "name": "For child",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Single Side",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Double side",
+                            "fee": 121
+                        }
+                    ]
+                },
+                {
+                    "level": 2,
+                    "name": "For adults",
+                    "questions": [
+                        {
+                            "level": 3,
+                            "name": "Single Side",
+                            "fee": 121
+                        },
+                        {
+                            "level": 3,
+                            "name": "Double side",
+                            "fee": 121
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "level": 1,
+            "name": "Bridal Services",
+            "prompt": "Bridal beauty perfected! Customize your dream look.",
+            "questions": [
+                {
+                    "level": 2,
+                    "name": "Bridal hairstyling",
+                    "fee": 121
+                },
+                {
+                    "level": 2,
+                    "name": "Bridal Makeup",
+                    "fee": 121
+                },
+                {
+                    "level": 2,
+                    "name": "Bridal henna",
+                    "fee": 121
+                },
+                {
+                    "level": 2,
+                    "name": "Bridal full package",
+                    "fee": 121
+                }
+            ]
+        }
+    ]
+}
