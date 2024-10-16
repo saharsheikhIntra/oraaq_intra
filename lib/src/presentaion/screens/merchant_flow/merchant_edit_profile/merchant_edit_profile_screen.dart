@@ -19,8 +19,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController nameController =
       TextEditingController(text: getIt.get<UserEntity>().name);
   final TextEditingController locationController = TextEditingController(
-      text: getIt.get<UserEntity>().latitude == null ||
-              getIt.get<UserEntity>().longitude == null
+      text: getIt.get<UserEntity>().longitude == null
           ? StringConstants.selectServiceLocation
           : getIt.get<UserEntity>().latitude +
               getIt.get<UserEntity>().longitude);

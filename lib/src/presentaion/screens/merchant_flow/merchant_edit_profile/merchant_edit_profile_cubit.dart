@@ -36,7 +36,7 @@ class MerchantEditProfileCubit extends Cubit<MerchantEditProfileState> {
   }) async {
     emit(MerchantProfileStateLoading());
     print("Loading state emitted");
-    holidays.removeWhere((holiday) => holiday.isEmpty || holiday == null);
+    holidays.removeWhere((holiday) => holiday.isEmpty);
 
     var dto = UpdateMerchantProfileRequestDto(
       merchantId: user.id,

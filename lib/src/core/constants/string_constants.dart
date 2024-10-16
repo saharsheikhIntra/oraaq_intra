@@ -182,4 +182,6 @@ class StringConstants {
 
   static const String selectDateTime = "Select a date and time";
   static const String failedToFetchMerchants = "Failed To Fetch Merchants";
+  static const String fillAllFields=
+      "Fill all fields";
 }

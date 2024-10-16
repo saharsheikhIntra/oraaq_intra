@@ -139,7 +139,7 @@ class ApiDatasource {
       return Left(
         Failure(
           e.response?.data["message"] ?? e.toString(),
-          code: e.response?.statusCode.toString(),
+          code: e.response?.statusCode.toString() ?? '-1',
         ),
       );
     }

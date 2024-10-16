@@ -38,4 +38,7 @@ class ApiConstants {
   static const String getWorkInProgressOrdersForMerchant =
       '/api/GetInProgressWorkOrdersForMerchant/';
   static const String cancelMerchantWorkOrder = '/api/CancelWorkOrder/';
+
+  //
+  static const String changePassword = '/ords/oraaq/api/changePassword';
 }

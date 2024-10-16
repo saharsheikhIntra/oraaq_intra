@@ -4,7 +4,6 @@ import 'package:oraaq/src/data/remote/api/api_request_dtos/merchant_flow/post_bi
 import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/domain/services/job_management_service.dart';
 
-import '../../../../data/remote/api/api_response_dtos/merchant_flow/applied_jobs_response_dto.dart';
 import '../../../../data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_dto.dart';
 import '../../../../domain/entities/failure.dart';
 import '../../../../domain/entities/request_entity.dart';

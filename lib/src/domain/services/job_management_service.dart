@@ -5,7 +5,6 @@ import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rati
 import 'package:oraaq/src/domain/entities/request_entity.dart';
 
 import '../../data/remote/api/api_request_dtos/merchant_flow/post_bid_request_dto.dart';
-import '../../data/remote/api/api_response_dtos/merchant_flow/applied_jobs_response_dto.dart';
 import '../../data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_dto.dart';
 import '../entities/category_entity.dart';
 import '../entities/failure.dart';

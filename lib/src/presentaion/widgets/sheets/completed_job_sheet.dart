@@ -27,7 +27,7 @@ class CompletedJobSheet extends StatefulWidget {
   final int rating;
   final CompletedJobSheetVariant variant;
   const CompletedJobSheet({
-    Key? key,
+    super.key,
     this.userName,
     this.phoneNumber,
     this.email,
@@ -37,7 +37,7 @@ class CompletedJobSheet extends StatefulWidget {
     this.totalAmount,
     required this.rating,
     required this.variant,
-  }) : super(key: key);
+  });
 
   @override
   State<CompletedJobSheet> createState() => _CompletedJobSheetSheetState();
