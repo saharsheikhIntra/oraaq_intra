@@ -18,4 +18,6 @@ class BaseResponseDto<T> {
         message: json['message'] != null ? json['message'].toString() : "",
         data: json['data'] == null ? null : fromJsonT(json['data']),
       );
+
+  //bool get success => null;
 }

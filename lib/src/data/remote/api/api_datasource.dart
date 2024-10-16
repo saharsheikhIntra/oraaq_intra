@@ -36,7 +36,7 @@ class ApiDatasource {
           e.response?.data["message"] ?? e.toString(),
 //           Exception has occurred.
 // _TypeError (type 'String' is not a subtype of type 'int' of 'index')
-          code: e.response?.statusCode.toString(),
+          code: e.response?.statusCode.toString() ?? '-1',
         ),
       );
     }

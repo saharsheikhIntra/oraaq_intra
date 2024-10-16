@@ -13,6 +13,7 @@ class ApiConstants {
   static const String register = "/ords/oraaq/api/register";
   static const String generateOtp = "/ords/oraaq/api/GenerateOtp";
   static const String verifyOtp = "/ords/oraaq/api/verifyOTP";
+  static const String changePassword = "/ords/oraaq/api/changePassword";
   static const String updateMerchantProfile =
       "/ords/oraaq/api/UpdateMerchantProfile";
 

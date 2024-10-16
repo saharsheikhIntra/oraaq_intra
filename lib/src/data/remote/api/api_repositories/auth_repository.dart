@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/change_password_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/merchant_flow/update_merchant_profile_request_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/change_password_responce_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/generate_otp.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/get_token_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/register_response_dto.dart';
@@ -170,5 +172,24 @@ class ApiAuthRepository {
   logout() {}
   resendOtp() {}
   setNewPassword() {}
-  changePassword() {}
+  // changePassword() {}
+  // MARK: CHANGE PASSWORD
+  //
+  //
+
+  Future<Either<Failure, ChangePasswordResponceDto>> changePassword(
+      ChangePasswordRequestDto dto) async {
+    Either<Failure, Response> result = await _datasource.put(
+      ApiConstants.changePassword, // The API endpoint for changing password
+      data: dto.toJson(), // Pass the DTO data as the request body
+    );
+
+    return result.fold(
+      (l) => Left(l), // Handle failure case
+      (r) {
+        var res = ChangePasswordResponceDto.fromMap(r.data);
+        return Right(res!);
+      },
+    );
+  }
 }

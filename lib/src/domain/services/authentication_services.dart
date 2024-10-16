@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/data/local/local_auth_repository.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/change_password_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/merchant_flow/update_merchant_profile_request_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/change_password_responce_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/generate_otp.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/verify_otp.dart';
 import 'package:oraaq/src/data/remote/social/social_auth_repository.dart';
@@ -158,7 +160,21 @@ class AuthenticationServices {
 
   resendOtp() {}
   setNewPassword() {}
-  changePassword() {}
+  //changePassword() {}
+
+  Future<Either<Failure, ChangePasswordResponceDto>> changePassword(
+  ChangePasswordRequestDto dto,
+) async {
+  var result = await _apiAuthRepository.changePassword(dto);
+  return result.fold(
+    (l) => Left(l),  // Handle failure
+    (r) async {
+      // Optionally, you can also handle success, e.g., show a success message
+      return Right(r);  // Return the response DTO
+    },
+  );
+}
+
 
   //
   //
