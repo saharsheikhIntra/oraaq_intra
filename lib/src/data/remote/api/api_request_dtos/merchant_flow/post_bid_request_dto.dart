@@ -1,18 +1,22 @@
 class PostBidRequestDto {
-  final int requestId;
+  final int orderId;
   final int merchantId;
   final double bidAmount;
+  final int createdBy;
+
   PostBidRequestDto({
-    required this.requestId,
+    required this.orderId,
     required this.merchantId,
     required this.bidAmount,
+    required this.createdBy,
   });
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'request_id': requestId,
+    return {
+      'order_id': orderId,
       'merchant_id': merchantId,
       'bid_amount': bidAmount,
+      'created_by': createdBy,
     };
   }
 }

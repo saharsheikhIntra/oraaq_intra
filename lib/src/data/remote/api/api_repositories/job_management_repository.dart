@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
-import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_response_dto.dart';
 
 import '../../../../domain/entities/failure.dart';
 import '../api_constants.dart';
@@ -135,7 +135,7 @@ class JobManagementRepository {
   //
   //
 
-  Future<Either<Failure, List<WorkInProgressOrderDto>>>
+  Future<Either<Failure, List<InProgressWorkOrderResponseDto>>>
       getWorkInProgressOrdersForMerchant(int merchantId) async {
     final result = await _datasource
         .get("${ApiConstants.getWorkInProgressOrdersForMerchant}$merchantId");
@@ -145,8 +145,10 @@ class JobManagementRepository {
         var responseDto = BaseResponseDto.fromJson(
           r.data,
           (data) => data is List
-              ? data.map((e) => WorkInProgressOrderDto.fromMap(e)).toList()
-              : <WorkInProgressOrderDto>[],
+              ? data
+                  .map((e) => InProgressWorkOrderResponseDto.fromMap(e))
+                  .toList()
+              : <InProgressWorkOrderResponseDto>[],
         ).data;
         return Right(responseDto!);
       },
@@ -157,18 +159,20 @@ class JobManagementRepository {
   // MARK: GET ALL SERVICE REQUESTS
   //
 
-  Future<Either<Failure, List<GetAllRequestsResponseDto>>>
-      getAllServiceRequests(int serviceId, int merchantId) async {
+  Future<Either<Failure, List<NewServiceRequestResponseDto>>>
+      getAllServiceRequests(int merchantId) async {
     final result = await _datasource
-        .get("${ApiConstants.getAllServiceRequests}$serviceId/$merchantId");
+        .get("${ApiConstants.getAllServiceRequests}$merchantId");
     return result.fold(
       (l) => Left(l),
       (r) {
         var responseDto = BaseResponseDto.fromJson(
             r.data,
             (data) => data is List
-                ? data.map((e) => GetAllRequestsResponseDto.fromMap(e)).toList()
-                : <GetAllRequestsResponseDto>[]).data;
+                ? data
+                    .map((e) => NewServiceRequestResponseDto.fromMap(e))
+                    .toList()
+                : <NewServiceRequestResponseDto>[]).data;
         return Right(responseDto!);
       },
     );
@@ -180,9 +184,10 @@ class JobManagementRepository {
   //
   //
 
-  Future<Either<Failure, String>> cancelWorkOrder(int workOrderId) async {
-    final result = await _datasource.post(
-      "${ApiConstants.cancelMerchantWorkOrder}$workOrderId/",
+  Future<Either<Failure, String>> cancelWorkOrder(
+      int biddingId, int merchantId) async {
+    final result = await _datasource.put(
+      "${ApiConstants.cancelMerchantWorkOrder}bidding_id=$biddingId&merchant_id=$merchantId",
     );
     return result.fold(
       (l) => Left(l),

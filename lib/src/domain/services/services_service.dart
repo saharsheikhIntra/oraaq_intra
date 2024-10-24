@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/get_merchant_radius.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_all_bids.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_radius_respomse_dto.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
 import 'package:oraaq/src/domain/entities/service_entity.dart';
@@ -53,5 +54,20 @@ class ServicesService {
     } catch (e) {
       return Left(Failure('Failed to fetch merchants: $e'));
     }
+  }
+
+  //
+  // MARK: GET BIDS ON SERVICE REQUEST
+  //
+  Future<Either<Failure, List<GetAllBidsResponseDto>>> getAllServiceRequests(
+      int merchantId) async {
+    var result =
+        await _servicesRepository.getAllBidsForCutomerRequest(merchantId);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        return Right(r);
+      },
+    );
   }
 }

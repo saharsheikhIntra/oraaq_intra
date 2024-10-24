@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/get_merchant_radius.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_all_bids.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_radius_respomse_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_services_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/base_response_dto.dart';
@@ -58,5 +59,28 @@ class ServicesRepository {
     } catch (e) {
       return Left(Failure('${StringConstants.failedToFetchMerchants}: $e'));
     }
+  }
+
+  //
+  //
+  // MARK:BIDS FOR CUSTOMER REQUEST
+  //
+  //
+  Future<Either<Failure, List<GetAllBidsResponseDto>>>
+      getAllBidsForCutomerRequest(int merchantId) async {
+    final result =
+        await _datasource.get("${ApiConstants.getAllBids}$merchantId");
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data is List
+              ? data.map((e) => GetAllBidsResponseDto.fromMap(e)).toList()
+              : <GetAllBidsResponseDto>[],
+        ).data;
+        return Right(responseDto!);
+      },
+    );
   }
 }

@@ -16,8 +16,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
 
   final ValueNotifier<List<RequestEntity>> workInProgressOrdersNotifier =
       ValueNotifier([]);
-  final ValueNotifier<List<GetAllRequestsResponseDto>> serviceRequestsNotifier =
-      ValueNotifier([]);
+  final ValueNotifier<List<NewServiceRequestResponseDto>>
+      serviceRequestsNotifier = ValueNotifier([]);
   final ValueNotifier<List<RequestEntity>> appliedJobsNotifier =
       ValueNotifier([]);
 
@@ -27,23 +27,23 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      //await _cubit.fetchWorkInProgressOrders();
-      //await _cubit.fetchAllServiceRequests();
+      await _cubit.fetchWorkInProgressOrders();
+      await _cubit.fetchAllServiceRequests();
       await _cubit.fetchAppliedJobs();
 
-      // cron.schedule(
-      //   Schedule(minutes: 1),
-      //   () {
-      //     _cubit.fetchWorkInProgressOrdersCron();
-      //     _cubit.fetchWorkInProgressOrdersCron();
-      //   },
-      // );
+      cron.schedule(
+        Schedule(minutes: 1),
+        () {
+          _cubit.fetchWorkInProgressOrdersCron();
+          _cubit.fetchWorkInProgressOrdersCron();
+        },
+      );
     });
   }
 
   @override
   void dispose() {
-    cron.close(); // Close the cron instance when the widget is disposed
+    //cron.close();
     super.dispose();
   }
 
@@ -158,6 +158,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                 variant: SnackbarVariantEnum.success,
                 title: state.message,
               );
+              print(state.message);
             }
           },
           builder: (context, state) {
@@ -274,7 +275,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                 ),
                 12.verticalSpace,
                 if (selectedFilter == MerchantJobsFilter.allRequests)
-                  ValueListenableBuilder<List<GetAllRequestsResponseDto>>(
+                  ValueListenableBuilder<List<NewServiceRequestResponseDto>>(
                     valueListenable: serviceRequestsNotifier,
                     builder: (context, serviceRequests, child) {
                       return serviceRequests.isNotEmpty
@@ -332,7 +333,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             width: 245,
             child: ApprovedRequestCard(
               userName: order.customerName,
-              distance: "9 km", // Placeholder, update as needed
+              distance:
+                  order.distance.toString(), // Placeholder, update as needed
               date: order.requestDate.formattedDate(),
               time: order.requestDate.to12HourFormat,
               price: order.bidAmount.toString(),
@@ -345,7 +347,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
   }
 
   Widget _buildServiceRequestsView(
-      List<GetAllRequestsResponseDto> serviceRequests) {
+      List<NewServiceRequestResponseDto> serviceRequests) {
     return ListView.separated(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -361,8 +363,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   name: job.customerName,
                   date: DateTime.tryParse(job.requestDate)!.formattedDate(),
                   email: job.customerName,
-                  distance: "18km away",
-                  servicesList: job.services.split(','),
+                  distance: job.distance,
+                  servicesList: job.serviceNames,
                   time: DateTime.tryParse(job.requestDate)!
                       .to12HourFormat, //"3:30pm",
                   defaultValue: job.totalPrice,
@@ -373,11 +375,11 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
           child: NewRequestCard(
             buttonText: job.status,
             userName: job.customerName,
-            distance: job.status, //"45 km",
+            distance: job.distance, //"45 km",
             date: DateTime.tryParse(job.requestDate)!.formattedDate(),
             time: DateTime.tryParse(job.requestDate)!.to12HourFormat,
             price: job.totalPrice.toString(),
-            servicesList: job.services.split(','),
+            servicesList: job.serviceNames,
             variant: NewRequestCardVariant.newRequest,
           ),
         );
@@ -414,7 +416,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
           child: NewRequestCard(
             buttonText: job.status.name,
             userName: job.customerName,
-            distance: "45 km",
+            distance: job.distance.toString(), //"45 km",
             date: job.bidDate.formattedDate(),
             //DateTime.tryParse(job.bidDate)!.formattedDate(),
             time: job.bidDate.to12HourFormat,

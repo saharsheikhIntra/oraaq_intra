@@ -6,7 +6,7 @@ import 'package:oraaq/src/domain/entities/request_entity.dart';
 
 import '../../data/remote/api/api_request_dtos/merchant_flow/post_bid_request_dto.dart';
 import '../../data/remote/api/api_response_dtos/merchant_flow/applied_jobs_response_dto.dart';
-import '../../data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_dto.dart';
+import '../../data/remote/api/api_response_dtos/merchant_flow/get_all_new_response_dto.dart';
 import '../entities/category_entity.dart';
 import '../entities/failure.dart';
 
@@ -161,18 +161,16 @@ class JobManagementService {
                 workOrderId: e.workOrderId,
                 requestId: e.requestId,
                 serviceRequestId: e.serviceRequestId,
-                serviceNames: e.serviceNames.split(","),
+                serviceNames: e.serviceNames,
                 customerId: e.customerId,
                 customerName: e.customerName,
                 customerContactNumber: e.customerContactNumber,
                 customerEmail: e.customerEmail,
-                latitude: e.latitude,
-                longitude: e.longitude,
+                distance: e.distance,
                 requestDate: DateTime.tryParse(e.requestDate) ?? DateTime.now(),
                 status: RequestStatusEnum.inProgress,
                 bidId: e.bidId,
                 bidAmount: e.bidAmount,
-                rating: e.rating,
                 bidDate: DateTime.tryParse(e.bidDate) ?? DateTime.now(),
               ))
           .toList();
@@ -183,10 +181,9 @@ class JobManagementService {
   //
   // MARK: GET ALL SERVICE REQUESTS
   //
-  Future<Either<Failure, List<GetAllRequestsResponseDto>>>
-      getAllServiceRequests(int serviceId, int merchantId) async {
-    var result =
-        await _jobsRepository.getAllServiceRequests(serviceId, merchantId);
+  Future<Either<Failure, List<NewServiceRequestResponseDto>>>
+      getAllServiceRequests(int merchantId) async {
+    var result = await _jobsRepository.getAllServiceRequests(merchantId);
     return result.fold(
       (l) => Left(l),
       (r) async {
@@ -200,13 +197,20 @@ class JobManagementService {
   // MARK: CANCEL WORK ORDER
   //
   //
-  Future<Either<Failure, String>> cancelWorkOrder(int workOrderId) async {
-    var result = await _jobsRepository.cancelWorkOrder(workOrderId);
+  Future<Either<Failure, String>> cancelWorkOrder(
+      int workOrderId, int merchantId) async {
+    var result = await _jobsRepository.cancelWorkOrder(workOrderId, merchantId);
     return result.fold(
       (l) => Left(l),
       (r) => Right(r),
     );
   }
+
+  //
+  //
+  // MARK: POST BID
+  //
+  //
 
   Future<Either<Failure, String>> postBid(PostBidRequestDto bidRequest) async {
     return await _jobsRepository.postBid(bidRequest);

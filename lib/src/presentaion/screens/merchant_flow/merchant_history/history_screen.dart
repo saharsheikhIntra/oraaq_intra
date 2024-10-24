@@ -92,7 +92,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 servicesList: state.completedOrders[index]
                                     .serviceNames, //const [],
                                 duration: '4 hr 40 mints',
-                                rating: state.completedOrders[index].rating,
+                                rating:
+                                    state.completedOrders[index].rating ?? 0,
                                 variant: CompletedRequestCardVariant.customer,
                                 onTap: () async {
                                   final rating = await SheetComponenet.show(
@@ -117,8 +118,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         totalAmount: state
                                             .completedOrders[index].bidAmount
                                             .toString(),
-                                        rating:
-                                            state.completedOrders[index].rating,
+                                        rating: state.completedOrders[index]
+                                                .rating ??
+                                            0,
                                         variant:
                                             CompletedJobSheetVariant.merchant),
                                   );

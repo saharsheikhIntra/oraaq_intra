@@ -90,7 +90,8 @@ class _WorkInProgressScreenState extends State<WorkInProgressScreen> {
                       width: 245,
                       child: ApprovedRequestCard(
                         userName: order.customerName,
-                        distance: "9 km", // Placeholder, update as needed
+                        distance: order.distance
+                            .toString(), // Placeholder, update as needed
                         date: order.requestDate.formattedDate(),
                         time: order.requestDate.to12HourFormat,
                         price: order.bidAmount.toString(),
