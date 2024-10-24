@@ -18,7 +18,7 @@ class WorkInProgressOrdersLoaded extends MerchantHomeScreenState {
 }
 
 class AllServiceRequestsLoaded extends MerchantHomeScreenState {
-  final List<GetAllRequestsResponseDto> serviceRequests;
+  final List<NewServiceRequestResponseDto> serviceRequests;
   AllServiceRequestsLoaded(this.serviceRequests);
 }
 
@@ -62,6 +62,6 @@ class WorkInProgressOrdersCronLoaded extends MerchantHomeScreenState {
 }
 
 class AllServiceRequestsCronLoaded extends MerchantHomeScreenState {
-  final List<GetAllRequestsResponseDto> serviceRequests;
+  final List<NewServiceRequestResponseDto> serviceRequests;
   AllServiceRequestsCronLoaded(this.serviceRequests);
 }

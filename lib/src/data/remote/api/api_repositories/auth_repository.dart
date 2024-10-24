@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/change_password.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/merchant_flow/update_merchant_profile_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/generate_otp.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/get_token_response_dto.dart';
@@ -130,10 +131,32 @@ class ApiAuthRepository {
 
   //
   //
+  // MARK: CHANGE PASSWORD
+  //
+  //
+  Future<Either<Failure, String>> changePassword(
+      ChangePasswordRequestDto dto) async {
+    final result = await _datasource.put(
+      ApiConstants.changePassword,
+      data: dto.toMap(),
+    );
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data.toString(),
+        ).message;
+        return Right(responseDto);
+      },
+    );
+  }
+
+  //
+  //
   // MARK: UPDATE MERCHANT PROFILE
   //
   //
-
   // Future<Either<Failure, UpdateMerchantProfileResponseDto>> updateMerchantProfile(
   Future<Either<Failure, UpdateMerchantProfileResponseDto>>
       updateMerchantProfile(
@@ -170,5 +193,4 @@ class ApiAuthRepository {
   logout() {}
   resendOtp() {}
   setNewPassword() {}
-  changePassword() {}
 }

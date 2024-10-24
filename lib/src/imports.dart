@@ -63,7 +63,7 @@ export 'package:cron/cron.dart';
 
 export 'package:oraaq/src/core/extensions/datetime_extensions.dart';
 
-export 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_dto.dart';
+export 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_response_dto.dart';
 export 'package:oraaq/src/domain/entities/request_entity.dart';
 export 'package:oraaq/src/domain/entities/user_entity.dart';
 

@@ -7,6 +7,7 @@ import 'package:oraaq/src/data/remote/social/social_auth_repository.dart';
 import 'package:oraaq/src/domain/services/services_service.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_cubit.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/change_password/change_password_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/register/register_cubit.dart';
@@ -147,4 +148,5 @@ injectCubits() {
   getIt.registerFactory(() => PickLocationCubit(getIt()));
   getIt.registerFactory(() => QuestionnaireCubit(getIt()));
   getIt.registerFactory(() => CustomerHomeCubit(getIt()));
+  getIt.registerFactory(() => ChangePasswordCubit(getIt()));
 }

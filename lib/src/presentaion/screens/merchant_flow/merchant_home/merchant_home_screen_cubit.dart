@@ -5,7 +5,7 @@ import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/domain/services/job_management_service.dart';
 
 import '../../../../data/remote/api/api_response_dtos/merchant_flow/applied_jobs_response_dto.dart';
-import '../../../../data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_dto.dart';
+import '../../../../data/remote/api/api_response_dtos/merchant_flow/get_all_new_response_dto.dart';
 import '../../../../domain/entities/failure.dart';
 import '../../../../domain/entities/request_entity.dart';
 import '../../../../injection_container.dart';
@@ -18,12 +18,14 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
     this._jobManagementService,
   ) : super(MerchantHomeScreenInitial());
   final user = getIt.get<UserEntity>();
-
+//
+// MARK: WORK IN PROGRESS ORDERS
+//
   Future<void> fetchWorkInProgressOrders() async {
-    //emit(MerchantHomeLoading());
+    emit(MerchantHomeLoading());
 
     final result =
-        await _jobManagementService.getWorkInProgressOrdersForMerchant(user.id);
+        await _jobManagementService.getWorkInProgressOrdersForMerchant(325);
 
     result.fold(
       (l) {
@@ -35,28 +37,35 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
     );
   }
 
+//
+// MARK: NEW SERVICE REQUESTS
+//
   Future<void> fetchAllServiceRequests() async {
-    // emit(MerchantHomeLoading());
-    final result = await _jobManagementService.getAllServiceRequests(
-        user.serviceType, user.id);
+    emit(MerchantHomeLoading());
+    final result = await _jobManagementService.getAllServiceRequests(user.id);
     result.fold(
       (l) => emit(MerchantHomeError(l)),
       (r) => emit(AllServiceRequestsLoaded(r)),
     );
   }
 
+//
+// MARK: NEW SERVICE REQUESTS CRON
+//
   Future<void> fetchAllServiceRequestsCron() async {
-    final result = await _jobManagementService.getAllServiceRequests(
-        user.serviceType, user.id);
+    final result = await _jobManagementService.getAllServiceRequests(user.id);
     result.fold(
       (l) => emit(MerchantHomeCronError(l)),
       (r) => emit(AllServiceRequestsCronLoaded(r)),
     );
   }
 
+//
+// MARK: IN PROGRESS CRON
+//
   Future<void> fetchWorkInProgressOrdersCron() async {
     final result =
-        await _jobManagementService.getWorkInProgressOrdersForMerchant(user.id);
+        await _jobManagementService.getWorkInProgressOrdersForMerchant(325);
 
     result.fold(
       (l) {
@@ -68,6 +77,9 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
     );
   }
 
+//
+// MARK: FETCH APPLIED JOBS
+//
   Future<void> fetchAppliedJobs() async {
     emit(MerchantHomeLoading());
     final result = await _jobManagementService.getAppliedJobsForMerchant(3);
@@ -77,9 +89,13 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
     );
   }
 
-  Future<void> cancelWorkOrder(int workOrderId) async {
-    // emit(MerchantHomeLoading());
-    final result = await _jobManagementService.cancelWorkOrder(workOrderId);
+//
+// MARK: CANCEL WORK ORDER
+//
+  Future<void> cancelWorkOrder(int biddingId) async {
+    emit(MerchantHomeLoading());
+    final result =
+        await _jobManagementService.cancelWorkOrder(biddingId, user.id);
     result.fold(
       (l) {
         emit(MerchantHomeError(l));
@@ -90,14 +106,17 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
     );
   }
 
-  Future<void> postBid(int requestId, double bidAmount) async {
+//
+// MARK: POST BID
+//
+  Future<void> postBid(int orderId, double bidAmount) async {
     // emit(MerchantHomeLoading());
 
-    final user = getIt.get<UserEntity>();
     final bidRequest = PostBidRequestDto(
-      requestId: requestId,
+      orderId: orderId,
       merchantId: user.id,
       bidAmount: bidAmount,
+      createdBy: user.userId,
     );
 
     final result = await _jobManagementService.postBid(bidRequest);

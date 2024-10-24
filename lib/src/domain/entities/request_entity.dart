@@ -10,13 +10,14 @@ class RequestEntity {
   final String customerName;
   final String customerContactNumber;
   final String customerEmail;
-  final double latitude;
-  final double longitude;
+  final double? latitude;
+  final double? longitude;
+  final String? distance;
   final DateTime requestDate;
   final RequestStatusEnum status;
   final int bidId;
   final double bidAmount;
-  final int rating;
+  final int? rating;
   final DateTime bidDate;
   RequestEntity({
     required this.workOrderId,
@@ -27,13 +28,14 @@ class RequestEntity {
     required this.customerName,
     required this.customerContactNumber,
     required this.customerEmail,
-    required this.latitude,
-    required this.longitude,
+    this.latitude,
+    this.longitude,
+    this.distance,
     required this.requestDate,
     required this.status,
     required this.bidId,
     required this.bidAmount,
-    required this.rating,
+    this.rating,
     required this.bidDate,
   });
 
@@ -48,6 +50,7 @@ class RequestEntity {
     String? customerEmail,
     double? latitude,
     double? longitude,
+    String? distance,
     DateTime? requestDate,
     RequestStatusEnum? status,
     int? bidId,
@@ -67,6 +70,7 @@ class RequestEntity {
       customerEmail: customerEmail ?? this.customerEmail,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
+      distance: distance ?? this.distance,
       requestDate: requestDate ?? this.requestDate,
       status: status ?? this.status,
       bidId: bidId ?? this.bidId,
@@ -78,7 +82,7 @@ class RequestEntity {
 
   @override
   String toString() {
-    return 'RequestEntity(workOrderId: $workOrderId, requestId: $requestId, serviceRequestId: $serviceRequestId, serviceNames: $serviceNames, customerId: $customerId, customerName: $customerName, customerContactNumber: $customerContactNumber, customerEmail: $customerEmail, latitude: $latitude, longitude: $longitude, requestDate: $requestDate, status: $status, bidId: $bidId, bidAmount: $bidAmount,rating:$rating, bidDate: $bidDate)';
+    return 'RequestEntity(workOrderId: $workOrderId, requestId: $requestId, serviceRequestId: $serviceRequestId, serviceNames: $serviceNames, customerId: $customerId, customerName: $customerName, customerContactNumber: $customerContactNumber, customerEmail: $customerEmail, latitude: $latitude, longitude: $longitude, distance: $distance, requestDate: $requestDate, status: $status, bidId: $bidId, bidAmount: $bidAmount,rating:$rating, bidDate: $bidDate)';
   }
 
   @override
@@ -95,6 +99,7 @@ class RequestEntity {
         other.customerEmail == customerEmail &&
         other.latitude == latitude &&
         other.longitude == longitude &&
+        other.distance == distance &&
         other.requestDate == requestDate &&
         other.status == status &&
         other.bidId == bidId &&
@@ -115,6 +120,7 @@ class RequestEntity {
         customerEmail.hashCode ^
         latitude.hashCode ^
         longitude.hashCode ^
+        distance.hashCode ^
         requestDate.hashCode ^
         status.hashCode ^
         bidId.hashCode ^

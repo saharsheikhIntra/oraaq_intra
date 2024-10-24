@@ -1,4 +1,5 @@
 import 'package:oraaq/src/imports.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/change_password/change_password_cubit.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -8,102 +9,214 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final TextEditingController oldPasswordController = TextEditingController();
-  final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-  bool _oldPasswordVisible = false;
-  bool _newPasswordVisible = false;
-  bool _confirmPasswordVisible = false;
+  final changePasswordFormKey = GlobalKey<FormState>();
+  final ChangePasswordCubit _cubit = getIt.get<ChangePasswordCubit>();
+  final TextEditingController oldPasswordController = TextEditingController(),
+      newPasswordController = TextEditingController(),
+      confirmPasswordController = TextEditingController();
+  FocusNode oldPasswordFocusNode = FocusNode(),
+      newPasswordFocusNode = FocusNode(),
+      confirmPasswordFocusNode = FocusNode();
 
-  @override
-  void initState() {
-    super.initState();
-    _oldPasswordVisible = false;
-    _newPasswordVisible = false;
-    _confirmPasswordVisible = false;
+  final ValueNotifier<bool> _oldPasswordVisible = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _newPasswordVisible = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _confirmPasswordVisible = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _isValid = ValueNotifier<bool>(false);
+
+  dispose() {
+    oldPasswordController.dispose();
+    newPasswordController.dispose();
+    confirmPasswordController.dispose();
+    oldPasswordFocusNode.dispose();
+    newPasswordFocusNode.dispose();
+    confirmPasswordFocusNode.dispose();
+    _oldPasswordVisible.dispose();
+    _newPasswordVisible.dispose();
+    _confirmPasswordVisible.dispose();
+    _isValid.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(backgroundColor: ColorTheme.transparent),
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          height: ScreenUtil().screenHeight,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(AssetConstants.splashBackground),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                const Spacer(
-                  flex: 2,
+    return BlocProvider(
+      create: (context) => _cubit,
+      child: BlocListener<ChangePasswordCubit, ChangePasswordState>(
+        listener: (context, state) {
+          if (state is ChangePasswordStateLoaded) {
+            print(state.message);
+            DialogComponent.hideLoading(context);
+            Toast.show(
+              context: context,
+              variant: SnackbarVariantEnum.success,
+              title: state.message,
+            );
+            context.pop();
+          }
+          if (state is ChangePasswordStateError) {
+            DialogComponent.hideLoading(context);
+            Toast.show(
+              context: context,
+              variant: SnackbarVariantEnum.warning,
+              title: state.error.message,
+            );
+          }
+          if (state is ChangePasswordStateLoading) {
+            DialogComponent.showLoading(context);
+          }
+        },
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(backgroundColor: ColorTheme.transparent),
+          body: SingleChildScrollView(
+            child: Container(
+              width: double.infinity,
+              height: ScreenUtil().screenHeight,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(AssetConstants.splashBackground),
                 ),
-                const Image(
-                  image: AssetImage(AssetConstants.logoIcon),
-                  height: 80,
-                  width: 78,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Form(
+                  key: changePasswordFormKey,
+                  child: Column(
+                    children: [
+                      const Spacer(
+                        flex: 2,
+                      ),
+                      const Image(
+                        image: AssetImage(AssetConstants.logoIcon),
+                        height: 80,
+                        width: 78,
+                      ),
+                      const Spacer(
+                        flex: 1,
+                      ),
+                      Text(
+                        StringConstants.changePassword,
+                        style: TextStyleTheme.headlineSmall,
+                      ),
+                      120.verticalSpace,
+                      ValueListenableBuilder<bool>(
+                          valueListenable: _oldPasswordVisible,
+                          builder: (context, value, child) {
+                            return TextFormField(
+                                controller: oldPasswordController,
+                                focusNode: oldPasswordFocusNode,
+                                onChanged: (value) => _validate(),
+                                keyboardType: TextInputType.visiblePassword,
+                                validator: (value) =>
+                                    ValidationUtils.checkEmptyField(value),
+                                obscureText: value,
+                                onEditingComplete: () => FocusScope.of(context)
+                                    .requestFocus(newPasswordFocusNode),
+                                decoration: InputDecoration(
+                                  labelText: StringConstants.oldPassword,
+                                  labelStyle: TextStyleTheme.bodyLarge
+                                      .copyWith(color: ColorTheme.onPrimary),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      value
+                                          ? Symbols.visibility_rounded
+                                          : Symbols.visibility_off_rounded,
+                                    ),
+                                    onPressed: () {
+                                      _oldPasswordVisible.value = !value;
+                                    },
+                                  ),
+                                ));
+                          }),
+                      16.verticalSpace,
+                      ValueListenableBuilder<bool>(
+                          valueListenable: _newPasswordVisible,
+                          builder: (context, value, child) {
+                            return TextFormField(
+                                controller: newPasswordController,
+                                focusNode: newPasswordFocusNode,
+                                onChanged: (value) => _validate(),
+                                keyboardType: TextInputType.visiblePassword,
+                                validator: (value) =>
+                                    ValidationUtils.checkStrongPassword(value),
+                                obscureText: value,
+                                onEditingComplete: () => FocusScope.of(context)
+                                    .requestFocus(confirmPasswordFocusNode),
+                                decoration: InputDecoration(
+                                  labelText: StringConstants.newPassword,
+                                  labelStyle: TextStyleTheme.bodyLarge
+                                      .copyWith(color: ColorTheme.onPrimary),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      value
+                                          ? Symbols.visibility_rounded
+                                          : Symbols.visibility_off_rounded,
+                                    ),
+                                    onPressed: () {
+                                      _newPasswordVisible.value = !value;
+                                    },
+                                  ),
+                                ));
+                          }),
+                      16.verticalSpace,
+                      ValueListenableBuilder<bool>(
+                          valueListenable: _confirmPasswordVisible,
+                          builder: (context, value, child) {
+                            return TextFormField(
+                                controller: confirmPasswordController,
+                                focusNode: confirmPasswordFocusNode,
+                                onChanged: (value) => _validate(),
+                                keyboardType: TextInputType.visiblePassword,
+                                validator: (value) =>
+                                    ValidationUtils.confirmPassword(
+                                        value, newPasswordController.text),
+                                obscureText: value,
+                                onEditingComplete: () =>
+                                    FocusScope.of(context).unfocus(),
+                                decoration: InputDecoration(
+                                  labelText: StringConstants.confirmPassword,
+                                  labelStyle: TextStyleTheme.bodyLarge
+                                      .copyWith(color: ColorTheme.onPrimary),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      value
+                                          ? Symbols.visibility_rounded
+                                          : Symbols.visibility_off_rounded,
+                                    ),
+                                    onPressed: () {
+                                      _confirmPasswordVisible.value = !value;
+                                    },
+                                  ),
+                                ));
+                          }),
+                      16.verticalSpace,
+                      const Spacer(
+                        flex: 1,
+                      ),
+                      ValueListenableBuilder(
+                        valueListenable: _isValid,
+                        builder: (context, value, child) {
+                          return CustomButton(
+                              width: double.infinity,
+                              type: CustomButtonType.primary,
+                              text: StringConstants.setPassword,
+                              onPressed: value
+                                  ? () {
+                                      _cubit.ChangePassword(
+                                          oldPasswordController.text,
+                                          newPasswordController.text);
+                                    }
+                                  : null);
+                        },
+                      ),
+                      const Spacer(
+                        flex: 2,
+                      ),
+                    ],
+                  ),
                 ),
-                const Spacer(
-                  flex: 1,
-                ),
-                Text(
-                  StringConstants.changePassword,
-                  style: TextStyleTheme.headlineSmall,
-                ),
-                120.verticalSpace,
-                buildPasswordTextField(
-                  controller: oldPasswordController,
-                  hintText: StringConstants.oldPassword,
-                  isVisible: _oldPasswordVisible,
-                  onPressed: () {
-                    setState(() {
-                      _oldPasswordVisible = !_oldPasswordVisible;
-                    });
-                  },
-                ),
-                12.verticalSpace,
-                buildPasswordTextField(
-                  controller: newPasswordController,
-                  hintText: StringConstants.newPassword,
-                  isVisible: _newPasswordVisible,
-                  onPressed: () {
-                    setState(() {
-                      _newPasswordVisible = !_newPasswordVisible;
-                    });
-                  },
-                ),
-                12.verticalSpace,
-                buildPasswordTextField(
-                  controller: confirmPasswordController,
-                  hintText: StringConstants.confirmPassword,
-                  isVisible: _confirmPasswordVisible,
-                  onPressed: () {
-                    setState(() {
-                      _confirmPasswordVisible = !_confirmPasswordVisible;
-                    });
-                  },
-                ),
-                const Spacer(
-                  flex: 1,
-                ),
-                CustomButton(
-                  width: double.infinity,
-                  type: CustomButtonType.primary,
-                  text: StringConstants.setPassword,
-                  onPressed: () {},
-                ),
-                const Spacer(
-                  flex: 2,
-                ),
-              ],
+              ),
             ),
           ),
         ),
@@ -111,29 +224,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
-  Widget buildPasswordTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required bool isVisible,
-    required VoidCallback onPressed,
-  }) {
-    return TextFormField(
-      controller: controller,
-      obscureText: !isVisible,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyleTheme.bodyLarge,
-        suffixIcon: IconButton(
-          icon: Icon(
-            isVisible
-                ? Symbols.visibility_rounded
-                : Symbols.visibility_off_rounded,
-            color: ColorTheme.primaryText,
-            size: 24,
-          ),
-          onPressed: onPressed,
-        ),
-      ),
-    );
-  }
+  _validate() =>
+      _isValid.value = changePasswordFormKey.currentState!.validate();
 }
