@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/enum/request_status_enum.dart';
 import 'package:oraaq/src/data/remote/api/api_repositories/job_management_repository.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_response_dto.dart';
 import 'package:oraaq/src/domain/entities/request_entity.dart';
 
 import '../../data/remote/api/api_request_dtos/merchant_flow/post_bid_request_dto.dart';
@@ -219,5 +220,21 @@ class JobManagementService {
   Future<Either<Failure, String>> addRating(
       AddRatingRequestDto ratingRequest) async {
     return await _jobsRepository.addRating(ratingRequest);
+  }
+
+
+  //
+  // MARK: GET ALL NEW REQUESTS
+  //
+  Future<Either<Failure, List<GetAllNewRequestsResponseDto>>>
+      getAllNewRequests(int merchantId) async {
+    var result =
+        await _jobsRepository.getAllNewRequests(merchantId);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        return Right(r);
+      },
+    );
   }
 }

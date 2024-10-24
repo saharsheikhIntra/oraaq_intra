@@ -13,8 +13,8 @@ part 'merchant_edit_profile_state.dart';
 
 class MerchantEditProfileCubit extends Cubit<MerchantEditProfileState> {
   final AuthenticationServices _authServices;
-  final JobManagementService _jobManagementService;
   final UserEntity user = getIt.get<UserEntity>();
+  final JobManagementService _jobManagementService;
 
   MerchantEditProfileCubit(
     this._authServices,

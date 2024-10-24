@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
@@ -21,22 +23,34 @@ class ApiDatasource {
     void Function(int, int)? onReceiveProgress,
   }) async {
     try {
-      return Right(
-        await dio.get(
+      dynamic res = await dio.get(
           dio.options.baseUrl + endpoint,
           onReceiveProgress: onReceiveProgress,
           cancelToken: cancelToken,
           options: options,
           queryParameters: queryParameters,
-        ),
+        );
+      log(res.toString());
+      return Right(
+        res
       );
+      // return Right(
+      //   await dio.get(
+      //     dio.options.baseUrl + endpoint,
+      //     onReceiveProgress: onReceiveProgress,
+      //     cancelToken: cancelToken,
+      //     options: options,
+      //     queryParameters: queryParameters,
+      //   ),
+      // );
     } on DioException catch (e) {
+      log(e.toString());
       return Left(
         Failure(
-          e.response?.data["message"] ?? e.toString(),
+          e.response?.data["message"] ?? e.toString() ,
 //           Exception has occurred.
 // _TypeError (type 'String' is not a subtype of type 'int' of 'index')
-          code: e.response?.statusCode.toString(),
+          code: e.response?.statusCode.toString() ?? '-1',
         ),
       );
     }
@@ -72,7 +86,7 @@ class ApiDatasource {
       return Left(
         Failure(
           e.response?.data["message"] ?? e.toString(),
-          code: e.response?.statusCode.toString(),
+          code: e.response?.statusCode.toString() ?? '-1',
         ),
       );
     } catch (e) {

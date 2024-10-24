@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_response_dto.dart';
 
 import '../../../../domain/entities/failure.dart';
 import '../api_constants.dart';
@@ -241,4 +244,30 @@ class JobManagementRepository {
       },
     );
   }
+
+  //
+  // MARK: GET ALL NEW REQUESTS
+  //
+
+  Future<Either<Failure, List<GetAllNewRequestsResponseDto>>>
+      getAllNewRequests(int merchantId) async {
+        
+    final result = await _datasource
+        .get("${ApiConstants.getAllNewRequest}$merchantId");
+    log('1 $result');
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        log('2 $r');
+        var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data is List
+                ? data.map((e) => GetAllNewRequestsResponseDto.fromMap(e)).toList()
+                : <GetAllNewRequestsResponseDto>[]).data;
+        return Right(responseDto!);
+      },
+    );
+  }
+
+
 }

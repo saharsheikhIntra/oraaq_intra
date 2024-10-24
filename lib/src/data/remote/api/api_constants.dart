@@ -41,4 +41,9 @@ class ApiConstants {
 
   //
   static const String changePassword = '/ords/oraaq/api/changePassword';
+  static const String getAllNewRequest = '/ords/oraaq/api/getAllNewRequests?merchant_id=';
+  // upadte customer profile api
+  static const String updateCustomerProfile = '/ords/oraaq/api/updateCustomer';
+  // static const String getAllNewRequest = '/ords/oraaq/api/GetInProgressWorkOrdersForMerchant?merchant_id=';
+  
 }

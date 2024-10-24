@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/merchant_flow/post_bid_request_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_response_dto.dart';
 import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/domain/services/job_management_service.dart';
 
@@ -110,4 +111,16 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
       },
     );
   }
+
+
+  //
+  Future<void> fetchAllNewRequests() async {
+    final result = await _jobManagementService.getAllNewRequests(
+        user.id);
+    result.fold(
+      (l) => emit(getAllNewRequestError(l)),
+      (r) => emit(getAllNewRequestLoaded(r)),
+    );
+  }
+
 }

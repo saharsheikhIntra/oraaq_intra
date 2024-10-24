@@ -65,3 +65,14 @@ class AllServiceRequestsCronLoaded extends MerchantHomeScreenState {
   final List<GetAllRequestsResponseDto> serviceRequests;
   AllServiceRequestsCronLoaded(this.serviceRequests);
 }
+class getAllNewRequestLoading extends MerchantHomeScreenState {
+
+}
+class getAllNewRequestError extends MerchantHomeScreenState {
+  final Failure failure;
+  getAllNewRequestError(this.failure);
+}
+class getAllNewRequestLoaded extends MerchantHomeScreenState {
+  final List<GetAllNewRequestsResponseDto> serviceRequests;
+  getAllNewRequestLoaded(this.serviceRequests);
+}

@@ -19,6 +19,7 @@ class CustomerHomeScreen extends StatefulWidget {
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   final _cubit = getIt.get<CustomerHomeCubit>();
   List<CategoryEntity> _categories = [];
+  UserEntity currentUser = getIt.get<UserEntity>();
 
   @override
   void initState() {
@@ -74,8 +75,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                 style: TextStyleTheme.titleSmall.copyWith(color: ColorTheme.neutral3),
                               ),
                               Text(
-                                StringConstants.johnDoe,
-                                style: TextStyleTheme.displaySmall.copyWith(color: ColorTheme.neutral3),
+                                currentUser.name,
+                                style: TextStyleTheme.displaySmall.copyWith(color: ColorTheme.neutral3,fontSize: 26),
                               ),
                             ],
                           )),

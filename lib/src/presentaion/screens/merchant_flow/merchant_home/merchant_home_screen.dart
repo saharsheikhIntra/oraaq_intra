@@ -1,4 +1,5 @@
 import 'package:oraaq/src/core/enum/merchant_jobs_filter.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_response_dto.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_home/merchant_home_screen_cubit.dart';
 
@@ -17,6 +18,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       ValueNotifier([]);
   final ValueNotifier<List<GetAllRequestsResponseDto>> serviceRequestsNotifier =
       ValueNotifier([]);
+  final ValueNotifier<List<GetAllNewRequestsResponseDto>> getAllNewRequestsNotifier =
+      ValueNotifier([]);
   final ValueNotifier<List<RequestEntity>> appliedJobsNotifier =
       ValueNotifier([]);
 
@@ -29,7 +32,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       //await _cubit.fetchWorkInProgressOrders();
       //await _cubit.fetchAllServiceRequests();
       await _cubit.fetchAppliedJobs();
-
+  await _cubit.fetchAllNewRequests();
+    
       // cron.schedule(
       //   Schedule(minutes: 1),
       //   () {
@@ -139,6 +143,22 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             if (state is AppliedJobsLoaded) {
               DialogComponent.hideLoading(context);
               appliedJobsNotifier.value = state.appliedJobs;
+            }
+            if(state is getAllNewRequestError){
+              DialogComponent.hideLoading(context);
+              Toast.show(
+                context: context,
+                variant: SnackbarVariantEnum.warning,
+                title: state.failure.message,
+              );
+            }
+            if(state is getAllNewRequestLoading){
+              DialogComponent.showLoading(context);
+            }
+            if(state is getAllNewRequestLoaded){
+              // DialogComponent.showLoading(context);
+              // DialogComponent.hideLoading(context);
+              getAllNewRequestsNotifier.value = state.serviceRequests;
             }
             if (state is CancelMerchantOrderState) {
               DialogComponent.hideLoading(context);
@@ -273,8 +293,16 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                 ),
                 12.verticalSpace,
                 if (selectedFilter == MerchantJobsFilter.allRequests)
-                  ValueListenableBuilder<List<GetAllRequestsResponseDto>>(
-                    valueListenable: serviceRequestsNotifier,
+                  // ValueListenableBuilder<List<GetAllRequestsResponseDto>>(
+                  //   valueListenable: serviceRequestsNotifier,
+                  //   builder: (context, serviceRequests, child) {
+                  //     return serviceRequests.isNotEmpty
+                  //         ? _buildServiceRequestsView(serviceRequests)
+                  //         : const Center(child: Text('No Data'));
+                  //   },
+                  // )
+                  ValueListenableBuilder<List<GetAllNewRequestsResponseDto>>(
+                    valueListenable: getAllNewRequestsNotifier,
                     builder: (context, serviceRequests, child) {
                       return serviceRequests.isNotEmpty
                           ? _buildServiceRequestsView(serviceRequests)
@@ -344,7 +372,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
   }
 
   Widget _buildServiceRequestsView(
-      List<GetAllRequestsResponseDto> serviceRequests) {
+      List<GetAllNewRequestsResponseDto> serviceRequests) {
     return ListView.separated(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -361,7 +389,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   date: DateTime.tryParse(job.requestDate)!.formattedDate(),
                   email: job.customerName,
                   distance: "18km away",
-                  servicesList: job.services.split(','),
+                  servicesList: job.services,
                   time: DateTime.tryParse(job.requestDate)!
                       .to12HourFormat, //"3:30pm",
                   defaultValue: job.totalPrice,
@@ -376,7 +404,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             date: DateTime.tryParse(job.requestDate)!.formattedDate(),
             time: DateTime.tryParse(job.requestDate)!.to12HourFormat,
             price: job.totalPrice.toString(),
-            servicesList: job.services.split(','),
+            servicesList: job.services,
             variant: NewRequestCardVariant.newRequest,
           ),
         );

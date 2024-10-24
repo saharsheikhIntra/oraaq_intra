@@ -68,7 +68,7 @@ class _ToastUI extends StatelessWidget {
               Padding(
                   padding: 16.endPadding,
                   child: Icon(
-                    variant != SnackbarVariantEnum.warning ? Symbols.brightness_alert_rounded : Symbols.verified_rounded,
+                    variant == SnackbarVariantEnum.warning ? Symbols.brightness_alert_rounded : Symbols.verified_rounded,
                     color: foregroundColor,
                     size: 40,
                   )),

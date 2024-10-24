@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     RouteConstants.merchantHomeScreenRoute);
               }
             } else if (type == UserType.customer) {
-              if (state.user.latitude.isEmpty || state.user.longitude.isEmpty) {
+              if (state.user.latitude.isEmpty  || state.user.longitude.isEmpty || state.user.latitude == "null"  || state.user.longitude == "null") {
                 context.pushReplacementNamed(
                     RouteConstants.customerEditProfileRoute);
               } else {
