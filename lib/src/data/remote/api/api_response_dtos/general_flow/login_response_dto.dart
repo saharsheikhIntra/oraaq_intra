@@ -2,19 +2,23 @@
 
 import 'package:oraaq/src/core/enum/user_type.dart';
 import 'package:oraaq/src/domain/entities/user_entity.dart';
+import 'package:oraaq/src/imports.dart';
 
 class LoginResponseDto {
-  final LoginResponseUserDto user;
+  final dynamic user;
   final String token;
   LoginResponseDto({
     required this.user,
     required this.token,
   });
 
+  // UserType currentType = getIt.get<UserType>();
+
   factory LoginResponseDto.fromMap(Map<String, dynamic> map) {
     return LoginResponseDto(
-      user: map['user'] != null
-          ? LoginResponseUserDto.fromMap(map['user'])
+      user: 
+          getIt.get<UserType>() != UserType.merchant ? map['user'] != null ? LoginResponseConsumerDto.fromMap(map['user'])
+          : LoginResponseConsumerDto(customerId: -1) : map['user'] != null ? LoginResponseUserDto.fromMap(map['user'])
           : LoginResponseUserDto(),
       token: map['token'] != null ? map['token'] as String : "",
     );
@@ -131,7 +135,8 @@ class LoginResponseUserDto {
 }
 
 class LoginResponseConsumerDto {
-  final int customerId;
+  final int? customerUserId;
+  final int? customerId;
   final String? name;
   final String? source;
   final String? phoneNumber;
@@ -141,7 +146,8 @@ class LoginResponseConsumerDto {
   final String? latitude;
   final String? longitude;
   LoginResponseConsumerDto({
-    required this.customerId,
+    this.customerId,
+    this.customerUserId,
     this.name,
     this.source,
     this.phoneNumber,
@@ -153,25 +159,25 @@ class LoginResponseConsumerDto {
   });
 
   factory LoginResponseConsumerDto.fromMap(Map<String, dynamic> map) {
-    return LoginResponseConsumerDto(
+    return LoginResponseConsumerDto(customerUserId: map['customer_user_id'] as int,
       customerId: map['customer_id'] as int,
-      name: map['name'] != null ? map['name'] as String : null,
-      source: map['source'] != null ? map['source'] as String : null,
+      name: map['customer_name'] != null ? map['customer_name'] as String : null,
+      // source: map['source'] != null ? map['source'] as String : null,
       phoneNumber:
-          map['phone_number'] != null ? map['phone_number'] as String : null,
+          map['phone'] != null ? map['phone'] as String : null,
       email: map['email'] != null ? map['email'] as String : null,
       isActive: map['is_active'] != null ? map['is_active'] as String : null,
-      emergencyNo:
-          map['emergency_no'] != null ? map['emergency_no'] as String : null,
-      latitude: map['latitude'] != null ? map['latitude'] as String : null,
-      longitude: map['longitude'] != null ? map['longitude'] as String : null,
+      // emergencyNo:
+      //     map['emergency_no'] != null ? map['emergency_no'] as String : null,
+      latitude: map['latitude'] != null ? map['latitude'].toString() : null,
+      longitude: map['longitude'] != null ? map['longitude'].toString()  : null,
     );
   }
 
   UserEntity get toUserEntity {
     return UserEntity(
-      id: customerId,
-      userId: -1,
+      id: customerId ?? -1, 
+      userId: customerUserId?? -1,
       name: name ?? "",
       email: email ?? "",
       phone: phoneNumber ?? "",

@@ -134,7 +134,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 },
                               ),
                             )
-                          : Center(child: Text('No Data')),
+                          : const Center(child: Text('No Data')),
                       state.cancelledOrders.isNotEmpty
                           ? ListView.separated(
                               shrinkWrap: true,
@@ -160,7 +160,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 onTap: () {},
                               ),
                             )
-                          : Center(child: Text('No Data')),
+                          : const Center(child: Text('No Data')),
                     ],
                   );
                 } else {

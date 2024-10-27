@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oraaq/src/core/constants/route_constants.dart';
@@ -23,6 +25,7 @@ class SplashCubit extends Cubit<SplashState> {
       var type = user.role;
 
       if (type == UserType.customer) {
+        log('customer runn $type ${user.role}');
         if (user.latitude.toString().isEmpty ||
             user.longitude.toString().isEmpty) {
           emit(SplashStateRedirect(RouteConstants.customerEditProfileRoute));
@@ -31,6 +34,7 @@ class SplashCubit extends Cubit<SplashState> {
           emit(SplashStateRedirect(RouteConstants.customerHomeScreenRoute));
         }
       } else if (type == UserType.merchant) {
+        log('merchant runn $type ${user.role}');
         if (user.latitude == 0 ||
             user.longitude == 0 ||
             user.cnicNtn.isEmpty ||

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
+import 'package:oraaq/src/domain/entities/user_entity.dart';
+import 'package:oraaq/src/imports.dart';
 
 import '../../../../config/themes/color_theme.dart';
 import '../../../../config/themes/text_style_theme.dart';
@@ -18,6 +20,9 @@ class CustomerProfileScreen extends StatefulWidget {
 }
 
 class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
+  
+  UserEntity currentUser = getIt.get<UserEntity>();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +48,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                   Row(
                     children: [
                       Expanded(
-                          child: Text(StringConstants.sampleUserName,
+                          child: Text(currentUser.name,
                               style: TextStyleTheme.displaySmall)),
                       8.horizontalSpace,
                       Material(
@@ -66,9 +71,9 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                   ),
                   8.verticalSpace,
                   _buildInfo(
-                      Symbols.call_rounded, StringConstants.samplePhoneNumber),
+                      Symbols.call_rounded, currentUser.phone),
                   6.verticalSpace,
-                  _buildInfo(Symbols.mail_rounded, StringConstants.sampleEmail),
+                  _buildInfo(Symbols.mail_rounded, currentUser.email),
                   16.verticalSpace,
                 ],
               ),

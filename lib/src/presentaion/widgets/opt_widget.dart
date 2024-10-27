@@ -9,11 +9,11 @@ class OtpWidget extends StatefulWidget {
   final ValueNotifier<int> onEnteredOtp;
   final String generatedOtp;
   const OtpWidget({
-    Key? key,
+    super.key,
     required this.onOtpVerified,
     required this.onEnteredOtp,
     required this.generatedOtp,
-  }) : super(key: key);
+  });
 
   @override
   State<OtpWidget> createState() => _OtpWidgetState();

@@ -1,21 +1,23 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
-import 'package:oraaq/src/core/constants/string_constants.dart';
+
 import 'package:oraaq/src/data/local/local_auth_repository.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/change_password.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/update_customer_request_dto.dart';
+
 import 'package:oraaq/src/data/remote/api/api_request_dtos/merchant_flow/update_merchant_profile_request_dto.dart';
+
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/generate_otp.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/verify_otp.dart';
 import 'package:oraaq/src/data/remote/social/social_auth_repository.dart';
 import 'package:oraaq/src/imports.dart';
 
-import '../../core/enum/social_sign_in_enum.dart';
-import '../../core/enum/user_type.dart';
 import '../../data/remote/api/api_repositories/auth_repository.dart';
 import '../../data/remote/api/api_request_dtos/general_flow/login_request_dto.dart';
 import '../../data/remote/api/api_request_dtos/general_flow/register_request_dto.dart';
-import '../../injection_container.dart';
+
 import '../entities/failure.dart';
-import '../entities/user_entity.dart';
 
 class AuthenticationServices {
   final ApiAuthRepository _apiAuthRepository;
@@ -60,6 +62,7 @@ class AuthenticationServices {
         await _localAuthRepository.setToken(r.token);
         if (getIt.isRegistered<UserEntity>()) getIt.unregister<UserEntity>();
         getIt.registerSingleton<UserEntity>(user);
+        log('${user.role}');
         return Right(user);
       },
     );
@@ -169,7 +172,6 @@ class AuthenticationServices {
   //
 
   resendOtp() {}
-  setNewPassword() {}
 
   //
   //
@@ -227,6 +229,40 @@ class AuthenticationServices {
         //     return Right(tempUser);
         //   },
         // );
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: UPDATE_CUSTOMER_PROFILE
+  //
+  //
+  Future<Either<Failure, UserEntity>> updateCustomerProfile(
+    UpdateCustomerRequestDto dto,
+  ) async {
+    var result = await _apiAuthRepository.updateCustomerProfile(dto);
+
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        UserEntity currentUser = getIt.get<UserEntity>();
+        var tempUser = r.copyUserEntity(currentUser);
+        // var tempUser = currentUser.copyWith(
+        //   name: dto.merchantName,
+        //   cnicNtn: dto.cnic,
+        //   latitude: dto.latitude.toString(),
+        //   longitude: dto.longitude.toString(),
+        //   holidays: dto.holidays.join(","),
+        //   openingTime: dto.openingTime,
+        //   closingTime: dto.closingTime,
+        //   serviceType: dto.serviceType,
+        // );
+        await _localAuthRepository.setUser(tempUser);
+        getIt.unregister<UserEntity>();
+        getIt.registerSingleton<UserEntity>(tempUser);
+
+        return Right(tempUser);
       },
     );
   }

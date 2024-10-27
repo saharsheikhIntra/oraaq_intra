@@ -1,11 +1,8 @@
-import 'package:bloc/bloc.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
-import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/domain/services/job_management_service.dart';
 import 'package:oraaq/src/imports.dart';
 
 import '../../../../domain/entities/failure.dart';
-import '../../../../domain/entities/request_entity.dart';
 
 part 'history_screen_state.dart';
 
