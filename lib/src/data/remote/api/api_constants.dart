@@ -38,6 +38,8 @@ class ApiConstants {
 
   // static const String updateProfile = "/api/updateprofile/";
 
+  static const String updateCustomerProfile = '/ords/oraaq/api/updateCustomer';
+
   static const String getMerchantById = "/api/get_merchant_by_id/";
 
   static const String getAllCategories = "/ords/oraaq/api/getCategories";

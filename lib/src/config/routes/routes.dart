@@ -5,7 +5,6 @@ import 'package:oraaq/src/presentaion/screens/customer_flow/customer_edit_profil
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_profile/customer_profile_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_received_screen.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_screen.dart';

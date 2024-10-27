@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:oraaq/src/core/extensions/context_extensions.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/change_password/change_password_cubit.dart';
 
@@ -7,6 +10,8 @@ class ChangePasswordScreen extends StatefulWidget {
   @override
   State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
+
+final changePasswordFormKey = GlobalKey<FormState>();
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final changePasswordFormKey = GlobalKey<FormState>();
@@ -23,6 +28,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final ValueNotifier<bool> _confirmPasswordVisible = ValueNotifier<bool>(true);
   final ValueNotifier<bool> _isValid = ValueNotifier<bool>(false);
 
+  @override
   dispose() {
     oldPasswordController.dispose();
     newPasswordController.dispose();

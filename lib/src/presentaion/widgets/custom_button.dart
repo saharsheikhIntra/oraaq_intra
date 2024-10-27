@@ -129,18 +129,23 @@ class CustomButton extends StatelessWidget {
   }
 
   EdgeInsets get _getPadding {
-    if (text == null && icon != null && size == CustomButtonSize.small)
+    if (text == null && icon != null && size == CustomButtonSize.small) {
       return 8.allPadding;
-    if (text != null && icon != null)
+    }
+    if (text != null && icon != null) {
       return const EdgeInsets.fromLTRB(24, 12, 16, 12);
+    }
     if (text == null && icon != null) return 12.allPadding;
-    if (icon != null && size == CustomButtonSize.small)
+    if (icon != null && size == CustomButtonSize.small) {
       return const EdgeInsets.fromLTRB(12, 8, 16, 8);
+    }
     if (icon != null) return const EdgeInsets.fromLTRB(24, 12, 32, 12);
-    if (size == CustomButtonSize.large)
+    if (size == CustomButtonSize.large) {
       return const EdgeInsets.symmetric(horizontal: 24, vertical: 12);
-    if (size == CustomButtonSize.small)
+    }
+    if (size == CustomButtonSize.small) {
       return const EdgeInsets.fromLTRB(12, 4, 12, 6);
+    }
     return 12.allPadding;
   }
 
