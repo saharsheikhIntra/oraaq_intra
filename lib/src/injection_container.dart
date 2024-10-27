@@ -148,7 +148,7 @@ injectCubits() {
 
   getIt.registerFactory(() => PickLocationCubit(getIt()));
   getIt.registerFactory(() => QuestionnaireCubit(getIt()));
-  getIt.registerFactory(() => CustomerHomeCubit(getIt()));
+  getIt.registerFactory(() => CustomerHomeCubit(getIt(), getIt()));
   getIt.registerFactory(() => ChangePasswordCubit(getIt()));
 
   getIt.registerFactory(() => CustomerEditProfileCubit(getIt()));

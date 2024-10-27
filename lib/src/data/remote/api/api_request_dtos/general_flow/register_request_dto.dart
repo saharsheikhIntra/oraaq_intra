@@ -16,7 +16,7 @@ class RegisterRequestDto {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'user_name': userName,
-      'encrypted_password': encryptedPassword,
+      'password': encryptedPassword,
       'phone': phone,
       'user_type_id': userTypeId,
       'email': email,

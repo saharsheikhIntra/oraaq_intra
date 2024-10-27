@@ -43,6 +43,8 @@ class ApiConstants {
   static const String getMerchantById = "/api/get_merchant_by_id/";
 
   static const String getAllCategories = "/ords/oraaq/api/getCategories";
+  static const String fetchAcceptedRequests =
+      '/ords/oraaq/api/fetchAcceptedRequest?';
 
   static const String getServices = "/ords/oraaq/api/GetService?category_id=";
   static const String getAllBids = "/ords/oraaq/api/getAllBids?order_id=";

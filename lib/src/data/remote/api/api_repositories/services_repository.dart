@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/get_merchant_radius.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_all_bids.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_radius_respomse_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_services_response_dto.dart';
@@ -78,6 +79,29 @@ class ServicesRepository {
           (data) => data is List
               ? data.map((e) => GetAllBidsResponseDto.fromMap(e)).toList()
               : <GetAllBidsResponseDto>[],
+        ).data;
+        return Right(responseDto!);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: GET ACCEPTED REQUESTS
+  //
+  //
+  Future<Either<Failure, List<AcceptedRequestsResponseDto>>>
+      getAcceptedRequests(int customerId) async {
+    final result = await _datasource
+        .get("${ApiConstants.fetchAcceptedRequests}customer_id=$customerId");
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data is List
+              ? data.map((e) => AcceptedRequestsResponseDto.fromMap(e)).toList()
+              : <AcceptedRequestsResponseDto>[],
         ).data;
         return Right(responseDto!);
       },

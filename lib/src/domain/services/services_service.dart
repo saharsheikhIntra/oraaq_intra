@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/get_merchant_radius.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_all_bids.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_radius_respomse_dto.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
@@ -63,6 +64,22 @@ class ServicesService {
       int merchantId) async {
     var result =
         await _servicesRepository.getAllBidsForCutomerRequest(merchantId);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        return Right(r);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: GET ACCEPTED REQUESTS
+  //
+  //
+  Future<Either<Failure, List<AcceptedRequestsResponseDto>>>
+      getAcceptedRequests(int customerId) async {
+    var result = await _servicesRepository.getAcceptedRequests(customerId);
     return result.fold(
       (l) => Left(l),
       (r) async {
