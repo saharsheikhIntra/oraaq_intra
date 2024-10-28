@@ -1,6 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/get_merchant_radius.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/cancel_work_order_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/complete_work_order_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_all_bids.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_radius_respomse_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_services_response_dto.dart';
@@ -78,6 +82,106 @@ class ServicesRepository {
           (data) => data is List
               ? data.map((e) => GetAllBidsResponseDto.fromMap(e)).toList()
               : <GetAllBidsResponseDto>[],
+        ).data;
+        return Right(responseDto!);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: GET ACCEPTED REQUESTS
+  //
+  //
+  Future<Either<Failure, List<AcceptedRequestsResponseDto>>>
+      getAcceptedRequests(int customerId) async {
+    final result = await _datasource
+        .get("${ApiConstants.fetchAcceptedRequests}customer_id=$customerId");
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data is List
+              ? data.map((e) => AcceptedRequestsResponseDto.fromMap(e)).toList()
+              : <AcceptedRequestsResponseDto>[],
+        ).data;
+        return Right(responseDto!);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: CUSTOMER CANCELLED WORK ORDER
+  //
+  //
+
+  Future<Either<Failure, List<CustomerCancelWorkOrderResponseDto>>>
+      getCanceledWorkOrdersForCustomer(int customerId) async {
+    final result = await _datasource.get(
+      "${ApiConstants.customerWorkOrders}customer_id=$customerId&order_status_id=2",
+    );
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data is List
+              ? data
+                  .map((e) => CustomerCancelWorkOrderResponseDto.fromMap(e))
+                  .toList()
+              : <CustomerCancelWorkOrderResponseDto>[],
+        ).data;
+        return Right(responseDto!);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: CUSTOMER COMPLETED WORK ORDER
+  //
+  //
+
+  Future<Either<Failure, List<CustomerCompletedWorkOrderResponseDto>>>
+      getCompletedWorkOrdersForCustomer(int customerId) async {
+    final result = await _datasource.get(
+        "${ApiConstants.customerWorkOrders}customer_id=$customerId&order_status_id=3");
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data is List
+              ? data
+                  .map((e) => CustomerCompletedWorkOrderResponseDto.fromMap(e))
+                  .toList()
+              : <CustomerCompletedWorkOrderResponseDto>[],
+        ).data;
+        return Right(responseDto!);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: CUSTOMER NEW REQUEST
+  //
+  //
+
+  Future<Either<Failure, List<CustomerNewRequestDto>>> getCustomerNewRequests(
+      int customerId) async {
+    final result = await _datasource
+        .get("${ApiConstants.fetchServiceRequests}$customerId");
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data is List
+              ? data.map((e) => CustomerNewRequestDto.fromMap(e)).toList()
+              : <CustomerNewRequestDto>[],
         ).data;
         return Right(responseDto!);
       },

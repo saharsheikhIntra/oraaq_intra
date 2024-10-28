@@ -1,4 +1,5 @@
 import 'package:oraaq/src/core/extensions/widget_extension.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_state.dart';
@@ -19,13 +20,16 @@ class CustomerHomeScreen extends StatefulWidget {
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   final _cubit = getIt.get<CustomerHomeCubit>();
   List<CategoryEntity> _categories = [];
+  final ValueNotifier<List<AcceptedRequestsResponseDto>> acceptedJobs =
+      ValueNotifier([]);
   UserEntity currentUser = getIt.get<UserEntity>();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _cubit.fetchCategories();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await _cubit.fetchCategories();
+      await _cubit.fetchAcceptedRequest();
     });
   }
 
@@ -50,11 +54,17 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
               DialogComponent.hideLoading(context);
               _categories = state.categories;
             }
+            if (state is CustomerHomeStateAcceptedJobs) {
+              DialogComponent.hideLoading(context);
+              acceptedJobs.value = state.acceptedJobs;
+              print(acceptedJobs.value);
+            }
           },
           builder: (context, state) {
             return Scaffold(
                 appBar: PreferredSize(
-                    preferredSize: Size.fromHeight(ScreenUtil().statusBarHeight + 56),
+                    preferredSize:
+                        Size.fromHeight(ScreenUtil().statusBarHeight + 56),
                     child: Container(
                         padding: const EdgeInsets.fromLTRB(16, 16, 8, 16),
                         decoration: const BoxDecoration(
@@ -64,29 +74,35 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                   AssetConstants.homeAppbarBackground,
                                 ))),
                         child: SafeArea(
-                            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          Expanded(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                StringConstants.goodMorning,
-                                style: TextStyleTheme.titleSmall.copyWith(color: ColorTheme.neutral3),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                              Expanded(
+                                  child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    StringConstants.goodMorning,
+                                    style: TextStyleTheme.titleSmall
+                                        .copyWith(color: ColorTheme.neutral3),
+                                  ),
+                                  Text(
+                                    currentUser.name,
+                                    style: TextStyleTheme.displaySmall.copyWith(
+                                        color: ColorTheme.neutral3,
+                                        fontSize: 26),
+                                  ),
+                                ],
+                              )),
+                              CustomButton(
+                                size: CustomButtonSize.small,
+                                type: CustomButtonType.tertiary,
+                                icon: Symbols.account_circle_filled_rounded,
+                                onPressed: () => context.pushNamed(
+                                    RouteConstants.customerProfileRoute),
                               ),
-                              Text(
-                                currentUser.name,
-                                style: TextStyleTheme.displaySmall.copyWith(color: ColorTheme.neutral3,fontSize: 26),
-                              ),
-                            ],
-                          )),
-                          CustomButton(
-                            size: CustomButtonSize.small,
-                            type: CustomButtonType.tertiary,
-                            icon: Symbols.account_circle_filled_rounded,
-                            onPressed: () => context.pushNamed(RouteConstants.customerProfileRoute),
-                          ),
-                        ])))),
+                            ])))),
                 body: ListView(padding: 20.verticalPadding, children: [
                   Padding(
                       padding: 16.horizontalPadding,
@@ -94,7 +110,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                         Expanded(
                             child: Text(
                           StringConstants.onGoingJobs,
-                          style: TextStyleTheme.titleMedium.copyWith(color: ColorTheme.secondaryText),
+                          style: TextStyleTheme.titleMedium
+                              .copyWith(color: ColorTheme.secondaryText),
                         )),
                         GestureDetector(
                             onTap: () => context.pushNamed(
@@ -102,41 +119,96 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                 ),
                             child: Text(
                               StringConstants.viewAll,
-                              style: TextStyleTheme.labelLarge.copyWith(color: ColorTheme.primary),
+                              style: TextStyleTheme.labelLarge
+                                  .copyWith(color: ColorTheme.primary),
                             )),
                       ])),
                   12.verticalSpace,
                   SizedBox(
                       height: 120,
-                      child: ListView.separated(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          padding: 16.horizontalPadding,
-                          separatorBuilder: (context, index) => 12.horizontalSpace,
-                          itemBuilder: (BuildContext context, int index) => GestureDetector(
-                              child: SizedBox(
-                                  height: 96,
-                                  width: 245,
-                                  child: OnGoingRequestCard(
-                                    userName: "Ali Hassan",
-                                    duration: "4hr 30 mints",
-                                    date: "21st May",
-                                    time: "6:00 am",
-                                    profileName: "Zain Hashim",
-                                    price: "10,000",
-                                    servicesList: const [],
-                                    variant: OngoingRequestCardVariant.offerReceived,
-                                    onTap: () => SheetComponenet.show(
-                                      context,
-                                      isScrollControlled: true,
-                                      child: const RequestSheet(),
-                                    ),
-                                  ))))),
+                      child: ValueListenableBuilder(
+                        valueListenable: acceptedJobs,
+                        builder: (context, value, child) {
+                          return value.isNotEmpty
+                              ? ListView.separated(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: acceptedJobs.value.length,
+                                  padding: 16.horizontalPadding,
+                                  separatorBuilder: (context, index) =>
+                                      12.horizontalSpace,
+                                  itemBuilder: (BuildContext context,
+                                          int index) =>
+                                      GestureDetector(
+                                          child: SizedBox(
+                                              height: 96,
+                                              width: 245,
+                                              child: OnGoingRequestCard(
+                                                userName: acceptedJobs
+                                                    .value[index].serviceName,
+                                                duration: "4hr 30 mints",
+                                                date: DateTime.tryParse(
+                                                        acceptedJobs
+                                                            .value[index].date)!
+                                                    .formattedDate(), //"21st May",
+                                                time: DateTime.tryParse(
+                                                        acceptedJobs
+                                                            .value[index].date)!
+                                                    .to12HourFormat, //"6:00 am",
+                                                profileName: acceptedJobs
+                                                    .value[index]
+                                                    .merchantName, //"Zain Hashim",
+                                                price: acceptedJobs.value[index]
+                                                    .amount, //"10,000",
+                                                servicesList: const [],
+                                                variant:
+                                                    OngoingRequestCardVariant
+                                                        .offerReceived,
+                                                onTap: () =>
+                                                    SheetComponenet.show(
+                                                  context,
+                                                  isScrollControlled: true,
+                                                  child: const RequestSheet(),
+                                                ),
+                                              ))))
+                              : const Center(
+                                  child: Text('No Data'),
+                                );
+                        },
+                        child: ListView.separated(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5,
+                            padding: 16.horizontalPadding,
+                            separatorBuilder: (context, index) =>
+                                12.horizontalSpace,
+                            itemBuilder: (BuildContext context, int index) =>
+                                GestureDetector(
+                                    child: SizedBox(
+                                        height: 96,
+                                        width: 245,
+                                        child: OnGoingRequestCard(
+                                          userName: "Ali Hassan",
+                                          duration: "4hr 30 mints",
+                                          date: "21st May",
+                                          time: "6:00 am",
+                                          profileName: "Zain Hashim",
+                                          price: "10,000",
+                                          servicesList: const [],
+                                          variant: OngoingRequestCardVariant
+                                              .offerReceived,
+                                          onTap: () => SheetComponenet.show(
+                                            context,
+                                            isScrollControlled: true,
+                                            child: const RequestSheet(),
+                                          ),
+                                        )))),
+                      )),
                   30.verticalSpace,
                   Text(
                     StringConstants.services,
-                    style: TextStyleTheme.titleMedium.copyWith(color: ColorTheme.secondaryText),
+                    style: TextStyleTheme.titleMedium
+                        .copyWith(color: ColorTheme.secondaryText),
                   ).wrapInPadding(16.horizontalPadding),
                   12.verticalSpace,
                   _categories.isEmpty
@@ -153,7 +225,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                               category: _categories[i],
                               onTap: () => context.pushNamed(
                                     RouteConstants.questionnaireRoute,
-                                    arguments: QuestionnaireArgument(_categories[i]),
+                                    arguments:
+                                        QuestionnaireArgument(_categories[i]),
                                   ))),
                 ]));
           },

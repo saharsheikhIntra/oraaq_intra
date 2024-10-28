@@ -36,14 +36,26 @@ class ApiConstants {
   static const String getMerchantWithinRadius =
       "/ords/oraaq/api/getMerchantWithinRadius";
 
-  // static const String updateProfile = "/api/updateprofile/";
+  // MARK: CUSTOMER FLOW
 
   static const String updateCustomerProfile = '/ords/oraaq/api/updateCustomer';
 
   static const String getMerchantById = "/api/get_merchant_by_id/";
 
   static const String getAllCategories = "/ords/oraaq/api/getCategories";
+  static const String fetchAcceptedRequests =
+      '/ords/oraaq/api/fetchAcceptedRequest?';
 
   static const String getServices = "/ords/oraaq/api/GetService?category_id=";
   static const String getAllBids = "/ords/oraaq/api/getAllBids?order_id=";
+
+  static const String getAllNewRequest =
+      '/ords/oraaq/api/getAllNewRequests?merchant_id=';
+
+  // static const String getAllNewRequest = '/ords/oraaq/api/GetInProgressWorkOrdersForMerchant?merchant_id=';
+
+  static const String customerWorkOrders =
+      "/ords/oraaq/api/customerWorkOrders?";
+  static const String fetchServiceRequests =
+      "/ords/oraaq/api/fetchServiceRequests?customer_id=";
 }
