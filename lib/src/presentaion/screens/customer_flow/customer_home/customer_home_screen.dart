@@ -147,8 +147,14 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                 userName: acceptedJobs
                                                     .value[index].serviceName,
                                                 duration: "4hr 30 mints",
-                                                date: "21st May",
-                                                time: "6:00 am",
+                                                date: DateTime.tryParse(
+                                                        acceptedJobs
+                                                            .value[index].date)!
+                                                    .formattedDate(), //"21st May",
+                                                time: DateTime.tryParse(
+                                                        acceptedJobs
+                                                            .value[index].date)!
+                                                    .to12HourFormat, //"6:00 am",
                                                 profileName: acceptedJobs
                                                     .value[index]
                                                     .merchantName, //"Zain Hashim",
