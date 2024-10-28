@@ -40,6 +40,9 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
         cancelledOrders: cancelledOrders,
         newRequestWorkOrders: newOrders,
       ));
+      // emit(NewRequestWorkOrdersLoaded(newOrders));
+      // emit(CompletedRequestWorkOrdersLoaded(completedOrders));
+      // emit(CancelledRequestWorkOrdersLoaded(cancelledOrders));
     }
   }
 }

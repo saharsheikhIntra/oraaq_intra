@@ -13,6 +13,7 @@ class _OtpScreenState extends State<OtpScreen> {
   final ValueNotifier<int> enteredOtp = ValueNotifier<int>(0);
   final OtpCubit _cubit = getIt<OtpCubit>();
   String generatedOtp = '';
+  final UserType userType = getIt<UserType>();
 
   @override
   void initState() {
@@ -28,7 +29,7 @@ class _OtpScreenState extends State<OtpScreen> {
       create: (context) => _cubit,
       child: BlocConsumer<OtpCubit, OtpState>(
         listener: (context, state) {
-          // TODO: implement listener
+
           if (state is OtpGenerated) {
             Toast.show(
               context: context,
@@ -44,8 +45,12 @@ class _OtpScreenState extends State<OtpScreen> {
               title: state.message,
             );
             // Navigator.pushReplacementNamed(context, '/nextScreen');
-            context
+            if(userType == UserType.customer){
+              context.pushNamed(RouteConstants.customerEditProfileRoute);
+            }else{
+              context
                 .pushReplacementNamed(RouteConstants.merchantEditProfileRoute);
+            }
           }
           if (state is OtpError) {
             Toast.show(

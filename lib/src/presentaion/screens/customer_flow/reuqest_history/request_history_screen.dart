@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:oraaq/src/core/extensions/widget_extension.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/imports.dart';
@@ -17,11 +19,24 @@ class RequestHistoryScreen extends StatefulWidget {
 class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
   final RequestHistoryCubit _cubit = getIt<RequestHistoryCubit>();
 
+  final ValueNotifier<List<RequestEntity>> completedCustomerWorkOrderNotifier =
+      ValueNotifier([]);
+  final ValueNotifier<List<RequestEntity>> cancelledCustomerWorkOrderNotifier =
+      ValueNotifier([]);
+  final ValueNotifier<List<CustomerNewRequestDto>> newRequestCustomerWorkOrderNotifier =
+      ValueNotifier([]);
+  final cron = Cron();  
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _cubit.fetchWorkOrders();
+      cron.schedule(
+        Schedule(minutes: 1),
+        () {
+          _cubit.fetchWorkOrders();
+        },
+      );
     });
   }
 
@@ -64,8 +79,20 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                   );
                 }
                 if (state is RequestHistoryScreenLoaded) {
+                  newRequestCustomerWorkOrderNotifier.value = state.newRequestWorkOrders;
+                  completedCustomerWorkOrderNotifier.value = state.completedOrders;
+                  cancelledCustomerWorkOrderNotifier.value = state.cancelledOrders;
                   DialogComponent.hideLoading(context);
                 }
+                // if(state is NewRequestWorkOrdersLoaded){
+                //   newRequestCustomerWorkOrderNotifier.value = state.newRequestWorkOrdersLoaded;
+                // }
+                // if(state is CompletedRequestWorkOrdersLoaded){
+                //   completedCustomerWorkOrderNotifier.value = state.completedOrders;
+                // }
+                // if(state is CancelledRequestWorkOrdersLoaded){
+                //   cancelledCustomerWorkOrderNotifier.value = state.cancelledOrders;
+                // }
               },
               builder: (context, state) {
                 if (state is RequestHistoryScreenLoaded) {
@@ -133,43 +160,49 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                 .copyWith(color: ColorTheme.secondaryText),
                           ).wrapInPadding(16.horizontalPadding),
                           12.verticalSpace,
-                          state.newRequestWorkOrders.isNotEmpty
-                              ? ListView.separated(
-                                  shrinkWrap: true,
-                                  itemCount: state.newRequestWorkOrders.length,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  padding: 16.horizontalPadding,
-                                  separatorBuilder: (context, index) =>
-                                      12.verticalSpace,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    CustomerNewRequestDto currentRequest =
-                                        state.newRequestWorkOrders[index];
-                                    return Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 12.0),
-                                      child: OnGoingRequestCard(
-                                        userName: "Ali Hassan",
-                                        duration: "4hr 30 mints",
-                                        date: DateTime.tryParse(
-                                                currentRequest.date)!
-                                            .formattedDate(),
-                                        time: DateTime.tryParse(
-                                                currentRequest.date)!
-                                            .to12HourFormat,
-                                        // profileName: "Zain Hashim",
-                                        price: currentRequest.amount.toString(),
-                                        servicesList: const [],
-                                        variant:
-                                            OngoingRequestCardVariant.waiting,
-                                        onTap: () => context.pushNamed(
-                                          RouteConstants
-                                              .offeredReceivedScreenRoute,
-                                        ),
-                                      ),
-                                    );
-                                  })
-                              : const Text('No data'),
+                          ValueListenableBuilder(
+                            valueListenable: newRequestCustomerWorkOrderNotifier,
+                            builder: (context,value,child) {
+                              return value.isNotEmpty? ListView.separated(
+                                      shrinkWrap: true,
+                                      itemCount: value.length,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      padding: 16.horizontalPadding,
+                                      separatorBuilder: (context, index) =>
+                                          12.verticalSpace,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        CustomerNewRequestDto currentRequest =
+                                            state.newRequestWorkOrders[index];
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 12.0),
+                                          child: OnGoingRequestCard(
+                                            userName: "Ali Hassan",
+                                            duration: "4hr 30 mints",
+                                            date: DateTime.tryParse(
+                                                    currentRequest.date)!
+                                                .formattedDate(),
+                                            time: DateTime.tryParse(
+                                                    currentRequest.date)!
+                                                .to12HourFormat,
+                                            // profileName: "Zain Hashim",
+                                            price: currentRequest.amount.toString(),
+                                            servicesList: const [],
+                                            variant:
+                                                OngoingRequestCardVariant.waiting,
+                                            onTap: () => context.pushNamed(
+                                              RouteConstants
+                                                  .offeredReceivedScreenRoute,
+                                            ),
+                                          ),
+                                        );
+                                      }): const Center(
+                                child: Center(child: Text('No Data')),
+                              );
+                            }
+                          )
+                             
                         ],
                       ),
                       //
@@ -177,73 +210,85 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                       // MARK: Completed orders tab
                       //
                       //
-                      state.completedOrders.isNotEmpty
-                          ? ListView.separated(
-                              shrinkWrap: true,
-                              itemCount: state.completedOrders.length,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 16),
-                              separatorBuilder: (context, index) =>
-                                  12.verticalSpace,
-                              itemBuilder: (BuildContext context, int index) {
-                                RequestEntity currentRequest =
-                                    state.completedOrders[index];
-                                return CompletedRequestCard(
-                                  userName: currentRequest.customerName,
-                                  date: currentRequest.requestDate
-                                      .formattedDate(),
-                                  ratings: currentRequest.rating.toString(),
-                                  price: currentRequest.bidAmount.toString(),
-                                  servicesList: currentRequest.serviceNames,
-                                  duration: '4 hr 40 mints',
-                                  rating: currentRequest.rating!,
-                                  variant: CompletedRequestCardVariant.merchant,
-                                  onTap: () {
-                                    SheetComponenet.show(
-                                      context,
-                                      isScrollControlled: true,
-                                      child: const CompletedJobSheet(
-                                          rating: 0,
-                                          variant: CompletedJobSheetVariant
-                                              .customer),
+                      ValueListenableBuilder(
+                        valueListenable: completedCustomerWorkOrderNotifier,
+                        builder: (context,value,child) {
+                          return value.isNotEmpty? ListView.separated(
+                                  shrinkWrap: true,
+                                  itemCount: value.length,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 16, horizontal: 16),
+                                  separatorBuilder: (context, index) =>
+                                      12.verticalSpace,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    RequestEntity currentRequest =
+                                        state.completedOrders[index];
+                                    return CompletedRequestCard(
+                                      userName: currentRequest.customerName,
+                                      date: currentRequest.requestDate
+                                          .formattedDate(),
+                                      ratings: currentRequest.rating.toString(),
+                                      price: currentRequest.bidAmount.toString(),
+                                      servicesList: currentRequest.serviceNames,
+                                      duration: '4 hr 40 mints',
+                                      rating: currentRequest.rating!,
+                                      variant: CompletedRequestCardVariant.merchant,
+                                      onTap: () {
+                                        SheetComponenet.show(
+                                          context,
+                                          isScrollControlled: true,
+                                          child: const CompletedJobSheet(
+                                              rating: 0,
+                                              variant: CompletedJobSheetVariant
+                                                  .customer),
+                                        );
+                                      },
                                     );
-                                  },
-                                );
-                              })
-                          : const Text('No data'),
+                                  }) : const Center(
+                                child: Text('No Data'),
+                              );
+                        }
+                      )
+                          ,
                       //
                       //
                       // MARK: Cancelled orders tab
                       //
                       //
-                      state.cancelledOrders.isNotEmpty
-                          ? ListView.separated(
-                              shrinkWrap: true,
-                              itemCount: state.cancelledOrders.length,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 16),
-                              separatorBuilder: (context, index) =>
-                                  12.verticalSpace,
-                              itemBuilder: (BuildContext context, int index) {
-                                RequestEntity currentRequest =
-                                    state.cancelledOrders[index];
-                                return CancelRequestCard(
-                                  userName: currentRequest.customerName,
-                                  duration: "4hr 30 mints",
-                                  date: currentRequest.requestDate
-                                      .formattedDate(),
-                                  time: "6:00 am",
-                                  price: "10,000",
-                                  servicesList: const [
-                                    "Hair cut",
-                                    "Hair",
-                                    "Hair extension",
-                                    "Hair extension"
-                                  ],
-                                  onTap: () {},
-                                );
-                              })
-                          : const Text('No data'),
+                      ValueListenableBuilder(
+                        valueListenable: cancelledCustomerWorkOrderNotifier,
+                        builder: (context,value,child) {
+                          return value.isNotEmpty? ListView.separated(
+                                  shrinkWrap: true,
+                                  itemCount: value.length,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 16, horizontal: 16),
+                                  separatorBuilder: (context, index) =>
+                                      12.verticalSpace,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    RequestEntity currentRequest =
+                                        state.cancelledOrders[index];
+                                    return CancelRequestCard(
+                                      userName: currentRequest.customerName,
+                                      duration: "4hr 30 mints",
+                                      date: currentRequest.requestDate
+                                          .formattedDate(),
+                                      time: "6:00 am",
+                                      price: "10,000",
+                                      servicesList: const [
+                                        "Hair cut",
+                                        "Hair",
+                                        "Hair extension",
+                                        "Hair extension"
+                                      ],
+                                      onTap: () {},
+                                    );
+                                  }) : const Center(
+                                child: Text('No Data'),
+                              );
+                        }
+                      )
+                          ,
                     ],
                   );
                 } else {
