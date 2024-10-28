@@ -261,7 +261,6 @@ class AuthenticationServices {
         await _localAuthRepository.setUser(tempUser);
         getIt.unregister<UserEntity>();
         getIt.registerSingleton<UserEntity>(tempUser);
-
         return Right(tempUser);
       },
     );

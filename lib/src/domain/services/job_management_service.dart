@@ -2,7 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/enum/request_status_enum.dart';
 import 'package:oraaq/src/data/remote/api/api_repositories/job_management_repository.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
+
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
+
 import 'package:oraaq/src/domain/entities/request_entity.dart';
+import 'package:oraaq/src/imports.dart';
 
 import '../../data/remote/api/api_request_dtos/merchant_flow/post_bid_request_dto.dart';
 import '../../data/remote/api/api_response_dtos/merchant_flow/applied_jobs_response_dto.dart';
@@ -13,6 +17,7 @@ import '../entities/failure.dart';
 class JobManagementService {
   final JobManagementRepository _jobsRepository;
   JobManagementService(this._jobsRepository);
+  // UserEntity customer = getIt<UserEntity>();
 
   //
   // MARK: GET CATEGORY
@@ -224,5 +229,19 @@ class JobManagementService {
   Future<Either<Failure, String>> addRating(
       AddRatingRequestDto ratingRequest) async {
     return await _jobsRepository.addRating(ratingRequest);
+  }
+
+  //
+  // MARK: GET ALL NEW REQUESTS
+  //
+  Future<Either<Failure, List<NewServiceRequestResponseDto>>> getAllNewRequests(
+      int merchantId) async {
+    var result = await _jobsRepository.getAllNewRequests(merchantId);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        return Right(r);
+      },
+    );
   }
 }
