@@ -34,6 +34,7 @@ class ApiConstants {
   static const String getAllCategories = "/ords/oraaq/api/getCategories";
 
   static const String getServices = "/ords/oraaq/api/GetService?category_id=";
+<<<<<<< Updated upstream
 
   static const String getWorkInProgressOrdersForMerchant =
       '/api/GetInProgressWorkOrdersForMerchant/';
@@ -46,4 +47,9 @@ class ApiConstants {
   static const String updateCustomerProfile = '/ords/oraaq/api/updateCustomer';
   // static const String getAllNewRequest = '/ords/oraaq/api/GetInProgressWorkOrdersForMerchant?merchant_id=';
   
+=======
+  static const String getAllBids = "/ords/oraaq/api/getAllBids?order_id=";
+  static const String customerWorkOrders = "/ords/oraaq/api/customerWorkOrders?";
+  static const String fetchServiceRequests = "/ords/oraaq/api/fetchServiceRequests?customer_id=";
+>>>>>>> Stashed changes
 }

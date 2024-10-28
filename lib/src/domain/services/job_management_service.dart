@@ -2,8 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/enum/request_status_enum.dart';
 import 'package:oraaq/src/data/remote/api/api_repositories/job_management_repository.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
+<<<<<<< Updated upstream
 import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_response_dto.dart';
+=======
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
+>>>>>>> Stashed changes
 import 'package:oraaq/src/domain/entities/request_entity.dart';
+import 'package:oraaq/src/imports.dart';
 
 import '../../data/remote/api/api_request_dtos/merchant_flow/post_bid_request_dto.dart';
 import '../../data/remote/api/api_response_dtos/merchant_flow/get_all_new_request_dto.dart';
@@ -13,6 +18,7 @@ import '../entities/failure.dart';
 class JobManagementService {
   final JobManagementRepository _jobsRepository;
   JobManagementService(this._jobsRepository);
+  // UserEntity customer = getIt<UserEntity>(); 
 
   //
   // MARK: GET CATEGORY
@@ -222,6 +228,7 @@ class JobManagementService {
     return await _jobsRepository.addRating(ratingRequest);
   }
 
+<<<<<<< Updated upstream
 
   //
   // MARK: GET ALL NEW REQUESTS
@@ -237,4 +244,107 @@ class JobManagementService {
       },
     );
   }
+=======
+  //
+  //
+  // MARK: CUSTOMER CANCEL-WORK-ORDER
+  //
+  //
+
+  Future<Either<Failure, List<RequestEntity>>> getCanceledWorkOrdersForCustomer(
+      int customerId) async {
+    var result =
+        await _jobsRepository.getCanceledWorkOrdersForCustomer(customerId);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        var entities = r
+            .map((e) => RequestEntity(
+                  workOrderId: e.workOrderId,
+                  requestId: e.requestId,
+                  serviceRequestId: e.serviceRequestId,
+                  serviceNames:
+                      e.serviceNames, // This will be a list of service names
+                  customerId: e.merchantId,
+                  customerName: e.merchantName,
+                  customerContactNumber: '',
+                  customerEmail: e.merchantEmail,
+                  latitude: e.latitude,
+                  longitude: e.longitude,
+                  requestDate:
+                      DateTime.tryParse(e.requestDate) ?? DateTime.now(),
+                  status: RequestStatusEnum
+                      .cancelled, // Assuming this is for cancelled orders
+                  bidId: e.bidId,
+                  bidAmount: e.bidAmount,
+                  rating: e.rating,
+                  bidDate: DateTime.tryParse(e.bidDate) ?? DateTime.now(),
+                ))
+            .toList();
+        return Right(entities);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: CUSTOMER COMPLETE-WORK-ORDER
+  //
+  //
+
+  Future<Either<Failure, List<RequestEntity>>> getCompletedWorkOrdersForCustomer(
+      int customerId) async {
+    var result =
+        await _jobsRepository.getCompletedWorkOrdersForCustomer(customerId);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        var entities = r
+            .map((e) => RequestEntity(
+                  workOrderId: e.workOrderId,
+                  requestId: e.requestId,
+                  serviceRequestId: e.serviceRequestId,
+                  serviceNames:
+                      e.serviceNames, // This will be a list of service names
+                  customerId: e.merchantId,
+                  customerName: e.merchantName,
+                  customerContactNumber: e.merchantContactNumber,
+                  customerEmail: e.merchantEmail,
+                  latitude: e.latitude,
+                  longitude: e.longitude,
+                  requestDate:
+                      DateTime.tryParse(e.requestDate) ?? DateTime.now(),
+                  status: RequestStatusEnum
+                      .cancelled, // Assuming this is for cancelled orders
+                  bidId: e.bidId,
+                  bidAmount: e.bidAmount,
+                  rating: e.rating,
+                  bidDate: DateTime.tryParse(e.bidDate) ?? DateTime.now(),
+                ))
+            .toList();
+        return Right(entities);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: CUSTOMER NEW REQUEST
+  //
+  //
+
+  Future<Either<Failure, List<CustomerNewRequestDto>>> getCustomerNewRequests(
+      int customerId) async {
+    var result =
+        await _jobsRepository.getCustomerNewRequests(customerId);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        var requests = r.map((e) => CustomerNewRequestDto(requestId: e.requestId,amount: e.amount,category: e.category,date: e.date,offersReceived: e.offersReceived)).toList();
+        return Right(requests);
+      },
+    );
+  }
+
+>>>>>>> Stashed changes
 }

@@ -37,22 +37,10 @@ class UpdateCustomerProfileResponseDto {
     return 'UpdateCustomerProfileResponseDto(customerUserId: $customerUserId, customerId: $customerId, customerName: $name, email: $email, phone: $phone, latitude: $latitude, longitude: $longitude)';
   }
 
-  // Map<String, dynamic> toMap() {
-  //   return {
-  //     'customer_user_id': customerUserId,
-  //     'customer_id': customerId,
-  //     'customer_name': customerName,
-  //     'email': email,
-  //     'phone': phone,
-  //     'latitude': latitude,
-  //     'longitude': longitude
-  //   };
-  // }
 
   UserEntity copyUserEntity(UserEntity curr) {
     return UserEntity(
-      
-      id: customerUserId ?? curr.id,
+      id: customerId ?? curr.id,
       userId: customerUserId ?? curr.userId,
       name: name ?? curr.name,
       email:  email ?? curr.email,
