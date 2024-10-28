@@ -100,7 +100,9 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                   onTap: () => SheetComponenet.show(
                                     context,
                                     isScrollControlled: true,
-                                    child: const RequestSheet(),
+                                    child: RequestSheet(
+                                      onCancel: () {},
+                                    ),
                                   ),
                                   child: SizedBox(
                                     height: 96,
@@ -118,7 +120,9 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                       onTap: () => SheetComponenet.show(
                                         context,
                                         isScrollControlled: true,
-                                        child: const RequestSheet(),
+                                        child: RequestSheet(
+                                          onCancel: () {},
+                                        ),
                                       ),
                                     ),
                                   ),

@@ -517,7 +517,7 @@ class _TestScreenState extends State<TestScreen> {
           onPressed: () => SheetComponenet.show(
                 context,
                 isScrollControlled: true,
-                child: const RequestSheet(),
+                child: RequestSheet(onCancel: () {}),
               )),
       OutlinedButton(
           child: const Text("Request Confirmation Sheet"),

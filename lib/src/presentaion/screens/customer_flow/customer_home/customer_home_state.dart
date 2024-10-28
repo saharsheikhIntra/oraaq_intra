@@ -23,3 +23,8 @@ final class CustomerHomeStateAcceptedJobs extends CustomerHomeState {
   final List<AcceptedRequestsResponseDto> acceptedJobs;
   CustomerHomeStateAcceptedJobs(this.acceptedJobs);
 }
+
+final class CancelCustomerRequestSuccessState extends CustomerHomeState {
+  final String message;
+  CancelCustomerRequestSuccessState(this.message);
+}
