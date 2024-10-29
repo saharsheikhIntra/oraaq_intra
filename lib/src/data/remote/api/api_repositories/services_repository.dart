@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_customer_request.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/get_merchant_radius.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/cancel_work_order_dto.dart';
@@ -184,6 +185,30 @@ class ServicesRepository {
               : <CustomerNewRequestDto>[],
         ).data;
         return Right(responseDto!);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: CANCEL CUSTOMER CRATED REQUESTS
+  //
+  //
+  Future<Either<Failure, String>> cancelCustomerCreateRequests(
+      cancelCustomerCreatedRequestsDto cancelRequest) async {
+    final result = await _datasource.put(
+      ApiConstants.cancelCustomerCreatedRequest,
+      data: cancelRequest.toMap(),
+    );
+
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data.toString(),
+        ).message;
+        return Right(responseDto);
       },
     );
   }

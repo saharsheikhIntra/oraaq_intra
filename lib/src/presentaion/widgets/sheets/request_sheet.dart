@@ -13,8 +13,30 @@ import '../../../core/constants/string_constants.dart';
 import '../sub_services_wrap_view.dart';
 
 class RequestSheet extends StatefulWidget {
+  final String? name;
+  final String? phoneNumber;
+  final String? email;
+  final String? distance;
+  final String? serviceName;
+  final List<String>? servicesList;
+  final String? date;
+  final String? time;
+  final String? amount;
+  final VoidCallback onCancel;
+
   const RequestSheet({
     super.key,
+    this.name,
+    this.phoneNumber,
+    this.email,
+    this.distance,
+    this.servicesList,
+    this.date,
+    this.time,
+    this.amount,
+    this.serviceName,
+    required this.onCancel,
+    //  required this.onCancel,
   });
 
   @override
@@ -31,7 +53,7 @@ class _RequestSheetState extends State<RequestSheet> {
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Text(
-              StringConstants.johnDoe,
+              widget.name ?? StringConstants.johnDoe,
               style: TextStyleTheme.displaySmall,
             )),
         16.verticalSpace,
@@ -39,20 +61,30 @@ class _RequestSheetState extends State<RequestSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 23.0),
             child: Column(
               children: [
-                _buildTime(Symbols.phone_rounded, "031234563451"),
+                _buildTime(Symbols.phone_rounded, widget.phoneNumber ?? "N/A"),
                 12.verticalSpace,
-                _buildTime(Symbols.mail_rounded, "amber.doe@mail,com"),
+                _buildTime(Symbols.mail_rounded, widget.email ?? "N/A"),
                 12.verticalSpace,
-                _buildTime(Symbols.my_location_rounded, "18 km away"),
+                _buildTime(
+                    Symbols.my_location_rounded, widget.distance ?? "N/A"),
               ],
             )),
         25.verticalSpace,
         Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
             color: ColorTheme.neutral1,
-            child: const SubServicesChipWrapView(
-              servicesList: ["Hair cut", "Hair", "Hair extension", "Hair cut", "Hair cut", "Hair extension"],
+            child: SubServicesChipWrapView(
+              servicesList: widget.servicesList ??
+                  [
+                    "Hair cut",
+                    "Hair",
+                    "Hair extension",
+                    "Hair cut",
+                    "Hair cut",
+                    "Hair extension"
+                  ],
               variant: SubServicesChipWrapViewVariant.forCompletedJobSheet,
             )),
         Container(
@@ -62,22 +94,22 @@ class _RequestSheetState extends State<RequestSheet> {
             _buildDetails(
               Symbols.calendar_month_rounded,
               "Date",
-              "3rd March",
+              widget.date ?? "N/A",
             ),
             _buildDetails(
               Symbols.alarm_rounded,
               "Time",
-              "3:30 pm",
+              widget.time ?? "N/A",
             ),
             _buildDetails(
               Symbols.build_rounded,
               "Service Type",
-              "AC Repairing",
+              widget.serviceName ?? "N/A",
             ),
             _buildDetails(
               Symbols.payments_rounded,
               "Service Charges",
-              "Rs 15000",
+              widget.amount ?? "N/A",
             ),
           ]),
         ),
@@ -88,15 +120,20 @@ class _RequestSheetState extends State<RequestSheet> {
             type: CustomButtonType.danger,
             text: "Cancel",
             onPressed: () {
-              SheetComponenet.showWarningSheet(
-                context,
-                title: "Are you sure you want to cancel this job?",
-                message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                ctaText: "Cancel Job",
-                cancelText: "Keep Job",
-                onCtaTap: () => context.popUntil(RouteConstants.customerHomeScreenRoute),
-                onCancelTap: () => context.popUntil(RouteConstants.customerHomeScreenRoute),
-              );
+              SheetComponenet.showWarningSheet(context,
+                  title: "Are you sure you want to cancel this job?",
+                  message:
+                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                  ctaText: "Cancel Job",
+                  cancelText: "Keep Job",
+                  onCtaTap: () {
+                    widget.onCancel();
+                    context.pop();
+                  },
+                  // context.popUntil(RouteConstants.customerHomeScreenRoute),
+                  onCancelTap: () => context.pop()
+                  // context.popUntil(RouteConstants.customerHomeScreenRoute),
+                  );
             },
           ),
         ),
@@ -149,7 +186,8 @@ class _RequestSheetState extends State<RequestSheet> {
                 12.horizontalSpace,
                 Text(
                   text,
-                  style: TextStyleTheme.bodyLarge.copyWith(color: ColorTheme.neutral3),
+                  style: TextStyleTheme.bodyLarge
+                      .copyWith(color: ColorTheme.neutral3),
                 ),
                 const Spacer(),
                 Text(
