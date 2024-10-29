@@ -182,17 +182,17 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                           padding:
                                               const EdgeInsets.only(right: 12.0),
                                           child: OnGoingRequestCard(
-                                            userName: "Ali Hassan",
-                                            duration: "4hr 30 mints",
+                                            userName: currentRequest.category,
+                                            duration: currentRequest.duration,
                                             date: DateTime.tryParse(
                                                     currentRequest.date)!
                                                 .formattedDate(),
                                             time: DateTime.tryParse(
                                                     currentRequest.date)!
                                                 .to12HourFormat,
-                                            // profileName: "Zain Hashim",
+                                            profileName: "Zain Hashim",
                                             price: currentRequest.amount.toString(),
-                                            servicesList: const [],
+                                            servicesList: currentRequest.services,
                                             variant:
                                                 OngoingRequestCardVariant.waiting,
                                             onTap: () => context.pushNamed(
