@@ -38,3 +38,12 @@ class RequestHistoryScreenLoaded extends RequestHistoryState {
   });
 }
 
+final class CustomerHomeStateAcceptedJobs extends RequestHistoryState {
+  final List<AcceptedRequestsResponseDto> acceptedJobs;
+  CustomerHomeStateAcceptedJobs(this.acceptedJobs);
+}
+
+final class CancelCustomerRequestSuccessState extends RequestHistoryState {
+  final String message;
+  CancelCustomerRequestSuccessState(this.message);
+}

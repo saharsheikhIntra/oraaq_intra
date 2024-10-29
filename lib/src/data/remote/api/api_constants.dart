@@ -59,4 +59,7 @@ class ApiConstants {
       "/ords/oraaq/api/customerWorkOrders?";
   static const String fetchServiceRequests =
       "/ords/oraaq/api/fetchServiceRequests?customer_id=";
+  static const String fetchOffersForRequest =
+      "/ords/oraaq/api/fetch_offers_for_request?request_id=";
+  static const String updateOfferAmount = '/ords/oraaq/api/update_offer_amount';
 }

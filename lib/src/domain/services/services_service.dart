@@ -4,6 +4,7 @@ import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/get_merchant_radius.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/fetch_offers_for_requests.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_all_bids.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_radius_respomse_dto.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
@@ -210,4 +211,60 @@ class ServicesService {
     return await _servicesRepository
         .cancelCustomerCreateRequests(cancelRequest);
   }
+
+
+  //
+  //
+  // MARK: FETCH OFFERS FOR REQUESTS REQUEST
+  //
+  //
+
+  Future<Either<Failure, List<FetchOffersForRequestDto>>> fetchOffersForRequests(
+      int requestId) async {
+    var result = await _servicesRepository.fetchOffersForRequests(requestId);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        // var requests = r
+        //     .map((e) => FetchOffersForRequestDto(
+        //         offerId: e.offerId,
+        //         merchantName: e.merchantName,
+        //         merchantEmail: e.merchantEmail,
+        //         distance: e.distance,
+        //         offerAmount: e.offerAmount,
+        //         merchantLatitude: e.merchantLatitude,
+        //         merchantLongitude: e.merchantLongitude))
+        //     .toList();
+        return Right(r);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: UPDATE OFFER AMOUNT
+  //
+  //
+
+  Future<Either<Failure, String>> updateOfferAmount(
+      Map<String,dynamic> obj) async {
+    var result = await _servicesRepository.updateOfferAmount(obj);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        // var requests = r
+        //     .map((e) => FetchOffersForRequestDto(
+        //         offerId: e.offerId,
+        //         merchantName: e.merchantName,
+        //         merchantEmail: e.merchantEmail,
+        //         distance: e.distance,
+        //         offerAmount: e.offerAmount,
+        //         merchantLatitude: e.merchantLatitude,
+        //         merchantLongitude: e.merchantLongitude))
+        //     .toList();
+        return Right(r);
+      },
+    );
+  }
+
 }

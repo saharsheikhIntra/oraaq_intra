@@ -501,16 +501,18 @@ class _TestScreenState extends State<TestScreen> {
       OutlinedButton(
           child: const Text("Change Offer Amount"),
           onPressed: () => SheetComponenet.show(context,
-              child: const ChangeOfferSheet(
+              child: ChangeOfferSheet(
                 defaultValue: 15000,
                 variant: ChangeOfferSheetVariant.price,
+                onTap: () {},
               ))),
       OutlinedButton(
           child: const Text("Adjust Search Radius"),
           onPressed: () => SheetComponenet.show(context,
-              child: const ChangeOfferSheet(
+              child:  ChangeOfferSheet(
                 defaultValue: 50,
                 variant: ChangeOfferSheetVariant.distance,
+                onTap: (){},
               ))),
       OutlinedButton(
           child: const Text("Request Sheet"),

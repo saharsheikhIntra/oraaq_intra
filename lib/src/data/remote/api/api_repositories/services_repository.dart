@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_customer_request.dart';
@@ -6,6 +8,7 @@ import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpte
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/cancel_work_order_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/complete_work_order_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/fetch_offers_for_requests.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_all_bids.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_radius_respomse_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_services_response_dto.dart';
@@ -212,4 +215,57 @@ class ServicesRepository {
       },
     );
   }
+
+  //
+  //
+  // MARK: CUSTOMER NEW REQUEST
+  //
+  //
+
+  Future<Either<Failure, List<FetchOffersForRequestDto>>> fetchOffersForRequests(
+      int requestId) async {
+    final result = await _datasource
+        .get("${ApiConstants.fetchOffersForRequest}$requestId");
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data is List
+              ? data.map((e) => FetchOffersForRequestDto.fromMap(e)).toList()
+              : <FetchOffersForRequestDto>[],
+        ).data;
+        return Right(responseDto!);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: UPDATE OFFER AMOUNT
+  //
+  //
+
+  Future<Either<Failure, String>> updateOfferAmount
+  (
+      Map<String,dynamic> obj) async {
+    final result = await _datasource
+        .put("${ApiConstants.updateOfferAmount}",data: obj);
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data
+          ,
+          (data) => data
+          // data is List
+          //     ? data.map((e) => FetchOffersForRequestDto.fromMap(e)).toList()
+          //     : <FetchOffersForRequestDto>[],
+        ).message;
+        log(responseDto.toString());
+        return Right(responseDto);
+      },
+    );
+  }
+
 }

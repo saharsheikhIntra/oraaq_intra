@@ -61,6 +61,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
             }
             if (state is CancelCustomerRequestSuccessState) {
               DialogComponent.hideLoading(context);
+              _cubit.fetchAcceptedRequest();
+
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.success,
