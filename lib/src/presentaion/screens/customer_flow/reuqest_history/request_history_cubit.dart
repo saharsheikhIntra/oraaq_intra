@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_customer_request.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
 
@@ -44,5 +46,32 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
       // emit(CompletedRequestWorkOrdersLoaded(completedOrders));
       // emit(CancelledRequestWorkOrdersLoaded(cancelledOrders));
     }
+  }
+
+  //
+// MARK: ACCEPTED REQUESTS
+//
+  Future<void> fetchAcceptedRequest() async {
+    emit(RequestHistoryScreenLoading());
+
+    final result = await _servicesRepository.getAcceptedRequests(250);
+
+    result.fold(
+      (l) {
+        emit(RequestHistoryScreenError(l));
+      },
+      (r) {
+        emit(CustomerHomeStateAcceptedJobs(r));
+      },
+    );
+  }
+
+  // MARK: CANCEL CUSTOMER CREATED REQUEST
+  Future cancelCustomerCreatedRequest(int requestId) async {
+    emit(RequestHistoryScreenLoading());
+    final result = await _servicesRepository.cancelCustomerCreatedRequest(
+        cancelCustomerCreatedRequestsDto(requestId: requestId));
+    result.fold((l) => emit(RequestHistoryScreenError(l)),
+        (r) => emit(CancelCustomerRequestSuccessState(r)));
   }
 }

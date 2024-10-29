@@ -48,22 +48,4 @@ class CustomerHomeCubit extends Cubit<CustomerHomeState> {
     result.fold((l) => emit(CustomerHomeStateError(l)),
         (r) => emit(CancelCustomerRequestSuccessState(r)));
   }
-  // Future<void> cancelCustomerCreatedRequest(int requestId) async {
-  //   emit(CustomerHomeStateLoading());
-
-  //   final cancelRequest =
-  //       cancelCustomerCreatedRequestsDto(requestId: requestId);
-
-  //   final result =
-  //       await _servicesService.cancelCustomerCreatedRequest(cancelRequest);
-
-  //   result.fold(
-  //     (l) {
-  //       emit(CustomerHomeStateError(l));
-  //     },
-  //     (r) {
-  //       emit(CancelCustomerRequestSuccessState(r));
-  //     },
-  //   );
-  // }
 }
