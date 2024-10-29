@@ -1,7 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:oraaq/src/config/themes/text_style_theme.dart';
+import 'package:oraaq/src/core/extensions/datetime_extensions.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_recieved_arguments.dart';
+import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_home/merchant_home_screen.dart';
 import 'package:oraaq/src/presentaion/widgets/merchant_offer_card.dart';
 import 'package:oraaq/src/presentaion/widgets/sheets/change_offer_sheet.dart';
 import 'package:oraaq/src/presentaion/widgets/toast_message_card.dart';
@@ -12,15 +18,25 @@ import '../../../widgets/sheets/sheet_component.dart';
 import '../../../widgets/sub_services_wrap_view.dart';
 
 class OfferReceivedScreen extends StatefulWidget {
-  const OfferReceivedScreen({super.key});
+  final OfferRecievedArguments args;
+  const OfferReceivedScreen({required this.args,super.key});
 
   @override
   State<OfferReceivedScreen> createState() => _OfferReceivedScreenState();
 }
 
 class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
+// CustomerNewRequestDto? currentRequest;
+  @override
+  void initState() {
+    super.initState();
+    // currentRequest = widget.args.customerNewRequest;
+  }
+
   @override
   Widget build(BuildContext context) {
+    CustomerNewRequestDto currentRequest = widget.args.customerNewRequest;
+    // log('offer recieved screen: ${currentRequest!.services}');
     int offerCount = 0;
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +49,7 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
             padding: const EdgeInsets.only(right: 20.0),
             child: Center(
               child: Text(
-                '4h 35 min',
+                '${currentRequest!.duration}',
                 style:
                     TextStyleTheme.labelLarge.copyWith(color: ColorTheme.error),
               ),
@@ -62,10 +78,13 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                         children: [
                           _buildTime(
                             Symbols.calendar_month_rounded,
-                            "13 May",
+                            DateTime.tryParse(
+                                                    currentRequest.date)!.formattedDate(),
                           ),
                           6.verticalSpace,
-                          _buildTime(Symbols.alarm_rounded, "3:30 pm"),
+                          _buildTime(Symbols.alarm_rounded, DateTime.tryParse(
+                                                    currentRequest.date)!
+                                                .to12HourFormat),
                         ],
                       ),
                     ],
@@ -74,27 +93,19 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                 ],
               ),
             ),
-            const SubServicesChipWrapView(
-              servicesList: [
-                "Hair cut",
-                "Hair",
-                "Hair extension",
-                "Hair cut",
-                "Hair cut",
-                "Manicure",
-                "Bridal"
-              ],
+            SubServicesChipWrapView(
+              servicesList: currentRequest.services,
               variant: SubServicesChipWrapViewVariant.forOfferReceivedScreen,
             ),
             20.verticalSpace,
-            _buildDetails("You Offered", "15000", () {
+            _buildDetails("You Offered", currentRequest.amount, () {
               SheetComponenet.show(context,
-                  child: const ChangeOfferSheet(
-                    defaultValue: 15000,
+                  child: ChangeOfferSheet(
+                    defaultValue: int.parse(currentRequest.amount),
                     variant: ChangeOfferSheetVariant.price,
                   ));
             }, isRadius: false),
-            _buildDetails("Search Radius", "50", () {
+            _buildDetails("Search Radius", currentRequest.radius, () {
               SheetComponenet.show(context,
                   child: const ChangeOfferSheet(
                     defaultValue: 50,

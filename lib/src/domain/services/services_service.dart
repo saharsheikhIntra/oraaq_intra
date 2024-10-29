@@ -192,7 +192,8 @@ class ServicesService {
                 amount: e.amount,
                 category: e.category,
                 date: e.date,
-                offersReceived: e.offersReceived))
+                offersReceived: e.offersReceived,
+                services: e.services,radius: e.radius,duration: e.duration))
             .toList();
         return Right(requests);
       },
