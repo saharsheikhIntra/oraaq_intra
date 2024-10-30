@@ -27,6 +27,15 @@ final class OffersAmountUpdatingError extends OffersRecievedState {
   OffersAmountUpdatingError(this.failure);
 }
 
+final class OfferRadiusUpdated extends OffersRecievedState {
+  final String message;
+  OfferRadiusUpdated(this.message);
+}
+final class OfferRadiusUpdatingError extends OffersRecievedState {
+  final Failure failure;
+  OfferRadiusUpdatingError(this.failure);
+}
+
 final class OfferAccepted extends OffersRecievedState {
   final String message;
   OfferAccepted(this.message);

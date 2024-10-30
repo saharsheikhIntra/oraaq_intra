@@ -63,4 +63,5 @@ class ApiConstants {
       "/ords/oraaq/api/fetch_offers_for_request?request_id=";
   static const String updateOfferAmount = '/ords/oraaq/api/update_offer_amount';
   static const String acceptRejectOffer = '/ords/oraaq/api/accept_or_reject_offer';
+  static const String updateOfferRadius = '/ords/oraaq/api/updateRadius';
 }

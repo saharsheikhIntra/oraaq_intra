@@ -102,24 +102,19 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
           
                 }
                 if(state is OffersAmountUpdated){
-                  // DialogComponent.hideLoading(context);
-                  // context.pop();
-                  // context.pushReplacementNamed(RouteConstants.requestHistoryScreenRoute);
+                  log('updated: ${state.message}');
+                  Toast.show(context: context, variant: SnackbarVariantEnum.success, title: state.message);
+                }
+                if(state is OfferRadiusUpdated){
                   log('updated: ${state.message}');
                   Toast.show(context: context, variant: SnackbarVariantEnum.success, title: state.message);
                 }
                 if(state is OfferAccepted){
-                  // DialogComponent.hideLoading(context);
-                  // context.pop();
-                  // context.pushReplacementNamed(RouteConstants.requestHistoryScreenRoute);
                   log('updated: ${state.message}');
                   context.pushAndRemoveUntil(CustomerHomeScreen());
                   Toast.show(context: context, variant: SnackbarVariantEnum.success, title: state.message);
                 }
                 if(state is OfferRejected){
-                  // DialogComponent.hideLoading(context);
-                  // context.pop();
-                  // context.pushReplacementNamed(RouteConstants.requestHistoryScreenRoute);
                   log('updated: ${state.failure.message}');
                   context.pushAndRemoveUntil(CustomerHomeScreen());
                   Toast.show(context: context, variant: SnackbarVariantEnum.warning, title: state.failure.message);
@@ -190,13 +185,25 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                             },
                           ));
                     }, isRadius: false),
-                    _buildDetails("Search Radius", currentRequest.value.radius, () {
+                    _buildDetails("Search Radius", value.radius, () {
                       SheetComponenet.show(context,
                           child: ChangeOfferSheet(
-                            defaultValue: 50,
+                            defaultValue: int.parse(value.radius),
                             variant: ChangeOfferSheetVariant.distance,
-                            onTap: (){
-                              log('update radius');
+                            onTap: (int val)async {
+                              log(val.toString());
+                              log('update amount');
+                              value.amount = val.toString();
+                              Map<String,dynamic> data = {
+                                'request_id': value.requestId,
+                                'new_radius': val,
+                              };
+                              String? messsage = await _cubit.updateOfferRadius(data);
+                              // log('last message: ${messsage.toString()}');
+                              context.pop();
+                              setState(() {
+                              });
+                              
                             },
                           ));
                     }, isRadius: true),

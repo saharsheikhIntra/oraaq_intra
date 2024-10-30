@@ -25,6 +25,17 @@ class OffersRecievedCubit extends Cubit<OffersRecievedState> {
     },);
   }
 
+  updateOfferRadius(Map<String,dynamic> obj)async {
+    // emit(OffersRecievedLoading());
+    final result = await _servicesRepository.updateOfferRadius(obj);
+    log('ON CUBIT: ${result.toString()}');
+    result.fold((l) {
+      emit(OfferRadiusUpdatingError(l));
+    }, (r) {
+      emit(OfferRadiusUpdated(r));
+    },);
+  }
+
   acceptOrRejectOffer(Map<String,dynamic> obj)async {
     // emit(OffersRecievedLoading());
     final result = await _servicesRepository.acceptOrRejectOffer(obj);

@@ -269,6 +269,23 @@ class ServicesService {
 
   //
   //
+  // MARK: UPDATE OFFER RADIUS
+  //
+  //
+
+  Future<Either<Failure, String>> updateOfferRadius(
+      Map<String,dynamic> obj) async {
+    var result = await _servicesRepository.updateOfferRadius(obj);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        return Right(r);
+      },
+    );
+  }
+
+  //
+  //
   // MARK: ACCEPT OR REJCT OFFER
   //
   //
