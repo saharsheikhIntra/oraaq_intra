@@ -11,7 +11,9 @@ import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_l
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/reuqest_history/request_history_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/change_password/change_password_cubit.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/forgot_password/forget_password_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_cubit.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/new_password/new_password_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/register/register_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_edit_profile/merchant_edit_profile_cubit.dart';
@@ -143,6 +145,8 @@ injectCubits() {
   getIt.registerFactory(() => LoginCubit(getIt()));
   getIt.registerFactory(() => RegisterCubit(getIt()));
   getIt.registerFactory(() => OtpCubit(getIt()));
+  getIt.registerFactory(() => ForgetPasswordCubit(getIt()));
+  getIt.registerFactory(() => NewPasswordCubit(getIt()));
   getIt.registerFactory(() => MerchantEditProfileCubit(getIt(), getIt()));
   getIt.registerFactory(() => MerchantProfileScreenCubit(getIt()));
   getIt.registerFactory(() => HistoryScreenCubit(getIt()));

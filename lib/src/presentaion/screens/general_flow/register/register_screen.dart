@@ -1,10 +1,15 @@
+import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_arguement.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/register/register_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/register/register_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/register/register_state.dart';
 
 import 'package:oraaq/src/imports.dart';
 
 class ResgisterScreen extends StatefulWidget {
-  const ResgisterScreen({super.key});
+  // final RegisterArguement args;
+  const ResgisterScreen({
+    super.key,
+  });
 
   @override
   State<ResgisterScreen> createState() => _ResgisterScreenState();
@@ -12,6 +17,7 @@ class ResgisterScreen extends StatefulWidget {
 
 class _ResgisterScreenState extends State<ResgisterScreen> {
   final RegisterCubit _cubit = getIt.get<RegisterCubit>();
+  final UserType user = getIt.get<UserType>();
 
   final registerFormKey = GlobalKey<FormState>();
   TextEditingController nameTextController = TextEditingController(),
@@ -62,7 +68,8 @@ class _ResgisterScreenState extends State<ResgisterScreen> {
               variant: SnackbarVariantEnum.success,
               title: StringConstants.accountCreated,
             );
-            context.pushReplacementNamed(RouteConstants.otpRoute);
+            context.pushReplacementNamed(RouteConstants.otpRoute,
+                arguments: OtpArguement(user, state.user.email, 'register'));
 
             // if (state.user.name.isEmpty ||
             //     state.user.cnicNtn.isEmpty ||

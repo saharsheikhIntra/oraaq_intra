@@ -5,8 +5,11 @@ import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/data/local/local_auth_repository.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/change_password.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/update_customer_request_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/forget_password_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/set_new_password.dart';
 
 import 'package:oraaq/src/data/remote/api/api_request_dtos/merchant_flow/update_merchant_profile_request_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/forget_password_dto.dart';
 
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/generate_otp.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/verify_otp.dart';
@@ -116,6 +119,30 @@ class AuthenticationServices {
   Future<Either<Failure, String>> changePassword(
       ChangePasswordRequestDto dto) async {
     return await _apiAuthRepository.changePassword(dto);
+  }
+
+  //
+  //
+  // MARK: CHANGE_PASWORD
+  //
+  //
+  Future<Either<Failure, String>> setNewPassword(
+      SetNewPasswordRequestDto dto) async {
+    return await _apiAuthRepository.setNewPassword(dto);
+  }
+
+  //
+  //
+  // MARK: FORGET_PASSWORD
+  //
+  //
+  Future<Either<Failure, ForgetPasswordResponseDto>> forgetPassword(
+      ForgetPasswordRequestDto dto) async {
+    final result = await _apiAuthRepository.forgetPassword(dto);
+    return result.fold(
+      (l) => Left(l),
+      (r) => Right(r),
+    );
   }
 
   //

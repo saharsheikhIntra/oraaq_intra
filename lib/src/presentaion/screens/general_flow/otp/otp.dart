@@ -1,8 +1,11 @@
 import 'package:oraaq/src/imports.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/new_password/new_password_args.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_cubit.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
+  final OtpArguement arguement;
+  const OtpScreen({super.key, required this.arguement});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -13,13 +16,16 @@ class _OtpScreenState extends State<OtpScreen> {
   final ValueNotifier<int> enteredOtp = ValueNotifier<int>(0);
   final OtpCubit _cubit = getIt<OtpCubit>();
   String generatedOtp = '';
-  final UserType userType = getIt<UserType>();
+  String email = '';
+  // final UserType userType = getIt<UserType>();
 
   @override
   void initState() {
     super.initState();
+    // generatedOtp = widget.arguement.otp.toString();
+    email = widget.arguement.email;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _cubit.generateOtp();
+      _cubit.forgetPassword(email);
     });
   }
 
@@ -29,28 +35,50 @@ class _OtpScreenState extends State<OtpScreen> {
       create: (context) => _cubit,
       child: BlocConsumer<OtpCubit, OtpState>(
         listener: (context, state) {
-
-          if (state is OtpGenerated) {
+          if (state is ForgetPasswordSuccessState) {
+            DialogComponent.hideLoading(context);
+            generatedOtp = state.response.otp.toString();
+          }
+          if (state is ForgetPasswordErrorState) {
+            DialogComponent.hideLoading(context);
             Toast.show(
               context: context,
-              variant: SnackbarVariantEnum.success,
-              title: "OTP: ${state.otpResponse.otp}",
+              variant: SnackbarVariantEnum.warning,
+              title: state.error.message,
             );
-            generatedOtp = state.otpResponse.otp.toString();
           }
+          if (state is ForgetPasswordLoadingState) {
+            DialogComponent.showLoading(context);
+          }
+          // if (state is OtpGenerated) {
+          //   Toast.show(
+          //     context: context,
+          //     variant: SnackbarVariantEnum.success,
+          //     title: "OTP: ${state.otpResponse.otp}",
+          //   );
+          //   // generatedOtp = state.otpResponse.otp.toString();
+          // }
           if (state is OtpVerified) {
             Toast.show(
               context: context,
               variant: SnackbarVariantEnum.success,
-              title: state.message,
+              title: "OTP Verified",
             );
+            widget.arguement.routeName == 'register'
+                ? widget.arguement.selectedUserType == UserType.customer
+                    ? context.pushNamed(RouteConstants.customerEditProfileRoute)
+                    : context.pushNamed(RouteConstants.merchantEditProfileRoute)
+                : context.pushNamed(RouteConstants.newPasswordRoute,
+                    arguments: NewPasswordArgs(
+                        widget.arguement.selectedUserType,
+                        widget.arguement.email));
             // Navigator.pushReplacementNamed(context, '/nextScreen');
-            if(userType == UserType.customer){
-              context.pushNamed(RouteConstants.customerEditProfileRoute);
-            }else{
-              context
-                .pushReplacementNamed(RouteConstants.merchantEditProfileRoute);
-            }
+            // if(userType == UserType.customer){
+            //   context.pushNamed(RouteConstants.customerEditProfileRoute);
+            // }else{
+            //   context
+            //     .pushReplacementNamed(RouteConstants.merchantEditProfileRoute);
+            // }
           }
           if (state is OtpError) {
             Toast.show(
@@ -110,7 +138,7 @@ class _OtpScreenState extends State<OtpScreen> {
                               ),
                               16.verticalSpace,
                               Text(
-                                StringConstants.sampleEmail,
+                                widget.arguement.email,
                                 textAlign: TextAlign.center,
                                 style: TextStyleTheme
                                     .titleSmall //labelLarge not showing bold
@@ -143,10 +171,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                 size: CustomButtonSize.large,
                                 onPressed: () {
                                   isOtpValid.value
-                                      ? _cubit.verifyOtp(enteredOtp.value)
-                                      // ? context.pushNamed(
-                                      //     RouteConstants.newPasswordRoute,
-                                      //   )
+                                      ? _cubit.verifiedOtp()
                                       : Toast.show(
                                           context: context,
                                           variant: SnackbarVariantEnum.warning,
@@ -168,7 +193,8 @@ class _OtpScreenState extends State<OtpScreen> {
                                     8.horizontalSpace,
                                     ResendOtpWidget(
                                       duration: 20.seconds,
-                                      onResend: () => _cubit.generateOtp(),
+                                      onResend: () => _cubit.forgetPassword(
+                                          widget.arguement.email),
                                     ),
                                   ]),
                             ],
