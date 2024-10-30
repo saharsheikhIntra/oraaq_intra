@@ -12,12 +12,24 @@ final class OtpGenerated extends OtpState {
   OtpGenerated(this.otpResponse);
 }
 
-final class OtpVerified extends OtpState {
-  final String message;
-  OtpVerified(this.message);
-}
+final class OtpVerified extends OtpState {}
 
 final class OtpError extends OtpState {
   final Failure error;
   OtpError(this.error);
+}
+
+final class ForgetPasswordLoadingState extends OtpState {}
+
+final class ForgetPasswordSuccessState extends OtpState {
+  final ForgetPasswordResponseDto response;
+  //final String message;
+  ForgetPasswordSuccessState(
+    this.response,
+  );
+}
+
+final class ForgetPasswordErrorState extends OtpState {
+  final Failure error;
+  ForgetPasswordErrorState(this.error);
 }
