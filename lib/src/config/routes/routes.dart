@@ -6,6 +6,7 @@ import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/custom
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_profile/customer_profile_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_received_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_recieved_arguments.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_screen.dart';
@@ -40,7 +41,7 @@ class AppRoutes {
         _generateRoute(const WelcomeScreen(), settings),
       RouteConstants.pickLocationRoute => _generateRoute(
           PickLocationScreen(
-            args: settings.arguments as int,
+            args: settings.arguments as PickLocationScreenArgument,
           ),
           settings),
       RouteConstants.loginRoute => _generateRoute(

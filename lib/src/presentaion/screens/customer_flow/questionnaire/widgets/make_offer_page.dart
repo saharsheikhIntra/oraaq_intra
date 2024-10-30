@@ -14,7 +14,7 @@ import 'package:oraaq/src/presentaion/widgets/toast.dart';
 class MakeOfferPage extends StatefulWidget {
   final Function(int selectedOffer) onChanged;
   final List<QuestionModel> selectedServices;
-  final VoidCallback onContinue;
+  final dynamic onContinue;
   final VoidCallback onPrevious;
   const MakeOfferPage({
     super.key,
@@ -328,7 +328,9 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                         size: CustomButtonSize.small,
                         iconPosition: CustomButtonIconPosition.trailing,
                         icon: Symbols.arrow_forward_rounded,
-                        onPressed: widget.onContinue,
+                        onPressed: (){
+                          widget.onContinue(_dateTimeController.text,_standardCharges,_selectedOffer.value);
+                        },
                       ),
               ],
             )),

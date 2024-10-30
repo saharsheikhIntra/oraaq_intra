@@ -9,6 +9,7 @@ import 'package:oraaq/src/core/extensions/widget_extension.dart';
 import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
 import 'package:oraaq/src/injection_container.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_states.dart';
@@ -113,8 +114,18 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
                               child: PageView.builder(
                             controller: _pageController,
                             itemCount: _services.length + 1,
-                            itemBuilder: (context, index) =>
-                                index < _services.length
+                            itemBuilder: (context, index){
+                              List<QuestionModel> newList = _selectedOptions
+                                            .map((e) => QuestionModel(
+                                                id: e.serviceId,
+                                                name: e.shortTitle,
+                                                prompt: '',
+                                                level: -1,
+                                                isSelected: true,
+                                                questions: [],
+                                                fee: e.price.toInt()))
+                                            .toList();
+                              return index < _services.length
                                     ? QuestionsPage(
                                         service: _services[index],
                                         onSelect: (selected) {
@@ -143,19 +154,13 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
                                       )
                                     : MakeOfferPage(
                                         onChanged: (offer) => Logger().i(offer),
-                                        selectedServices: _selectedOptions
-                                            .map((e) => QuestionModel(
-                                                name: e.shortTitle,
-                                                prompt: '',
-                                                level: -1,
-                                                isSelected: true,
-                                                questions: [],
-                                                fee: e.price.toInt()))
-                                            .toList(),
+                                        selectedServices: newList,
                                         // selectedServices: const [],
-                                        onContinue: () => context.pushNamed(
-                                            arguments: widget.args.category.id,
-                                            RouteConstants.pickLocationRoute),
+                                        onContinue: (String datetimeSelected,int amount, int userOfferAmount){
+                                          context.pushNamed(
+                                            arguments: PickLocationScreenArgument(widget.args.category.id, newList,datetimeSelected,amount,userOfferAmount),
+                                            RouteConstants.pickLocationRoute);
+                                        },
                                         onPrevious: () {
                                           if (index != 0) {
                                             _currentPage.value = index;
@@ -164,7 +169,9 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
                                             duration: 600.milliseconds,
                                             curve: Curves.easeInOutCubic,
                                           );
-                                        }),
+                                        });
+                            }
+                                
                           )),
                         ])));
         }));

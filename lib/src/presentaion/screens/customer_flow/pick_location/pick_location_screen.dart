@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +15,9 @@ import 'package:oraaq/src/core/constants/asset_constants.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
+import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/injection_container.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_state.dart';
 import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
@@ -22,7 +26,7 @@ import 'package:oraaq/src/presentaion/widgets/sheets/sheet_component.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PickLocationScreen extends StatefulWidget {
-  final int args;
+  final PickLocationScreenArgument args;
   const PickLocationScreen({super.key, required this.args});
 
   @override
@@ -30,6 +34,11 @@ class PickLocationScreen extends StatefulWidget {
 }
 
 class _PickLocationScreenState extends State<PickLocationScreen> {
+
+  double selectedRadius = 0;
+
+  final UserEntity user = getIt.get<UserEntity>();
+
   final PickLocationCubit _cubit = getIt.get<PickLocationCubit>();
   late GoogleMapController _mapController;
 
@@ -48,6 +57,13 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
 
   @override
   void initState() {
+
+    log(widget.args.selectedDate);
+    log(user.email);
+    log(widget.args.selectedOffer.toString());
+    log(widget.args.userOfferAmount.toString());
+
+
     BitmapDescriptor.fromAssetImage(
       const ImageConfiguration(),
       AssetConstants.locationMarker,
@@ -296,7 +312,11 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     activeColor: ColorTheme.primary,
                     value: _searchRadius,
                     onChanged: (value) {
+                      selectedRadius = value;
                       _cubit.changeSearchRadius(value);
+                      setState(() {
+                        
+                      });
                     },
                   )),
               20.verticalSpace,

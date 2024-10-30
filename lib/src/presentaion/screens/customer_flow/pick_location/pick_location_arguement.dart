@@ -1,5 +1,12 @@
-class PickLocationScreenArgument {
-  final int category;
+import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
 
-  PickLocationScreenArgument(this.category);
+class PickLocationScreenArgument {
+  final int categoryid;
+  final List<QuestionModel> selectedServices;
+  final String  selectedDate; 
+  final int selectedOffer;
+  final int userOfferAmount;
+
+
+  PickLocationScreenArgument(this.categoryid,this.selectedServices,this.selectedDate,this.selectedOffer,this.userOfferAmount);
 }

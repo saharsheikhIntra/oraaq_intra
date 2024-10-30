@@ -20,26 +20,37 @@ class PickLocationCubit extends Cubit<PickLocationState> {
   search(LatLng center, double radius) async {
     List<LatLng> results = [];
 
-    /// GENERATING RANDOM RESULTS
-    final int resultsCount = (3 * radius).toInt();
-    for (int i = 0; i < resultsCount; i++) {
-      const double earthRadius = 6371.0;
-      final randomDistance = radius * math.Random().nextDouble();
-      final randomAngle = math.Random().nextDouble() * 2 * math.pi;
-      final double latitudeOffset =
-          randomDistance / earthRadius * (180 / math.pi);
-      final double longitudeOffset = randomDistance /
-          (earthRadius * math.cos(center.latitude * math.pi / 180)) *
-          (180 / math.pi);
-      final double newLatitude =
-          center.latitude + latitudeOffset * math.cos(randomAngle);
-      final double newLongitude =
-          center.longitude + longitudeOffset * math.sin(randomAngle);
-      results.add(LatLng(newLatitude, newLongitude));
-    }
+    // /// GENERATING RANDOM RESULTS
+    // final int resultsCount = (3 * radius).toInt();
+    // for (int i = 0; i < resultsCount; i++) {
+    //   const double earthRadius = 6371.0;
+    //   final randomDistance = radius * math.Random().nextDouble();
+    //   final randomAngle = math.Random().nextDouble() * 2 * math.pi;
+    //   final double latitudeOffset =
+    //       randomDistance / earthRadius * (180 / math.pi);
+    //   final double longitudeOffset = randomDistance /
+    //       (earthRadius * math.cos(center.latitude * math.pi / 180)) *
+    //       (180 / math.pi);
+    //   final double newLatitude =
+    //       center.latitude + latitudeOffset * math.cos(randomAngle);
+    //   final double newLongitude =
+    //       center.longitude + longitudeOffset * math.sin(randomAngle);
+    //   results.add(LatLng(newLatitude, newLongitude));
+    // }
 
+    final res =await _servicesService.getMerchantWithinRadius2(24, 67, 100, 2);
+    res.fold(
+      (failure) => emit(PickLocationStateError(failure)),
+      (merchants) {
+        final List<LatLng> merchantPositions = merchants
+            .map((merchant) => LatLng(merchant.latitude, merchant.longitude))
+            .toList();
+        results.addAll(merchantPositions);
+      },
+    );
+    emit(PickLocationStateMerchantsLoaded(results));
     await Future.delayed(1000.milliseconds);
-    emit(PickLocationStateSearchResults(results));
+    // emit(PickLocationStateSearchResults(results));
   }
 
   changePosition(LatLng latlng) async {
@@ -48,24 +59,40 @@ class PickLocationCubit extends Cubit<PickLocationState> {
 
   Future<void> searchMerchant(
       LatLng center, double radius, int categoryId) async {
-    // emit(PickLocationStateLoading());
+   // emit(PickLocationStateLoading());
 
-    final dto = GetMerchantWithinRadiusRequestDto(
-      latitude: center.latitude,
-      longitude: center.longitude,
-      radius: radius,
-      categoryId: categoryId,
-    );
+     List<LatLng> results = [];
 
-    final result = await _servicesService.getMerchantsWithinRadius(dto);
-    result.fold(
+    // /// GENERATING RANDOM RESULTS
+    // final int resultsCount = (3 * radius).toInt();
+    // for (int i = 0; i < resultsCount; i++) {
+    //   const double earthRadius = 6371.0;
+    //   final randomDistance = radius * math.Random().nextDouble();
+    //   final randomAngle = math.Random().nextDouble() * 2 * math.pi;
+    //   final double latitudeOffset =
+    //       randomDistance / earthRadius * (180 / math.pi);
+    //   final double longitudeOffset = randomDistance /
+    //       (earthRadius * math.cos(center.latitude * math.pi / 180)) *
+    //       (180 / math.pi);
+    //   final double newLatitude =
+    //       center.latitude + latitudeOffset * math.cos(randomAngle);
+    //   final double newLongitude =
+    //       center.longitude + longitudeOffset * math.sin(randomAngle);
+    //   results.add(LatLng(newLatitude, newLongitude));
+    // }
+
+    final res =await _servicesService.getMerchantWithinRadius2(24, 67, 100, 2);
+    res.fold(
       (failure) => emit(PickLocationStateError(failure)),
       (merchants) {
         final List<LatLng> merchantPositions = merchants
             .map((merchant) => LatLng(merchant.latitude, merchant.longitude))
             .toList();
-        emit(PickLocationStateMerchantsLoaded(merchantPositions));
+        results.addAll(merchantPositions);
       },
     );
+    // emit(PickLocationStateMerchantsLoaded(results));
+    emit(PickLocationStateSearchResults(results));
+    
   }
 }
