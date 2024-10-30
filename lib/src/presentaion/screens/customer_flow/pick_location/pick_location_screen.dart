@@ -15,6 +15,7 @@ import 'package:oraaq/src/core/constants/asset_constants.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
+import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/injection_container.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
@@ -69,13 +70,9 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
       AssetConstants.locationMarker,
     ).then((d) => customIcon = d);
 
-    WidgetsBinding.instance
-        .addPostFrameCallback((_){
-          _checkLocationService();
-
-          
-
-        } );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkLocationService();
+    });
 
     super.initState();
   }
@@ -96,6 +93,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                       radius: double radius
                     ):
                     _searchRadius = radius;
+
                     _setPosition(shouldSearch: true);
                     break;
                   case PickLocationStateChangePosition(latlng: LatLng latlng):
@@ -129,7 +127,21 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     ):
                     _isSearching = false;
                     _addMarkers(merchants);
+                    _searchedResults = merchants;
                     break;
+                  case OrderStateError(failure: Failure failure):
+                    DialogComponent.hideLoading(context);
+                    Toast.show(
+                        context: context,
+                        variant: SnackbarVariantEnum.warning,
+                        title: failure.message);
+                    break;
+                  case OrderStateSuccess(message: String message):
+                    DialogComponent.hideLoading(context);
+                    Toast.show(
+                        context: context,
+                        variant: SnackbarVariantEnum.warning,
+                        title: message);
                 }
               },
               builder: (context, state) {
@@ -327,7 +339,12 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     ? null
                     : () => SheetComponenet.show(context,
                         isScrollControlled: true,
-                        child: const RequestConfirmationSheet()),
+                        child: RequestConfirmationSheet(
+                          onConfirm: _cubit.generateOrder(customerId:user.id,categoryId:widget.args.categoryid,totalAmount:widget.args.selectedOffer.toDouble(),customerAmount: widget.args.userOfferAmount.toDouble(), selectedDateTime: DateTime.tryParse(widget.args.selectedDate)!,searchRadius: _searchRadius,selectedPosition: LatLng(double.parse(user.latitude), double.parse(user.longitude)),orderDetails: widget.args.selectedServices.map((e){
+                            Map<String,dynamic> newMap = {"service_id":e.id,"unit_price":e.fee};
+                            return newMap;
+                          }).toList() ),
+                        )),
               ),
               (16).verticalSpace,
             ],
