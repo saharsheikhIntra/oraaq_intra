@@ -1,4 +1,5 @@
 import 'package:oraaq/src/imports.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/forgot_password/forget_password_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_state.dart';
 
@@ -31,12 +32,14 @@ class _LoginScreenState extends State<LoginScreen> {
     emailFocusNode.dispose();
     passwordFocusNode.dispose();
     _isObscure.dispose();
+    _isValid.dispose();
 
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    print('FormKey created for ${loginFormKey.hashCode}');
     return BlocProvider(
       create: (context) => _cubit,
       child: BlocListener<LoginCubit, LoginState>(
@@ -59,7 +62,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     RouteConstants.merchantHomeScreenRoute);
               }
             } else if (type == UserType.customer) {
-              if (state.user.latitude.isEmpty  || state.user.longitude.isEmpty || state.user.latitude == "null"  || state.user.longitude == "null") {
+              if (state.user.latitude.isEmpty ||
+                  state.user.longitude.isEmpty ||
+                  state.user.latitude == "null" ||
+                  state.user.longitude == "null") {
                 context.pushReplacementNamed(
                     RouteConstants.customerEditProfileRoute);
               } else {
@@ -177,7 +183,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 alignment: Alignment.centerRight,
                                 child: TextButton(
                                   onPressed: () => context.pushNamed(
-                                      RouteConstants.forgetPasswordRoute),
+                                      RouteConstants.forgetPasswordRoute,
+                                      arguments: ForgetPasswordArguement(
+                                          widget.arguments.selectedUserType)),
                                   style: TextButton.styleFrom(
                                       foregroundColor: ColorTheme.primaryText),
                                   child: const Text(

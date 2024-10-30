@@ -57,7 +57,17 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
             if (state is CustomerHomeStateAcceptedJobs) {
               DialogComponent.hideLoading(context);
               acceptedJobs.value = state.acceptedJobs;
-              print(acceptedJobs.value);
+              // print(acceptedJobs.value);
+            }
+            if (state is CancelCustomerRequestSuccessState) {
+              DialogComponent.hideLoading(context);
+              _cubit.fetchAcceptedRequest();
+
+              Toast.show(
+                context: context,
+                variant: SnackbarVariantEnum.success,
+                title: state.message,
+              );
             }
           },
           builder: (context, state) {
@@ -146,7 +156,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                               child: OnGoingRequestCard(
                                                 userName: acceptedJobs
                                                     .value[index].serviceName,
-                                                duration: "4hr 30 mints",
+                                                duration: "9hr 30 mints",
                                                 date: DateTime.tryParse(
                                                         acceptedJobs
                                                             .value[index].date)!
@@ -168,41 +178,75 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                     SheetComponenet.show(
                                                   context,
                                                   isScrollControlled: true,
-                                                  child: const RequestSheet(),
+                                                  child: RequestSheet(
+                                                    onCancel: () => _cubit
+                                                        .cancelCustomerCreatedRequest(
+                                                            acceptedJobs
+                                                                .value[index]
+                                                                .requestId),
+                                                    name: acceptedJobs
+                                                        .value[index]
+                                                        .merchantName,
+                                                    email: acceptedJobs
+                                                        .value[index]
+                                                        .merchantEmail,
+                                                    phoneNumber: acceptedJobs
+                                                        .value[index]
+                                                        .merchantPhone,
+                                                    amount: acceptedJobs
+                                                        .value[index].amount,
+                                                    date: DateTime.tryParse(
+                                                            acceptedJobs
+                                                                .value[index]
+                                                                .date)!
+                                                        .formattedDate(),
+                                                    time: DateTime.tryParse(
+                                                            acceptedJobs
+                                                                .value[index]
+                                                                .date)!
+                                                        .to12HourFormat,
+                                                    distance: acceptedJobs
+                                                        .value[index].distance,
+                                                    serviceName: acceptedJobs
+                                                        .value[index]
+                                                        .serviceName,
+                                                    servicesList: acceptedJobs
+                                                        .value[index].services,
+                                                  ),
                                                 ),
                                               ))))
                               : const Center(
                                   child: Text('No Data'),
                                 );
                         },
-                        child: ListView.separated(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            padding: 16.horizontalPadding,
-                            separatorBuilder: (context, index) =>
-                                12.horizontalSpace,
-                            itemBuilder: (BuildContext context, int index) =>
-                                GestureDetector(
-                                    child: SizedBox(
-                                        height: 96,
-                                        width: 245,
-                                        child: OnGoingRequestCard(
-                                          userName: "Ali Hassan",
-                                          duration: "4hr 30 mints",
-                                          date: "21st May",
-                                          time: "6:00 am",
-                                          profileName: "Zain Hashim",
-                                          price: "10,000",
-                                          servicesList: const [],
-                                          variant: OngoingRequestCardVariant
-                                              .offerReceived,
-                                          onTap: () => SheetComponenet.show(
-                                            context,
-                                            isScrollControlled: true,
-                                            child: const RequestSheet(),
-                                          ),
-                                        )))),
+                        // child: ListView.separated(
+                        //     shrinkWrap: true,
+                        //     scrollDirection: Axis.horizontal,
+                        //     itemCount: 5,
+                        //     padding: 16.horizontalPadding,
+                        //     separatorBuilder: (context, index) =>
+                        //         12.horizontalSpace,
+                        //     itemBuilder: (BuildContext context, int index) =>
+                        //         GestureDetector(
+                        //             child: SizedBox(
+                        //                 height: 96,
+                        //                 width: 245,
+                        //                 child: OnGoingRequestCard(
+                        //                   userName: "Ali Hassan",
+                        //                   duration: "4hr 30 mints",
+                        //                   date: "21st May",
+                        //                   time: "6:00 am",
+                        //                   profileName: "Zain Hashim",
+                        //                   price: "10,000",
+                        //                   servicesList: const [],
+                        //                   variant: OngoingRequestCardVariant
+                        //                       .offerReceived,
+                        //                   onTap: () => SheetComponenet.show(
+                        //                     context,
+                        //                     isScrollControlled: true,
+                        //                     child: const RequestSheet(),
+                        //                   ),
+                        //                 )))),
                       )),
                   30.verticalSpace,
                   Text(

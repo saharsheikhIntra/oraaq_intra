@@ -10,11 +10,14 @@ import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questi
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/reuqest_history/request_history_screen.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/change_password/change_password_screen.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/forgot_password/forget_password_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/forgot_password/forgot_password.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_arguments.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_screen.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/new_password/new_password.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/new_password/new_password_args.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/register/register_screen.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/splash/splash_screen.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/welcome/welcome_screen.dart';
@@ -44,11 +47,21 @@ class AppRoutes {
           settings),
       RouteConstants.signupRoute =>
         _generateRoute(const ResgisterScreen(), settings),
-      RouteConstants.otpRoute => _generateRoute(const OtpScreen(), settings),
-      RouteConstants.forgetPasswordRoute =>
-        _generateRoute(const ForgotPasswordScreen(), settings),
-      RouteConstants.newPasswordRoute =>
-        _generateRoute(const SetNewPasswordScreen(), settings),
+      RouteConstants.otpRoute => _generateRoute(
+          OtpScreen(
+            arguement: settings.arguments as OtpArguement,
+          ),
+          settings),
+      RouteConstants.forgetPasswordRoute => _generateRoute(
+          ForgotPasswordScreen(
+            arg: settings.arguments as ForgetPasswordArguement,
+          ),
+          settings),
+      RouteConstants.newPasswordRoute => _generateRoute(
+          SetNewPasswordScreen(
+            arguement: settings.arguments as NewPasswordArgs,
+          ),
+          settings),
       RouteConstants.merchantEditProfileRoute =>
         _generateRoute(const EditProfileScreen(), settings),
       RouteConstants.merchantProfileRoute =>

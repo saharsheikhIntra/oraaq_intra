@@ -15,6 +15,8 @@ class ApiConstants {
   static const String generateOtp = "/ords/oraaq/api/GenerateOtp";
   static const String verifyOtp = "/ords/oraaq/api/verifyOTP";
   static const String changePassword = "/ords/oraaq/api/changePassword";
+  static const String forgetPassword = "/ords/oraaq/api/forgetPassword";
+  static const String setNewPassword = "/ords/oraaq/api/setNewPassword";
   //
   //MERCHANT FLOW
   static const String updateMerchantProfile =
@@ -52,7 +54,8 @@ class ApiConstants {
   static const String getAllNewRequest =
       '/ords/oraaq/api/getAllNewRequests?merchant_id=';
 
-  // static const String getAllNewRequest = '/ords/oraaq/api/GetInProgressWorkOrdersForMerchant?merchant_id=';
+  static const String cancelCustomerCreatedRequest =
+      '/ords/oraaq/api/cancel_request';
 
   static const String customerWorkOrders =
       "/ords/oraaq/api/customerWorkOrders?";
