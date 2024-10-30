@@ -54,7 +54,12 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
     ).then((d) => customIcon = d);
 
     WidgetsBinding.instance
-        .addPostFrameCallback((timeStamp) => _checkLocationService());
+        .addPostFrameCallback((_){
+          _checkLocationService();
+
+          
+
+        } );
 
     super.initState();
   }

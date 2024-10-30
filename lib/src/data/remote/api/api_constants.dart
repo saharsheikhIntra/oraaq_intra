@@ -66,4 +66,5 @@ class ApiConstants {
   static const String updateOfferAmount = '/ords/oraaq/api/update_offer_amount';
   static const String acceptRejectOffer = '/ords/oraaq/api/accept_or_reject_offer';
   static const String updateOfferRadius = '/ords/oraaq/api/updateRadius';
+  static const String getMerchantWithinRadius2 = '/ords/oraaq/api/getMerchantWithinRadius2?';
 }

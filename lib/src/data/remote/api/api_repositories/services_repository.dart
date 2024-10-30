@@ -11,6 +11,7 @@ import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/custom
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/fetch_offers_for_requests.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_all_bids.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_radius_respomse_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_within_radius2.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_services_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/base_response_dto.dart';
 
@@ -311,6 +312,30 @@ class ServicesRepository {
         ).message;
         log(responseDto.toString());
         return Right(responseDto);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: GET MERCHANT WITHIN RADIUS 2
+  //
+  //
+
+  Future<Either<Failure, List<GetMerchantWithinRadius2ResponseDto>>> getMerchantWithinRadius2
+  (double lat,double lng,int radius,int categoryid) async {
+    final result = await _datasource
+        .get('${ApiConstants.getMerchantWithinRadius2}latitude=$lat&longitude=$lng&radius=$radius&category_id=$categoryid');
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data is List
+              ? data.map((e) => GetMerchantWithinRadius2ResponseDto.fromMap(e)).toList()
+              : <GetMerchantWithinRadius2ResponseDto>[],
+        ).data;
+        return Right(responseDto!);
       },
     );
   }

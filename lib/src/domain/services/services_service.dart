@@ -7,6 +7,7 @@ import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/custom
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/fetch_offers_for_requests.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_all_bids.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_radius_respomse_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_within_radius2.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
 import 'package:oraaq/src/domain/entities/request_entity.dart';
 import 'package:oraaq/src/domain/entities/service_entity.dart';
@@ -293,6 +294,23 @@ class ServicesService {
   Future<Either<Failure, String>> acceptOrRejectOffer(
       Map<String,dynamic> obj) async {
     var result = await _servicesRepository.acceptOrRejectOffers(obj);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        return Right(r);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: GET MERCHANT WITHIN RADIUS 2
+  //
+  //
+
+  Future<Either<Failure, List<GetMerchantWithinRadius2ResponseDto>>> getMerchantWithinRadius2(
+      double lat,double lng,int radius,int categoryid) async {
+    var result = await _servicesRepository.getMerchantWithinRadius2(lat,lng,radius,categoryid);
     return result.fold(
       (l) => Left(l),
       (r) async {
