@@ -34,3 +34,13 @@ class PickLocationStateChangePosition extends PickLocationState {
 }
 
 class PickLocationStateRecenter extends PickLocationState {}
+
+class OrderStateError extends PickLocationState {
+  final Failure failure;
+  OrderStateError(this.failure);
+}
+
+class OrderStateSuccess extends PickLocationState {
+  final String message;
+  OrderStateSuccess(this.message);
+}

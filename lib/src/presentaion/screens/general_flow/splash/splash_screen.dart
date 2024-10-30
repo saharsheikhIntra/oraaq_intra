@@ -20,12 +20,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance
-        .addPostFrameCallback((timeStamp) => _cubit.animate());
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //   (timeStamp) =>
-    //       context.popAllNamed(RouteConstants.customerHomeScreenRoute),
-    // );
+    // WidgetsBinding.instance
+    //     .addPostFrameCallback((timeStamp) => _cubit.animate());
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) =>
+          context.popAllNamed(RouteConstants.customerHomeScreenRoute),
+    );
     super.initState();
   }
 

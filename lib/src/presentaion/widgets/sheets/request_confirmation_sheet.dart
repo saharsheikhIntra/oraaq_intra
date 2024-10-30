@@ -10,8 +10,10 @@ import '../../../config/themes/text_style_theme.dart';
 import '../sub_services_wrap_view.dart';
 
 class RequestConfirmationSheet extends StatefulWidget {
+  final VoidCallback onConfirm;
   const RequestConfirmationSheet({
     super.key,
+    required this.onConfirm,
   });
 
   @override
@@ -89,8 +91,10 @@ class _RequestConfirmationSheetState extends State<RequestConfirmationSheet> {
             width: double.infinity,
             type: CustomButtonType.primary,
             text: "Submit Request",
-            onPressed: () =>
-                context.pushNamed(RouteConstants.offeredReceivedScreenRoute),
+            onPressed: () {
+              widget.onConfirm();
+              context.pushNamed(RouteConstants.customerHomeScreenRoute);
+            },
           ),
         ),
         24.verticalSpace,

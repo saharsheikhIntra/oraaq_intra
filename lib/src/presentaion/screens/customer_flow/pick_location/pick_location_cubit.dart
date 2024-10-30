@@ -3,7 +3,9 @@ import 'dart:math' as math;
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/create_order_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/get_merchant_radius.dart';
+import 'package:oraaq/src/domain/entities/failure.dart';
 import 'package:oraaq/src/domain/services/services_service.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_state.dart';
 
@@ -67,5 +69,45 @@ class PickLocationCubit extends Cubit<PickLocationState> {
         emit(PickLocationStateMerchantsLoaded(merchantPositions));
       },
     );
+  }
+
+  void generateOrder({
+    required int customerId,
+    required int categoryId,
+    required double totalAmount,
+    required double customerAmount,
+    required DateTime selectedDateTime,
+    required double searchRadius,
+    required LatLng selectedPosition,
+    required List<Map<String, dynamic>> orderDetails,
+  }) async {
+    emit(PickLocationStateLoading());
+
+    try {
+      final generateOrderRequest = GenerateOrderRequestDto(
+        orderMaster: OrderMasterRequestDto(
+          customerId: customerId,
+          orderRequiredDate: selectedDateTime.toString(),
+          categoryId: categoryId,
+          totalAmount: totalAmount,
+          customerAmount: customerAmount,
+          radius: searchRadius,
+        ),
+        orderDetail: orderDetails
+            .map((detail) => OrderDetailRequestDto(
+                  serviceId: detail['service_id'],
+                  unitPrice: detail['unit_price'],
+                ))
+            .toList(),
+      );
+
+      final result = await _servicesService.generateOrder(generateOrderRequest);
+      result.fold(
+        (failure) => emit(OrderStateError(failure)),
+        (message) => emit(OrderStateSuccess(message)),
+      );
+    } catch (error) {
+      emit(OrderStateError(Failure("Failed to generate order: $error")));
+    }
   }
 }

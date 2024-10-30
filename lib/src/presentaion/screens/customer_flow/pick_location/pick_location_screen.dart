@@ -13,6 +13,7 @@ import 'package:oraaq/src/core/constants/asset_constants.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
+import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/injection_container.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_state.dart';
@@ -53,13 +54,9 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
       AssetConstants.locationMarker,
     ).then((d) => customIcon = d);
 
-    WidgetsBinding.instance
-        .addPostFrameCallback((_){
-          _checkLocationService();
-
-          
-
-        } );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkLocationService();
+    });
 
     super.initState();
   }
@@ -114,6 +111,19 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     _isSearching = false;
                     _addMarkers(merchants);
                     break;
+                  case OrderStateError(failure: Failure failure):
+                    DialogComponent.hideLoading(context);
+                    Toast.show(
+                        context: context,
+                        variant: SnackbarVariantEnum.warning,
+                        title: failure.message);
+                    break;
+                  case OrderStateSuccess(message: String message):
+                    DialogComponent.hideLoading(context);
+                    Toast.show(
+                        context: context,
+                        variant: SnackbarVariantEnum.warning,
+                        title: message);
                 }
               },
               builder: (context, state) {
@@ -307,7 +317,9 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     ? null
                     : () => SheetComponenet.show(context,
                         isScrollControlled: true,
-                        child: const RequestConfirmationSheet()),
+                        child: RequestConfirmationSheet(
+                          onConfirm: _cubit.generateOrder(),
+                        )),
               ),
               (16).verticalSpace,
             ],
