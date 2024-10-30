@@ -267,4 +267,21 @@ class ServicesService {
     );
   }
 
+  //
+  //
+  // MARK: ACCEPT OR REJCT OFFER
+  //
+  //
+
+  Future<Either<Failure, String>> acceptOrRejectOffer(
+      Map<String,dynamic> obj) async {
+    var result = await _servicesRepository.acceptOrRejectOffers(obj);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        return Right(r);
+      },
+    );
+  }
+
 }

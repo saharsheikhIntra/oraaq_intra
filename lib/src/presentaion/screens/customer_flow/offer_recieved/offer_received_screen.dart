@@ -1,17 +1,20 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'packagter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:oraaq/src/config/themes/text_style_theme.dart';
 import 'package:oraaq/src/core/extensions/datetime_extensions.dart';
+import 'package:oraaq/src/data/remote/api/api_constants.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/fetch_offers_for_requests.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/injection_container.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_recieved_arguments.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offers_recieved_cubit.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/reuqest_history/request_history_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_home/merchant_home_screen.dart';
 import 'package:oraaq/src/presentaion/widgets/merchant_offer_card.dart';
 import 'package:oraaq/src/presentaion/widgets/sheets/change_offer_sheet.dart';
@@ -32,6 +35,7 @@ class OfferReceivedScreen extends StatefulWidget {
 
 class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
   final OffersRecievedCubit _cubit = getIt<OffersRecievedCubit>();
+  final RequestHistoryCubit _requestHistoryCubit = getIt<RequestHistoryCubit>();
 
   @override
   void initState() {
@@ -39,7 +43,7 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       log('offer recived init state runinng');
-      _cubit.fetchOffersForRequest(widget.args.customerNewRequest.requestId);
+      _cubit.fetchOffersForRequest(widget.args.customerNewRequest.value.requestId);
     });
   }
 
@@ -48,9 +52,9 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CustomerNewRequestDto currentRequest = widget.args.customerNewRequest;
+    ValueNotifier<CustomerNewRequestDto> currentRequest = widget.args.customerNewRequest;
     // log('offer recieved screen: ${currentRequest!.services}');
-    log('offer recieved screen: ${currentRequest.services}');
+    log('offer recieved screen: ${currentRequest.value.services}');
 
     return Scaffold(
       appBar: AppBar(
@@ -58,12 +62,16 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
         title: const Text(
           StringConstants.offersReceived,
         ),
+        leading: InkWell(onTap: ()async{
+          context.pop();
+          context.pushReplacementNamed(RouteConstants.requestHistoryScreenRoute);
+        },child: Icon(Icons.arrow_back)),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: Center(
               child: Text(
-                '${currentRequest!.duration}',
+                currentRequest.value.duration,
                 style:
                     TextStyleTheme.labelLarge.copyWith(color: ColorTheme.error),
               ),
@@ -71,139 +79,188 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
           ),
         ],
       ),
-      body: BlocProvider(
-        create: (context) => _cubit,
-        child: BlocListener<OffersRecievedCubit, OffersRecievedState>(
-          listener: (context, state) {
-            // TODO: implement listener
-            if (state is OffersRecievedLoading) {
-              DialogComponent.showLoading(context);
-            }
-            if (state is OffersRecievedError) {
-              DialogComponent.hideLoading(context);
-              log('error: ${state.error.message}');
-            }
-            if (state is OffersRecievedLoaded) {
-              DialogComponent.hideLoading(context);
-              log('loaded: ${state.bids}');
-              bids.value = state.bids;
-
-            }
-          },
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Column(
-                    children: [
-                      12.verticalSpace,
-                      Row(
+      body: ValueListenableBuilder(
+        valueListenable: currentRequest,
+        builder: (context,value,child) {
+          return BlocProvider(
+            create: (context) => _cubit,
+            child: BlocListener<OffersRecievedCubit, OffersRecievedState>(
+              listener: (context, state) {
+                // TODO: implement listener
+                if (state is OffersRecievedLoading) {
+                  DialogComponent.showLoading(context);
+                }
+                if (state is OffersRecievedError) {
+                  DialogComponent.hideLoading(context);
+                  log('error: ${state.error.message}');
+                  Toast.show(context: context, variant: SnackbarVariantEnum.warning, title: state.error.message);
+                }
+                if (state is OffersRecievedLoaded) {
+                  DialogComponent.hideLoading(context);
+                  log('loaded: ${state.bids}');
+                  bids.value = state.bids;
+          
+                }
+                if(state is OffersAmountUpdated){
+                  // DialogComponent.hideLoading(context);
+                  // context.pop();
+                  // context.pushReplacementNamed(RouteConstants.requestHistoryScreenRoute);
+                  log('updated: ${state.message}');
+                  Toast.show(context: context, variant: SnackbarVariantEnum.success, title: state.message);
+                }
+                if(state is OfferAccepted){
+                  // DialogComponent.hideLoading(context);
+                  // context.pop();
+                  // context.pushReplacementNamed(RouteConstants.requestHistoryScreenRoute);
+                  log('updated: ${state.message}');
+                  context.pushAndRemoveUntil(CustomerHomeScreen());
+                  Toast.show(context: context, variant: SnackbarVariantEnum.success, title: state.message);
+                }
+                if(state is OfferRejected){
+                  // DialogComponent.hideLoading(context);
+                  // context.pop();
+                  // context.pushReplacementNamed(RouteConstants.requestHistoryScreenRoute);
+                  log('updated: ${state.failure.message}');
+                  context.pushAndRemoveUntil(CustomerHomeScreen());
+                  Toast.show(context: context, variant: SnackbarVariantEnum.warning, title: state.failure.message);
+                }
+              }, 
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Column(
                         children: [
-                          Text(
-                            StringConstants.saloon,
-                            style: TextStyleTheme.displaySmall
-                                .copyWith(color: ColorTheme.secondaryText),
-                          ),
-                          const Spacer(),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                          12.verticalSpace,
+                          Row(
                             children: [
-                              _buildTime(
-                                Symbols.calendar_month_rounded,
-                                DateTime.tryParse(currentRequest.date)!
-                                    .formattedDate(),
+                              Text(
+                                StringConstants.saloon,
+                                style: TextStyleTheme.displaySmall
+                                    .copyWith(color: ColorTheme.secondaryText),
                               ),
-                              6.verticalSpace,
-                              _buildTime(
-                                  Symbols.alarm_rounded,
-                                  DateTime.tryParse(currentRequest.date)!
-                                      .to12HourFormat),
+                              const Spacer(),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  _buildTime(
+                                    Symbols.calendar_month_rounded,
+                                    DateTime.tryParse(value.date)!
+                                        .formattedDate(),
+                                  ),
+                                  6.verticalSpace,
+                                  _buildTime(
+                                      Symbols.alarm_rounded,
+                                      DateTime.tryParse(value.date)!
+                                          .to12HourFormat),
+                                ],
+                              ),
                             ],
                           ),
+                          28.verticalSpace,
                         ],
                       ),
-                      28.verticalSpace,
-                    ],
-                  ),
-                ),
-                SubServicesChipWrapView(
-                  servicesList: currentRequest.services,
-                  variant:
-                      SubServicesChipWrapViewVariant.forOfferReceivedScreen,
-                ),
-                20.verticalSpace,
-                _buildDetails("You Offered", currentRequest.amount, () {
-                  SheetComponenet.show(context,
-                      child: ChangeOfferSheet(
-                        defaultValue: int.parse(currentRequest.amount),
-                        variant: ChangeOfferSheetVariant.price,
-                        onTap: (int value)async {
-                          log(value.toString());
-                          log('update amount');
-                          Map<String,dynamic> data = {
-                            'request_id': currentRequest.requestId,
-                            'new_offer_amount': value,
-                          };
-                          String? messsage = await _cubit.updateOfferAmount(data);
-                          log(messsage.toString());
-                        
-                          context.pop();
-                        },
-                      ));
-                }, isRadius: false),
-                _buildDetails("Search Radius", currentRequest.radius, () {
-                  SheetComponenet.show(context,
-                      child: ChangeOfferSheet(
-                        defaultValue: 50,
-                        variant: ChangeOfferSheetVariant.distance,
-                        onTap: (){
-                          log('update radius');
-                        },
-                      ));
-                }, isRadius: true),
-                16.verticalSpace,
-                SizedBox(
-                  height: 412,
-                  child: currentRequest.offersReceived == 0
-                      ? const Center(
-                          child: ToastMessageCard(
-                            heading: StringConstants.waitingMerchant,
-                            message: StringConstants.waitingToastDetail,
+                    ),
+                    SubServicesChipWrapView(
+                      servicesList: currentRequest.value.services,
+                      variant:
+                          SubServicesChipWrapViewVariant.forOfferReceivedScreen,
+                    ),
+                    20.verticalSpace,
+                    _buildDetails("You Offered", value.amount, () {
+                      SheetComponenet.show(context,
+                          child: ChangeOfferSheet(
+                            defaultValue: int.parse(value.amount),
+                            variant: ChangeOfferSheetVariant.price,
+                            onTap: (int val)async {
+                              log(val.toString());
+                              log('update amount');
+                              value.amount = val.toString();
+                              Map<String,dynamic> data = {
+                                'request_id': value.requestId,
+                                'new_offer_amount': val,
+                              };
+                              String? messsage = await _cubit.updateOfferAmount(data);
+                              // log('last message: ${messsage.toString()}');
+                              context.pop();
+                              setState(() {
+                              });
+                              
+                            },
+                          ));
+                    }, isRadius: false),
+                    _buildDetails("Search Radius", currentRequest.value.radius, () {
+                      SheetComponenet.show(context,
+                          child: ChangeOfferSheet(
+                            defaultValue: 50,
+                            variant: ChangeOfferSheetVariant.distance,
+                            onTap: (){
+                              log('update radius');
+                            },
+                          ));
+                    }, isRadius: true),
+                    16.verticalSpace,
+                    SizedBox(
+                      height: 412,
+                      child: currentRequest.value.offersReceived == 0
+                          ? const Center(
+                              child: ToastMessageCard(
+                                heading: StringConstants.waitingMerchant,
+                                message: StringConstants.waitingToastDetail,
+                              ),
+                            )
+                          : ValueListenableBuilder(
+                            valueListenable: bids,
+                            builder: (context,value,child) {
+                              return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: value.length,
+                                  itemBuilder: (BuildContext context, int index){
+                                    FetchOffersForRequestDto bid = value[index];
+                                    return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 12.0),
+                                    child: MerchantOfferCard(
+                                      userName: bid.merchantName,
+                                      distance: bid.distance,
+                                      phoneNo: "",
+                                      email: bid.merchantEmail,
+                                      price: bid.offerAmount.toString(),
+                                      onAccept: () async{
+                                        Map<String,dynamic> data = {
+                                          'offer_id': bid.offerId,
+                                          'bid_status': 2
+                                        };
+                                        await _cubit.acceptOrRejectOffer(data);
+                                      },
+                                      onReject: () async{
+                                        Map<String,dynamic> data = {
+                                          'offer_id': bid.offerId,
+                                          'bid_status': 3
+                                        };
+                                        await _cubit.acceptOrRejectOffer(data);
+                                      },
+                                      onDistanceTap: () {
+                                        LauncherUtil.openMap(
+                                  bid.merchantLatitude ?? 25.3960,
+                                  bid.merchantLongitude ?? 68.3578,
+                                );
+                                      },
+                                    ),
+                                  );
+                                  },
+                                );
+                            }
                           ),
-                        )
-                      : ValueListenableBuilder(
-                        valueListenable: bids,
-                        builder: (context,value,child) {
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: value.length,
-                              itemBuilder: (BuildContext context, int index){
-                                FetchOffersForRequestDto bid = value[index];
-                                return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 12.0),
-                                child: MerchantOfferCard(
-                                  userName: bid.merchantName,
-                                  distance: bid.distance,
-                                  phoneNo: "",
-                                  email: bid.merchantEmail,
-                                  price: bid.offerAmount.toString(),
-                                  onAccept: () {},
-                                  onReject: () {},
-                                  onDistanceTap: () {},
-                                ),
-                              );
-                              },
-                            );
-                        }
-                      ),
+                    ),
+                    30.verticalSpace,
+                  ],
                 ),
-                30.verticalSpace,
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        }
       ),
     );
   }

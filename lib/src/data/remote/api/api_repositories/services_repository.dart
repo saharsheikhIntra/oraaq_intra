@@ -250,7 +250,7 @@ class ServicesRepository {
   (
       Map<String,dynamic> obj) async {
     final result = await _datasource
-        .put("${ApiConstants.updateOfferAmount}",data: obj);
+        .put(ApiConstants.updateOfferAmount,data: obj);
     return result.fold(
       (l) => Left(l),
       (r) {
@@ -261,6 +261,31 @@ class ServicesRepository {
           // data is List
           //     ? data.map((e) => FetchOffersForRequestDto.fromMap(e)).toList()
           //     : <FetchOffersForRequestDto>[],
+        ).message;
+        log(responseDto.toString());
+        return Right(responseDto);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: ACCEPT OR REJECT OFFERS
+  //
+  //
+
+  Future<Either<Failure, String>> acceptOrRejectOffers
+  (
+      Map<String,dynamic> obj) async {
+    final result = await _datasource
+        .put(ApiConstants.acceptRejectOffer,data: obj);
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data
+          ,
+          (data) => data
         ).message;
         log(responseDto.toString());
         return Right(responseDto);

@@ -18,3 +18,21 @@ final class OffersRecievedError extends OffersRecievedState {
   OffersRecievedError(this.error);
 }
 
+final class OffersAmountUpdated extends OffersRecievedState {
+  final String message;
+  OffersAmountUpdated(this.message);
+}
+final class OffersAmountUpdatingError extends OffersRecievedState {
+  final Failure failure;
+  OffersAmountUpdatingError(this.failure);
+}
+
+final class OfferAccepted extends OffersRecievedState {
+  final String message;
+  OfferAccepted(this.message);
+}
+final class OfferRejected extends OffersRecievedState {
+  final Failure failure;
+  OfferRejected(this.failure);
+}
+

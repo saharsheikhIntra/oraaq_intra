@@ -40,7 +40,8 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
       cron.schedule(
         Schedule(minutes: 1),
         () {
-          newRequestCustomerWorkOrderNotifier.value = _cubit.fetchOnlyNewRequests() as List<CustomerNewRequestDto>;
+            log('run cron');
+           _cubit.fetchNewRequests();
         },
       );
     });
@@ -93,19 +94,15 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                       state.cancelledOrders;
                   DialogComponent.hideLoading(context);
                 }
-                // if(state is NewRequestWorkOrdersLoaded){
-                //   newRequestCustomerWorkOrderNotifier.value = state.newRequestWorkOrdersLoaded;
-                // }
-                // if(state is CompletedRequestWorkOrdersLoaded){
-                //   completedCustomerWorkOrderNotifier.value = state.completedOrders;
-                // }
-                // if(state is CancelledRequestWorkOrdersLoaded){
-                //   cancelledCustomerWorkOrderNotifier.value = state.cancelledOrders;
-                // }
+
                 if (state is CustomerHomeStateAcceptedJobs) {
-                  DialogComponent.hideLoading(context);
+                  // DialogComponent.hideLoading(context);
                   acceptedJobs.value = state.acceptedJobs;
-                  // print(acceptedJobs.value);
+
+                }
+                if(state is NewRequestWorkOrdersLoaded){
+                  DialogComponent.hideLoading(context);
+                  newRequestCustomerWorkOrderNotifier.value = state.newRequestWorkOrdersLoaded;
                 }
                 if (state is CancelCustomerRequestSuccessState) {
                   DialogComponent.hideLoading(context);
@@ -255,27 +252,29 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                           12.verticalSpace,
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        CustomerNewRequestDto currentRequest =
-                                            state.newRequestWorkOrders[index];
+                                        // CustomerNewRequestDto currentRequest =
+                                        //     value[index];
+                                        ValueNotifier<CustomerNewRequestDto> currentRequest =
+                                            ValueNotifier(value[index]);
                                         return Padding(
                                           padding:
                                               const EdgeInsets.only(right: 12.0),
                                           child: OnGoingRequestCard(
-                                            userName: currentRequest.category,
-                                            duration: currentRequest.duration,
+                                            userName: currentRequest.value.category,
+                                            duration: currentRequest.value.duration,
                                             date: DateTime.tryParse(
-                                                    currentRequest.date)!
+                                                    currentRequest.value.date)!
                                                 .formattedDate(),
                                             time: DateTime.tryParse(
-                                                    currentRequest.date)!
+                                                    currentRequest.value.date)!
                                                 .to12HourFormat,
                                             profileName: "Zain Hashim",
-                                            price: currentRequest.amount.toString(),
-                                            servicesList: currentRequest.services,
+                                            price: currentRequest.value.amount.toString(),
+                                            servicesList: currentRequest.value.services,
                                             variant:
                                                 OngoingRequestCardVariant.waiting,
                                             onTap: () {
-                                              log("services list: ${currentRequest.services.toString()}");
+                                              log("services list: ${currentRequest.value.services.toString()}");
                                               context.pushNamed(
                                               RouteConstants
                                                   .offeredReceivedScreenRoute,

@@ -17,17 +17,23 @@ class OffersRecievedCubit extends Cubit<OffersRecievedState> {
   updateOfferAmount(Map<String,dynamic> obj)async {
     // emit(OffersRecievedLoading());
     final result = await _servicesRepository.updateOfferAmount(obj);
-    log(result.toString());
+    log('ON CUBIT: ${result.toString()}');
     result.fold((l) {
-      return l.message;
+      emit(OffersAmountUpdatingError(l));
     }, (r) {
-      return r;
-
+      emit(OffersAmountUpdated(r));
     },);
-    // result.fold(
-    //   (l) => emit(OffersRecievedError(l)),
-    //   (r) => emit(OffersRecievedLoaded(r)),
-    // );
+  }
+
+  acceptOrRejectOffer(Map<String,dynamic> obj)async {
+    // emit(OffersRecievedLoading());
+    final result = await _servicesRepository.acceptOrRejectOffer(obj);
+    log('ON CUBIT aro: ${result.toString()}');
+    result.fold((l) {
+      emit(OfferRejected(l));
+    }, (r) {
+      emit(OfferAccepted(r));
+    },);
   }
 
   Future<void> fetchOffersForRequest(int requestId) async {

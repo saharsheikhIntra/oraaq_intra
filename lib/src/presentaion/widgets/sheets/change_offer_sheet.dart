@@ -146,15 +146,24 @@ class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
 
   void _increment() {
     // setState(() {
-      _value.value++;
+
+      if(widget.variant==ChangeOfferSheetVariant.price){
+        _value.value = _value.value+100;
+      }else{
+        _value.value = _value.value+5;
+      }
+
     // });
   }
 
   void _decrement() {
-    if (widget.defaultValue > 0) {
-      // setState(() {
-        _value.value--;
-      // });
+    
+    if(_value.value>0){
+      if(widget.variant==ChangeOfferSheetVariant.price){
+        _value.value = _value.value-100;
+    }else{
+        _value.value = _value.value-5;
+    }
     }
   }
 }

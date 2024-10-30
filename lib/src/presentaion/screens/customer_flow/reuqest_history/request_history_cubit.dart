@@ -17,7 +17,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
 
   // UserEntity user = getIt.get<UserEntity>();
 
-   Future<List<CustomerNewRequestDto>> fetchOnlyNewRequests() async {
+   Future<List<CustomerNewRequestDto>> fetchOnlyNewRequests() async { 
     final newRequestResult =
         await _servicesRepository.getCustomerNewRequests(1);
     if (
@@ -29,15 +29,26 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
     } else {
       final newOrders = newRequestResult.getOrElse(() => []);
       return newOrders;
-      // emit(RequestHistoryScreenLoaded(
-      //   completedOrders: completedOrders,
-      //   cancelledOrders: cancelledOrders,
-      //   newRequestWorkOrders: newOrders,
-      // ));
-      // // emit(NewRequestWorkOrdersLoaded(newOrders));
-      // // emit(CompletedRequestWorkOrdersLoaded(completedOrders));
-      // // emit(CancelledRequestWorkOrdersLoaded(cancelledOrders));
+
     }
+  }
+
+    //
+// MARK: Fetch only new requests
+//
+  Future<void> fetchNewRequests() async {
+    emit(RequestHistoryScreenLoading());
+
+    final result = await _servicesRepository.getCustomerNewRequests(250);
+
+    result.fold(
+      (l) {
+        emit(RequestHistoryScreenError(l));
+      },
+      (r) {
+        emit(NewRequestWorkOrdersLoaded(r));
+      },
+    );
   }
 
   Future<void> fetchWorkOrders() async {
@@ -75,7 +86,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
 // MARK: ACCEPTED REQUESTS
 //
   Future<void> fetchAcceptedRequest() async {
-    emit(RequestHistoryScreenLoading());
+    // emit(RequestHistoryScreenLoading());
 
     final result = await _servicesRepository.getAcceptedRequests(250);
 
