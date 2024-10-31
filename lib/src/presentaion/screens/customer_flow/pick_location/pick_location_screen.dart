@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +15,11 @@ import 'package:oraaq/src/core/constants/asset_constants.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
+import 'package:oraaq/src/imports.dart';
+import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/injection_container.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_screen.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_state.dart';
 import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
@@ -22,7 +28,7 @@ import 'package:oraaq/src/presentaion/widgets/sheets/sheet_component.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PickLocationScreen extends StatefulWidget {
-  final int args;
+  final PickLocationScreenArgument args;
   const PickLocationScreen({super.key, required this.args});
 
   @override
@@ -30,6 +36,10 @@ class PickLocationScreen extends StatefulWidget {
 }
 
 class _PickLocationScreenState extends State<PickLocationScreen> {
+  double selectedRadius = 0;
+
+  final UserEntity user = getIt.get<UserEntity>();
+
   final PickLocationCubit _cubit = getIt.get<PickLocationCubit>();
   late GoogleMapController _mapController;
 
@@ -48,13 +58,19 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
 
   @override
   void initState() {
+    log(widget.args.selectedDate);
+    log(user.email);
+    log(widget.args.selectedOffer.toString());
+    log(widget.args.userOfferAmount.toString());
+
     BitmapDescriptor.fromAssetImage(
       const ImageConfiguration(),
       AssetConstants.locationMarker,
     ).then((d) => customIcon = d);
 
-    WidgetsBinding.instance
-        .addPostFrameCallback((timeStamp) => _checkLocationService());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkLocationService();
+    });
 
     super.initState();
   }
@@ -75,6 +91,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                       radius: double radius
                     ):
                     _searchRadius = radius;
+
                     _setPosition(shouldSearch: true);
                     break;
                   case PickLocationStateChangePosition(latlng: LatLng latlng):
@@ -108,7 +125,22 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     ):
                     _isSearching = false;
                     _addMarkers(merchants);
+                    _searchedResults = merchants;
                     break;
+                  case OrderStateError(failure: Failure failure):
+                    DialogComponent.hideLoading(context);
+                    Toast.show(
+                        context: context,
+                        variant: SnackbarVariantEnum.warning,
+                        title: failure.message);
+                    break;
+                  case OrderStateSuccess(message: String message):
+                    DialogComponent.hideLoading(context);
+                    context.pushAndRemoveUntil(const CustomerHomeScreen());
+                    Toast.show(
+                        context: context,
+                        variant: SnackbarVariantEnum.success,
+                        title: message);
                 }
               },
               builder: (context, state) {
@@ -291,7 +323,9 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     activeColor: ColorTheme.primary,
                     value: _searchRadius,
                     onChanged: (value) {
+                      selectedRadius = value;
                       _cubit.changeSearchRadius(value);
+                      setState(() {});
                     },
                   )),
               20.verticalSpace,
@@ -302,7 +336,38 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     ? null
                     : () => SheetComponenet.show(context,
                         isScrollControlled: true,
-                        child: const RequestConfirmationSheet()),
+                        child: RequestConfirmationSheet(
+                          onConfirm: () {
+                            _cubit.generateOrder(
+                                customerId: user.id,
+                                categoryId: widget.args.categoryid,
+                                totalAmount:
+                                    widget.args.selectedOffer.toDouble(),
+                                customerAmount:
+                                    widget.args.userOfferAmount.toDouble(),
+                                selectedDateTime: DateTime.parse(
+                                    widget.args.selectedDate.split('.').first),
+                                searchRadius: _searchRadius,
+                                selectedPosition: LatLng(
+                                    double.parse(user.latitude),
+                                    double.parse(user.longitude)),
+                                orderDetails:
+                                    widget.args.selectedServices.map((e) {
+                                  Map<String, dynamic> newMap = {
+                                    "service_id": e.id,
+                                    "unit_price": e.fee
+                                  };
+                                  return newMap;
+                                }).toList());
+                          },
+                          address: '${user.latitude}, ${user.longitude}',
+                          offeredAmount: widget.args.userOfferAmount.toString(),
+                          serviceType: '${widget.args.categoryid}',
+                          datetime: widget.args.selectedDate,
+                          services: widget.args.selectedServices.map((e) {
+                            return e.name;
+                          }).toList(),
+                        )),
               ),
               (16).verticalSpace,
             ],

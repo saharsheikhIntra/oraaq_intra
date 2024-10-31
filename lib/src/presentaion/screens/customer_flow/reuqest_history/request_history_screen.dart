@@ -4,6 +4,7 @@ import 'package:oraaq/src/core/extensions/widget_extension.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/imports.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_recieved_arguments.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/reuqest_history/request_history_cubit.dart';
 
 import '../../../widgets/ongoing_request_card.dart';
@@ -39,7 +40,8 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
       cron.schedule(
         Schedule(minutes: 1),
         () {
-          _cubit.fetchWorkOrders();
+            log('run cron');
+           _cubit.fetchNewRequests();
         },
       );
     });
@@ -92,19 +94,15 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                       state.cancelledOrders;
                   DialogComponent.hideLoading(context);
                 }
-                // if(state is NewRequestWorkOrdersLoaded){
-                //   newRequestCustomerWorkOrderNotifier.value = state.newRequestWorkOrdersLoaded;
-                // }
-                // if(state is CompletedRequestWorkOrdersLoaded){
-                //   completedCustomerWorkOrderNotifier.value = state.completedOrders;
-                // }
-                // if(state is CancelledRequestWorkOrdersLoaded){
-                //   cancelledCustomerWorkOrderNotifier.value = state.cancelledOrders;
-                // }
+
                 if (state is CustomerHomeStateAcceptedJobs) {
-                  DialogComponent.hideLoading(context);
+                  // DialogComponent.hideLoading(context);
                   acceptedJobs.value = state.acceptedJobs;
-                  // print(acceptedJobs.value);
+
+                }
+                if(state is NewRequestWorkOrdersLoaded){
+                  DialogComponent.hideLoading(context);
+                  newRequestCustomerWorkOrderNotifier.value = state.newRequestWorkOrdersLoaded;
                 }
                 if (state is CancelCustomerRequestSuccessState) {
                   DialogComponent.hideLoading(context);
@@ -243,52 +241,54 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                           ).wrapInPadding(16.horizontalPadding),
                           12.verticalSpace,
                           ValueListenableBuilder(
-                              valueListenable:
-                                  newRequestCustomerWorkOrderNotifier,
-                              builder: (context, value, child) {
-                                return value.isNotEmpty
-                                    ? ListView.separated(
-                                        shrinkWrap: true,
-                                        itemCount: value.length,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        padding: 16.horizontalPadding,
-                                        separatorBuilder: (context, index) =>
-                                            12.verticalSpace,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          CustomerNewRequestDto currentRequest =
-                                              state.newRequestWorkOrders[index];
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 12.0),
-                                            child: OnGoingRequestCard(
-                                              userName: currentRequest.category,
-                                              duration: currentRequest.duration,
-                                              date: DateTime.tryParse(
-                                                      currentRequest.date)!
-                                                  .formattedDate(),
-                                              time: DateTime.tryParse(
-                                                      currentRequest.date)!
-                                                  .to12HourFormat,
-                                              profileName: "Zain Hashim",
-                                              price: currentRequest.amount
-                                                  .toString(),
-                                              servicesList:
-                                                  currentRequest.services,
-                                              variant: OngoingRequestCardVariant
-                                                  .waiting,
-                                              onTap: () => context.pushNamed(
-                                                RouteConstants
-                                                    .offeredReceivedScreenRoute,
-                                              ),
-                                            ),
-                                          );
-                                        })
-                                    : const Center(
-                                        child: Center(child: Text('No Data')),
-                                      );
-                              })
+                            valueListenable: newRequestCustomerWorkOrderNotifier,
+                            builder: (context,value,child) {
+                              return value.isNotEmpty? ListView.separated(
+                                      shrinkWrap: true,
+                                      itemCount: value.length,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      padding: 16.horizontalPadding,
+                                      separatorBuilder: (context, index) =>
+                                          12.verticalSpace,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        // CustomerNewRequestDto currentRequest =
+                                        //     value[index];
+                                        ValueNotifier<CustomerNewRequestDto> currentRequest =
+                                            ValueNotifier(value[index]);
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 12.0),
+                                          child: OnGoingRequestCard(
+                                            userName: currentRequest.value.category,
+                                            duration: currentRequest.value.duration,
+                                            date: DateTime.tryParse(
+                                                    currentRequest.value.date)!
+                                                .formattedDate(),
+                                            time: DateTime.tryParse(
+                                                    currentRequest.value.date)!
+                                                .to12HourFormat,
+                                            profileName: "Zain Hashim",
+                                            price: currentRequest.value.amount.toString(),
+                                            servicesList: currentRequest.value.services,
+                                            variant:
+                                                OngoingRequestCardVariant.waiting,
+                                            onTap: () {
+                                              log("services list: ${currentRequest.value.services.toString()}");
+                                              context.pushNamed(
+                                              RouteConstants
+                                                  .offeredReceivedScreenRoute,
+                                                  arguments: OfferRecievedArguments(currentRequest),
+                                            );
+                                            },
+                                          ),
+                                        );
+                                      }): const Center(
+                                child: Center(child: Text('No Data')),
+                              );
+                            }
+                          )
+                             
                         ],
                       ),
                       //

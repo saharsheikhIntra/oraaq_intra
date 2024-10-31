@@ -14,10 +14,12 @@ enum ChangeOfferSheetVariant {
 class ChangeOfferSheet extends StatefulWidget {
   final int defaultValue;
   final ChangeOfferSheetVariant variant;
+  final onTap;
   const ChangeOfferSheet({
     super.key,
     required this.defaultValue,
     required this.variant,
+    required this.onTap,
   });
 
   @override
@@ -29,9 +31,12 @@ class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
 
   @override
   void initState() {
-    _defaultValue = widget.defaultValue;
+    // _defaultValue = widget.defaultValue;
+    _value.value = widget.defaultValue;
     super.initState();
   }
+
+  ValueNotifier<int> _value = ValueNotifier<int>(0);
 
   @override
   Widget build(BuildContext context) {
@@ -78,22 +83,32 @@ class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
                   ),
                 ),
               if (widget.variant == ChangeOfferSheetVariant.price)
-                Text(
-                  "$_defaultValue",
-                  style: const TextStyle(
-                    color: ColorTheme.secondaryText,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 32.0,
-                  ),
+                ValueListenableBuilder(
+                  valueListenable: _value,
+                  builder: (context,value,child) {
+                    return Text(
+                      "${_value.value}",
+                      style: const TextStyle(
+                        color: ColorTheme.secondaryText,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 32.0,
+                      ),
+                    );
+                  }
                 ),
               if (widget.variant == ChangeOfferSheetVariant.distance)
-                Text(
-                  "$_defaultValue ",
-                  style: const TextStyle(
-                    color: ColorTheme.secondaryText,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 32.0,
-                  ),
+                ValueListenableBuilder(
+                  valueListenable: _value,
+                  builder: (context,value,child) {
+                    return Text(
+                      "${_value.value}",
+                      style: const TextStyle(
+                        color: ColorTheme.secondaryText,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 32.0,
+                      ),
+                    );
+                  }
                 ),
               if (widget.variant == ChangeOfferSheetVariant.distance)
                 const Text(
@@ -121,7 +136,7 @@ class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
             text: widget.variant == ChangeOfferSheetVariant.distance
                 ? "Update Search Radius"
                 : "Update Offer",
-            onPressed: () => context.pop(),
+            onPressed: () => widget.onTap(_value.value),
           ),
           32.verticalSpace,
         ],
@@ -130,16 +145,25 @@ class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
   }
 
   void _increment() {
-    setState(() {
-      _defaultValue++;
-    });
+    // setState(() {
+
+      if(widget.variant==ChangeOfferSheetVariant.price){
+        _value.value = _value.value+100;
+      }else{
+        _value.value = _value.value+5;
+      }
+
+    // });
   }
 
   void _decrement() {
-    if (widget.defaultValue > 0) {
-      setState(() {
-        _defaultValue--;
-      });
+    
+    if(_value.value>0){
+      if(widget.variant==ChangeOfferSheetVariant.price){
+        _value.value = _value.value-100;
+    }else{
+        _value.value = _value.value-5;
+    }
     }
   }
 }

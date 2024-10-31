@@ -19,8 +19,8 @@ class MerchantOfferCard extends StatelessWidget {
       {super.key,
       required this.userName,
       required this.distance,
-      required this.phoneNo,
-      required this.email,
+      this.phoneNo = "",
+      this.email = "",
       required this.price,
       required this.onAccept,
       required this.onReject,
@@ -127,7 +127,7 @@ class MerchantOfferCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfo(IconData icon, String text) => Row(children: [
+  Widget _buildInfo(IconData icon, String text) => text.isNotEmpty? Row(children: [
         Icon(
           icon,
           color: ColorTheme.secondaryText,
@@ -138,5 +138,5 @@ class MerchantOfferCard extends StatelessWidget {
             style: TextStyleTheme.bodyMedium.copyWith(
               color: ColorTheme.secondaryText,
             )),
-      ]);
+      ]):const SizedBox();
 }

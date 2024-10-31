@@ -1,7 +1,7 @@
 class CustomerNewRequestDto {
   final int requestId;
   final String category;
-  final String amount;
+  String amount;
   final String date;
   final List<String> services;
   final int offersReceived;

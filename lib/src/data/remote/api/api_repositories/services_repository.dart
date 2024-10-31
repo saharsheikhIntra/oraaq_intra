@@ -1,13 +1,19 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_customer_request.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/create_order_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/get_merchant_radius.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/cancel_work_order_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/complete_work_order_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/fetch_offers_for_requests.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_all_bids.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_radius_respomse_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_within_radius2.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_services_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/base_response_dto.dart';
 
@@ -211,5 +217,153 @@ class ServicesRepository {
         return Right(responseDto);
       },
     );
+  }
+
+  //
+  //
+  // MARK: CUSTOMER NEW REQUEST
+  //
+  //
+
+  Future<Either<Failure, List<FetchOffersForRequestDto>>>
+      fetchOffersForRequests(int requestId) async {
+    final result = await _datasource
+        .get("${ApiConstants.fetchOffersForRequest}$requestId");
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data is List
+              ? data.map((e) => FetchOffersForRequestDto.fromMap(e)).toList()
+              : <FetchOffersForRequestDto>[],
+        ).data;
+        return Right(responseDto!);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: UPDATE OFFER AMOUNT
+  //
+  //
+
+  Future<Either<Failure, String>> updateOfferAmount(
+      Map<String, dynamic> obj) async {
+    final result =
+        await _datasource.put(ApiConstants.updateOfferAmount, data: obj);
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto =
+            BaseResponseDto.fromJson(r.data, (data) => data).message;
+        log(responseDto.toString());
+        return Right(responseDto);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: ACCEPT OR REJECT OFFERS
+  //
+  //
+
+  Future<Either<Failure, String>> acceptOrRejectOffers(
+      Map<String, dynamic> obj) async {
+    final result =
+        await _datasource.put(ApiConstants.acceptRejectOffer, data: obj);
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto =
+            BaseResponseDto.fromJson(r.data, (data) => data).message;
+        log(responseDto.toString());
+        return Right(responseDto);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: UPDATE OFFER RADIUS
+  //
+  //
+
+  Future<Either<Failure, String>> updateOfferRadius(
+      Map<String, dynamic> obj) async {
+    final result =
+        await _datasource.put(ApiConstants.updateOfferRadius, data: obj);
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto =
+            BaseResponseDto.fromJson(r.data, (data) => data).message;
+        log(responseDto.toString());
+        return Right(responseDto);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: GET MERCHANT WITHIN RADIUS 2
+  //
+  //
+
+  Future<Either<Failure, List<GetMerchantWithinRadius2ResponseDto>>>
+      getMerchantWithinRadius2(
+          double lat, double lng, int radius, int categoryid) async {
+    final result = await _datasource.get(
+        '${ApiConstants.getMerchantWithinRadius2}latitude=$lat&longitude=$lng&radius=$radius&category_id=$categoryid');
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data is List
+              ? data
+                  .map((e) => GetMerchantWithinRadius2ResponseDto.fromMap(e))
+                  .toList()
+              : <GetMerchantWithinRadius2ResponseDto>[],
+        ).data;
+        return Right(responseDto!);
+      },
+    );
+  }
+
+  //
+  // MARK: GENERATE ORDER
+  //
+  Future<Either<Failure, String>> generateOrder(
+      GenerateOrderRequestDto dto) async {
+    try {
+      log('in map dto: ${dto.toMap()}');
+      log('${jsonEncode(dto.toMap())}');
+      final result = await _datasource.post2(ApiConstants.generateOrder,
+          data: jsonEncode(dto.toMap())
+          // data: dto.toMap(),
+          );
+
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) =>
+                data['message'] is String ? data['message'] as String : '',
+          ).message;
+
+          if (responseDto.isNotEmpty) {
+            return Right(responseDto);
+          } else {
+            return Left(Failure(StringConstants.somethingWentWrong));
+          }
+        },
+      );
+    } catch (e) {
+      return Left(Failure('${StringConstants.somethingWentWrong}: $e'));
+    }
   }
 }

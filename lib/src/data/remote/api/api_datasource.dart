@@ -96,6 +96,45 @@ class ApiDatasource {
     }
   }
 
+  //<<<<<<<<<<<<<<<<<<<<<<<<<<---------POST 2 - ONLY FOR GENERATE ORDER--------->>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Future<Either<Failure, Response>> post2(
+    String endpoint, {
+    dynamic data,
+    dynamic listData,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    void Function(int, int)? onSendProgress,
+    void Function(int, int)? onReceiveProgress,
+  }) async {
+    try {
+      // log('api data scource ${FormData.fromMap(data)}');
+      Response response = await dio.post(
+        dio.options.baseUrl + endpoint,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+        onSendProgress: onSendProgress,
+      );
+      // Logger().i(response.data);
+      return Right(response);
+    } on DioException catch (e) {
+      return Left(
+        Failure(
+          e.response?.data["message"] ?? e.toString(),
+          code: e.response?.statusCode.toString() ?? '-1',
+        ),
+      );
+    } catch (e) {
+      return Left(
+        Failure(e.toString()),
+      );
+    }
+  }
+
   //
   //<<<<<<<<<<<<<<<<<<<<<<<<<---------DELETE--------->>>>>>>>>>>>>>>>>>>>>>>>>>
   //
