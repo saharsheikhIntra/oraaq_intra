@@ -24,7 +24,7 @@ class DialogComponent {
 //   BlocBuilder<MerchantHomeScreenCubit, MerchantHomeScreenState>)
         context: context,
         barrierLabel: 'dialog',
-        transitionDuration: 300.milliseconds,
+        transitionDuration: 3000.milliseconds,
         barrierDismissible: barrierDismissible,
         barrierColor: ColorTheme.white.withOpacity(0.5),
         pageBuilder: (ctx, anim1, anim2) => PopScope(
@@ -33,7 +33,8 @@ class DialogComponent {
               if (didPop && onWillPop != null) onWillPop();
             },
             child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: blurRadius, sigmaY: blurRadius),
+                filter:
+                    ImageFilter.blur(sigmaX: blurRadius, sigmaY: blurRadius),
                 child: ScaleTransition(
                     scale: Tween(begin: 0.3, end: 1.0).animate(anim1),
                     child: SlideTransition(
@@ -63,16 +64,18 @@ class DialogComponent {
     return showGeneralDialog(
         context: context,
         barrierDismissible: barrierDismissible,
-        barrierColor: barrierColor ?? ColorTheme.primary.shade100.withOpacity(0.5),
+        barrierColor:
+            barrierColor ?? ColorTheme.primary.shade100.withOpacity(0.5),
         barrierLabel: 'dialog',
-        transitionDuration: 300.milliseconds,
+        transitionDuration: 3000.milliseconds, //
         pageBuilder: (ctx, anim1, anim2) => PopScope(
             canPop: onWillPop == null,
             onPopInvoked: (didPop) {
               if (didPop && onWillPop != null) onWillPop();
             },
             child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: blurRadius, sigmaY: blurRadius),
+                filter:
+                    ImageFilter.blur(sigmaX: blurRadius, sigmaY: blurRadius),
                 child: SlideTransition(
                     position: Tween(
                       begin: const Offset(0, 0.2),

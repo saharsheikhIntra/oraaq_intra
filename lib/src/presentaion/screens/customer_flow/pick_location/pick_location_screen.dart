@@ -127,14 +127,12 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     _addMarkers(merchants);
                     _searchedResults = merchants;
                     break;
-
                   case OrderStateError(failure: Failure failure):
                     DialogComponent.hideLoading(context);
                     Toast.show(
                         context: context,
                         variant: SnackbarVariantEnum.warning,
                         title: failure.message);
-                    log(failure.message);
                     break;
                   case OrderStateSuccess(message: String message):
                     DialogComponent.hideLoading(context);
@@ -143,13 +141,6 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                         context: context,
                         variant: SnackbarVariantEnum.success,
                         title: message);
-<<<<<<< HEAD
-                    
-=======
-                    break;
-                  case GenerateOrderStateLoading():
-                    DialogComponent.showLoading(context);
->>>>>>> eb7bace4cca3d6b249d6b9e8116af7f9f3f06a7b
                 }
               },
               builder: (context, state) {
@@ -343,48 +334,40 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                 width: ScreenUtil().screenWidth - 64,
                 onPressed: _searchedResults.isEmpty
                     ? null
-<<<<<<< HEAD
                     : () => SheetComponenet.show(context,
                         isScrollControlled: true,
                         child: RequestConfirmationSheet(
-                          onConfirm: (){
-                            _cubit.generateOrder(customerId:user.id,categoryId:widget.args.categoryid,totalAmount:widget.args.selectedOffer.toDouble(),customerAmount: widget.args.userOfferAmount.toDouble(), selectedDateTime: DateTime.parse(widget.args.selectedDate.split('.').first),searchRadius: _searchRadius,selectedPosition: LatLng(double.parse(user.latitude), double.parse(user.longitude)),orderDetails: widget.args.selectedServices.map((e){
-                            Map<String,dynamic> newMap = {"service_id":e.id,"unit_price":e.fee};
-                            return newMap;
-                          }).toList() );
+                          onConfirm: () {
+                            _cubit.generateOrder(
+                                customerId: user.id,
+                                categoryId: widget.args.categoryid,
+                                totalAmount:
+                                    widget.args.selectedOffer.toDouble(),
+                                customerAmount:
+                                    widget.args.userOfferAmount.toDouble(),
+                                selectedDateTime: DateTime.parse(
+                                    widget.args.selectedDate.split('.').first),
+                                searchRadius: _searchRadius,
+                                selectedPosition: LatLng(
+                                    double.parse(user.latitude),
+                                    double.parse(user.longitude)),
+                                orderDetails:
+                                    widget.args.selectedServices.map((e) {
+                                  Map<String, dynamic> newMap = {
+                                    "service_id": e.id,
+                                    "unit_price": e.fee
+                                  };
+                                  return newMap;
+                                }).toList());
                           },
                           address: '${user.latitude}, ${user.longitude}',
-                          offeredAmount: widget.args.userOfferAmount.toString(), serviceType: '${widget.args.categoryid}', datetime: widget.args.selectedDate, services: widget.args.selectedServices.map((e){
+                          offeredAmount: widget.args.userOfferAmount.toString(),
+                          serviceType: '${widget.args.categoryid}',
+                          datetime: widget.args.selectedDate,
+                          services: widget.args.selectedServices.map((e) {
                             return e.name;
                           }).toList(),
-                          
                         )),
-=======
-                    : () =>
-                        SheetComponenet.show(context, isScrollControlled: true,
-                            child: RequestConfirmationSheet(onConfirm: () {
-                          _cubit.generateOrder(
-                              customerId: user.id,
-                              categoryId: widget.args.categoryid,
-                              totalAmount: widget.args.selectedOffer.toDouble(),
-                              customerAmount:
-                                  widget.args.userOfferAmount.toDouble(),
-                              selectedDateTime: widget.args.selectedDate,
-                              // DateTime.tryParse(widget.args.selectedDate)!,
-                              searchRadius: _searchRadius,
-                              selectedPosition: LatLng(
-                                  double.parse(user.latitude),
-                                  double.parse(user.longitude)),
-                              orderDetails:
-                                  widget.args.selectedServices.map((e) {
-                                Map<String, dynamic> newMap = {
-                                  "service_id": e.id,
-                                  "unit_price": e.fee.toDouble()
-                                };
-                                return newMap;
-                              }).toList());
-                        })),
->>>>>>> eb7bace4cca3d6b249d6b9e8116af7f9f3f06a7b
               ),
               (16).verticalSpace,
             ],

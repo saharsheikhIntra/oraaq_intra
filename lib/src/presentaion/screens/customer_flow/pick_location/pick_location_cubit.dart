@@ -103,12 +103,12 @@ class PickLocationCubit extends Cubit<PickLocationState> {
     required int categoryId,
     required double totalAmount,
     required double customerAmount,
-    required String selectedDateTime,
+    required DateTime selectedDateTime,
     required double searchRadius,
     required LatLng selectedPosition,
     required List<Map<String, dynamic>> orderDetails,
   }) async {
-    emit(GenerateOrderStateLoading());
+    emit(PickLocationStateLoading());
 
     final generateOrderRequest = GenerateOrderRequestDto(
       orderMaster: OrderMasterRequestDto(
@@ -126,7 +126,7 @@ class PickLocationCubit extends Cubit<PickLocationState> {
               ))
           .toList(),
     );
-    log('Sending GenerateOrderRequest: ${generateOrderRequest.toMap()}');
+
     final result = await _servicesService.generateOrder(generateOrderRequest);
     result.fold(
       (failure) => emit(OrderStateError(failure)),

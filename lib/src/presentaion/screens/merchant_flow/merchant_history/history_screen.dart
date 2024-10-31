@@ -64,6 +64,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     title: state.message,
                   );
                 }
+                if (state is RatingErrorState) {
+                  _cubit.fetchWorkOrders();
+                  Toast.show(
+                    context: context,
+                    variant: SnackbarVariantEnum.warning,
+                    title: state.failure.message,
+                  );
+                }
               },
               builder: (context, state) {
                 if (state is HistoryScreenLoaded) {

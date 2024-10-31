@@ -12,7 +12,6 @@ import '../../../config/themes/text_style_theme.dart';
 import '../sub_services_wrap_view.dart';
 
 class RequestConfirmationSheet extends StatefulWidget {
-<<<<<<< HEAD
   final dynamic onConfirm;
   final String address;
   final String serviceType;
@@ -20,15 +19,14 @@ class RequestConfirmationSheet extends StatefulWidget {
   final String datetime;
   final List<String> services;
   RequestConfirmationSheet({
-=======
-  final VoidCallback onConfirm;
-  const RequestConfirmationSheet({
->>>>>>> eb7bace4cca3d6b249d6b9e8116af7f9f3f06a7b
     super.key,
-    required this.onConfirm, required this.address, required this.serviceType, required this.offeredAmount, required this.datetime, required this.services,
+    required this.onConfirm,
+    required this.address,
+    required this.serviceType,
+    required this.offeredAmount,
+    required this.datetime,
+    required this.services,
   });
-
-  
 
   @override
   State<RequestConfirmationSheet> createState() =>
@@ -36,9 +34,7 @@ class RequestConfirmationSheet extends StatefulWidget {
 }
 
 class _RequestConfirmationSheetState extends State<RequestConfirmationSheet> {
-  
-
-  String getCategory(String id){
+  String getCategory(String id) {
     switch (id) {
       case "1":
         return "AC Service";
@@ -103,7 +99,7 @@ class _RequestConfirmationSheetState extends State<RequestConfirmationSheet> {
               width: double.infinity,
               padding:
                   const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-              child:  SubServicesChipWrapView(
+              child: SubServicesChipWrapView(
                 servicesList: widget.services,
                 variant: SubServicesChipWrapViewVariant.forSheets,
               )),
@@ -117,8 +113,7 @@ class _RequestConfirmationSheetState extends State<RequestConfirmationSheet> {
             text: "Submit Request",
             onPressed: () {
               widget.onConfirm();
-              // Navigator.pop(context);
-              // context.pushNamed(RouteConstants.customerHomeScreenRoute);
+              context.pushNamed(RouteConstants.customerHomeScreenRoute);
             },
           ),
         ),

@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_customer_request.dart';
+import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/domain/services/services_service.dart';
+import 'package:oraaq/src/imports.dart';
 
 import '../../../../domain/services/job_management_service.dart';
 import 'customer_home_state.dart';
@@ -12,6 +14,7 @@ class CustomerHomeCubit extends Cubit<CustomerHomeState> {
     this._jobManagementService,
     this._servicesService,
   ) : super(CustomerHomeStateInitial());
+  final user = getIt.get<UserEntity>();
 
   Future<void> fetchCategories() async {
     emit(CustomerHomeStateLoading());
@@ -28,7 +31,7 @@ class CustomerHomeCubit extends Cubit<CustomerHomeState> {
   Future<void> fetchAcceptedRequest() async {
     emit(CustomerHomeStateLoading());
 
-    final result = await _servicesService.getAcceptedRequests(250);
+    final result = await _servicesService.getAcceptedRequests(user.id);
 
     result.fold(
       (l) {
