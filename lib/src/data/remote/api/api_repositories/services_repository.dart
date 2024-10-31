@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
@@ -338,9 +339,12 @@ class ServicesRepository {
   Future<Either<Failure, String>> generateOrder(
       GenerateOrderRequestDto dto) async {
     try {
-      final result = await _datasource.post(
+      log('in map dto: ${dto.toMap()}');
+      log('${jsonEncode(dto.toMap())}');
+      final result = await _datasource.post2(
         ApiConstants.generateOrder,
-        data: dto.toMap(),
+        data: jsonEncode(dto.toMap())
+        // data: dto.toMap(),
       );
 
       return result.fold(

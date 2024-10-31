@@ -11,6 +11,9 @@ import '../sub_services_wrap_view.dart';
 
 class RequestConfirmationSheet extends StatefulWidget {
   final dynamic onConfirm;
+  // final String address;
+  // final String serviceType;
+  // final
   const RequestConfirmationSheet({
     super.key,
     required this.onConfirm,

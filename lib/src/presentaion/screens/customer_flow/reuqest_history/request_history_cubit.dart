@@ -15,7 +15,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
   RequestHistoryCubit(this._servicesRepository)
       : super(RequestHistoryInitial());
 
-  // UserEntity user = getIt.get<UserEntity>();
+  UserEntity user = getIt.get<UserEntity>();
 
    Future<List<CustomerNewRequestDto>> fetchOnlyNewRequests() async { 
     final newRequestResult =
@@ -58,7 +58,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
     final cancelledResult =
         await _servicesRepository.getCanceledWorkOrdersForCustomer(1);
     final newRequestResult =
-        await _servicesRepository.getCustomerNewRequests(250);
+        await _servicesRepository.getCustomerNewRequests(user.id);
 
     if (completedResult.isLeft() ||
         cancelledResult.isLeft() ||

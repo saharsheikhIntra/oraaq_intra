@@ -18,6 +18,7 @@ import 'package:oraaq/src/domain/entities/failure.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/injection_container.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_state.dart';
@@ -138,10 +139,12 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     break;
                   case OrderStateSuccess(message: String message):
                     DialogComponent.hideLoading(context);
+                    context.pushAndRemoveUntil(const CustomerHomeScreen());
                     Toast.show(
                         context: context,
-                        variant: SnackbarVariantEnum.warning,
+                        variant: SnackbarVariantEnum.success,
                         title: message);
+                    
                 }
               },
               builder: (context, state) {
@@ -340,10 +343,12 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     : () => SheetComponenet.show(context,
                         isScrollControlled: true,
                         child: RequestConfirmationSheet(
-                          onConfirm: _cubit.generateOrder(customerId:user.id,categoryId:widget.args.categoryid,totalAmount:widget.args.selectedOffer.toDouble(),customerAmount: widget.args.userOfferAmount.toDouble(), selectedDateTime: DateTime.tryParse(widget.args.selectedDate)!,searchRadius: _searchRadius,selectedPosition: LatLng(double.parse(user.latitude), double.parse(user.longitude)),orderDetails: widget.args.selectedServices.map((e){
+                          onConfirm: (){
+                            _cubit.generateOrder(customerId:user.id,categoryId:widget.args.categoryid,totalAmount:widget.args.selectedOffer.toDouble(),customerAmount: widget.args.userOfferAmount.toDouble(), selectedDateTime: DateTime.parse(widget.args.selectedDate.split('.').first),searchRadius: _searchRadius,selectedPosition: LatLng(double.parse(user.latitude), double.parse(user.longitude)),orderDetails: widget.args.selectedServices.map((e){
                             Map<String,dynamic> newMap = {"service_id":e.id,"unit_price":e.fee};
                             return newMap;
-                          }).toList() ),
+                          }).toList() );
+                          },
                         )),
               ),
               (16).verticalSpace,
