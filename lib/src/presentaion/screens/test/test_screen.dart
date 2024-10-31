@@ -526,7 +526,7 @@ class _TestScreenState extends State<TestScreen> {
           onPressed: () => SheetComponenet.show(
                 context,
                 isScrollControlled: true,
-                child: RequestConfirmationSheet(onConfirm: (){},),
+                child: RequestConfirmationSheet(onConfirm: (){}, address: '', datetime: '', serviceType: '', offeredAmount: '', services: [],),
               )),
       OutlinedButton(
           child: const Text("Completed job sheet - Merchant"),

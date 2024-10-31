@@ -349,6 +349,11 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                             return newMap;
                           }).toList() );
                           },
+                          address: '${user.latitude}, ${user.longitude}',
+                          offeredAmount: widget.args.userOfferAmount.toString(), serviceType: '${widget.args.categoryid}', datetime: widget.args.selectedDate, services: widget.args.selectedServices.map((e){
+                            return e.name;
+                          }).toList(),
+                          
                         )),
               ),
               (16).verticalSpace,

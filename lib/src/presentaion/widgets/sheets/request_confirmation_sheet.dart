@@ -4,20 +4,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:oraaq/src/config/themes/color_theme.dart';
 import 'package:oraaq/src/core/constants/route_constants.dart';
+import 'package:oraaq/src/core/extensions/datetime_extensions.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
+import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
 import '../../../config/themes/text_style_theme.dart';
 import '../sub_services_wrap_view.dart';
 
 class RequestConfirmationSheet extends StatefulWidget {
   final dynamic onConfirm;
-  // final String address;
-  // final String serviceType;
-  // final
-  const RequestConfirmationSheet({
+  final String address;
+  final String serviceType;
+  final String offeredAmount;
+  final String datetime;
+  final List<String> services;
+  RequestConfirmationSheet({
     super.key,
-    required this.onConfirm,
+    required this.onConfirm, required this.address, required this.serviceType, required this.offeredAmount, required this.datetime, required this.services,
   });
+
+  
 
   @override
   State<RequestConfirmationSheet> createState() =>
@@ -25,6 +31,23 @@ class RequestConfirmationSheet extends StatefulWidget {
 }
 
 class _RequestConfirmationSheetState extends State<RequestConfirmationSheet> {
+  
+
+  String getCategory(String id){
+    switch (id) {
+      case "1":
+        return "AC Service";
+      case "2":
+        return "Salon";
+      case "21":
+        return "Catering";
+      case "41":
+        return "Mechanic";
+      default:
+        return 'Not found';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,44 +69,37 @@ class _RequestConfirmationSheetState extends State<RequestConfirmationSheet> {
           ),
           _buildDetails(
             Symbols.location_on_rounded,
-            "Address",
-            "123, ABC Street, Gulshan-e-Iqbal Block 12, Karachi, Pakistan.",
+            "LatLng",
+            widget.address,
             valueStyle:
                 TextStyleTheme.labelLarge.copyWith(color: ColorTheme.neutral3),
           ),
           _buildDetails(
             Symbols.build_rounded,
             "Service Type",
-            "AC Repairing",
+            getCategory(widget.serviceType),
           ),
           _buildDetails(
             Symbols.payments_rounded,
             "Offered Amount",
-            "Rs 15000",
+            widget.offeredAmount,
           ),
           _buildDetails(
             Symbols.calendar_month_rounded,
             "Date",
-            "3rd March",
+            DateTime.tryParse(widget.datetime)!.formattedDate(),
           ),
           _buildDetails(
             Symbols.alarm_rounded,
             "Time",
-            "3:30 pm",
+            DateTime.tryParse(widget.datetime)!.to12HourFormat,
           ),
           Container(
               width: double.infinity,
               padding:
                   const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-              child: const SubServicesChipWrapView(
-                servicesList: [
-                  "Hair cut",
-                  "Hair",
-                  "Hair extension",
-                  "Hair cut",
-                  "Hair cut",
-                  "Hair extension"
-                ],
+              child:  SubServicesChipWrapView(
+                servicesList: widget.services,
                 variant: SubServicesChipWrapViewVariant.forSheets,
               )),
         ]),
