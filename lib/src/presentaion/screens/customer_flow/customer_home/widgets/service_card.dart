@@ -4,7 +4,14 @@ import 'package:oraaq/src/presentaion/widgets/image_widget.dart';
 class ServiceCard extends StatelessWidget {
   final CategoryEntity category;
   final VoidCallback onTap;
-  const ServiceCard({
+  final Map<String, String> categoryImageMap = {
+    'Mechanic': AssetConstants.serviceImage4,
+    'AC Service': AssetConstants.serviceImage3,
+    'Catering': AssetConstants.serviceImage2,
+    'Salon': AssetConstants.serviceImage1,
+    // Add more categories as needed
+  };
+  ServiceCard({
     super.key,
     required this.category,
     required this.onTap,
@@ -12,17 +19,20 @@ class ServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String assetImagePath =
+        categoryImageMap[category.name] ?? AssetConstants.services1;
     return InkWell(
         borderRadius: BorderRadius.circular(12.0),
         onTap: onTap,
         child: Stack(
           children: [
             ImageWidget(
-              category.imageUrl,
+              assetImagePath,
+              // category.imageUrl,
               borderRadius: 12,
               height: 180,
               width: double.infinity,
-              type: ImageType.network,
+              type: ImageType.asset,
             ),
             Ink(
                 height: 180,
@@ -36,10 +46,10 @@ class ServiceCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(children: [
-                      const Icon(
-                        Symbols.face_2_rounded,
-                        size: 32,
-                      ),
+                      // const Icon(
+                      //   Symbols.face_2_rounded,
+                      //   size: 32,
+                      // ),
                       12.horizontalSpace,
                       Text(
                         category.name,
@@ -51,7 +61,8 @@ class ServiceCard extends StatelessWidget {
                         width: ScreenUtil().screenWidth * 0.5,
                         child: Text(
                           category.description,
-                          style: TextStyleTheme.bodyMedium.copyWith(fontWeight: FontWeight.w400),
+                          style: TextStyleTheme.bodyMedium
+                              .copyWith(fontWeight: FontWeight.w400),
                         )),
                     const Spacer(),
                     const Icon(
