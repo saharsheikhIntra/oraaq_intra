@@ -509,10 +509,10 @@ class _TestScreenState extends State<TestScreen> {
       OutlinedButton(
           child: const Text("Adjust Search Radius"),
           onPressed: () => SheetComponenet.show(context,
-              child:  ChangeOfferSheet(
+              child: ChangeOfferSheet(
                 defaultValue: 50,
                 variant: ChangeOfferSheetVariant.distance,
-                onTap: (){},
+                onTap: () {},
               ))),
       OutlinedButton(
           child: const Text("Request Sheet"),
@@ -526,7 +526,13 @@ class _TestScreenState extends State<TestScreen> {
           onPressed: () => SheetComponenet.show(
                 context,
                 isScrollControlled: true,
+<<<<<<< HEAD
                 child: RequestConfirmationSheet(onConfirm: (){}, address: '', datetime: '', serviceType: '', offeredAmount: '', services: [],),
+=======
+                child: RequestConfirmationSheet(
+                  onConfirm: () {},
+                ),
+>>>>>>> eb7bace4cca3d6b249d6b9e8116af7f9f3f06a7b
               )),
       OutlinedButton(
           child: const Text("Completed job sheet - Merchant"),

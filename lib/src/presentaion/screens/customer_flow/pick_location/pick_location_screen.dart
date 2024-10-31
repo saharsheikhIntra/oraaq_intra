@@ -36,7 +36,6 @@ class PickLocationScreen extends StatefulWidget {
 }
 
 class _PickLocationScreenState extends State<PickLocationScreen> {
-
   double selectedRadius = 0;
 
   final UserEntity user = getIt.get<UserEntity>();
@@ -59,12 +58,10 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
 
   @override
   void initState() {
-
     log(widget.args.selectedDate);
     log(user.email);
     log(widget.args.selectedOffer.toString());
     log(widget.args.userOfferAmount.toString());
-
 
     BitmapDescriptor.fromAssetImage(
       const ImageConfiguration(),
@@ -130,12 +127,14 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     _addMarkers(merchants);
                     _searchedResults = merchants;
                     break;
+
                   case OrderStateError(failure: Failure failure):
                     DialogComponent.hideLoading(context);
                     Toast.show(
                         context: context,
                         variant: SnackbarVariantEnum.warning,
                         title: failure.message);
+                    log(failure.message);
                     break;
                   case OrderStateSuccess(message: String message):
                     DialogComponent.hideLoading(context);
@@ -144,7 +143,13 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                         context: context,
                         variant: SnackbarVariantEnum.success,
                         title: message);
+<<<<<<< HEAD
                     
+=======
+                    break;
+                  case GenerateOrderStateLoading():
+                    DialogComponent.showLoading(context);
+>>>>>>> eb7bace4cca3d6b249d6b9e8116af7f9f3f06a7b
                 }
               },
               builder: (context, state) {
@@ -329,9 +334,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     onChanged: (value) {
                       selectedRadius = value;
                       _cubit.changeSearchRadius(value);
-                      setState(() {
-                        
-                      });
+                      setState(() {});
                     },
                   )),
               20.verticalSpace,
@@ -340,6 +343,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                 width: ScreenUtil().screenWidth - 64,
                 onPressed: _searchedResults.isEmpty
                     ? null
+<<<<<<< HEAD
                     : () => SheetComponenet.show(context,
                         isScrollControlled: true,
                         child: RequestConfirmationSheet(
@@ -355,6 +359,32 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                           }).toList(),
                           
                         )),
+=======
+                    : () =>
+                        SheetComponenet.show(context, isScrollControlled: true,
+                            child: RequestConfirmationSheet(onConfirm: () {
+                          _cubit.generateOrder(
+                              customerId: user.id,
+                              categoryId: widget.args.categoryid,
+                              totalAmount: widget.args.selectedOffer.toDouble(),
+                              customerAmount:
+                                  widget.args.userOfferAmount.toDouble(),
+                              selectedDateTime: widget.args.selectedDate,
+                              // DateTime.tryParse(widget.args.selectedDate)!,
+                              searchRadius: _searchRadius,
+                              selectedPosition: LatLng(
+                                  double.parse(user.latitude),
+                                  double.parse(user.longitude)),
+                              orderDetails:
+                                  widget.args.selectedServices.map((e) {
+                                Map<String, dynamic> newMap = {
+                                  "service_id": e.id,
+                                  "unit_price": e.fee.toDouble()
+                                };
+                                return newMap;
+                              }).toList());
+                        })),
+>>>>>>> eb7bace4cca3d6b249d6b9e8116af7f9f3f06a7b
               ),
               (16).verticalSpace,
             ],

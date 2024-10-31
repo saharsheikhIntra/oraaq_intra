@@ -12,6 +12,7 @@ import '../../../config/themes/text_style_theme.dart';
 import '../sub_services_wrap_view.dart';
 
 class RequestConfirmationSheet extends StatefulWidget {
+<<<<<<< HEAD
   final dynamic onConfirm;
   final String address;
   final String serviceType;
@@ -19,6 +20,10 @@ class RequestConfirmationSheet extends StatefulWidget {
   final String datetime;
   final List<String> services;
   RequestConfirmationSheet({
+=======
+  final VoidCallback onConfirm;
+  const RequestConfirmationSheet({
+>>>>>>> eb7bace4cca3d6b249d6b9e8116af7f9f3f06a7b
     super.key,
     required this.onConfirm, required this.address, required this.serviceType, required this.offeredAmount, required this.datetime, required this.services,
   });
@@ -112,7 +117,8 @@ class _RequestConfirmationSheetState extends State<RequestConfirmationSheet> {
             text: "Submit Request",
             onPressed: () {
               widget.onConfirm();
-              context.pushNamed(RouteConstants.customerHomeScreenRoute);
+              // Navigator.pop(context);
+              // context.pushNamed(RouteConstants.customerHomeScreenRoute);
             },
           ),
         ),

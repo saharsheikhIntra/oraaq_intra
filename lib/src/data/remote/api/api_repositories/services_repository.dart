@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_customer_request.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/create_order_dto.dart';
@@ -11,6 +12,7 @@ import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/cancel
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/complete_work_order_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/fetch_offers_for_requests.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/generate_order_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_all_bids.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_radius_respomse_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_merchant_within_radius2.dart';
@@ -336,35 +338,90 @@ class ServicesRepository {
   //
   // MARK: GENERATE ORDER
   //
+  // Future<Either<Failure, String>> generateOrder(
+  //     GenerateOrderRequestDto dto) async {
+  //   try {
+  //     final result = await _datasource.post(
+  //       ApiConstants.generateOrder,
+  //       data: dto.toMap(),
+  //       options: Options(
+  //         contentType: Headers.jsonContentType, // Ensure correct content-type
+  //       ),
+  //     );
+
+  //     return result.fold(
+  //       (l) {
+  //         log('L response: ${l.message}');
+  //         return Left(l);
+  //       },
+  //       (r) {
+  //         log('Raw response: ${r.data}');
+
+  //         var responseDto = BaseResponseDto.fromJson(
+  //           r.data,
+  //           (data) => data.toString(),
+  //         ).message;
+
+  //         // var responseDto = BaseResponseDto.fromJson(
+  //         //   r.data,
+  //         //   (data) =>
+  //         //       data['message'] is String ? data['message'] as String : '',
+  //         // ).message;
+
+  //         if (responseDto.isNotEmpty) {
+  //           return Right(responseDto);
+  //         } else {
+  //           return Left(Failure(StringConstants.somethingWentWrong));
+  //         }
+  //       },
+  //     );
+  //   } catch (e) {
+  //     log('ExceptionLog: $e'); // Log the exception
+
+  //     return Left(Failure('${StringConstants.somethingWentWrong}: $e'));
+  //   }
+  // }
   Future<Either<Failure, String>> generateOrder(
       GenerateOrderRequestDto dto) async {
     try {
+<<<<<<< HEAD
       log('in map dto: ${dto.toMap()}');
       log('${jsonEncode(dto.toMap())}');
       final result = await _datasource.post2(
         ApiConstants.generateOrder,
         data: jsonEncode(dto.toMap())
         // data: dto.toMap(),
+=======
+      log('Request body: ${dto.toMap()}');
+
+      // Send the POST request
+      Either<Failure, Response> result = await _datasource.post(
+        ApiConstants.generateOrder,
+        data: dto.toMap(),
+        options: Options(
+          contentType: Headers.jsonContentType,
+        ),
+>>>>>>> eb7bace4cca3d6b249d6b9e8116af7f9f3f06a7b
       );
 
+      // Handle the response and return message
       return result.fold(
-        (l) => Left(l),
+        (l) {
+          log('Error response: ${l.message}');
+          return Left(l);
+        },
         (r) {
-          var responseDto = BaseResponseDto.fromJson(
-            r.data,
-            (data) =>
-                data['message'] is String ? data['message'] as String : '',
-          ).message;
+          log('Raw response: ${r.data}');
 
-          if (responseDto.isNotEmpty) {
-            return Right(responseDto);
-          } else {
-            return Left(Failure(StringConstants.somethingWentWrong));
-          }
+          // Parse and return the response message
+          var responseDto = GenerateOrderResponseDto.fromMap(r.data);
+          return Right(responseDto.message);
         },
       );
-    } catch (e) {
-      return Left(Failure('${StringConstants.somethingWentWrong}: $e'));
+    } catch (e, stacktrace) {
+      log('Exception: $e');
+      log('Stacktrace: $stacktrace');
+      return Left(Failure('Something went wrong: $e'));
     }
   }
 }

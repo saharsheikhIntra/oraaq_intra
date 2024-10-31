@@ -8,6 +8,8 @@ class PickLocationStateInitial extends PickLocationState {}
 
 class PickLocationStateLoading extends PickLocationState {}
 
+class GenerateOrderStateLoading extends PickLocationState {}
+
 class PickLocationStateError extends PickLocationState {
   final Failure failure;
   PickLocationStateError(this.failure);
