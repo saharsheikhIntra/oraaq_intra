@@ -20,10 +20,13 @@ class RequestConfirmationSheet extends StatefulWidget {
   final List<String> services;
   RequestConfirmationSheet({
     super.key,
-    required this.onConfirm, required this.address, required this.serviceType, required this.offeredAmount, required this.datetime, required this.services,
+    required this.onConfirm,
+    required this.address,
+    required this.serviceType,
+    required this.offeredAmount,
+    required this.datetime,
+    required this.services,
   });
-
-  
 
   @override
   State<RequestConfirmationSheet> createState() =>
@@ -31,9 +34,7 @@ class RequestConfirmationSheet extends StatefulWidget {
 }
 
 class _RequestConfirmationSheetState extends State<RequestConfirmationSheet> {
-  
-
-  String getCategory(String id){
+  String getCategory(String id) {
     switch (id) {
       case "1":
         return "AC Service";
@@ -98,7 +99,7 @@ class _RequestConfirmationSheetState extends State<RequestConfirmationSheet> {
               width: double.infinity,
               padding:
                   const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-              child:  SubServicesChipWrapView(
+              child: SubServicesChipWrapView(
                 servicesList: widget.services,
                 variant: SubServicesChipWrapViewVariant.forSheets,
               )),

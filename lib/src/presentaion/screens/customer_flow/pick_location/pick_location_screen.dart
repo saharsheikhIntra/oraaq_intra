@@ -36,7 +36,6 @@ class PickLocationScreen extends StatefulWidget {
 }
 
 class _PickLocationScreenState extends State<PickLocationScreen> {
-
   double selectedRadius = 0;
 
   final UserEntity user = getIt.get<UserEntity>();
@@ -59,12 +58,10 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
 
   @override
   void initState() {
-
     log(widget.args.selectedDate);
     log(user.email);
     log(widget.args.selectedOffer.toString());
     log(widget.args.userOfferAmount.toString());
-
 
     BitmapDescriptor.fromAssetImage(
       const ImageConfiguration(),
@@ -144,7 +141,6 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                         context: context,
                         variant: SnackbarVariantEnum.success,
                         title: message);
-                    
                 }
               },
               builder: (context, state) {
@@ -329,9 +325,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     onChanged: (value) {
                       selectedRadius = value;
                       _cubit.changeSearchRadius(value);
-                      setState(() {
-                        
-                      });
+                      setState(() {});
                     },
                   )),
               20.verticalSpace,
@@ -343,17 +337,36 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     : () => SheetComponenet.show(context,
                         isScrollControlled: true,
                         child: RequestConfirmationSheet(
-                          onConfirm: (){
-                            _cubit.generateOrder(customerId:user.id,categoryId:widget.args.categoryid,totalAmount:widget.args.selectedOffer.toDouble(),customerAmount: widget.args.userOfferAmount.toDouble(), selectedDateTime: DateTime.parse(widget.args.selectedDate.split('.').first),searchRadius: _searchRadius,selectedPosition: LatLng(double.parse(user.latitude), double.parse(user.longitude)),orderDetails: widget.args.selectedServices.map((e){
-                            Map<String,dynamic> newMap = {"service_id":e.id,"unit_price":e.fee};
-                            return newMap;
-                          }).toList() );
+                          onConfirm: () {
+                            _cubit.generateOrder(
+                                customerId: user.id,
+                                categoryId: widget.args.categoryid,
+                                totalAmount:
+                                    widget.args.selectedOffer.toDouble(),
+                                customerAmount:
+                                    widget.args.userOfferAmount.toDouble(),
+                                selectedDateTime: DateTime.parse(
+                                    widget.args.selectedDate.split('.').first),
+                                searchRadius: _searchRadius,
+                                selectedPosition: LatLng(
+                                    double.parse(user.latitude),
+                                    double.parse(user.longitude)),
+                                orderDetails:
+                                    widget.args.selectedServices.map((e) {
+                                  Map<String, dynamic> newMap = {
+                                    "service_id": e.id,
+                                    "unit_price": e.fee
+                                  };
+                                  return newMap;
+                                }).toList());
                           },
                           address: '${user.latitude}, ${user.longitude}',
-                          offeredAmount: widget.args.userOfferAmount.toString(), serviceType: '${widget.args.categoryid}', datetime: widget.args.selectedDate, services: widget.args.selectedServices.map((e){
+                          offeredAmount: widget.args.userOfferAmount.toString(),
+                          serviceType: '${widget.args.categoryid}',
+                          datetime: widget.args.selectedDate,
+                          services: widget.args.selectedServices.map((e) {
                             return e.name;
                           }).toList(),
-                          
                         )),
               ),
               (16).verticalSpace,

@@ -326,17 +326,25 @@ class ServicesService {
   //
   // MARK: GENERATE ORDER
   //
+  // Future<Either<Failure, String>> generateOrder(
+  //   GenerateOrderRequestDto dto,
+  // ) async {
+  //   try {
+  //     final result = await _servicesRepository.generateOrder(dto);
+  //     return result.fold(
+  //       (l) => Left(l),
+  //       (r) => Right(r),
+  //     );
+  //   } catch (e) {
+  //     return Left(Failure('${StringConstants.somethingWentWrong}: $e'));
+  //   }
+  // }
   Future<Either<Failure, String>> generateOrder(
-    GenerateOrderRequestDto dto,
-  ) async {
-    try {
-      final result = await _servicesRepository.generateOrder(dto);
-      return result.fold(
-        (l) => Left(l),
-        (r) => Right(r),
-      );
-    } catch (e) {
-      return Left(Failure('${StringConstants.somethingWentWrong}: $e'));
-    }
+      GenerateOrderRequestDto dto) async {
+    final result = await _servicesRepository.generateOrder(dto);
+    return result.fold(
+      (failure) => Left(failure),
+      (message) => Right(message),
+    );
   }
 }

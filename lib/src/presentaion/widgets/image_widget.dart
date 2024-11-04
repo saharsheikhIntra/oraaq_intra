@@ -69,7 +69,8 @@ class ImageWidget extends StatelessWidget {
     }
   }
 
-  bool get _isVector => format == ImageFormat.vector || path.toLowerCase().endsWith('.svg');
+  bool get _isVector =>
+      format == ImageFormat.vector || path.toLowerCase().endsWith('.svg');
 
   Widget get _placeholder => Image.asset(
         placeholderImage,

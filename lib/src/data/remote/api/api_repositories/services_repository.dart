@@ -341,11 +341,10 @@ class ServicesRepository {
     try {
       log('in map dto: ${dto.toMap()}');
       log('${jsonEncode(dto.toMap())}');
-      final result = await _datasource.post2(
-        ApiConstants.generateOrder,
-        data: jsonEncode(dto.toMap())
-        // data: dto.toMap(),
-      );
+      final result = await _datasource.post2(ApiConstants.generateOrder,
+          data: jsonEncode(dto.toMap())
+          // data: dto.toMap(),
+          );
 
       return result.fold(
         (l) => Left(l),

@@ -41,7 +41,7 @@ class PickLocationCubit extends Cubit<PickLocationState> {
     //   results.add(LatLng(newLatitude, newLongitude));
     // }
 
-    final res =await _servicesService.getMerchantWithinRadius2(24, 67, 100, 2);
+    final res = await _servicesService.getMerchantWithinRadius2(24, 67, 100, 2);
     res.fold(
       (failure) => emit(PickLocationStateError(failure)),
       (merchants) {
@@ -62,9 +62,9 @@ class PickLocationCubit extends Cubit<PickLocationState> {
 
   Future<void> searchMerchant(
       LatLng center, double radius, int categoryId) async {
-   // emit(PickLocationStateLoading());
+    // emit(PickLocationStateLoading());
 
-     List<LatLng> results = [];
+    List<LatLng> results = [];
 
     // /// GENERATING RANDOM RESULTS
     // final int resultsCount = (3 * radius).toInt();
@@ -84,7 +84,7 @@ class PickLocationCubit extends Cubit<PickLocationState> {
     //   results.add(LatLng(newLatitude, newLongitude));
     // }
 
-    final res =await _servicesService.getMerchantWithinRadius2(24, 67, 100, 2);
+    final res = await _servicesService.getMerchantWithinRadius2(24, 67, 100, 2);
     res.fold(
       (failure) => emit(PickLocationStateError(failure)),
       (merchants) {
@@ -96,7 +96,6 @@ class PickLocationCubit extends Cubit<PickLocationState> {
     );
     // emit(PickLocationStateMerchantsLoaded(results));
     emit(PickLocationStateSearchResults(results));
-    
   }
 
   generateOrder({
@@ -112,31 +111,30 @@ class PickLocationCubit extends Cubit<PickLocationState> {
     emit(PickLocationStateLoading());
 
     final generateOrderRequest = GenerateOrderRequestDto(
-        orderMaster: OrderMasterRequestDto(
-          customerId: customerId,
-          orderRequiredDate: selectedDateTime.toString(),
-          categoryId: categoryId,
-          totalAmount: totalAmount,
-          customerAmount: customerAmount,
-          radius: searchRadius,
-        ),
-        orderDetail: orderDetails
-            .map((detail) => OrderDetailRequestDto(
-                  serviceId: detail['service_id'],
-                  unitPrice: detail['unit_price'].toDouble(),
-                ))
-            .toList(),
-      );
+      orderMaster: OrderMasterRequestDto(
+        customerId: customerId,
+        orderRequiredDate: selectedDateTime.toString(),
+        categoryId: categoryId,
+        totalAmount: totalAmount,
+        customerAmount: customerAmount,
+        radius: searchRadius,
+      ),
+      orderDetail: orderDetails
+          .map((detail) => OrderDetailRequestDto(
+                serviceId: detail['service_id'],
+                unitPrice: detail['unit_price'].toDouble(),
+              ))
+          .toList(),
+    );
 
-      final result = await _servicesService.generateOrder(generateOrderRequest);
-      result.fold(
-        (failure) => emit(OrderStateError(failure)),
-        (message) => emit(OrderStateSuccess(message)),
-      );
+    final result = await _servicesService.generateOrder(generateOrderRequest);
+    result.fold(
+      (failure) => emit(OrderStateError(failure)),
+      (message) => emit(OrderStateSuccess(message)),
+    );
 
-    
     // try {
-      
+
     // } catch (error) {
     //   log(error.toString());
     //   emit(OrderStateError(Failure("Failed to generate order: $error")));
