@@ -37,6 +37,8 @@ class ApiConstants {
   static const String addRating = "/ords/oraaq/api/addRating";
   static const String getMerchantWithinRadius =
       "/ords/oraaq/api/getMerchantWithinRadius";
+  static const String getAppliedJobsNew =
+      "/ords/oraaq/api/get_applied_merchant_work_order?";
 
   // MARK: CUSTOMER FLOW
 

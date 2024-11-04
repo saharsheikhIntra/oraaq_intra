@@ -117,8 +117,10 @@ class JobManagementRepository {
 
   Future<Either<Failure, List<AppliedJobsResponseDto>>>
       getAppliedJobsForMerchant(int merchantId) async {
+    // final result = await _datasource.get(
+    //     "${ApiConstants.getAppliedJobsForMerchant}merchant_id=$merchantId&order_status_id=22");
     final result = await _datasource.get(
-        "${ApiConstants.getAppliedJobsForMerchant}merchant_id=$merchantId&order_status_id=22");
+        "${ApiConstants.getAppliedJobsNew}merchant_id=$merchantId");
     return result.fold(
       (l) => Left(l),
       (r) {
