@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -5,6 +7,7 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:oraaq/src/config/themes/color_theme.dart';
 import 'package:oraaq/src/config/themes/text_style_theme.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
+import 'package:oraaq/src/core/extensions/datetime_extensions.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
 import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
@@ -33,6 +36,7 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
   int _standardCharges = 0;
   final TextEditingController _dateTimeController = TextEditingController();
   DateTime? selectedDateTime;
+  var tempVal = '';
 
   @override
   void initState() {
@@ -292,9 +296,12 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                   pickedTime.minute,
                                 );
                                 // Format and show the selected date and time in the TextField
-                                _dateTimeController.text =
+                                tempVal = _dateTimeController.text =
                                     DateFormat('yyyy-MM-dd HH:mm')
                                         .format(selectedDateTime!);
+
+                                _dateTimeController.text =
+                                    "${selectedDateTime!.formattedDate()}, ${selectedDateTime!.to12HourFormat}";
                               });
                             }
                           }
@@ -328,8 +335,9 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                         size: CustomButtonSize.small,
                         iconPosition: CustomButtonIconPosition.trailing,
                         icon: Symbols.arrow_forward_rounded,
-                        onPressed: (){
-                          widget.onContinue(_dateTimeController.text,_standardCharges,_selectedOffer.value);
+                        onPressed: () {
+                          widget.onContinue(
+                              tempVal, _standardCharges, _selectedOffer.value);
                         },
                       ),
               ],

@@ -70,7 +70,7 @@ class _RequestConfirmationSheetState extends State<RequestConfirmationSheet> {
           ),
           _buildDetails(
             Symbols.location_on_rounded,
-            "LatLng",
+            "Address",
             widget.address,
             valueStyle:
                 TextStyleTheme.labelLarge.copyWith(color: ColorTheme.neutral3),

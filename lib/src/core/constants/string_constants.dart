@@ -138,6 +138,8 @@ class StringConstants {
       "Standard charges for the selected services are Rs ";
 
   static const String goodMorning = "Good Morning";
+  static const String goodEvening = "Good Evening";
+  static const String goodAfterNoon = "Good AfterNoon";
   static const String onGoingJobs = "Ongoing Jobs";
   static const String viewAll = "View All";
   static const String services = "Services";
