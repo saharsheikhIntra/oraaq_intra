@@ -1,30 +1,13 @@
 import 'dart:developer';
-
-import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:oraaq/src/config/themes/color_theme.dart';
-import 'package:oraaq/src/config/themes/text_style_theme.dart';
-import 'package:oraaq/src/core/constants/asset_constants.dart';
-import 'package:oraaq/src/core/constants/string_constants.dart';
-import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
 import 'package:oraaq/src/imports.dart';
-import 'package:oraaq/src/domain/entities/user_entity.dart';
-import 'package:oraaq/src/injection_container.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_state.dart';
-import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
 import 'package:oraaq/src/presentaion/widgets/sheets/request_confirmation_sheet.dart';
-import 'package:oraaq/src/presentaion/widgets/sheets/sheet_component.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PickLocationScreen extends StatefulWidget {
@@ -360,7 +343,8 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                                   return newMap;
                                 }).toList());
                           },
-                          address: '${user.latitude}, ${user.longitude}',
+                          address:
+                              _selectedAddress, //'${user.latitude}, ${user.longitude}',
                           offeredAmount: widget.args.userOfferAmount.toString(),
                           serviceType: '${widget.args.categoryid}',
                           datetime: widget.args.selectedDate,
