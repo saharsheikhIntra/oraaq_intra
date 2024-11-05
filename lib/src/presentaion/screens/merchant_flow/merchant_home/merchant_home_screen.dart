@@ -403,14 +403,17 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   name: job.customerName,
                   date: job.bidDate.formattedDate(),
                   // DateTime.tryParse(job.requestDate)!.formattedDate(),
-                  distance: "18km away",
+                  distance: job.distance,
                   email: "N/A",
                   phoneNumber: "N/A",
                   servicesList: job.serviceNames,
                   time: job.bidDate.to12HourFormat,
                   //DateTime.tryParse(job.requestDate)!                     .formattedDate(), //"3:30pm",
                   defaultValue: job.bidAmount.toDouble(),
-                  onCancel: () => context.pop(),
+                  onCancel: () {
+                    context.pop();
+                    _cubit.cancelWorkOrderFromMerchantAppliedRequests(job.bidId);
+                  },
                   onSubmit: (double bidAmmount) => context.pop(),
                   variant: NewQuoteSheetSheetVariant.alreadyQuoted)),
           child: NewRequestCard(

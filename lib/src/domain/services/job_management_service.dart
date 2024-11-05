@@ -136,6 +136,7 @@ class JobManagementService {
                   customerEmail: e.customerEmail,
                   latitude: e.latitude,
                   longitude: e.longitude,
+                  distance: e.distance,
                   requestDate:
                       DateTime.tryParse(e.requestDate) ?? DateTime.now(),
                   status: RequestStatusEnum
@@ -205,6 +206,20 @@ class JobManagementService {
   Future<Either<Failure, String>> cancelWorkOrder(
       int workOrderId, int merchantId) async {
     var result = await _jobsRepository.cancelWorkOrder(workOrderId, merchantId);
+    return result.fold(
+      (l) => Left(l),
+      (r) => Right(r),
+    );
+  }
+
+  //
+  //
+  // MARK: CANCEL WORK ORDER FROM MERCHANT APPLIED REQUESTS
+  //
+  //
+  Future<Either<Failure, String>> cancelWorkOrderFromMerchantAppliedRequests(
+      int workOrderId, int merchantId) async {
+    var result = await _jobsRepository.cancelWorkOrderFromMerchantAppliedRequests(workOrderId, merchantId);
     return result.fold(
       (l) => Left(l),
       (r) => Right(r),

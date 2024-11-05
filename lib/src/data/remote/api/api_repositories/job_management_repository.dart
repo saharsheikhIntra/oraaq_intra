@@ -276,4 +276,30 @@ class JobManagementRepository {
       },
     );
   }
+
+  //
+  //
+  // MARK: CANCEL WORK ORDER FROM MERCHANT APPLIED REQUESTS
+  //
+  //
+
+  Future<Either<Failure, String>> cancelWorkOrderFromMerchantAppliedRequests(
+      int biddingId, int merchantId) async {
+    final result = await _datasource.put(
+      "${ApiConstants.cancelMerchantWorkOrderForAppliedRequests}bid_id=$biddingId&merchant_id=$merchantId",
+    );
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data.toString(),
+        ).message;
+        return Right(responseDto);
+      },
+    );
+  }
+
 }
+
+
