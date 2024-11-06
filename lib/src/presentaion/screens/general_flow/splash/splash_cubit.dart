@@ -6,6 +6,7 @@ import 'package:oraaq/src/core/constants/route_constants.dart';
 import 'package:oraaq/src/core/enum/user_type.dart';
 import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/injection_container.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/splash/splash_state.dart';
 
 class SplashCubit extends Cubit<SplashState> {
@@ -23,9 +24,15 @@ class SplashCubit extends Cubit<SplashState> {
       var user = getIt<UserEntity>();
 
       var type = user.role;
+      log("${user.isOtpVerified}");
 
       if (type == UserType.customer) {
         log('customer runn $type ${user.role}');
+        if (user.isOtpVerified == 'N') {
+          emit(SplashStateRedirect(RouteConstants.otpRoute,
+              arguments: OtpArguement(type, user.email, "register")));
+          return;
+        }
         if (user.latitude.toString().isEmpty ||
             user.longitude.toString().isEmpty) {
           emit(SplashStateRedirect(RouteConstants.customerEditProfileRoute));

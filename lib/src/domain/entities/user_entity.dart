@@ -18,6 +18,7 @@ class UserEntity {
   final String holidays;
   final String latitude;
   final String longitude;
+  final String? isOtpVerified;
   UserEntity({
     required this.id,
     required this.userId,
@@ -33,6 +34,7 @@ class UserEntity {
     required this.holidays,
     required this.latitude,
     required this.longitude,
+    this.isOtpVerified,
   });
 
   UserEntity copyWith({
@@ -50,6 +52,7 @@ class UserEntity {
     String? holidays,
     String? latitude,
     String? longitude,
+    String? isOtpVerified,
   }) {
     return UserEntity(
       id: id ?? this.id,
@@ -66,6 +69,7 @@ class UserEntity {
       holidays: holidays ?? this.holidays,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
+      isOtpVerified: isOtpVerified ?? this.isOtpVerified,
     );
   }
 
@@ -85,6 +89,7 @@ class UserEntity {
       'holidays': holidays,
       'latitude': latitude,
       'longitude': longitude,
+      'is_otp_verified': isOtpVerified,
     };
   }
 
@@ -107,6 +112,7 @@ class UserEntity {
       holidays: map['holidays'] as String,
       latitude: map['latitude'] as String,
       longitude: map['longitude'] as String,
+      isOtpVerified: map['is_otp_verified'] as String,
     );
   }
 
@@ -117,7 +123,7 @@ class UserEntity {
 
   @override
   String toString() {
-    return 'UserEntity(id: $id,  userId: $userId, name: $name, email: $email, phone: $phone, role: $role, serviceType: $serviceType, cnicNtn: $cnicNtn, token: $token, opening_time: $openingTime, closing_time: $closingTime, holidays: $holidays, latitude: $latitude, longitude: $longitude)';
+    return 'UserEntity(id: $id,  userId: $userId, name: $name, email: $email, phone: $phone, role: $role, serviceType: $serviceType, cnicNtn: $cnicNtn, token: $token, opening_time: $openingTime, closing_time: $closingTime, holidays: $holidays, latitude: $latitude, longitude: $longitude, is_otp_verified: $isOtpVerified)';
   }
 
   @override
@@ -137,7 +143,8 @@ class UserEntity {
         other.closingTime == closingTime &&
         other.holidays == holidays &&
         other.latitude == latitude &&
-        other.longitude == longitude;
+        other.longitude == longitude &&
+        other.isOtpVerified == isOtpVerified;
   }
 
   @override
@@ -155,6 +162,7 @@ class UserEntity {
         closingTime.hashCode ^
         holidays.hashCode ^
         latitude.hashCode ^
-        longitude.hashCode;
+        longitude.hashCode ^
+        isOtpVerified.hashCode;
   }
 }
