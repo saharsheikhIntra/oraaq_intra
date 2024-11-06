@@ -25,7 +25,7 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
     emit(MerchantHomeLoading());
 
     final result =
-        await _jobManagementService.getWorkInProgressOrdersForMerchant(325);
+        await _jobManagementService.getWorkInProgressOrdersForMerchant(user.id);
 
     result.fold(
       (l) {
@@ -65,7 +65,7 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
 //
   Future<void> fetchWorkInProgressOrdersCron() async {
     final result =
-        await _jobManagementService.getWorkInProgressOrdersForMerchant(325);
+        await _jobManagementService.getWorkInProgressOrdersForMerchant(user.id);
 
     result.fold(
       (l) {
@@ -82,7 +82,7 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
 //
   Future<void> fetchAppliedJobs() async {
     emit(MerchantHomeLoading());
-    final result = await _jobManagementService.getAppliedJobsForMerchant(3);
+    final result = await _jobManagementService.getAppliedJobsForMerchant(user.id);
     result.fold(
       (l) => emit(MerchantHomeError(l)),
       (r) => emit(AppliedJobsLoaded(r)),
@@ -96,6 +96,23 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
     emit(MerchantHomeLoading());
     final result =
         await _jobManagementService.cancelWorkOrder(biddingId, user.id);
+    result.fold(
+      (l) {
+        emit(MerchantHomeError(l));
+      },
+      (r) {
+        emit(CancelMerchantOrderState(r));
+      },
+    );
+  }
+
+//
+// MARK: CANCEL WORK ORDER FROM MERCHANT APPLIED REQUESTS
+//
+  Future<void> cancelWorkOrderFromMerchantAppliedRequests(int biddingId) async {
+    emit(MerchantHomeLoading());
+    final result =
+        await _jobManagementService.cancelWorkOrderFromMerchantAppliedRequests(biddingId, user.id);
     result.fold(
       (l) {
         emit(MerchantHomeError(l));

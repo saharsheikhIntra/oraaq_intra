@@ -15,6 +15,7 @@ class AppliedJobsResponseDto {
   final String requestDate;
   final int rating;
   final String status;
+  final String distance;
 
   AppliedJobsResponseDto({
     this.workOrderId = -1,
@@ -33,6 +34,7 @@ class AppliedJobsResponseDto {
     this.requestDate = '',
     this.rating = 0,
     this.status = '',
+    this.distance = ''
   });
 
   factory AppliedJobsResponseDto.fromMap(Map<String, dynamic> map) {
@@ -55,11 +57,12 @@ class AppliedJobsResponseDto {
       requestDate: map['request_date'] ?? '',
       rating: map['rating'] ?? 0,
       status: map['status'] ?? '',
+      distance: map['distance'] ?? '',
     );
   }
 
   @override
   String toString() {
-    return 'CancelWorkOrderResponseDto(workOrderId: $workOrderId, requestId: $requestId, bidId: $bidId, bidAmount: $bidAmount, bidDate: $bidDate, serviceNames: $serviceNames, serviceRequestId: $serviceRequestId, customerId: $customerId, customerName: $customerName, customerContactNumber: $customerContactNumber, customerEmail: $customerEmail, latitude: $latitude, longitude: $longitude, requestDate: $requestDate,rating:$rating, status: $status)';
+    return 'CancelWorkOrderResponseDto(workOrderId: $workOrderId, requestId: $requestId, bidId: $bidId, bidAmount: $bidAmount, bidDate: $bidDate, serviceNames: $serviceNames, serviceRequestId: $serviceRequestId, customerId: $customerId, customerName: $customerName, customerContactNumber: $customerContactNumber, customerEmail: $customerEmail, latitude: $latitude, longitude: $longitude, requestDate: $requestDate,rating:$rating, status: $status, distance: $distance)';
   }
 }

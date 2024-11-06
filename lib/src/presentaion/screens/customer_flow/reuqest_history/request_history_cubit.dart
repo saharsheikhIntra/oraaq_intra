@@ -88,7 +88,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
   Future<void> fetchAcceptedRequest() async {
     // emit(RequestHistoryScreenLoading());
 
-    final result = await _servicesRepository.getAcceptedRequests(250);
+    final result = await _servicesRepository.getAcceptedRequests(user.id);
 
     result.fold(
       (l) {
