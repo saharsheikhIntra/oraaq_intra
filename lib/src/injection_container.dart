@@ -6,6 +6,7 @@ import 'package:oraaq/src/data/remote/api/api_repositories/services_repository.d
 import 'package:oraaq/src/data/remote/social/social_auth_repository.dart';
 import 'package:oraaq/src/domain/services/services_service.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_edit_profile/customer_edit_profile_cubit.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/customer_profile/customer_profile_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offers_recieved_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_cubit.dart';
@@ -162,4 +163,5 @@ injectCubits() {
 
 
   getIt.registerFactory(() => OffersRecievedCubit(getIt()));
+  getIt.registerFactory(() => CustomerProfileCubit(getIt()));
 }

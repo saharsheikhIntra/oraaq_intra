@@ -1,7 +1,9 @@
+import 'package:oraaq/src/core/extensions/context_extensions.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/forgot_password/forget_password_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_state.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/splash/splash_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   final LoginArguments arguments;
@@ -55,10 +57,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   state.user.openingTime.isEmpty ||
                   state.user.closingTime.isEmpty) {
                 // context.pushNamed(RouteConstants.merchantEditProfileRoute);
-                context.pushReplacementNamed(
+                context.popAllNamed(
                     RouteConstants.merchantEditProfileRoute);
               } else {
-                context.pushReplacementNamed(
+                context.popAllNamed(
                     RouteConstants.merchantHomeScreenRoute);
               }
             } else if (type == UserType.customer) {
@@ -66,10 +68,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   state.user.longitude.isEmpty ||
                   state.user.latitude == "null" ||
                   state.user.longitude == "null") {
-                context.pushReplacementNamed(
+                context.popAllNamed(
                     RouteConstants.customerEditProfileRoute);
               } else {
-                context.pushReplacementNamed(
+                context.popAllNamed(
                     RouteConstants.customerHomeScreenRoute);
               }
             }
