@@ -9,6 +9,7 @@ class UpdateCustomerProfileResponseDto {
   final String? phone;
   final double? latitude;
   final double? longitude;
+  final String? isVerified;
 
   UpdateCustomerProfileResponseDto({
     this.customerUserId,
@@ -18,6 +19,7 @@ class UpdateCustomerProfileResponseDto {
     this.phone,
     this.latitude,
     this.longitude,
+    this.isVerified,
   });
 
   factory UpdateCustomerProfileResponseDto.fromMap(Map<String, dynamic> map) {
@@ -37,30 +39,33 @@ class UpdateCustomerProfileResponseDto {
             : null,
         longitude: map['longitude'] != null
             ? (map['longitude'] as num).toDouble()
+            : null,
+        isVerified: map['is_otp_verified'] != null
+            ? map['is_otp_verified'] as String
             : null);
   }
 
   @override
   String toString() {
-    return 'UpdateCustomerProfileResponseDto(customerUserId: $customerUserId, customerId: $customerId, customerName: $name, email: $email, phone: $phone, latitude: $latitude, longitude: $longitude)';
+    return 'UpdateCustomerProfileResponseDto(customerUserId: $customerUserId, customerId: $customerId, customerName: $name, email: $email, phone: $phone, latitude: $latitude, longitude: $longitude, isVerified: $isVerified)';
   }
 
   UserEntity copyUserEntity(UserEntity curr) {
     return UserEntity(
-      id: customerId ?? curr.id,
-      userId: customerUserId ?? curr.userId,
-      name: name ?? curr.name,
-      email: email ?? curr.email,
-      phone: phone ?? curr.phone,
-      latitude: latitude.toString(),
-      longitude: longitude.toString(),
-      role: UserType.customer,
-      serviceType: -1,
-      cnicNtn: '',
-      token: '',
-      openingTime: '',
-      closingTime: '',
-      holidays: '',
-    );
+        id: customerId ?? curr.id,
+        userId: customerUserId ?? curr.userId,
+        name: name ?? curr.name,
+        email: email ?? curr.email,
+        phone: phone ?? curr.phone,
+        latitude: latitude.toString(),
+        longitude: longitude.toString(),
+        role: UserType.customer,
+        serviceType: -1,
+        cnicNtn: '',
+        token: '',
+        openingTime: '',
+        closingTime: '',
+        holidays: '',
+        isOtpVerified: 'Y');
   }
 }

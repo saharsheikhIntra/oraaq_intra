@@ -15,7 +15,7 @@ import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/generat
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/get_token_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/register_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/verify_otp.dart';
-import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/update_customer_profile_response_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/update_customer_profile_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/update_merchant_profile_response_dto.dart';
 
 import '../../../../domain/entities/failure.dart';

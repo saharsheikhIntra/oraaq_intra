@@ -18,7 +18,7 @@ class UserEntity {
   final String holidays;
   final String latitude;
   final String longitude;
-  final String? isOtpVerified;
+  String? isOtpVerified;
   UserEntity({
     required this.id,
     required this.userId,

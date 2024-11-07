@@ -42,6 +42,11 @@ class SplashCubit extends Cubit<SplashState> {
         }
       } else if (type == UserType.merchant) {
         log('merchant runn $type ${user.role}');
+        if (user.isOtpVerified == 'N') {
+          emit(SplashStateRedirect(RouteConstants.otpRoute,
+              arguments: OtpArguement(type, user.email, "register")));
+          return;
+        }
         if (user.latitude == 0 ||
             user.longitude == 0 ||
             user.cnicNtn.isEmpty ||
