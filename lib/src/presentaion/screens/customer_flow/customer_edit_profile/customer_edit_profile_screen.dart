@@ -40,7 +40,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
     phoneNumberController.text = user.phone;
     nameController.text = user.name;
     locationController.text =
-        user.longitude == "null" || user.latitude == "null"
+        user.longitude == "" || user.latitude == ""
             ? StringConstants.selectServiceLocation
             : "${user.latitude}, ${user.longitude}";
     log(user.id.toString());
@@ -131,6 +131,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                     controller: locationController,
                     decoration: const InputDecoration(
                         hintText: StringConstants.yourLocation,
+                        labelText: StringConstants.yourLocation,
                         suffixIcon: Icon(
                           Symbols.distance_rounded,
                           size: 24,

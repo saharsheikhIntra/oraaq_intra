@@ -324,7 +324,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     workOrderId: order.workOrderId,
                     onCancel: () {
                       context.pop();
-                      _cubit.cancelWorkOrder(order.workOrderId);
+                      _cubit.cancelWorkOrder(order.bidId);
                     },
                     onSubmit: (double bidAmmount) => context.pop(),
                     defaultValue: order.bidAmount.toDouble(), //15000,

@@ -19,7 +19,7 @@ class PickLocationScreen extends StatefulWidget {
 }
 
 class _PickLocationScreenState extends State<PickLocationScreen> {
-  double selectedRadius = 0;
+  double selectedRadius = 5;
 
   final UserEntity user = getIt.get<UserEntity>();
 
@@ -34,7 +34,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
   final Set<Marker> _markers = {};
   final Set<Circle> _circles = {};
 
-  double _searchRadius = 2;
+  double _searchRadius = 5;
   bool _isSearching = true;
   List<LatLng> _searchedResults = [];
   String _selectedAddress = "";
@@ -275,7 +275,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     color: ColorTheme.primary.shade50,
                   ),
                   child: Text(
-                    "$_searchRadius Km",
+                    "$selectedRadius Km",
                     style: TextStyleTheme.titleLarge
                         .copyWith(color: ColorTheme.primary.shade600),
                   )),
@@ -286,12 +286,12 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "0 ${StringConstants.km}",
+                        "5 ${StringConstants.km}",
                         style: TextStyleTheme.labelLarge
                             .copyWith(color: ColorTheme.neutral3),
                       ),
                       Text(
-                        "100 ${StringConstants.km}",
+                        "50 ${StringConstants.km}",
                         style: TextStyleTheme.labelLarge
                             .copyWith(color: ColorTheme.neutral3),
                       ),
@@ -300,13 +300,15 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
               Padding(
                   padding: 8.horizontalPadding,
                   child: Slider(
-                    min: 0.5,
-                    max: 10,
-                    divisions: 19,
+                    min: 5,
+                    max: 50,
+                    divisions: 20,
                     activeColor: ColorTheme.primary,
                     value: _searchRadius,
                     onChanged: (value) {
-                      selectedRadius = value;
+                      log(value.toStringAsFixed(1));
+                      selectedRadius = double.parse(value.toStringAsFixed(1));
+                      log(selectedRadius.toString());
                       _cubit.changeSearchRadius(value);
                       setState(() {});
                     },
