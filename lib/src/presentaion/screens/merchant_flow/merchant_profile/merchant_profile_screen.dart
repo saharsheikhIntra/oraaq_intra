@@ -219,14 +219,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: 'Terms & Conditions',
               icon: Symbols.privacy_tip_rounded,
               variant: SettingTileVariant.external,
-              onTap: () {},
+              onTap: () {
+                context.pushNamed(RouteConstants.TermsAndConditionsScreen);
+              },
             ),
             8.verticalSpace,
             SettingTile(
               title: 'Privacy Policy',
               icon: Symbols.policy_rounded,
               variant: SettingTileVariant.external,
-              onTap: () {},
+              onTap: () {
+                context.pushNamed(RouteConstants.PrivacyPolicyScreen);
+              },
             ),
             8.verticalSpace,
             SettingTile(

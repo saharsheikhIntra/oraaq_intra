@@ -22,6 +22,8 @@ import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/register/register_screen.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/splash/splash_screen.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/terms_policies/privacy_policy.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/terms_policies/terms_and_conditions.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/welcome/welcome_screen.dart';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_edit_profile/merchant_edit_profile_screen.dart';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_history/history_screen.dart';
@@ -84,14 +86,21 @@ class AppRoutes {
         _generateRoute(const CustomerHomeScreen(), settings),
       RouteConstants.merchantHomeScreenRoute =>
         _generateRoute(const MerchantHomeScreen(), settings),
-      RouteConstants.offeredReceivedScreenRoute =>
-        _generateRoute(OfferReceivedScreen(args: settings.arguments as OfferRecievedArguments,), settings),
+      RouteConstants.offeredReceivedScreenRoute => _generateRoute(
+          OfferReceivedScreen(
+            args: settings.arguments as OfferRecievedArguments,
+          ),
+          settings),
       RouteConstants.requestHistoryScreenRoute =>
         _generateRoute(const RequestHistoryScreen(), settings),
       RouteConstants.historyScreenRoute =>
         _generateRoute(const HistoryScreen(), settings),
       RouteConstants.pickMerchantLocation =>
         _generateRoute(const PickMerchantLocationScreen(), settings),
+      RouteConstants.PrivacyPolicyScreen =>
+        _generateRoute(const PrivacyPolicyScreen(), settings),
+      RouteConstants.TermsAndConditionsScreen =>
+        _generateRoute(const TermsAndConditionsScreen(), settings),
       _ => _generateRoute(const SplashScreen(), settings),
     };
   }
