@@ -39,6 +39,26 @@ class _QuestionsPageState extends State<QuestionsPage> {
     super.initState();
   }
 
+  // new code snippet
+  void _handleCheckboxChange(ServiceEntity service) {
+    setState(() {
+      if (_selected.contains(service)) {
+        _selected.remove(service);
+      } else {
+        _selected.add(service);
+      }
+      widget.onSelect(_selected);
+    });
+  }
+
+  void _clearSelections() {
+    setState(() {
+      _selected.clear();
+      widget.onSelect(_selected);
+    });
+  }
+  //till----------------
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -85,16 +105,20 @@ class _QuestionsPageState extends State<QuestionsPage> {
                             ? SingleQuestionTile(
                                 title: e.shortTitle,
                                 subtitle: "Rs. ${e.price}",
-                                onChanged: (value) {
-                                  _selected.contains(e) ? _selected.remove(e) : _selected.add(e);
-                                  widget.onSelect(_selected);
-                                })
+                                // onChanged: (value) {
+                                //   _selected.contains(e) ? _selected.remove(e) : _selected.add(e);
+                                //   widget.onSelect(_selected);
+                                // },
+                                onChanged: (value) => _handleCheckboxChange(e),
+                                )
                             : QuestionsAccordion(
                                 service: e,
-                                onChanged: (value) {
-                                  _selected.contains(value) ? _selected.remove(value) : _selected.add(value);
-                                  widget.onSelect(_selected);
-                                })),
+                                // onChanged: (value) {
+                                //   _selected.contains(value) ? _selected.remove(value) : _selected.add(value);
+                                //   widget.onSelect(_selected);
+                                // },
+                                onChanged: (value) => _handleCheckboxChange(e),
+                                )),
                       ],
                     )))),
         Padding(
@@ -105,7 +129,11 @@ class _QuestionsPageState extends State<QuestionsPage> {
                 CustomButton(
                   icon: Symbols.arrow_back_rounded,
                   type: CustomButtonType.tertiary,
-                  onPressed: widget.onPrevious,
+                  onPressed: () {
+                    //new code snippet
+                    // _clearSelections();
+                    widget.onPrevious();
+                  },
                   size: CustomButtonSize.small,
                 ),
                 CustomButton(
@@ -113,7 +141,10 @@ class _QuestionsPageState extends State<QuestionsPage> {
                   text: StringConstants.next,
                   iconPosition: CustomButtonIconPosition.trailing,
                   icon: Symbols.arrow_forward_rounded,
-                  onPressed: widget.onNext,
+                  onPressed: () {
+                    // _clearSelections();
+                    widget.onNext();
+                  },
                 ),
               ],
             )),
@@ -122,3 +153,4 @@ class _QuestionsPageState extends State<QuestionsPage> {
     );
   }
 }
+
