@@ -54,9 +54,9 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
   Future<void> fetchWorkOrders() async {
     emit(RequestHistoryScreenLoading());
     final completedResult =
-        await _servicesRepository.getCompletedWorkOrdersForCustomer(1);
+        await _servicesRepository.getCompletedWorkOrdersForCustomer(user.id);
     final cancelledResult =
-        await _servicesRepository.getCanceledWorkOrdersForCustomer(1);
+        await _servicesRepository.getCanceledWorkOrdersForCustomer(user.id);
     final newRequestResult =
         await _servicesRepository.getCustomerNewRequests(user.id);
 
