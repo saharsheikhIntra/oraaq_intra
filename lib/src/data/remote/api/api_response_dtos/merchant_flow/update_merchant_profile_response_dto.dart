@@ -31,6 +31,7 @@ class UpdateMerchantProfileResponseDto {
   final String? holidays;
   final double? latitude; // UPDATED
   final double? longitude;
+  final String? isVerified;
 
   UpdateMerchantProfileResponseDto({
     this.merchantId, // UPDATED
@@ -46,6 +47,7 @@ class UpdateMerchantProfileResponseDto {
     this.holidays,
     this.latitude, // UPDATED
     this.longitude,
+    this.isVerified,
   });
 
   // factory UpdateMerchantProfileResponseDto.fromMap(Map<String, dynamic> map) {
@@ -107,11 +109,14 @@ class UpdateMerchantProfileResponseDto {
       longitude: map['longitude'] != null
           ? (map['longitude'] as num).toDouble()
           : null,
+      isVerified: map['is_otp_verified'] != null
+          ? map['is_otp_verified'] as String
+          : null,
     );
   }
   @override
   String toString() {
-    return 'UpdateMerchantProfileResponseDto(merchantId: $merchantId, merchantUserId: $merchantUserId, merchantName: $merchantName, email: $email, phone: $phone, role: $role, serviceType: $serviceType, cnicNtn: $cnicNtn, openingTime: $openingTime, closingTime: $closingTime, holidays: $holidays, latitude: $latitude, longitude: $longitude)';
+    return 'UpdateMerchantProfileResponseDto(merchantId: $merchantId, merchantUserId: $merchantUserId, merchantName: $merchantName, email: $email, phone: $phone, role: $role, serviceType: $serviceType, cnicNtn: $cnicNtn, openingTime: $openingTime, closingTime: $closingTime, holidays: $holidays, latitude: $latitude, longitude: $longitude, isVerified: $isVerified)';
   }
 
   UserEntity copyUserEntity(UserEntity curr) {
@@ -133,6 +138,7 @@ class UpdateMerchantProfileResponseDto {
       holidays: holidays ?? curr.holidays,
       latitude: latitude?.toString() ?? curr.latitude,
       longitude: longitude?.toString() ?? curr.longitude,
+      isOtpVerified: "Y",
       token: "",
     );
   }

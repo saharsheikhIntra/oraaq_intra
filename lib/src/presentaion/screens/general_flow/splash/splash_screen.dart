@@ -43,7 +43,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 expandLogo = true;
                 break;
               case SplashStateRedirect():
-                context.popAllNamed(state.nextRoute);
+                context.popAllNamed(state.nextRoute,
+                    arguments: state.arguments);
                 break;
             }
           },
