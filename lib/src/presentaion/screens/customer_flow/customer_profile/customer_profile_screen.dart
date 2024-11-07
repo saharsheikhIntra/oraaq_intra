@@ -37,16 +37,16 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
           listener: (context, state) {
             // TODO: implement listener
             if (state is CustomerProfileUpdated) currentUser = state.user;
-                if (state is CustomerProfileLoading) {
-                  DialogComponent.showLoading(context);
-                }
-                if (state is CustomerProfileLogoutSuccess) {
-                  DialogComponent.showLoading(context);
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    RouteConstants.welcomeRoute,
-                    (Route<dynamic> route) => false,
-                  );
-                }
+            if (state is CustomerProfileLoading) {
+              DialogComponent.showLoading(context);
+            }
+            if (state is CustomerProfileLogoutSuccess) {
+              DialogComponent.showLoading(context);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                RouteConstants.welcomeRoute,
+                (Route<dynamic> route) => false,
+              );
+            }
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -124,14 +124,18 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                   title: 'Terms & Conditions',
                   icon: Symbols.privacy_tip_rounded,
                   variant: SettingTileVariant.external,
-                  onTap: () {},
+                  onTap: () {
+                    context.pushNamed(RouteConstants.TermsAndConditionsScreen);
+                  },
                 ),
                 8.verticalSpace,
                 SettingTile(
                   title: 'Privacy Policy',
                   icon: Symbols.policy_rounded,
                   variant: SettingTileVariant.external,
-                  onTap: () {},
+                  onTap: () {
+                    context.pushNamed(RouteConstants.PrivacyPolicyScreen);
+                  },
                 ),
                 const Spacer(),
                 SettingTile(

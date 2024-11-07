@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/update_customer_request_dto.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
@@ -9,10 +11,15 @@ part 'customer_edit_profile_state.dart';
 class CustomerEditProfileCubit extends Cubit<CustomerEditProfileState> {
   final AuthenticationServices _authServices;
   final UserEntity user = getIt.get<UserEntity>();
-  CustomerEditProfileCubit(this._authServices) : super(CustomerEditProfileInitial());
-  
+  CustomerEditProfileCubit(this._authServices)
+      : super(CustomerEditProfileInitial());
 
-  updateCustomerProfile({required String name,required String email,required String phone,required double latitude,required double longitude})async{
+  updateCustomerProfile(
+      {required String name,
+      required String email,
+      required String phone,
+      required double latitude,
+      required double longitude}) async {
     emit(CustomerEditProfileLoading());
     print("Loading state emitted");
     var dto = UpdateCustomerRequestDto(
@@ -25,7 +32,9 @@ class CustomerEditProfileCubit extends Cubit<CustomerEditProfileState> {
     );
     print("DTO created: ${dto.toMap()}");
     var result = await _authServices.updateCustomerProfile(dto);
+
     print("Result from service: $result");
+    log(user.isOtpVerified.toString());
     result.fold(
       (l) {
         emit(CustomerEditProfileError(l));
@@ -35,5 +44,4 @@ class CustomerEditProfileCubit extends Cubit<CustomerEditProfileState> {
       },
     );
   }
-
 }

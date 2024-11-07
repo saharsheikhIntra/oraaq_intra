@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/new_password/new_password_args.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_arguement.dart';
@@ -18,6 +20,7 @@ class _OtpScreenState extends State<OtpScreen> {
   String generatedOtp = '';
   String email = '';
   // final UserType userType = getIt<UserType>();
+  final user = getIt<UserEntity>();
 
   @override
   void initState() {
@@ -64,6 +67,9 @@ class _OtpScreenState extends State<OtpScreen> {
               variant: SnackbarVariantEnum.success,
               title: "OTP Verified",
             );
+            user.isOtpVerified = 'Y';
+
+            log(user.toString());
             widget.arguement.routeName == 'register'
                 ? widget.arguement.selectedUserType == UserType.customer
                     ? context.pushNamed(RouteConstants.customerEditProfileRoute)

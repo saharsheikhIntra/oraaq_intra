@@ -34,6 +34,7 @@ class RegisterResponseUserDto {
   final String? longitude;
   final String? offDays;
   final int? serviceType;
+  final String isOtpVerified;
 
   RegisterResponseUserDto({
     this.id = -1,
@@ -50,6 +51,7 @@ class RegisterResponseUserDto {
     this.longitude,
     this.offDays,
     this.serviceType,
+    this.isOtpVerified = "",
   });
 
   factory RegisterResponseUserDto.fromMap(Map<String, dynamic> map) {
@@ -71,12 +73,15 @@ class RegisterResponseUserDto {
       offDays: map['off_days'] != null ? map['off_days'] as String : null,
       serviceType:
           map['service_type'] != null ? map['service_type'] as int : -1,
+      isOtpVerified: map['is_otp_verified'] != null
+          ? map['is_otp_verified'] as String
+          : "",
     );
   }
 
   @override
   String toString() {
-    return 'RegisterResponseUserDto(id: $id, name: $name, phone: $phone, email: $email, role: $role, userId: $userId, cnic: $cnic, isActive: $isActive, openingTime: $openingTime, closingTime: $closingTime, latitude: $latitude, longitude: $longitude, offDays: $offDays, serviceType: $serviceType)';
+    return 'RegisterResponseUserDto(id: $id, name: $name, phone: $phone, email: $email, role: $role, userId: $userId, cnic: $cnic, isActive: $isActive, openingTime: $openingTime, closingTime: $closingTime, latitude: $latitude, longitude: $longitude, offDays: $offDays, serviceType: $serviceType, isOtpVerified: $isOtpVerified)';
   }
 
   UserEntity get toUserEntity {
@@ -97,6 +102,7 @@ class RegisterResponseUserDto {
       holidays: offDays ?? "",
       latitude: latitude ?? "",
       longitude: longitude ?? "",
+      isOtpVerified: isOtpVerified,
       token: "",
     );
   }
