@@ -214,6 +214,20 @@ class JobManagementService {
 
   //
   //
+  // MARK: COMPLETE WORK ORDER
+  //
+  //
+  Future<Either<Failure, String>> completeWorkOrder(
+      int workOrderId, int merchantId) async {
+    var result = await _jobsRepository.completeWorkOrder(workOrderId, merchantId);
+    return result.fold(
+      (l) => Left(l),
+      (r) => Right(r),
+    );
+  }
+
+  //
+  //
   // MARK: CANCEL WORK ORDER FROM MERCHANT APPLIED REQUESTS
   //
   //

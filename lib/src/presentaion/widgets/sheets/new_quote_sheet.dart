@@ -8,6 +8,7 @@ enum NewQuoteSheetSheetVariant {
 }
 
 class NewQuoteSheet extends StatefulWidget {
+  final String? sheetName;
   final String? name;
   final String? phoneNumber;
   final String? email;
@@ -20,10 +21,11 @@ class NewQuoteSheet extends StatefulWidget {
   final int? workOrderId;
   //final MerchantHomeScreenCubit? cubit;
   final VoidCallback onCancel;
-  final Function(double)? onSubmit;
+  final Function(double) onSubmit;
 
   const NewQuoteSheet({
     super.key,
+    this.sheetName = "",
     this.name,
     this.phoneNumber,
     this.email,
@@ -230,7 +232,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                   type: widget.variant == NewQuoteSheetSheetVariant.newQuote
                       ? CustomButtonType.primary
                       : CustomButtonType.danger,
-                  text: widget.variant == NewQuoteSheetSheetVariant.newQuote
+                  text: widget.sheetName != ""? "Action" : widget.variant == NewQuoteSheetSheetVariant.newQuote
                       ? StringConstants.sendQuote
                       : StringConstants.cancel,
                   onPressed: () {
@@ -240,7 +242,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                           title: StringConstants.cancelJobTitle,
                           message: StringConstants.cancelJobMessage,
                           ctaText: "Cancel Job",
-                          cancelText: "Keep Job",
+                          cancelText: "${widget.sheetName == ""?"Keep":"Complete"} Job",
                           onCtaTap: () {
                             // widget.cubit!.cancelWorkOrder(widget.workOrderId ?? -1, getIt<UserEntity>().id);
 
@@ -249,7 +251,14 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
 
                             //context.popUntil(RouteConstants.merchantHomeScreenRoute);
                           },
-                          onCancelTap: () => context.pop()
+                          onCancelTap: () {
+                            // widget.cubit!.cancelWorkOrder(widget.workOrderId ?? -1, getIt<UserEntity>().id);
+
+                            widget.onSubmit(0.0);
+                            context.pop();
+
+                            //context.popUntil(RouteConstants.merchantHomeScreenRoute);
+                          },
                           // context
                           //     .popUntil(RouteConstants.merchantHomeScreenRoute),
                           );

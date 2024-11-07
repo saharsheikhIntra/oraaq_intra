@@ -36,9 +36,9 @@ class HistoryScreenCubit extends Cubit<HistoryScreenState> {
     emit(HistoryScreenLoading());
 
     final completedResult =
-        await _jobManagementService.getCompletedWorkOrdersForMerchant(3);
+        await _jobManagementService.getCompletedWorkOrdersForMerchant(user.id);
     final cancelledResult =
-        await _jobManagementService.getCanceledWorkOrdersForMerchant(3);
+        await _jobManagementService.getCanceledWorkOrdersForMerchant(user.id);
 
     if (completedResult.isLeft() || cancelledResult.isLeft()) {
       final failure = completedResult.fold((l) => l, (r) => null) ??

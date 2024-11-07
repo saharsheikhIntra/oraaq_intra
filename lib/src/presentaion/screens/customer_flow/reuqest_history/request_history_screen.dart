@@ -367,14 +367,10 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                         duration: "4hr 30 mints",
                                         date: currentRequest.requestDate
                                             .formattedDate(),
-                                        time: "6:00 am",
-                                        price: "10,000",
-                                        servicesList: const [
-                                          "Hair cut",
-                                          "Hair",
-                                          "Hair extension",
-                                          "Hair extension"
-                                        ],
+                                        time: currentRequest.requestDate
+                                            .to12HourFormat,
+                                        price: currentRequest.bidAmount.toString(),
+                                        servicesList: currentRequest.serviceNames,
                                         onTap: () {},
                                       );
                                     })
