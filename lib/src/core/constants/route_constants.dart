@@ -26,6 +26,8 @@ class RouteConstants {
   static const String merchantHomeScreenRoute = "merchantHomeRoute";
   static const String historyScreenRoute = "historyRoute";
   static const String pickMerchantLocation = "pickMerchantLocation";
+  static const String PrivacyPolicyScreen = "PrivacyPolicyScreen";
+  static const String TermsAndConditionsScreen = "TermsAndConditionsScreen ";
 
   // static const String homeRoute = '/homeRoute';
   // static const String loginRoute = '/loginRoute';

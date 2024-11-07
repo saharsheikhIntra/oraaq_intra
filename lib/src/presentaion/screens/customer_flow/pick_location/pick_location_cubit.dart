@@ -41,7 +41,7 @@ class PickLocationCubit extends Cubit<PickLocationState> {
     //   results.add(LatLng(newLatitude, newLongitude));
     // }
 
-    final res = await _servicesService.getMerchantWithinRadius2(24, 67, 100, 2);
+    final res = await _servicesService.getMerchantWithinRadius2(center.latitude, center.longitude, radius.toInt(), 2);
     res.fold(
       (failure) => emit(PickLocationStateError(failure)),
       (merchants) {
@@ -84,7 +84,8 @@ class PickLocationCubit extends Cubit<PickLocationState> {
     //   results.add(LatLng(newLatitude, newLongitude));
     // }
 
-    final res = await _servicesService.getMerchantWithinRadius2(24, 67, 100, 2);
+    // final res = await _servicesService.getMerchantWithinRadius2(24, 67, 100, 2);
+    final res = await _servicesService.getMerchantWithinRadius2(center.latitude, center.longitude, radius.toInt(), 2);
     res.fold(
       (failure) => emit(PickLocationStateError(failure)),
       (merchants) {

@@ -32,10 +32,11 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       await _cubit.fetchAppliedJobs();
 
       cron.schedule(
-        Schedule(minutes: 1),
+        Schedule(seconds: 5),
         () {
           _cubit.fetchWorkInProgressOrdersCron();
-          _cubit.fetchWorkInProgressOrdersCron();
+          _cubit.fetchAllServiceRequestsCron();
+          // _cubit.fetchWorkInProgressOrdersCron();
         },
       );
     });
@@ -323,7 +324,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     workOrderId: order.workOrderId,
                     onCancel: () {
                       context.pop();
-                      _cubit.cancelWorkOrder(order.workOrderId);
+                      _cubit.cancelWorkOrder(order.bidId);
                     },
                     onSubmit: (double bidAmmount) => context.pop(),
                     defaultValue: order.bidAmount.toDouble(), //15000,
@@ -412,7 +413,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   defaultValue: job.bidAmount.toDouble(),
                   onCancel: () {
                     context.pop();
-                    _cubit.cancelWorkOrderFromMerchantAppliedRequests(job.bidId);
+                    _cubit
+                        .cancelWorkOrderFromMerchantAppliedRequests(job.bidId);
                   },
                   onSubmit: (double bidAmmount) => context.pop(),
                   variant: NewQuoteSheetSheetVariant.alreadyQuoted)),
