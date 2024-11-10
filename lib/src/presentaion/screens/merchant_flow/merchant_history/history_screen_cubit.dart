@@ -59,7 +59,7 @@ class HistoryScreenCubit extends Cubit<HistoryScreenState> {
     final addRating = AddRatingRequestDto(
         orderId: orderId,
         ratingForUserType: 3,
-        merchantId: user.id,
+        merchantId: null,
         customerId: customerId,
         ratingBy: user.userId,
         rating: rating,

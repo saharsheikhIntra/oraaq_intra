@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_customer_request.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
+import 'package:oraaq/src/domain/services/job_management_service.dart';
 
 import 'package:oraaq/src/domain/services/services_service.dart';
 import 'package:oraaq/src/imports.dart';
@@ -12,7 +14,9 @@ part 'request_history_state.dart';
 
 class RequestHistoryCubit extends Cubit<RequestHistoryState> {
   final ServicesService _servicesRepository;
-  RequestHistoryCubit(this._servicesRepository)
+  final JobManagementService _jobManagementService;
+  
+  RequestHistoryCubit(this._servicesRepository,this._jobManagementService)
       : super(RequestHistoryInitial());
 
   UserEntity user = getIt.get<UserEntity>();
@@ -39,7 +43,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
   Future<void> fetchNewRequests() async {
     emit(RequestHistoryScreenLoading());
 
-    final result = await _servicesRepository.getCustomerNewRequests(250);
+    final result = await _servicesRepository.getCustomerNewRequests(user.id);
 
     result.fold(
       (l) {
@@ -108,4 +112,31 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
     result.fold((l) => emit(RequestHistoryScreenError(l)),
         (r) => emit(CancelCustomerRequestSuccessState(r)));
   }
+
+  //
+  //
+  // MARK: ADD RATING TO WORK ORDER BY CUSTOMER
+  //
+  //
+
+  Future<void> submitRating(int orderId, int merchantId,int rating) async {
+    final user = getIt.get<UserEntity>();
+    final addRating = AddRatingRequestDto(
+        orderId: orderId,
+        ratingForUserType: 2,
+        merchantId: merchantId,
+        customerId: null,
+        ratingBy: user.userId,
+        rating: rating,
+        review: "");
+
+    final result = await _jobManagementService.addRating(addRating);
+
+    result.fold(
+      (failure) => emit(RatingErrorState(failure)),
+      (message) => emit(RatingSuccessState(message)),
+    );
+  }
+
+
 }

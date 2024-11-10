@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_history/history_screen_cubit.dart';
 import 'package:oraaq/src/imports.dart';
 
@@ -92,7 +94,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     .customerName, //"AC REPAIRING",
                                 date: state.completedOrders[index].requestDate
                                     .formattedDate(), //"4th March",
-                                ratings: state.completedOrders[index].rating
+                                ratings: state.completedOrders[index].ratingMerchant
                                     .toString(),
                                 // "4 / 5",
                                 price: state.completedOrders[index].bidAmount
@@ -101,7 +103,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     .serviceNames, //const [],
                                 duration: '4 hr 40 mints',
                                 rating:
-                                    state.completedOrders[index].rating ?? 0,
+                                    state.completedOrders[index].ratingCustomer??0,
                                 variant: CompletedRequestCardVariant.customer,
                                 onTap: () async {
                                   final rating = await SheetComponenet.show(
@@ -132,6 +134,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         variant:
                                             CompletedJobSheetVariant.merchant),
                                   );
+                                  log('rating: ${rating.toString()}');
                                   if (rating != null && rating > 0) {
                                     _cubit.submitRating(
                                         state

@@ -5,6 +5,7 @@ class RequestEntity {
   final int workOrderId;
   final int requestId;
   final int serviceRequestId;
+  final String? serviceType;
   final List<String> serviceNames; // Updated to handle list
   final int customerId;
   final String customerName;
@@ -18,11 +19,14 @@ class RequestEntity {
   final int bidId;
   final double bidAmount;
   final int? rating;
+  final int? ratingCustomer;
+  final int? ratingMerchant;
   final DateTime bidDate;
   RequestEntity({
     required this.workOrderId,
     required this.requestId,
     required this.serviceRequestId,
+    this.serviceType,
     required this.serviceNames,
     required this.customerId,
     required this.customerName,
@@ -36,6 +40,8 @@ class RequestEntity {
     required this.bidId,
     required this.bidAmount,
     this.rating,
+    this.ratingCustomer,
+    this.ratingMerchant,
     required this.bidDate,
   });
 
@@ -43,6 +49,7 @@ class RequestEntity {
     int? workOrderId,
     int? requestId,
     int? serviceRequestId,
+    String? serviceType,
     List<String>? serviceNames,
     int? customerId,
     String? customerName,
@@ -56,6 +63,8 @@ class RequestEntity {
     int? bidId,
     double? bidAmount,
     int? rating,
+    int? ratingCustomer,
+    int? ratingMerchant,
     DateTime? bidDate,
   }) {
     return RequestEntity(
@@ -76,13 +85,16 @@ class RequestEntity {
       bidId: bidId ?? this.bidId,
       bidAmount: bidAmount ?? this.bidAmount,
       rating: rating ?? this.rating,
+      ratingCustomer: ratingCustomer ?? this.ratingCustomer,
+      ratingMerchant: ratingMerchant ?? this.ratingMerchant,
+      serviceType: serviceType ?? this.serviceType,
       bidDate: bidDate ?? this.bidDate,
     );
   }
 
   @override
   String toString() {
-    return 'RequestEntity(workOrderId: $workOrderId, requestId: $requestId, serviceRequestId: $serviceRequestId, serviceNames: $serviceNames, customerId: $customerId, customerName: $customerName, customerContactNumber: $customerContactNumber, customerEmail: $customerEmail, latitude: $latitude, longitude: $longitude, distance: $distance, requestDate: $requestDate, status: $status, bidId: $bidId, bidAmount: $bidAmount,rating:$rating, bidDate: $bidDate)';
+    return 'RequestEntity(workOrderId: $workOrderId, requestId: $requestId, serviceRequestId: $serviceRequestId, serviceType: $serviceType, serviceNames: $serviceNames, customerId: $customerId, customerName: $customerName, customerContactNumber: $customerContactNumber, customerEmail: $customerEmail, latitude: $latitude, longitude: $longitude, distance: $distance, requestDate: $requestDate, status: $status, bidId: $bidId, bidAmount: $bidAmount, rating:$rating, ratingCustomer:$ratingCustomer, ratingMerchant:$ratingMerchant, bidDate: $bidDate)';
   }
 
   @override
@@ -93,6 +105,7 @@ class RequestEntity {
         other.requestId == requestId &&
         other.serviceRequestId == serviceRequestId &&
         listEquals(other.serviceNames, serviceNames) &&
+        other.serviceType == serviceType &&
         other.customerId == customerId &&
         other.customerName == customerName &&
         other.customerContactNumber == customerContactNumber &&
@@ -105,6 +118,8 @@ class RequestEntity {
         other.bidId == bidId &&
         other.bidAmount == bidAmount &&
         other.rating == rating &&
+        other.ratingCustomer == ratingCustomer &&
+        other.ratingMerchant == ratingMerchant &&
         other.bidDate == bidDate;
   }
 
@@ -113,6 +128,7 @@ class RequestEntity {
     return workOrderId.hashCode ^
         requestId.hashCode ^
         serviceRequestId.hashCode ^
+        serviceType.hashCode ^
         serviceNames.hashCode ^
         customerId.hashCode ^
         customerName.hashCode ^
@@ -126,6 +142,8 @@ class RequestEntity {
         bidId.hashCode ^
         bidAmount.hashCode ^
         rating.hashCode ^
+        ratingCustomer.hashCode ^
+        ratingMerchant.hashCode ^
         bidDate.hashCode;
   }
 }

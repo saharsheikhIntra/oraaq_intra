@@ -13,7 +13,8 @@ class CompletedWorkOrderResponseMerchantDto {
   final double latitude;
   final double longitude;
   final String requestDate;
-  final int rating;
+  final int ratingCustomer;
+  final int ratingMerchant;
   final String status;
 
   CompletedWorkOrderResponseMerchantDto({
@@ -31,7 +32,8 @@ class CompletedWorkOrderResponseMerchantDto {
     this.latitude = 0.0,
     this.longitude = 0.0,
     this.requestDate = '',
-    this.rating = 0,
+    this.ratingCustomer = 0,
+    this.ratingMerchant = 0,
     this.status = '',
   });
 
@@ -54,13 +56,14 @@ class CompletedWorkOrderResponseMerchantDto {
       latitude: map['latitude'] != null ? map['latitude'].toDouble() : 0.0,
       longitude: map['longitude'] != null ? map['longitude'].toDouble() : 0.0,
       requestDate: map['request_date'] ?? '',
-      rating: map['rating'] ?? 0,
+      ratingCustomer: map['customer_rating'] ?? 0,
+      ratingMerchant: map['merchant_rating'] ?? 0,
       status: map['status'] ?? '',
     );
   }
 
   @override
   String toString() {
-    return 'CompletedWorkOrderResponseDto(workOrderId: $workOrderId, requestId: $requestId, bidId: $bidId, bidAmount: $bidAmount, bidDate: $bidDate, serviceNames: $serviceNames, serviceRequestId: $serviceRequestId, customerId: $customerId, customerName: $customerName, customerContactNumber: $customerContactNumber, customerEmail: $customerEmail, latitude: $latitude, longitude: $longitude, requestDate: $requestDate, rating:$rating ,status: $status)';
+    return 'CompletedWorkOrderResponseDto(workOrderId: $workOrderId, requestId: $requestId, bidId: $bidId, bidAmount: $bidAmount, bidDate: $bidDate, serviceNames: $serviceNames, serviceRequestId: $serviceRequestId, customerId: $customerId, customerName: $customerName, customerContactNumber: $customerContactNumber, customerEmail: $customerEmail, latitude: $latitude, longitude: $longitude, requestDate: $requestDate, ratingCustomer:$ratingCustomer, ratingMerchant:$ratingMerchant ,status: $status)';
   }
 }

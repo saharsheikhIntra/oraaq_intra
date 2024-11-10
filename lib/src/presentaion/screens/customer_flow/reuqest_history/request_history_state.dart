@@ -47,3 +47,15 @@ final class CancelCustomerRequestSuccessState extends RequestHistoryState {
   final String message;
   CancelCustomerRequestSuccessState(this.message);
 }
+
+class RatingSuccessState extends RequestHistoryState {
+  final String message;
+
+  RatingSuccessState(this.message);
+}
+
+class RatingErrorState extends RequestHistoryState {
+  final Failure failure;
+
+  RatingErrorState(this.failure);
+}

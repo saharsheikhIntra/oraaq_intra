@@ -61,7 +61,8 @@ class JobManagementService {
                   status: RequestStatusEnum.completed,
                   bidId: e.bidId,
                   bidAmount: e.bidAmount,
-                  rating: e.rating,
+                  ratingCustomer: e.ratingCustomer,
+                  ratingMerchant: e.ratingMerchant,
                   bidDate: DateTime.tryParse(e.bidDate) ?? DateTime.now(),
                 ))
             .toList();
