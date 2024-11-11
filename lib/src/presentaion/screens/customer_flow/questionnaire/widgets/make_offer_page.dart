@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -336,6 +337,7 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                         iconPosition: CustomButtonIconPosition.trailing,
                         icon: Symbols.arrow_forward_rounded,
                         onPressed: () {
+                          developer.log('make offer page userOfferAmount: ${_selectedOffer.value}');
                           widget.onContinue(
                               tempVal, _standardCharges, _selectedOffer.value);
                         },

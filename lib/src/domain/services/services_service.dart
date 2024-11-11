@@ -168,8 +168,11 @@ class ServicesService {
                       .cancelled, // Assuming this is for cancelled orders
                   bidId: e.bidId,
                   bidAmount: e.bidAmount,
-                  rating: e.rating,
+                  rating: e.ratingCustomer,
+                  ratingCustomer: e.ratingCustomer,
+                  ratingMerchant: e.ratingMerchant,
                   bidDate: DateTime.tryParse(e.bidDate) ?? DateTime.now(),
+                  serviceType: e.serviceType,
                 ))
             .toList();
         return Right(entities);

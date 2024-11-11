@@ -20,15 +20,14 @@ class _OtpScreenState extends State<OtpScreen> {
   String generatedOtp = '';
   String email = '';
   // final UserType userType = getIt<UserType>();
-  final user = getIt<UserEntity>();
 
   @override
   void initState() {
     super.initState();
     // generatedOtp = widget.arguement.otp.toString();
     email = widget.arguement.email;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _cubit.forgetPassword(email);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await _cubit.forgetPassword(email);
     });
   }
 
@@ -67,17 +66,31 @@ class _OtpScreenState extends State<OtpScreen> {
               variant: SnackbarVariantEnum.success,
               title: "OTP Verified",
             );
-            user.isOtpVerified = 'Y';
+            // user.isOtpVerified = 'Y';
 
-            log(user.toString());
-            widget.arguement.routeName == 'register'
-                ? widget.arguement.selectedUserType == UserType.customer
-                    ? context.pushNamed(RouteConstants.customerEditProfileRoute)
-                    : context.pushNamed(RouteConstants.merchantEditProfileRoute)
-                : context.pushNamed(RouteConstants.newPasswordRoute,
-                    arguments: NewPasswordArgs(
-                        widget.arguement.selectedUserType,
-                        widget.arguement.email));
+            // log(user.toString());
+            if (widget.arguement.routeName == 'register') {
+              final user = getIt<UserEntity>();
+              user.isOtpVerified = 'Y';
+              if (widget.arguement.selectedUserType == UserType.customer) {
+                context.pushNamed(RouteConstants.customerEditProfileRoute);
+              } else {
+                context.pushNamed(RouteConstants.merchantEditProfileRoute);
+              }
+            } else {
+              context.pushNamed(RouteConstants.newPasswordRoute,
+                  arguments: NewPasswordArgs(widget.arguement.selectedUserType,
+                      widget.arguement.email));
+            }
+
+            // widget.arguement.routeName == 'register'
+            //     ? widget.arguement.selectedUserType == UserType.customer
+            //         ? context.pushNamed(RouteConstants.customerEditProfileRoute)
+            //         : context.pushNamed(RouteConstants.merchantEditProfileRoute)
+            //     : context.pushNamed(RouteConstants.newPasswordRoute,
+            //         arguments: NewPasswordArgs(
+            //             widget.arguement.selectedUserType,
+            //             widget.arguement.email));
             // Navigator.pushReplacementNamed(context, '/nextScreen');
             // if(userType == UserType.customer){
             //   context.pushNamed(RouteConstants.customerEditProfileRoute);

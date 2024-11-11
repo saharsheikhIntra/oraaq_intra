@@ -61,7 +61,8 @@ class JobManagementService {
                   status: RequestStatusEnum.completed,
                   bidId: e.bidId,
                   bidAmount: e.bidAmount,
-                  rating: e.rating,
+                  ratingCustomer: e.ratingCustomer,
+                  ratingMerchant: e.ratingMerchant,
                   bidDate: DateTime.tryParse(e.bidDate) ?? DateTime.now(),
                 ))
             .toList();
@@ -206,6 +207,20 @@ class JobManagementService {
   Future<Either<Failure, String>> cancelWorkOrder(
       int workOrderId, int merchantId) async {
     var result = await _jobsRepository.cancelWorkOrder(workOrderId, merchantId);
+    return result.fold(
+      (l) => Left(l),
+      (r) => Right(r),
+    );
+  }
+
+  //
+  //
+  // MARK: COMPLETE WORK ORDER
+  //
+  //
+  Future<Either<Failure, String>> completeWorkOrder(
+      int workOrderId, int merchantId) async {
+    var result = await _jobsRepository.completeWorkOrder(workOrderId, merchantId);
     return result.fold(
       (l) => Left(l),
       (r) => Right(r),

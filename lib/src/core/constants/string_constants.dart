@@ -106,7 +106,7 @@ class StringConstants {
   static const String cnicNtn = "CNIC / NTN";
   static const String serviceType = "Service Type";
   static const String selectServiceType = "Select Service Type";
-  static const String selectServiceLocation = "Select Service Location";
+  static const String selectServiceLocation = "Select Your Location";
   static const String serviceLocation = "Service Location";
   static const String openingTime = "Opening Time";
   static const String closingTime = "Closing Time";

@@ -44,6 +44,11 @@ class CancelMerchantOrderState extends MerchantHomeScreenState {
   CancelMerchantOrderState(this.message);
 }
 
+class CompleteMerchantOrderState extends MerchantHomeScreenState {
+  final String message;
+  CompleteMerchantOrderState(this.message);
+}
+
 class BidPostedSuccessState extends MerchantHomeScreenState {
   final String message;
   BidPostedSuccessState(this.message);

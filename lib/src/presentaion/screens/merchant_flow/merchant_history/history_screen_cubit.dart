@@ -36,9 +36,9 @@ class HistoryScreenCubit extends Cubit<HistoryScreenState> {
     emit(HistoryScreenLoading());
 
     final completedResult =
-        await _jobManagementService.getCompletedWorkOrdersForMerchant(3);
+        await _jobManagementService.getCompletedWorkOrdersForMerchant(user.id);
     final cancelledResult =
-        await _jobManagementService.getCanceledWorkOrdersForMerchant(3);
+        await _jobManagementService.getCanceledWorkOrdersForMerchant(user.id);
 
     if (completedResult.isLeft() || cancelledResult.isLeft()) {
       final failure = completedResult.fold((l) => l, (r) => null) ??
@@ -57,11 +57,11 @@ class HistoryScreenCubit extends Cubit<HistoryScreenState> {
   Future<void> submitRating(int orderId, int customerId, int rating) async {
     final user = getIt.get<UserEntity>();
     final addRating = AddRatingRequestDto(
-        orderId: orderId,
+        orderId: orderId,   
         ratingForUserType: 3,
-        merchantId: user.id,
+        merchantId: null,
         customerId: customerId,
-        ratingBy: user.userId,
+        ratingBy: user.id,
         rating: rating,
         review: "");
 
