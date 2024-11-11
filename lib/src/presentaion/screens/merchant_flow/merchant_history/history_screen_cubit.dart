@@ -57,11 +57,11 @@ class HistoryScreenCubit extends Cubit<HistoryScreenState> {
   Future<void> submitRating(int orderId, int customerId, int rating) async {
     final user = getIt.get<UserEntity>();
     final addRating = AddRatingRequestDto(
-        orderId: orderId,
+        orderId: orderId,   
         ratingForUserType: 3,
         merchantId: null,
         customerId: customerId,
-        ratingBy: user.userId,
+        ratingBy: user.id,
         rating: rating,
         review: "");
 

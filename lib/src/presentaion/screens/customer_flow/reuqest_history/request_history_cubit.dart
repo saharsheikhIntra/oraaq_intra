@@ -126,7 +126,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
         ratingForUserType: 2,
         merchantId: merchantId,
         customerId: null,
-        ratingBy: user.userId,
+        ratingBy: user.id,
         rating: rating,
         review: "");
 

@@ -349,7 +349,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                             context,
                                             isScrollControlled: true,
                                             child:  CompletedJobSheet(
-                                                rating: currentRequest.ratingCustomer == null ? 0 :currentRequest.ratingCustomer!,
+                                                rating: currentRequest.ratingCustomer ?? 0,
                                                 userName: currentRequest.customerName,
                                                 email: currentRequest.customerEmail,
                                                 serviceType: currentRequest.serviceType,
