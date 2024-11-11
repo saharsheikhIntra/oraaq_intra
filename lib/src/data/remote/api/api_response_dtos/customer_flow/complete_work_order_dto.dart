@@ -4,6 +4,7 @@ class CustomerCompletedWorkOrderResponseDto {
   final int bidId;
   final double bidAmount;
   final String bidDate;
+  final String serviceType;
   final List<String> serviceNames;
   final int serviceRequestId;
   final int merchantId;
@@ -13,7 +14,8 @@ class CustomerCompletedWorkOrderResponseDto {
   final double latitude;
   final double longitude;
   final String requestDate;
-  final int rating;
+  final int ratingCustomer;
+  final int ratingMerchant;
   final String status;
 
   CustomerCompletedWorkOrderResponseDto({
@@ -22,6 +24,7 @@ class CustomerCompletedWorkOrderResponseDto {
     this.bidId = -1,
     this.bidAmount = 0.0,
     this.bidDate = '',
+    this.serviceType = '',
     this.serviceNames = const [],
     this.serviceRequestId = -1,
     this.merchantId = -1,
@@ -31,7 +34,8 @@ class CustomerCompletedWorkOrderResponseDto {
     this.latitude = 0.0,
     this.longitude = 0.0,
     this.requestDate = '',
-    this.rating = 0,
+    this.ratingCustomer = 0,
+    this.ratingMerchant = 0,
     this.status = '',
   });
 
@@ -53,13 +57,15 @@ class CustomerCompletedWorkOrderResponseDto {
       latitude: map['latitude'] != null ? map['latitude'].toDouble() : 0.0,
       longitude: map['longitude'] != null ? map['longitude'].toDouble() : 0.0,
       requestDate: map['request_date'] ?? '',
-      rating: map['rating'] ?? 0,
+      serviceType: map['service_type'] ?? '',
+      ratingCustomer: map['customer_rating'] ?? 0,
+      ratingMerchant: map['merchant_rating'] ?? 0,
       status: map['status'] ?? '',
     );
   }
 
   @override
   String toString() {
-    return 'CustomerCompletedWorkOrderResponseDto(workOrderId: $workOrderId, requestId: $requestId, bidId: $bidId, bidAmount: $bidAmount, bidDate: $bidDate, serviceNames: $serviceNames, serviceRequestId: $serviceRequestId, merchantId: $merchantId, merchantName: $merchantName, merchantContactNumber: $merchantContactNumber, merchantEmail: $merchantEmail, latitude: $latitude, longitude: $longitude, requestDate: $requestDate, rating: $rating, status: $status)';
+    return 'CustomerCompletedWorkOrderResponseDto(workOrderId: $workOrderId, requestId: $requestId, bidId: $bidId, bidAmount: $bidAmount, bidDate: $bidDate, serviceNames: $serviceNames, serviceRequestId: $serviceRequestId, merchantId: $merchantId, merchantName: $merchantName, merchantContactNumber: $merchantContactNumber, merchantEmail: $merchantEmail, latitude: $latitude, longitude: $longitude, requestDate: $requestDate, ratingCustomer: $ratingCustomer, ratingMerchant: $ratingMerchant, status: $status)';
   }
 }

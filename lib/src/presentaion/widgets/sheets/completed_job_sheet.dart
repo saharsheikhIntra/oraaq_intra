@@ -24,6 +24,7 @@ class CompletedJobSheet extends StatefulWidget {
   final String? date;
   final String? time;
   final String? totalAmount;
+  final String? serviceType;
   final int rating;
   final CompletedJobSheetVariant variant;
   const CompletedJobSheet({
@@ -35,6 +36,7 @@ class CompletedJobSheet extends StatefulWidget {
     this.date,
     this.time,
     this.totalAmount,
+    this.serviceType = '',
     required this.rating,
     required this.variant,
   });
@@ -103,7 +105,7 @@ class _CompletedJobSheetSheetState extends State<CompletedJobSheet> {
               _buildDetails(
                 Symbols.build_rounded,
                 "Service Type",
-                "AC Repairing",
+                widget.serviceType ?? "Ac Repair",
                 valueColor: ColorTheme.primaryText,
               ),
             _buildDetails(

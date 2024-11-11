@@ -192,7 +192,30 @@ class JobManagementRepository {
   Future<Either<Failure, String>> cancelWorkOrder(
       int biddingId, int merchantId) async {
     final result = await _datasource.put(
-      "${ApiConstants.cancelMerchantWorkOrder}bidding_id=$biddingId&merchant_id=$merchantId",
+      "${ApiConstants.cancelMerchantWorkOrder}bidding_id=$biddingId&merchant_id=$merchantId&order_status_id=2",
+    );
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data.toString(),
+        ).message;
+        return Right(responseDto);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: COMPLETE WORK ORDER
+  //
+  //
+
+  Future<Either<Failure, String>> completeWorkOrder(
+      int biddingId, int merchantId) async {
+    final result = await _datasource.put(
+      "${ApiConstants.cancelMerchantWorkOrder}bidding_id=$biddingId&merchant_id=$merchantId&order_status_id=3",
     );
     return result.fold(
       (l) => Left(l),

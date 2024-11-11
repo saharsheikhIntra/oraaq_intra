@@ -159,7 +159,7 @@ injectCubits() {
   getIt.registerFactory(() => ChangePasswordCubit(getIt()));
 
   getIt.registerFactory(() => CustomerEditProfileCubit(getIt()));
-  getIt.registerFactory(() => RequestHistoryCubit(getIt()));
+  getIt.registerFactory(() => RequestHistoryCubit(getIt(),getIt()));
 
 
   getIt.registerFactory(() => OffersRecievedCubit(getIt()));

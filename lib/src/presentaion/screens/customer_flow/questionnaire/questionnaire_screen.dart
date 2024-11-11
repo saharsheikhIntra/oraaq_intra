@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -157,6 +159,7 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
                                         selectedServices: newList,
                                         // selectedServices: const [],
                                         onContinue: (String datetimeSelected,int amount, int userOfferAmount){
+                                          log('amount: $amount userOfferAmount: $userOfferAmount');
                                           context.pushNamed(
                                             arguments: PickLocationScreenArgument(widget.args.category.id, newList,datetimeSelected,amount,userOfferAmount),
                                             RouteConstants.pickLocationRoute);

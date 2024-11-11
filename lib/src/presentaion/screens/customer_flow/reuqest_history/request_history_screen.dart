@@ -114,6 +114,22 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                     title: state.message,
                   );
                 }
+                if (state is RatingSuccessState) {
+                  _cubit.fetchWorkOrders();
+                  Toast.show(
+                    context: context,
+                    variant: SnackbarVariantEnum.success,
+                    title: state.message,
+                  );
+                }
+                if (state is RatingErrorState) {
+                  _cubit.fetchWorkOrders();
+                  Toast.show(
+                    context: context,
+                    variant: SnackbarVariantEnum.warning,
+                    title: state.failure.message,
+                  );
+                }
               },
               builder: (context, state) {
                 if (state is RequestHistoryScreenLoaded) {
@@ -311,30 +327,49 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                         (BuildContext context, int index) {
                                       RequestEntity currentRequest =
                                           state.completedOrders[index];
+                                      log('ratingC: ${currentRequest.ratingCustomer}, ratingM: ${currentRequest.ratingMerchant}');
                                       return CompletedRequestCard(
                                         userName: currentRequest.customerName,
                                         date: currentRequest.requestDate
                                             .formattedDate(),
                                         ratings:
-                                            currentRequest.rating.toString(),
+                                            '${currentRequest.ratingMerchant ?? 0}',
                                         price:
                                             currentRequest.bidAmount.toString(),
+                                        
                                         servicesList:
                                             currentRequest.serviceNames,
                                         duration: '4 hr 40 mints',
-                                        rating: currentRequest.rating!,
+                                        rating: currentRequest.ratingCustomer ?? 0,
                                         variant: CompletedRequestCardVariant
                                             .merchant,
-                                        onTap: () {
-                                          SheetComponenet.show(
+                                        onTap: () async{
+
+                                          final rating = await SheetComponenet.show(
                                             context,
                                             isScrollControlled: true,
-                                            child: const CompletedJobSheet(
-                                                rating: 0,
+                                            child:  CompletedJobSheet(
+                                                rating: currentRequest.ratingCustomer ?? 0,
+                                                userName: currentRequest.customerName,
+                                                email: currentRequest.customerEmail,
+                                                serviceType: currentRequest.serviceType,
+                                                phoneNumber: currentRequest.customerContactNumber,
+                                                servicesList: currentRequest.serviceNames,
+                                                date: currentRequest.requestDate.formattedDate(),
+                                                time: currentRequest.requestDate.to12HourFormat,
                                                 variant:
                                                     CompletedJobSheetVariant
                                                         .customer),
                                           );
+                                          log('rating selected: $rating');
+                                       
+                                          if (rating != null && rating > 0) {
+                                            _cubit.submitRating(
+                                                state
+                                                    .completedOrders[index].workOrderId,
+                                                state.completedOrders[index].customerId,
+                                                rating);
+                                          }
                                         },
                                       );
                                     })
@@ -367,14 +402,10 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                         duration: "4hr 30 mints",
                                         date: currentRequest.requestDate
                                             .formattedDate(),
-                                        time: "6:00 am",
-                                        price: "10,000",
-                                        servicesList: const [
-                                          "Hair cut",
-                                          "Hair",
-                                          "Hair extension",
-                                          "Hair extension"
-                                        ],
+                                        time: currentRequest.requestDate
+                                            .to12HourFormat,
+                                        price: currentRequest.bidAmount.toString(),
+                                        servicesList: currentRequest.serviceNames,
                                         onTap: () {},
                                       );
                                     })

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:oraaq/src/core/enum/merchant_jobs_filter.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/applied_jobs_response_dto.dart';
 import 'package:oraaq/src/imports.dart';
@@ -34,6 +36,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       cron.schedule(
         Schedule(seconds: 5),
         () {
+          log('cron run');
           _cubit.fetchWorkInProgressOrdersCron();
           _cubit.fetchAllServiceRequestsCron();
           // _cubit.fetchWorkInProgressOrdersCron();
@@ -62,7 +65,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       create: (context) => _cubit,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ScreenUtil().statusBarHeight + 107),
+          preferredSize: Size.fromHeight(ScreenUtil().statusBarHeight + 77),
           child: Container(
             padding: const EdgeInsets.fromLTRB(16, 16, 8, 16),
             decoration: const BoxDecoration(
@@ -98,11 +101,22 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   CustomButton(
                     size: CustomButtonSize.small,
                     type: CustomButtonType.tertiary,
+                    icon: Symbols.refresh_rounded,
+                    onPressed: () async{
+                      await _cubit.fetchWorkInProgressOrders();
+                    },
+                  ),
+                  const SizedBox(width: 10,),
+                  CustomButton(
+                    size: CustomButtonSize.small,
+                    type: CustomButtonType.tertiary,
                     icon: Symbols.account_circle_filled_rounded,
                     onPressed: () => context
                         .pushNamed(RouteConstants.merchantProfileRoute)
                         .then((_) => setState(() {})),
                   ),
+                  
+                  
                 ],
               ),
             ),
@@ -133,6 +147,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
               serviceRequestsNotifier.value = state.serviceRequests;
             }
             if (state is WorkInProgressOrdersCronLoaded) {
+              log('cron loaded');
               workInProgressOrdersNotifier.value = state.workInProgressOrders;
             }
             if (state is AllServiceRequestsCronLoaded) {
@@ -143,6 +158,15 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
               appliedJobsNotifier.value = state.appliedJobs;
             }
             if (state is CancelMerchantOrderState) {
+              DialogComponent.hideLoading(context);
+              _cubit.fetchWorkInProgressOrders();
+              Toast.show(
+                context: context,
+                variant: SnackbarVariantEnum.success,
+                title: state.message,
+              );
+            }
+            if (state is CompleteMerchantOrderState) {
               DialogComponent.hideLoading(context);
               _cubit.fetchWorkInProgressOrders();
               Toast.show(
@@ -322,11 +346,15 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     phoneNumber: order.customerContactNumber,
                     servicesList: order.serviceNames,
                     workOrderId: order.workOrderId,
+                    sheetName: "Action",
                     onCancel: () {
                       context.pop();
                       _cubit.cancelWorkOrder(order.bidId);
                     },
-                    onSubmit: (double bidAmmount) => context.pop(),
+                    onSubmit:  (double bidAmount) {
+                      context.pop();
+                      _cubit.completeWorkOrder(order.bidId);
+                    },
                     defaultValue: order.bidAmount.toDouble(), //15000,
                     variant: NewQuoteSheetSheetVariant.alreadyQuoted));
           },

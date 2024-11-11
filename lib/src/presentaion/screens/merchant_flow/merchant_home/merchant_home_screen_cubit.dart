@@ -106,6 +106,23 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
     );
   }
 
+  //
+// MARK: COMPLETE WORK ORDER
+//
+  Future<void> completeWorkOrder(int biddingId) async {
+    emit(MerchantHomeLoading());
+    final result =
+        await _jobManagementService.completeWorkOrder(biddingId, user.id);
+    result.fold(
+      (l) {
+        emit(MerchantHomeError(l));
+      },
+      (r) {
+        emit(CompleteMerchantOrderState(r));
+      },
+    );
+  }
+
 //
 // MARK: CANCEL WORK ORDER FROM MERCHANT APPLIED REQUESTS
 //
