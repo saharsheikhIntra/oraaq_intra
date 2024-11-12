@@ -23,7 +23,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
 
    Future<List<CustomerNewRequestDto>> fetchOnlyNewRequests() async { 
     final newRequestResult =
-        await _servicesRepository.getCustomerNewRequests(1);
+        await _servicesRepository.getCustomerNewRequests(user.id);
     if (
         newRequestResult.isLeft()) {
       final failure =
@@ -135,6 +135,26 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
     result.fold(
       (failure) => emit(RatingErrorState(failure)),
       (message) => emit(RatingSuccessState(message)),
+    );
+  }
+
+  //
+  //
+  // MARK: CANCEL WORK ORDER
+  //
+  //
+
+  Future<void> cancelWorkOrder(int orderId) async {
+    emit(RequestHistoryScreenLoading());
+    final result =
+        await _servicesRepository.cancelWorkOrder(orderId, user.id);
+    result.fold(
+      (l) {
+        emit(RequestHistoryScreenError(l));
+      },
+      (r) {
+        emit(CancelCustomerOrderState(r));
+      },
     );
   }
 

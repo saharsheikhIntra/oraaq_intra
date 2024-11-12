@@ -130,6 +130,16 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                     title: state.failure.message,
                   );
                 }
+                if (state is CancelCustomerOrderState) {
+                  DialogComponent.hideLoading(context);
+                  _cubit.fetchWorkOrders();
+                  _cubit.fetchAcceptedRequest();
+                  Toast.show(
+                    context: context,
+                    variant: SnackbarVariantEnum.success,
+                    title: state.message,
+                  );
+            }
               },
               builder: (context, state) {
                 if (state is RequestHistoryScreenLoaded) {
@@ -171,7 +181,11 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                               context,
                                               isScrollControlled: true,
                                               child: RequestSheet(
-                                                onCancel: () {},
+                                                onCancel: () {
+                                                  // context.pop();
+                                                  // _cubit.cancelWorkOrder(acceptedJobs
+                                                  //   .value[index].orderId);
+                                                },  
                                               ),
                                             ),
                                             child: SizedBox(
@@ -203,11 +217,11 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                                   context,
                                                   isScrollControlled: true,
                                                   child: RequestSheet(
-                                                    onCancel: () => _cubit
-                                                        .cancelCustomerCreatedRequest(
-                                                            acceptedJobs
-                                                                .value[index]
-                                                                .requestId),
+                                                    onCancel:(){
+                                                      context.pop();
+                                                      _cubit.cancelWorkOrder(acceptedJobs
+                                                        .value[index].orderId);
+                                                    },
                                                     name: acceptedJobs
                                                         .value[index]
                                                         .merchantName,

@@ -366,4 +366,33 @@ class ServicesRepository {
       return Left(Failure('${StringConstants.somethingWentWrong}: $e'));
     }
   }
+
+
+  //
+  //
+  // MARK: CANCEL WORK ORDER
+  //
+  //
+
+  Future<Either<Failure, String>> cancelWorkOrder(
+      int orderId, int customerId) async {
+    final result = await _datasource.put(
+      ApiConstants.cancelCustomerConfirmedRequest,
+      data: {
+        'order_id': orderId,
+        'customer_id': customerId
+      },
+    );
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+          r.data,
+          (data) => data.toString(),
+        ).message;
+        return Right(responseDto);
+      },
+    );
+  }
+
 }
