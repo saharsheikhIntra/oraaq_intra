@@ -133,7 +133,12 @@ class _RequestSheetState extends State<RequestSheet> {
                     // context.popUntil(RouteConstants.customerHomeScreenRoute);
                   },
                   // context.popUntil(RouteConstants.customerHomeScreenRoute),
-                  onCancelTap: () => context.pop()
+                  onCancelTap: () {
+                    widget.onCancel();
+                    context.pop();
+
+                    // context.popUntil(RouteConstants.customerHomeScreenRoute);
+                  }
                   // context.popUntil(RouteConstants.customerHomeScreenRoute),
                   );
             },

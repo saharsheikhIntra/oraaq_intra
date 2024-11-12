@@ -60,6 +60,8 @@ class ApiConstants {
 
   static const String cancelCustomerCreatedRequest =
       '/ords/oraaq/api/cancel_request';
+  static const String cancelCustomerConfirmedRequest =
+      '/ords/oraaq/api/cancel_c_order_by_customer';
 
   static const String customerWorkOrders =
       "/ords/oraaq/api/customerWorkOrders?";

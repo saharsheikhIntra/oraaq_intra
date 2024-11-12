@@ -350,4 +350,20 @@ class ServicesService {
       (message) => Right(message),
     );
   }
+
+
+  //
+  //
+  // MARK: CANCEL CONFIRMED WORK ORDER
+  //
+  //
+  Future<Either<Failure, String>> cancelWorkOrder(
+      int orderId, int customerId) async {
+    var result = await _servicesRepository.cancelWorkOrder(orderId, customerId);
+    return result.fold(
+      (l) => Left(l),
+      (r) => Right(r),
+    );
+  }
+
 }

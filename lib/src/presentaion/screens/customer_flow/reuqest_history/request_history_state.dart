@@ -59,3 +59,7 @@ class RatingErrorState extends RequestHistoryState {
 
   RatingErrorState(this.failure);
 }
+class CancelCustomerOrderState extends RequestHistoryState {
+  final String message;
+  CancelCustomerOrderState(this.message);
+}
