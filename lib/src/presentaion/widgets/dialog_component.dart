@@ -24,7 +24,7 @@ class DialogComponent {
 //   BlocBuilder<MerchantHomeScreenCubit, MerchantHomeScreenState>)
         context: context,
         barrierLabel: 'dialog',
-        transitionDuration: 3000.milliseconds,
+        transitionDuration: 300.milliseconds,
         barrierDismissible: barrierDismissible,
         barrierColor: ColorTheme.white.withOpacity(0.5),
         pageBuilder: (ctx, anim1, anim2) => PopScope(
@@ -67,7 +67,7 @@ class DialogComponent {
         barrierColor:
             barrierColor ?? ColorTheme.primary.shade100.withOpacity(0.5),
         barrierLabel: 'dialog',
-        transitionDuration: 3000.milliseconds, //
+        transitionDuration: 300.milliseconds,
         pageBuilder: (ctx, anim1, anim2) => PopScope(
             canPop: onWillPop == null,
             onPopInvoked: (didPop) {
