@@ -18,7 +18,7 @@ class TermsAndConditionsScreen extends StatelessWidget {
             _buildParagraph('Effective Date: [Insert Date]'),
             _buildHeading('1. Introduction'),
             _buildParagraph(
-                'Welcome to pk.oraaq.com. These Terms and Conditions govern your use of our listings and coupon service. By accessing or using our Service, you agree to comply with and be bound by these Terms. If you disagree with these Terms, please do not use our Service.'),
+                'Welcome to oraaq.com . These Terms and Conditions govern your use of our listings and coupon service. By accessing or using our Service, you agree to comply with and be bound by these Terms. If you disagree with these Terms, please do not use our Service.'),
             _buildHeading('2. Use of Service'),
             _buildSubParagraph(
                 'a. Eligibility: You must be at least 18 years old to use our Service. By using our Service, you represent and warrant that you meet this age requirement.'),
