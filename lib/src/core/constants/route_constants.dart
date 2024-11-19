@@ -19,6 +19,7 @@ class RouteConstants {
   static const String changePasswordRoute = "changePasswordRoute";
 
   static const String questionnaireRoute = "questionnaireRoute";
+    static const String questionnaireRoute2 = "questionnaireRoute2";
 
   static const String customerHomeScreenRoute = "customerHomeRoute";
   static const String offeredReceivedScreenRoute = "offerReceivedRoute";

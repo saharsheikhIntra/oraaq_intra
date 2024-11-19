@@ -1,9 +1,11 @@
 import 'package:oraaq/src/core/extensions/widget_extension.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
+import 'package:oraaq/src/domain/entities/service_entity.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_state.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/widgets/service_card.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/new_questionaire/NewQuestionnaireArgument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
 import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
 import 'package:oraaq/src/presentaion/widgets/ongoing_request_card.dart';
@@ -279,9 +281,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                           itemBuilder: (c, i) => ServiceCard(
                               category: _categories[i],
                               onTap: () => context.pushNamed(
-                                    RouteConstants.questionnaireRoute,
+                                    RouteConstants.questionnaireRoute2,
                                     arguments:
-                                        QuestionnaireArgument(_categories[i]),
+                                        NewQuestionnaireArgument(_categories[i],<ServiceEntity>[],<ServiceEntity>[],false),
                                   ))),
                 ]));
           },
