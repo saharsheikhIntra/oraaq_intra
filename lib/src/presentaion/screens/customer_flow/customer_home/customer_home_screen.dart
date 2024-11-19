@@ -280,8 +280,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                               category: _categories[i],
                               onTap: () => context.pushNamed(
                                     RouteConstants.questionnaireRoute,
-                                    arguments:
-                                        QuestionnaireArgument(_categories[i]),
+                                    arguments: QuestionnaireArgument(
+                                        _categories[i], []),
                                   ))),
                 ]));
           },

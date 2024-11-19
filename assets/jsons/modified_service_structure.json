@@ -1,0 +1,186 @@
+{
+    "service_group": [
+        {
+            "service_id": 101,
+            "short_title": "Hair Services",
+            "description": "Expert Hair Care and Styling",
+            "price": null,
+            "prompt": "What is your hair length?",
+            "is_service_group": "Y",
+            "is_last_leaf": "N",
+            "services": [
+                {
+                    "service_id": 102,
+                    "short_title": "Long Hair",
+                    "description": "Services for Long Hair",
+                    "price": null,
+                    "prompt": null,
+                    "is_service_group": "Y",
+                    "is_last_leaf": "N",
+                    "services": [
+                        {
+                            "service_id": 103,
+                            "short_title": "Haircut",
+                            "description": "Expert Haircut",
+                            "price": 200,
+                            "prompt": "Choose your haircut style",
+                            "is_service_group": "Y",
+                            "is_last_leaf": "N",
+                            "services": [
+                                {
+                                    "service_id": 104,
+                                    "short_title": "Signature Cut",
+                                    "description": "Signature Haircut",
+                                    "price": 150,
+                                    "prompt": null,
+                                    "is_service_group": "N",
+                                    "is_last_leaf": "Y"
+                                },
+                                {
+                                    "service_id": 105,
+                                    "short_title": "Layered Cut",
+                                    "description": "Layered Haircut",
+                                    "price": 150,
+                                    "prompt": null,
+                                    "is_service_group": "N",
+                                    "is_last_leaf": "Y"
+                                }
+                            ]
+                        },
+                        {
+                            "service_id": 106,
+                            "short_title": "Hair Coloring",
+                            "description": "Professional Hair Coloring",
+                            "price": null,
+                            "prompt": "Which color service are you interested in?",
+                            "is_service_group": "Y",
+                            "is_last_leaf": "N",
+                            "services": [
+                                {
+                                    "service_id": 107,
+                                    "short_title": "Highlights",
+                                    "description": "Hair Highlights",
+                                    "price": 250,
+                                    "prompt": null,
+                                    "is_service_group": "N",
+                                    "is_last_leaf": "Y"
+                                },
+                                {
+                                    "service_id": 108,
+                                    "short_title": "Full Color",
+                                    "description": "Full Hair Color",
+                                    "price": 300,
+                                    "prompt": null,
+                                    "is_service_group": "N",
+                                    "is_last_leaf": "Y"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "service_id": 109,
+                    "short_title": "Short Hair",
+                    "description": "Services for Short Hair",
+                    "price": null,
+                    "prompt": null,
+                    "is_service_group": "Y",
+                    "is_last_leaf": "N",
+                    "services": [
+                        {
+                            "service_id": 110,
+                            "short_title": "Basic Trim",
+                            "description": "Basic Hair Trim",
+                            "price": 100,
+                            "prompt": null,
+                            "is_service_group": "N",
+                            "is_last_leaf": "Y"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "service_id": 151,
+            "short_title": "Skin Care",
+            "description": "Skin Care Services",
+            "price": null,
+            "prompt": "Revitalize your skin! Select your rejuvenating service.",
+            "is_service_group": "Y",
+            "is_last_leaf": "N",
+            "services": [
+                {
+                    "service_id": 152,
+                    "short_title": "Facial",
+                    "description": "Facial",
+                    "price": null,
+                    "prompt": "Desire a refreshing glow, deep cleanse, or targeted treatment?",
+                    "is_service_group": "Y",
+                    "is_last_leaf": "N",
+                    "services": [
+                        {
+                            "service_id": 185,
+                            "short_title": "Whitening",
+                            "description": "Whitening",
+                            "price": 121,
+                            "prompt": null,
+                            "is_service_group": "N",
+                            "is_last_leaf": "Y"
+                        },
+                        {
+                            "service_id": 188,
+                            "short_title": "Cleansing",
+                            "description": "Cleansing and exfoliation",
+                            "price": null,
+                            "prompt": "Select your cleansing type",
+                            "is_service_group": "Y",
+                            "is_last_leaf": "N",
+                            "services": [
+                                {
+                                    "service_id": 189,
+                                    "short_title": "Basic",
+                                    "description": "Basic",
+                                    "price": 121,
+                                    "prompt": null,
+                                    "is_service_group": "N",
+                                    "is_last_leaf": "Y"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "service_id": 191,
+                    "short_title": "Waxing",
+                    "description": "Waxing",
+                    "price": null,
+                    "prompt": "Opting for smooth legs, precise brows, or silky skin elsewhere?",
+                    "is_service_group": "Y",
+                    "is_last_leaf": "N",
+                    "services": [
+                        {
+                            "service_id": 221,
+                            "short_title": "Body Wax",
+                            "description": "Body Wax",
+                            "price": null,
+                            "prompt": "Select your body wax preference",
+                            "is_service_group": "Y",
+                            "is_last_leaf": "N",
+                            "services": [
+                                {
+                                    "service_id": 193,
+                                    "short_title": "Full arms",
+                                    "description": "Full arms",
+                                    "price": 121,
+                                    "prompt": null,
+                                    "is_service_group": "N",
+                                    "is_last_leaf": "Y"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
