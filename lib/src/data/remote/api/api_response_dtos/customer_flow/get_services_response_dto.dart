@@ -23,6 +23,7 @@ class ServiceResponseDto {
   final String prompt;
   final bool isServiceGroup;
   final bool isLastLeaf;
+  final bool isRadio;
   final List<ServiceResponseDto> services;
 
   ServiceResponseDto({
@@ -34,6 +35,7 @@ class ServiceResponseDto {
     required this.isServiceGroup,
     required this.isLastLeaf,
     required this.services,
+    this.isRadio = false,
   });
 
   factory ServiceResponseDto.fromMap(Map<String, dynamic> map) {
@@ -45,6 +47,7 @@ class ServiceResponseDto {
         prompt: map['prompt'] is String ? map['prompt'] : "",
         isServiceGroup: map['is_service_group'] == "Y",
         isLastLeaf: map['is_last_leaf'] == "Y",
+        isRadio: map['is_radio'] == "Y",
         services: map['services'] is List
             ? List<ServiceResponseDto>.from(
                 (map['services']).map<ServiceResponseDto>(
@@ -62,6 +65,7 @@ class ServiceResponseDto {
         prompt: prompt,
         isServiceGroup: isServiceGroup,
         isLastLeaf: isLastLeaf,
+        isRadio: isRadio,
         services: services.map((e) => e.toServiceEntity).toList(),
       );
 }

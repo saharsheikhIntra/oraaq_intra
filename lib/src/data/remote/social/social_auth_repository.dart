@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -51,6 +53,7 @@ class SocialAuthRepository {
   Future<Either<Failure, UserCredential>> signInWithGoogle() async {
     try {
       GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      log('googleUser: $googleUser');
       if (googleUser != null) {
         var googleAuth = await googleUser.authentication;
         var userCredential = await _firebaseAuth
@@ -62,10 +65,14 @@ class SocialAuthRepository {
       }
       return Left(Failure("Sign-In Unsuccessful"));
     } on PlatformException catch (e) {
+      log('run catch 1');
+      log('e: $e');
       return Left(Failure(e.message ?? e.code, code: e.code));
     } on FirebaseAuthException catch (e) {
+      log('run catch 2');
       return Left(Failure(e.message ?? e.code, code: e.code));
     } catch (e) {
+      log('run catch 3');
       return Left(Failure("Something Went Wrong", code: e.toString()));
     }
   }

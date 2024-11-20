@@ -217,6 +217,7 @@ class AuthenticationServices {
       SocialSignInEnum.facebook =>
         await _socialAuthRepository.signInWithFacebook(),
     };
+    log(result.toString()); 
 
     return result.fold(
       (l) => Left(l),

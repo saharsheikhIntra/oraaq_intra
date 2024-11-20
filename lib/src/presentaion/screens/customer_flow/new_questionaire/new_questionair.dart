@@ -268,6 +268,7 @@
 
 import 'dart:developer';
 
+
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
@@ -422,6 +423,7 @@ class _NewQuestionnaireScreenState extends State<NewQuestionnaireScreen> {
                                   log("c selected options : ${_selectedOptions}");
                                 }});
                               },)),
+                            16.verticalSpace,
                             CustomButton(onPressed: (){
                               // context.pop();
                               if (!(_selectedServices.isEmpty && widget.args.isOpen)) {
@@ -437,16 +439,24 @@ class _NewQuestionnaireScreenState extends State<NewQuestionnaireScreen> {
                                                 questions: [],
                                                 fee: e.price.toInt()))
                                             .toList();
-                                context.push(Scaffold(appBar: AppBar(
+                                if(newList.isNotEmpty){
+                                  context.push(Scaffold(appBar: AppBar(
                                   title: Text('Make Offer'),
                                 ),body: MakeOfferPage(onChanged: (val){}, onContinue: (String datetimeSelected,int amount, int userOfferAmount){
-                                  log('amount: $amount userOfferAmount: $userOfferAmount');
+                                  // log('amount: $amount userOfferAmount: $userOfferAmount');
                                           context.pushNamed(
                                             arguments: PickLocationScreenArgument(widget.args.category.id, newList,datetimeSelected,amount,userOfferAmount),
                                             RouteConstants.pickLocationRoute);
                                 }, onPrevious: (){}, selectedServices: newList),));
+                                }else{
+                                  Toast.show(
+                                    context: context,
+                                    variant: SnackbarVariantEnum.warning,
+                                    title: 'Please select at least one service',
+                                  );
+                                }
                               }
-                              log('button tap');
+                              // log('button tap');
                             },text: 'Next',)
                         ])));
       },),
