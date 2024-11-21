@@ -193,7 +193,7 @@ class _QuestionsAccordion2State extends State<QuestionsAccordion2> {
       child: ClipRRect(
         borderRadius: 12.borderRadius,
         child: ExpansionTile(
-          initiallyExpanded: true,
+          initiallyExpanded: false,
           shape: const Border(),
           title: Text(
             widget.service.shortTitle,

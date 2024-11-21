@@ -268,7 +268,6 @@
 
 import 'dart:developer';
 
-
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
@@ -312,19 +311,16 @@ class _NewQuestionnaireScreenState extends State<NewQuestionnaireScreen> {
     // _cubit.fetchQuestions();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // ignore: unnecessary_null_comparison
-      if(widget.args.services.isEmpty){
+      if (widget.args.services.isEmpty) {
         _cubit.fetchServices(widget.args.category.id);
         log('message: if run');
-      }
-      else{
+      } else {
         // _cubit.emit(QuestionnaireStateServicesloaded(widget.args.services));
         // log('message: else run');
         _services.clear();
         _services.addAll(widget.args.services);
         _selectedOptions.addAll(widget.args.selectedServices);
-        setState(() {
-          
-        });
+        setState(() {});
         log(widget.args.services.length.toString());
       }
     });
@@ -335,8 +331,9 @@ class _NewQuestionnaireScreenState extends State<NewQuestionnaireScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => _cubit,
-      child: BlocConsumer<QuestionnaireCubit, QuestionnaireState>(listener: (context, state) {
-                  switch (state) {
+      child: BlocConsumer<QuestionnaireCubit, QuestionnaireState>(
+        listener: (context, state) {
+          switch (state) {
             case QuestionnaireStateInitial():
               break;
             case QuestionnaireStateFetchError(error: Failure error):
@@ -357,17 +354,18 @@ class _NewQuestionnaireScreenState extends State<NewQuestionnaireScreen> {
               _services.clear();
               _services.addAll(services);
               // setState(() {
-                
+
               // });
               break;
           }
-      }, builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(widget.args.category.name),
-          ),
-          body: 
-          SafeArea(
+        },
+        builder: (context, state) {
+          return Scaffold(
+              appBar: AppBar(
+                title: Text(widget.args.category.name),
+                automaticallyImplyLeading: false,
+              ),
+              body: SafeArea(
                   child: _services.isEmpty
                       ? const NoDataFound(
                           text: StringConstants.failedToFetchServices)
@@ -375,91 +373,177 @@ class _NewQuestionnaireScreenState extends State<NewQuestionnaireScreen> {
                           const Text(StringConstants
                               .getTheBestSalonServicesAtYourFingerTips),
                           12.verticalSpace,
-                    SubServicesChipWrapView(
-                      servicesList:
-                          _selectedOptions.map((e) => e.shortTitle).toList(),
-                      variant: SubServicesChipWrapViewVariant.forQuestionnaire,
-                    ),
-                    28.verticalSpace,
+                          SubServicesChipWrapView(
+                            servicesList: _selectedOptions
+                                .map((e) => e.shortTitle)
+                                .toList(),
+                            variant:
+                                SubServicesChipWrapViewVariant.forQuestionnaire,
+                          ),
+                          28.verticalSpace,
                           Expanded(
-                              child: ListView.builder(itemCount: _services.length,itemBuilder: (context, index) {
-                                ServiceEntity currentService = _services[index];
-                                return widget.args.isOpen && currentService.isLastLeaf == false ? QuestionsAccordion2(service: currentService, onChanged: (val){
-                                  
-                                  if(val.isLastLeaf){
-                                     _selectedOptions.contains(val) ? _selectedOptions.remove(val) : _selectedOptions.add(val);
-                                  }
-                                  else{
-                                    _selectedServices.contains(val) ? _selectedServices.remove(val) : _selectedServices.add(val);
-                                  }
-                                  log("is last leaf: ${val.isLastLeaf} \n selected services: ${_selectedServices.length} \n selected options: ${_selectedOptions.length}");
-                                  setState(() {
-                                    
-                                  });
-                                  // log(val.toString());
-                                  // log(currentService.isLastLeaf.toString());
-                                  // log(widget.args.isOpen.toString());
-                                  // log(val.toString());
-                                },) : SingleQuestionTile2(title: currentService.shortTitle, subtitle: currentService.description, onChanged: (val){
-                                  log(val.toString());
-                                  if(widget.args.isOpen){
-                                    if(val){
-                                      currentService.isLastLeaf ? _selectedOptions.add(currentService):_selectedServices.add(currentService);
-                                    }
-                                    else{
-                                      currentService.isLastLeaf ? _selectedOptions.remove(currentService):_selectedServices.remove(currentService);
-                                    }
-                                  }
-                                  else{
-                                    if(val){
-                                    _selectedServices.add(currentService);
-                                  }
-                                  else{
-                                    _selectedServices.remove(currentService);
-                                  }
-                                  log("c selected services length: ${_selectedServices.length}");
-                                  log("c selected options length: ${_selectedOptions.length}");
-                                  log("c selected services : ${_selectedServices}");
-                                  log("c selected options : ${_selectedOptions}");
-                                }});
-                              },)),
-                            16.verticalSpace,
-                            CustomButton(onPressed: (){
-                              // context.pop();
-                              if (!(_selectedServices.isEmpty && widget.args.isOpen)) {
-                                context.push(NewQuestionnaireScreen(args: NewQuestionnaireArgument(widget.args.category,_selectedServices, _selectedOptions,true)));
-                              } else {
-                                List<QuestionModel> newList = _selectedOptions
-                                            .map((e) => QuestionModel(
-                                                id: e.serviceId,
-                                                name: e.shortTitle,
-                                                prompt: '',
-                                                level: -1,
-                                                isSelected: true,
-                                                questions: [],
-                                                fee: e.price.toInt()))
-                                            .toList();
-                                if(newList.isNotEmpty){
-                                  context.push(Scaffold(appBar: AppBar(
-                                  title: Text('Make Offer'),
-                                ),body: MakeOfferPage(onChanged: (val){}, onContinue: (String datetimeSelected,int amount, int userOfferAmount){
-                                  // log('amount: $amount userOfferAmount: $userOfferAmount');
-                                          context.pushNamed(
-                                            arguments: PickLocationScreenArgument(widget.args.category.id, newList,datetimeSelected,amount,userOfferAmount),
-                                            RouteConstants.pickLocationRoute);
-                                }, onPrevious: (){}, selectedServices: newList),));
-                                }else{
-                                  Toast.show(
-                                    context: context,
-                                    variant: SnackbarVariantEnum.warning,
-                                    title: 'Please select at least one service',
-                                  );
-                                }
-                              }
-                              // log('button tap');
-                            },text: 'Next',)
+                              child: ListView.builder(
+                            itemCount: _services.length,
+                            itemBuilder: (context, index) {
+                              ServiceEntity currentService = _services[index];
+                              return
+                                  // widget.args.isOpen &&
+                                  currentService.isLastLeaf == false
+                                      ? QuestionsAccordion2(
+                                          service: currentService,
+                                          onChanged: (val) {
+                                            if (val.isLastLeaf) {
+                                              _selectedOptions.contains(val)
+                                                  ? _selectedOptions.remove(val)
+                                                  : _selectedOptions.add(val);
+                                            } else {
+                                              _selectedServices.contains(val)
+                                                  ? _selectedServices
+                                                      .remove(val)
+                                                  : _selectedServices.add(val);
+                                            }
+                                            log("is last leaf: ${val.isLastLeaf} \n selected services: ${_selectedServices.length} \n selected options: ${_selectedOptions.length}");
+                                            setState(() {});
+                                            // log(val.toString());
+                                            // log(currentService.isLastLeaf.toString());
+                                            // log(widget.args.isOpen.toString());
+                                            // log(val.toString());
+                                          },
+                                        )
+                                      : SingleQuestionTile2(
+                                          title: currentService.shortTitle,
+                                          subtitle: currentService.description,
+                                          onChanged: (val) {
+                                            log(val.toString());
+                                            if (widget.args.isOpen) {
+                                              if (val) {
+                                                currentService.isLastLeaf
+                                                    ? _selectedOptions
+                                                        .add(currentService)
+                                                    : _selectedServices
+                                                        .add(currentService);
+                                              } else {
+                                                currentService.isLastLeaf
+                                                    ? _selectedOptions
+                                                        .remove(currentService)
+                                                    : _selectedServices
+                                                        .remove(currentService);
+                                              }
+                                            } else {
+                                              if (val) {
+                                                _selectedServices
+                                                    .add(currentService);
+                                              } else {
+                                                _selectedServices
+                                                    .remove(currentService);
+                                              }
+                                              log("c selected services length: ${_selectedServices.length}");
+                                              log("c selected options length: ${_selectedOptions.length}");
+                                              log("c selected services : ${_selectedServices}");
+                                              log("c selected options : ${_selectedOptions}");
+                                            }
+                                          });
+                            },
+                          )),
+                          16.verticalSpace,
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                children: [
+                                  CustomButton(
+                                    text: 'Back',
+
+                                    type: CustomButtonType.tertiary,
+                                    iconPosition: CustomButtonIconPosition.leading,
+                        icon: Symbols.arrow_back_rounded,
+                                    size: CustomButtonSize.small, 
+                                    onPressed: () {
+                                      context.pop();
+                                    },
+                                  ), 16.horizontalSpace,
+                                  CustomButton(
+                                    onPressed: () {
+                                      // context.pop();
+                                      if (!(_selectedServices.isEmpty &&
+                                          widget.args.isOpen)) {
+                                        context.push(NewQuestionnaireScreen(
+                                            args: NewQuestionnaireArgument(
+                                                widget.args.category,
+                                                _selectedServices,
+                                                _selectedOptions,
+                                                true)));
+                                        // SheetComponenet.show(context,
+                                        // isScrollControlled: false,
+                                        // child: NewQuestionnaireScreen(args: NewQuestionnaireArgument(
+                                        //   widget.args.category,
+                                        //   _selectedServices,
+                                        //   _selectedOptions,
+                                        //   true)));
+                                      } else {
+                                        List<QuestionModel> newList =
+                                            _selectedOptions
+                                                .map((e) => QuestionModel(
+                                                    id: e.serviceId,
+                                                    name: e.shortTitle,
+                                                    prompt: '',
+                                                    level: -1,
+                                                    isSelected: true,
+                                                    questions: [],
+                                                    fee: e.price.toInt()))
+                                                .toList();
+                                        if (newList.isNotEmpty) {
+                                          context.push(Scaffold(
+                                            appBar: AppBar(
+                                              title: Text('Make Offer'),
+                                            ),
+                                            body: MakeOfferPage(
+                                                onChanged: (val) {},
+                                                onContinue:
+                                                    (String datetimeSelected,
+                                                        int amount,
+                                                        int userOfferAmount) {
+                                                  // log('amount: $amount userOfferAmount: $userOfferAmount');
+                                                  context.pushNamed(
+                                                      arguments:
+                                                          PickLocationScreenArgument(
+                                                              widget.args
+                                                                  .category.id,
+                                                              newList,
+                                                              datetimeSelected,
+                                                              amount,
+                                                              userOfferAmount),
+                                                      RouteConstants
+                                                          .pickLocationRoute);
+                                                },
+                                                onPrevious: () {},
+                                                selectedServices: newList),
+                                          ));
+                                        } else {
+                                          Toast.show(
+                                            context: context,
+                                            variant:
+                                                SnackbarVariantEnum.warning,
+                                            title:
+                                                'Please select at least one service',
+                                          );
+                                        }
+                                      }
+                                      // log('button tap');
+                                    },
+                                    text: 'Next',
+                                    size: CustomButtonSize.small,
+                                    iconPosition: CustomButtonIconPosition.trailing,
+                        icon: Symbols.arrow_forward_rounded,
+                                  )
+                                ]),
+                          ),
+                          16.verticalSpace,
                         ])));
-      },),
+        },
+      ),
     );
   }
 }

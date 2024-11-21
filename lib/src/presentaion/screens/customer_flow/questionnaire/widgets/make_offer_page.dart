@@ -11,6 +11,7 @@ import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/core/extensions/datetime_extensions.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
+import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
 import 'package:oraaq/src/presentaion/widgets/sub_services_wrap_view.dart';
 import 'package:oraaq/src/presentaion/widgets/toast.dart';
@@ -314,14 +315,18 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
         Padding(
             padding: 20.horizontalPadding,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomButton(
+                  text:'Back',
                   size: CustomButtonSize.small,
                   icon: Symbols.arrow_back_rounded,
                   type: CustomButtonType.tertiary,
-                  onPressed: widget.onPrevious,
+                  onPressed: (){
+                    context.pop();
+                  },
                 ),
+                16.horizontalSpace,
                 selectedDateTime == null
                     ? CustomButton(
                         type: CustomButtonType.tertiary,
