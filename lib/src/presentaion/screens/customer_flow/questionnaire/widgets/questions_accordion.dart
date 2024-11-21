@@ -20,22 +20,35 @@ class QuestionsAccordion extends StatefulWidget {
 }
 
 class _QuestionsAccordionState extends State<QuestionsAccordion> {
-  final List<ServiceEntity> _options = [];
+  // final List<ServiceEntity> _options = [];
   final List<ServiceEntity> _selectedServices = [];
 
   @override
   void initState() {
     super.initState();
-    for (var curr in widget.service.services) {
-      _options.add(curr);
-      if (curr.services.isNotEmpty) _options.addAll(curr.services);
-    }
+    // for (var curr in widget.service.services) {
+    //   _options.add(curr);
+    //   if (curr.services.isNotEmpty) _options.addAll(curr.services);
+    // }
   }
 
   void _toggleOption(ServiceEntity curr) {
-    _selectedServices.contains(curr) ? _selectedServices.remove(curr) : _selectedServices.add(curr);
-    widget.onChanged(curr);
-    setState(() {});
+    // _selectedServices.contains(curr)
+    //     ? _selectedServices.remove(curr)
+    //     : _selectedServices.add(curr);
+    // widget.onChanged(curr);
+    // setState(() {});
+    setState(() {
+      if (_selectedServices.contains(curr)) {
+        _selectedServices.remove(curr);
+      } else {
+        _selectedServices.add(curr);
+      }
+    });
+
+    if (curr.isLastLeaf) {
+      widget.onChanged(curr); // Notify parent only for leaf-level services
+    }
   }
 
   @override
@@ -75,7 +88,7 @@ class _QuestionsAccordionState extends State<QuestionsAccordion> {
                     ),
                     child: ListView.separated(
                       shrinkWrap: true,
-                      itemCount: _options.length,
+                      itemCount: widget.service.services.length,
                       physics: const NeverScrollableScrollPhysics(),
                       separatorBuilder: (context, index) => const Divider(
                         thickness: 1,
@@ -83,16 +96,19 @@ class _QuestionsAccordionState extends State<QuestionsAccordion> {
                         color: ColorTheme.neutral1,
                       ),
                       itemBuilder: (BuildContext context, int index) {
-                        var option = _options[index];
+                        final option = widget.service.services[index];
+                        // var option = _options[index];
                         option.isLastLeaf;
                         return ListTile(
-                            contentPadding: EdgeInsets.fromLTRB(option.isLastLeaf ? 40 : 12, 8, 8, 8),
+                            contentPadding: EdgeInsets.fromLTRB(
+                                option.isLastLeaf ? 40 : 12, 8, 8, 8),
                             onTap: () => _toggleOption(option),
                             title: Text(
                               option.shortTitle,
                               style: TextStyleTheme.titleSmall.copyWith(
                                 color: ColorTheme.secondaryText,
-                                fontWeight: option.isLastLeaf ? FontWeight.w500 : null,
+                                fontWeight:
+                                    option.isLastLeaf ? FontWeight.w500 : null,
                               ),
                             ),
                             subtitle: Text("Rs. ${option.price}"),
@@ -108,5 +124,3 @@ class _QuestionsAccordionState extends State<QuestionsAccordion> {
     );
   }
 }
-
-

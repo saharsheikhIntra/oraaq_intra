@@ -9,6 +9,7 @@ class ServiceEntity {
   final bool isServiceGroup;
   final bool isLastLeaf;
   final List<ServiceEntity> services;
+  final bool isRadio;
   ServiceEntity({
     required this.serviceId,
     required this.shortTitle,
@@ -18,6 +19,7 @@ class ServiceEntity {
     required this.isServiceGroup,
     required this.isLastLeaf,
     required this.services,
+    required this.isRadio,
   });
 
   ServiceEntity copyWith({
@@ -29,6 +31,7 @@ class ServiceEntity {
     bool? isServiceGroup,
     bool? isLastLeaf,
     List<ServiceEntity>? services,
+    bool? isRadio,
   }) {
     return ServiceEntity(
       serviceId: serviceId ?? this.serviceId,
@@ -39,12 +42,13 @@ class ServiceEntity {
       isServiceGroup: isServiceGroup ?? this.isServiceGroup,
       isLastLeaf: isLastLeaf ?? this.isLastLeaf,
       services: services ?? this.services,
+      isRadio: isRadio ?? this.isRadio,
     );
   }
 
   @override
   String toString() {
-    return 'ServiceEntity(serviceId: $serviceId, shortTitle: $shortTitle, description: $description, price: $price, prompt: $prompt, isServiceGroup: $isServiceGroup, isLastLeaf: $isLastLeaf, services: $services)';
+    return 'ServiceEntity(serviceId: $serviceId, shortTitle: $shortTitle, description: $description, price: $price, prompt: $prompt, isServiceGroup: $isServiceGroup, isLastLeaf: $isLastLeaf, services: $services, isRadio: $isRadio)';
   }
 
   @override
@@ -58,6 +62,7 @@ class ServiceEntity {
         other.prompt == prompt &&
         other.isServiceGroup == isServiceGroup &&
         other.isLastLeaf == isLastLeaf &&
+        other.isRadio == isRadio &&
         listEquals(other.services, services);
   }
 
@@ -70,6 +75,7 @@ class ServiceEntity {
         prompt.hashCode ^
         isServiceGroup.hashCode ^
         isLastLeaf.hashCode ^
-        services.hashCode;
+        services.hashCode ^
+        isRadio.hashCode;
   }
 }

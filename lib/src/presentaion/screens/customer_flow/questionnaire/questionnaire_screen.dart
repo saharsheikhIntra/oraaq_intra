@@ -10,7 +10,6 @@ import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/core/extensions/widget_extension.dart';
 import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
-import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/injection_container.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
@@ -113,108 +112,88 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
                 child: _isSelectingCategories
                     ? _buildTopLevelServices() // Stage 1: Show top-level services
                     : _buildSubServiceNavigation(), // Stage 2: Show sub-services
-
                 //  _services.isEmpty
-                //     ? const NoDataFound(
-                //         text: StringConstants.failedToFetchServices)
+                // ? const NoDataFound(
+                //     text: StringConstants.failedToFetchServices)
                 // : Column(children: [
-                // const Text(StringConstants
-                // .getTheBestSalonServicesAtYourFingerTips),
-                // Expanded(
-                // child:
-                // ListView.builder(
-                //     itemCount: _services.length,
-                //     itemBuilder: (context, index) {
-                //       return SingleQuestionTile(
-                //           title: _services[index].shortTitle,
-                //           subtitle: _services[index].description,
-                //           onChanged: (value) {
-                //             if (value) {
-                //               _selectedCategories
-                //                   .add(_services[index]);
-                //             } else {
-                //               _selectedCategories
-                //                   .remove(_services[index]);
-                //             }
-                //           });
-                //     }),
-                //     child: PageView.builder(
-                //   controller: _pageController,
-                //   itemCount: _services.length + 1,
-                //   itemBuilder: (context, index){
-                //     List<QuestionModel> newList = _selectedOptions
-                //                   .map((e) => QuestionModel(
-                //                       id: e.serviceId,
-                //                       name: e.shortTitle,
-                //                       prompt: '',
-                //                       level: -1,
-                //                       isSelected: true,
-                //                       questions: [],
-                //                       fee: e.price.toInt()))
-                //                   .toList();
-                //     return index < _services.length
-                //           ? QuestionsPage(
-                //               service: _services[index],
-                //               onSelect: (selected) {
-                //                 for (var e in selected) {
-                //                   _selectedOptions.contains(e)
-                //                       ? _selectedOptions.remove(e)
-                //                       : _selectedOptions.add(e);
-                //                 }
-                //               },
-                //               onNext: () {
-                //                 _currentPage.value = index + 2;
-                //                 _pageController.nextPage(
-                //                   duration: 600.milliseconds,
-                //                   curve: Curves.easeInOutCubic,
-                //                 );
-                //               },
-                //               onPrevious: () {
-                //                 if (index != 0) {
-                //                   _currentPage.value = index;
-                //                 }
-                //                 _pageController.previousPage(
-                //                   duration: 600.milliseconds,
-                //                   curve: Curves.easeInOutCubic,
-                //                 );
-                //               },
-                //             )
-                //           : MakeOfferPage(
-                //               onChanged: (offer) => Logger().i(offer),
-                //               selectedServices: newList,
-                //               // selectedServices: const [],
-                //               onContinue: (String datetimeSelected,int amount, int userOfferAmount){
-                //                 log('amount: $amount userOfferAmount: $userOfferAmount');
-                //                 context.pushNamed(
-                //                   arguments: PickLocationScreenArgument(widget.args.category.id, newList,datetimeSelected,amount,userOfferAmount),
-                //                   RouteConstants.pickLocationRoute);
-                //               },
-                //               onPrevious: () {
-                //                 if (index != 0) {
-                //                   _currentPage.value = index;
-                //                 }
-                //                 _pageController.previousPage(
-                //                   duration: 600.milliseconds,
-                //                   curve: Curves.easeInOutCubic,
-                //                 );
-                //               });
-                //   }
-
-                // )
-                // ),
-                // CustomButton(
-                //   text: StringConstants.next,
-                //   onPressed: () {
-                //     if (_selectedCategories.isNotEmpty) {
-                //       context.pushNamed(
-                //           RouteConstants.questionnaireRoute,
-                //           arguments: QuestionnaireArgument(
-                //               widget.args.category,
-                //               _selectedCategories));
-                //     }
-                //   },
-                // )
-                // ])
+                //     const Text(StringConstants
+                //         .getTheBestSalonServicesAtYourFingerTips),
+                //     Expanded(
+                //         child: PageView.builder(
+                //             controller: _pageController,
+                //             itemCount: _services.length + 1,
+                //             itemBuilder: (context, index) {
+                //               List<QuestionModel> newList =
+                //                   _selectedOptions
+                //                       .map((e) => QuestionModel(
+                //                           id: e.serviceId,
+                //                           name: e.shortTitle,
+                //                           prompt: '',
+                //                           level: -1,
+                //                           isSelected: true,
+                //                           questions: [],
+                //                           fee: e.price.toInt()))
+                //                       .toList();
+                //               return index < _services.length
+                //                   ? QuestionsPage(
+                //                       service: _services[index],
+                //                       onSelect: (selected) {
+                //                         for (var e in selected) {
+                //                           _selectedOptions.contains(e)
+                //                               ? _selectedOptions.remove(e)
+                //                               : _selectedOptions.add(e);
+                //                         }
+                //                       },
+                //                       onNext: () {
+                //                         _currentPage.value = index + 2;
+                //                         _pageController.nextPage(
+                //                           duration: 600.milliseconds,
+                //                           curve: Curves.easeInOutCubic,
+                //                         );
+                //                       },
+                //                       onPrevious: () {
+                //                         if (index != 0) {
+                //                           _currentPage.value = index;
+                //                         }
+                //                         _pageController.previousPage(
+                //                           duration: 600.milliseconds,
+                //                           curve: Curves.easeInOutCubic,
+                //                         );
+                //                       },
+                //                     )
+                //                   : MakeOfferPage(
+                //                       onChanged: (offer) =>
+                //                           Logger().i(offer),
+                //                       selectedServices: newList,
+                //                       // selectedServices: const [],
+                //                       onContinue:
+                //                           (String datetimeSelected,
+                //                               int amount,
+                //                               int userOfferAmount) {
+                //                         log('amount: $amount userOfferAmount: $userOfferAmount');
+                //                         context.pushNamed(
+                //                             arguments:
+                //                                 PickLocationScreenArgument(
+                //                                     widget
+                //                                         .args.category.id,
+                //                                     newList,
+                //                                     datetimeSelected,
+                //                                     amount,
+                //                                     userOfferAmount),
+                //                             RouteConstants
+                //                                 .pickLocationRoute);
+                //                       },
+                //                       onPrevious: () {
+                //                         if (index != 0) {
+                //                           _currentPage.value = index;
+                //                         }
+                //                         _pageController.previousPage(
+                //                           duration: 600.milliseconds,
+                //                           curve: Curves.easeInOutCubic,
+                //                         );
+                //                       });
+                //             })),
+                //   ])
               ));
         }));
   }
@@ -269,35 +248,108 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
     );
   }
 
+  // Widget _buildSubServiceNavigation() {
+  //   return PageView.builder(
+  //     controller: _pageController,
+  //     itemCount: _selectedCategories.length + 1, // +1 for final review page
+  //     onPageChanged: (page) => _currentPage.value = page + 1,
+  //     itemBuilder: (context, index) {
+  //       List<QuestionModel> newList = _selectedOptions
+  //           .map((e) => QuestionModel(
+  //               id: e.serviceId,
+  //               name: e.shortTitle,
+  //               prompt: '',
+  //               level: -1,
+  //               isSelected: true,
+  //               questions: [],
+  //               fee: e.price.toInt()))
+  //           .toList();
+  //       log(newList.toString());
+  //       if (index < _selectedCategories.length) {
+  //         final category = _selectedCategories[index];
+  //         return QuestionsPage(
+  //           service: category, // Show sub-services for this category
+  //           onSelect: (selectedSubServices) {
+  //             for (var service in selectedSubServices) {
+  //               if (!_selectedOptions.contains(service)) {
+  //                 _selectedOptions
+  //                     .add(service); // Add user-selected sub-services
+  //               }
+  //             }
+  //           },
+  //           onNext: () {
+  //             _pageController.nextPage(
+  //               duration: const Duration(milliseconds: 500),
+  //               curve: Curves.easeInOut,
+  //             );
+  //           },
+  //           onPrevious: () {
+  //             _pageController.previousPage(
+  //               duration: const Duration(milliseconds: 500),
+  //               curve: Curves.easeInOut,
+  //             );
+  //           },
+  //         );
+  //       } else {
+  //         return MakeOfferPage(
+  //           selectedServices: newList, // Pass all selected sub-services
+  //           onChanged: (offer) => log("Offer: $offer"),
+  //           onContinue:
+  //               (String datetimeSelected, int amount, int userOfferAmount) {
+  //             Navigator.pushNamed(
+  //               context,
+  //               RouteConstants.pickLocationRoute,
+  //               arguments: PickLocationScreenArgument(
+  //                 widget.args.category.id,
+  //                 newList,
+  //                 datetimeSelected,
+  //                 amount,
+  //                 userOfferAmount,
+  //               ),
+  //             );
+  //           },
+  //           onPrevious: () {
+  //             _pageController.previousPage(
+  //               duration: const Duration(milliseconds: 500),
+  //               curve: Curves.easeInOut,
+  //             );
+  //           },
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
+  final ValueNotifier<List<ServiceEntity>> _selectedOptionsNotifier =
+      ValueNotifier([]);
+
   Widget _buildSubServiceNavigation() {
     return PageView.builder(
       controller: _pageController,
-      itemCount: _selectedCategories.length + 1, // +1 for final review page
+      itemCount: _selectedCategories.length + 1, // +1 for MakeOfferPage
       onPageChanged: (page) => _currentPage.value = page + 1,
       itemBuilder: (context, index) {
-        List<QuestionModel> newList = _selectedOptions
-            .map((e) => QuestionModel(
-                id: e.serviceId,
-                name: e.shortTitle,
-                prompt: '',
-                level: -1,
-                isSelected: true,
-                questions: [],
-                fee: e.price.toInt()))
-            .toList();
-        log(newList.toString());
         if (index < _selectedCategories.length) {
           final category = _selectedCategories[index];
           return QuestionsPage(
-            service: category, // Show sub-services for this category
+            service: category,
             onSelect: (selectedSubServices) {
+              // Merge new selections with existing ones
+              final updatedSelections = [..._selectedOptionsNotifier.value];
               for (var service in selectedSubServices) {
-                if (!_selectedOptions.contains(service)) {
-                  _selectedOptions
-                      .add(service); // Add user-selected sub-services
+                if (!updatedSelections.contains(service)) {
+                  updatedSelections.add(service);
                 }
               }
+
+              // Update the notifier
+              _selectedOptionsNotifier.value = updatedSelections;
+              log("Updated _selectedOptions: ${_selectedOptionsNotifier.value}");
             },
+            // onSelect: (selectedSubServices) {
+            //   // Update _selectedOptions dynamically
+            //   _selectedOptionsNotifier.value = [...selectedSubServices];
+            //   log("Updated _selectedOptions: ${_selectedOptionsNotifier.value}");
+            // },
             onNext: () {
               _pageController.nextPage(
                 duration: const Duration(milliseconds: 500),
@@ -312,27 +364,53 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
             },
           );
         } else {
-          return MakeOfferPage(
-            selectedServices: newList, // Pass all selected sub-services
-            onChanged: (offer) => log("Offer: $offer"),
-            onContinue:
-                (String datetimeSelected, int amount, int userOfferAmount) {
-              Navigator.pushNamed(
-                context,
-                RouteConstants.pickLocationRoute,
-                arguments: PickLocationScreenArgument(
-                  widget.args.category.id,
-                  newList,
-                  datetimeSelected,
-                  amount,
-                  userOfferAmount,
-                ),
-              );
-            },
-            onPrevious: () {
-              _pageController.previousPage(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
+          return ValueListenableBuilder<List<ServiceEntity>>(
+            valueListenable: _selectedOptionsNotifier,
+            builder: (context, selectedOptions, _) {
+              return MakeOfferPage(
+                selectedServices: selectedOptions.map((service) {
+                  return QuestionModel(
+                    id: service.serviceId,
+                    name: service.shortTitle,
+                    prompt: service.prompt,
+                    level: -1,
+                    isSelected: true,
+                    questions: [],
+                    fee: service.price.toInt(),
+                  );
+                }).toList(),
+                onChanged: (offer) => log("Offer updated: $offer"),
+                onContinue:
+                    (String datetimeSelected, int amount, int userOfferAmount) {
+                  log("Offer details: DateTime=$datetimeSelected, Amount=$amount, UserOffer=$userOfferAmount");
+                  Navigator.pushNamed(
+                    context,
+                    RouteConstants.pickLocationRoute,
+                    arguments: PickLocationScreenArgument(
+                      widget.args.category.id,
+                      selectedOptions.map((service) {
+                        return QuestionModel(
+                          id: service.serviceId,
+                          name: service.shortTitle,
+                          prompt: '',
+                          level: -1,
+                          isSelected: true,
+                          questions: [],
+                          fee: service.price.toInt(),
+                        );
+                      }).toList(),
+                      datetimeSelected,
+                      amount,
+                      userOfferAmount,
+                    ),
+                  );
+                },
+                onPrevious: () {
+                  _pageController.previousPage(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                  );
+                },
               );
             },
           );
