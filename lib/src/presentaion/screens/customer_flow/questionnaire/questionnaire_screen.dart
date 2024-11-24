@@ -114,7 +114,7 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
     Navigator.pushNamed(
       context,
       RouteConstants.subServiceRoute,
-      arguments: SubServicesArgs(_selectedMainServices),
+      arguments: SubServicesArgs(_selectedMainServices, widget.args.category),
     );
   }
 

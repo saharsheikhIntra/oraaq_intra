@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
@@ -39,13 +41,14 @@ class _QuestionsPageState extends State<QuestionsPage> {
     super.initState();
   }
 
-  // new code snippet
   void _handleCheckboxChange(ServiceEntity service) {
     setState(() {
       if (_selected.contains(service)) {
         _selected.remove(service);
+        log(_selected.toString());
       } else {
         _selected.add(service);
+        log(_selected.toString());
       }
       widget.onSelect(_selected);
     });
@@ -119,7 +122,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                 //   _selected.contains(value) ? _selected.remove(value) : _selected.add(value);
                                 //   widget.onSelect(_selected);
                                 // },
-                                onChanged: (value) => _handleCheckboxChange(e),
+                                onChanged: (value) =>
+                                    _handleCheckboxChange(value),
                               )),
                       ],
                     )))),

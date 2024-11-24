@@ -1,10 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:oraaq/src/core/extensions/widget_extension.dart';
+import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
 import 'package:oraaq/src/domain/entities/service_entity.dart';
 import 'package:oraaq/src/imports.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/sub_services_args.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/make_offer_page.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/questions_accordion.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/questions_page.dart';
 
@@ -66,26 +70,70 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
         onPageChanged: (page) => _currentPage.value = page + 1,
         itemBuilder: (context, index) {
           final service = widget.args.selectedMainServices[index];
-          return QuestionsPage(
-            service: service,
-            onSelect: _handleSelection,
-            onNext: () {
-              if (index < widget.args.selectedMainServices.length - 1) {
-                _pageController.nextPage(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                );
-              }
-            },
-            onPrevious: () {
-              if (index > 0) {
-                _pageController.previousPage(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                );
-              }
-            },
-          );
+
+          return (index < widget.args.selectedMainServices.length)
+              ? QuestionsPage(
+                  service: service,
+                  onSelect: _handleSelection,
+                  onNext: () {
+                    if (index < widget.args.selectedMainServices.length - 1) {
+                      _pageController.nextPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOutCubic,
+                      );
+                    }
+                  },
+                  onPrevious: () {
+                    if (index > 0) {
+                      _pageController.previousPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                      );
+                    }
+                  },
+                )
+              : MakeOfferPage(
+                  onChanged: (offer) => Logger().i(offer),
+                  onContinue: (String datetimeSelected, int amount,
+                      int userOfferAmount) {
+                    log('amount: $amount userOfferAmount: $userOfferAmount');
+                    context.pushNamed(
+                        arguments: PickLocationScreenArgument(
+                            widget.args.category.id,
+                            _selectedSubServices
+                                .map((e) => QuestionModel(
+                                    id: e.serviceId,
+                                    name: e.shortTitle,
+                                    prompt: '',
+                                    level: -1,
+                                    isSelected: true,
+                                    questions: [],
+                                    fee: e.price.toInt()))
+                                .toList(),
+                            datetimeSelected,
+                            amount,
+                            userOfferAmount),
+                        RouteConstants.pickLocationRoute);
+                  },
+                  onPrevious: () {
+                    if (index != 0) {
+                      _currentPage.value = index;
+                    }
+                    _pageController.previousPage(
+                      duration: 600.milliseconds,
+                      curve: Curves.easeInOutCubic,
+                    );
+                  },
+                  selectedServices: _selectedSubServices
+                      .map((e) => QuestionModel(
+                          id: e.serviceId,
+                          name: e.shortTitle,
+                          prompt: '',
+                          level: -1,
+                          isSelected: true,
+                          questions: [],
+                          fee: e.price.toInt()))
+                      .toList());
         },
       ),
     );
