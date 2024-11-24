@@ -1,5 +1,5 @@
+import 'dart:math';
 import 'dart:developer' as developer;
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,357 +15,11 @@ import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
 import 'package:oraaq/src/presentaion/widgets/sub_services_wrap_view.dart';
 import 'package:oraaq/src/presentaion/widgets/toast.dart';
 
-// class MakeOfferPage extends StatefulWidget {
-//   final Function(int selectedOffer) onChanged;
-//   final List<QuestionModel> selectedServices;
-//   final dynamic onContinue;
-//   final VoidCallback onPrevious;
-//   const MakeOfferPage({
-//     super.key,
-//     required this.onChanged,
-//     required this.onContinue,
-//     required this.onPrevious,
-//     required this.selectedServices,
-//   });
-
-//   @override
-//   State<MakeOfferPage> createState() => _MakeOfferPageState();
-// }
-
-// class _MakeOfferPageState extends State<MakeOfferPage> {
-//   final ValueNotifier<int> _selectedOffer = ValueNotifier(0);
-//   int _standardCharges = 0;
-//   final TextEditingController _dateTimeController = TextEditingController();
-//   DateTime? selectedDateTime;
-//   var tempVal = '';
-
-//   @override
-//   void initState() {
-//     // _selectedOffer.value = widget.selectedServices
-//     //     .map(
-//     //       (e) => e.fee,
-//     //     )
-//     //     // .reduce(
-//     //     //   (a, b) => a + b,
-//     //     // )
-//     //     .fold(0, (a, b) => a + b)
-//     //     .floor();
-//     // _standardCharges = _selectedOffer.value;
-//     super.initState();
-//     log("MakeOfferPage Initialized");
-//     log("Selected Services: ${widget.selectedServices}");
-
-//     // Calculate standard charges and offer dynamically
-//     _standardCharges =
-//         widget.selectedServices.fold(0, (sum, item) => sum + item.fee);
-//     _selectedOffer.value = _standardCharges;
-
-//     log("Standard Charges: $_standardCharges");
-//     log("Selected Offer: ${_selectedOffer.value}");
-//   }
-
-//   @override
-//   void dispose() {
-//     _dateTimeController.dispose(); // Clean up controller
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         Expanded(
-//             child: Padding(
-//                 padding: 16.allPadding,
-//                 // decoration: BoxDecoration(
-//                 //   color: ColorTheme.white,
-//                 //   borderRadius: 16.borderRadius,
-//                 //   border: Border.all(color: ColorTheme.neutral2.withOpacity(0.5)),
-//                 //   boxShadow: [
-//                 //     BoxShadow(
-//                 //       color: ColorTheme.black.withOpacity(0.03),
-//                 //       blurRadius: 10,
-//                 //       offset: const Offset(0, 4),
-//                 //     )
-//                 //   ],
-//                 // ),
-//                 child: Column(
-//                   children: [
-//                     12.verticalSpace,
-//                     SubServicesChipWrapView(
-//                       servicesList:
-//                           widget.selectedServices.map((e) => e.name).toList(),
-//                       variant: SubServicesChipWrapViewVariant.forQuestionnaire,
-//                     ),
-//                     28.verticalSpace,
-//                     Text(
-//                       StringConstants.pleaseEnterYourDesiredOfferAmount,
-//                       textAlign: TextAlign.center,
-//                       style: TextStyleTheme.bodyMedium
-//                           .copyWith(color: ColorTheme.secondaryText),
-//                     ),
-//                     32.verticalSpace,
-//                     Container(
-//                         padding: 16.verticalPadding,
-//                         decoration: BoxDecoration(
-//                           color: ColorTheme.white,
-//                           borderRadius: 16.borderRadius,
-//                           border: Border.all(
-//                               color: ColorTheme.neutral2.withOpacity(0.5)),
-//                           boxShadow: [
-//                             BoxShadow(
-//                               color: ColorTheme.black.withOpacity(0.03),
-//                               blurRadius: 10,
-//                               offset: const Offset(0, 4),
-//                             )
-//                           ],
-//                         ),
-//                         child: Column(
-//                           children: [
-//                             Padding(
-//                                 padding:
-//                                     const EdgeInsets.fromLTRB(20, 0, 14, 0),
-//                                 child: Row(
-//                                   children: [
-//                                     Expanded(
-//                                         child: Text(
-//                                       StringConstants.makeYourOffer,
-//                                       style: TextStyleTheme.titleMedium,
-//                                     )),
-//                                     GestureDetector(
-//                                       onTap: () => Toast.show(
-//                                         context: context,
-//                                         variant: SnackbarVariantEnum.normal,
-//                                         title: StringConstants.standardRates,
-//                                         message: StringConstants
-//                                                 .standardChargesForTheSelectedServicesIsRs +
-//                                             _standardCharges.toString(),
-//                                       ),
-//                                       child: const Icon(Symbols.info_rounded,
-//                                           color: ColorTheme.neutral3),
-//                                     ),
-//                                   ],
-//                                 )),
-//                             16.verticalSpace,
-//                             Padding(
-//                                 padding: 16.horizontalPadding,
-//                                 child: Row(
-//                                   children: [
-//                                     CustomButton(
-//                                       onPressed: () {
-//                                         if (_selectedOffer.value > 50) {
-//                                           _selectedOffer.value -= 50;
-//                                         }
-//                                         widget.onChanged(_selectedOffer.value);
-//                                       },
-//                                       type: CustomButtonType.tertiary,
-//                                       icon: Symbols.remove_rounded,
-//                                     ),
-//                                     24.horizontalSpace,
-//                                     Expanded(
-//                                         child: ValueListenableBuilder(
-//                                             valueListenable: _selectedOffer,
-//                                             builder: (context, value, child) {
-//                                               return TextField(
-//                                                 controller:
-//                                                     TextEditingController(
-//                                                   text: _selectedOffer
-//                                                       .value.currencyFormat
-//                                                       .toString(),
-//                                                 ),
-//                                                 keyboardType:
-//                                                     TextInputType.number,
-//                                                 textAlign: TextAlign.center,
-//                                                 style: TextStyleTheme.titleLarge
-//                                                     .copyWith(
-//                                                         fontSize: 24,
-//                                                         color: ColorTheme
-//                                                             .secondaryText),
-//                                                 decoration:
-//                                                     const InputDecoration(
-//                                                   //border: InputBorder.none,
-//                                                   enabledBorder:
-//                                                       UnderlineInputBorder(),
-//                                                   focusedBorder:
-//                                                       UnderlineInputBorder(
-//                                                     borderSide: BorderSide(
-//                                                         // color: ColorTheme.onSecondary,
-//                                                         style:
-//                                                             BorderStyle.solid),
-//                                                   ),
-//                                                 ),
-//                                                 onChanged: (text) {
-//                                                   // Update _selectedOffer when the user manually changes the value
-//                                                   int? newOffer =
-//                                                       int.tryParse(text);
-//                                                   if (newOffer != null) {
-//                                                     _selectedOffer.value =
-//                                                         newOffer;
-//                                                     widget.onChanged(
-//                                                         _selectedOffer.value);
-//                                                   }
-//                                                 },
-//                                               );
-
-//                                               // return FittedBox(
-//                                               //       fit: BoxFit.scaleDown,
-//                                               //       child: Text(
-//                                               //         _selectedOffer
-//                                               //             .value.currencyFormat,
-//                                               //         textAlign:
-//                                               //             TextAlign.center,
-//                                               //         style: TextStyleTheme
-//                                               //             .titleLarge
-//                                               //             .copyWith(
-//                                               //                 fontSize: 32,
-//                                               //                 color: ColorTheme
-//                                               //                     .secondaryText),
-//                                               //       ));
-//                                             })),
-//                                     24.horizontalSpace,
-//                                     CustomButton(
-//                                       onPressed: () {
-//                                         _selectedOffer.value += 50;
-//                                         widget.onChanged(_selectedOffer.value);
-//                                       },
-//                                       type: CustomButtonType.tertiary,
-//                                       icon: Symbols.add_rounded,
-//                                     ),
-//                                   ],
-//                                 )),
-//                           ],
-//                         )),
-//                     Padding(
-//                       padding: 24.allPadding,
-//                       child: TextField(
-//                         controller: _dateTimeController,
-//                         readOnly: true,
-//                         decoration: const InputDecoration(
-//                           labelText: StringConstants.preferredDateTime,
-//                           hintText: StringConstants.selectDateTime,
-//                           suffixIcon: Icon(Icons.calendar_today),
-//                           border: OutlineInputBorder(),
-//                         ),
-//                         onTap: () async {
-//                           // Show date picker
-//                           DateTime? pickedDate = await showDatePicker(
-//                             context: context,
-//                             initialDate: DateTime.now(),
-//                             firstDate: DateTime.now(),
-//                             lastDate: DateTime(2025),
-//                             builder: (BuildContext context, Widget? child) {
-//                               return Theme(
-//                                 data: ThemeData.light().copyWith(
-//                                   colorScheme: const ColorScheme.light(
-//                                     primary: ColorTheme
-//                                         .onPrimary, // Header background color
-//                                     onPrimary:
-//                                         ColorTheme.white, // Header text color
-//                                     onSurface: ColorTheme
-//                                         .onSecondary, // Body text color
-//                                   ),
-//                                   dialogBackgroundColor:
-//                                       ColorTheme.white, // Background color
-//                                 ),
-//                                 child: child!,
-//                               );
-//                             },
-//                           );
-
-//                           if (pickedDate != null) {
-//                             // Show time picker after date is selected
-//                             TimeOfDay? pickedTime = await showTimePicker(
-//                               context: context,
-//                               initialTime: TimeOfDay.now(),
-//                               builder: (BuildContext context, Widget? child) {
-//                                 return Theme(
-//                                   data: ThemeData.light().copyWith(
-//                                     colorScheme: const ColorScheme.light(
-//                                       primary: ColorTheme
-//                                           .onPrimary, // Header background color
-//                                       onPrimary:
-//                                           ColorTheme.white, // Header text color
-//                                       onSurface: ColorTheme
-//                                           .onSecondary, // Body text color
-//                                     ),
-//                                     dialogBackgroundColor:
-//                                         ColorTheme.white, // Background color
-//                                   ),
-//                                   child: child!,
-//                                 );
-//                               },
-//                             );
-
-//                             if (pickedTime != null) {
-//                               // Combine the picked date and time into a DateTime object
-//                               setState(() {
-//                                 selectedDateTime = DateTime(
-//                                   pickedDate.year,
-//                                   pickedDate.month,
-//                                   pickedDate.day,
-//                                   pickedTime.hour,
-//                                   pickedTime.minute,
-//                                 );
-//                                 // Format and show the selected date and time in the TextField
-//                                 tempVal = _dateTimeController.text =
-//                                     DateFormat('yyyy-MM-dd HH:mm')
-//                                         .format(selectedDateTime!);
-
-//                                 _dateTimeController.text =
-//                                     "${selectedDateTime!.formattedDate()}, ${selectedDateTime!.to12HourFormat}";
-//                               });
-//                             }
-//                           }
-//                         },
-//                       ),
-//                     ),
-//                   ],
-//                 ))),
-//         Padding(
-//             padding: 20.horizontalPadding,
-//             child: Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 CustomButton(
-//                   size: CustomButtonSize.small,
-//                   icon: Symbols.arrow_back_rounded,
-//                   type: CustomButtonType.tertiary,
-//                   onPressed: widget.onPrevious,
-//                 ),
-//                 selectedDateTime == null
-//                     ? CustomButton(
-//                         type: CustomButtonType.tertiary,
-//                         text: StringConstants.continu,
-//                         size: CustomButtonSize.small,
-//                         iconPosition: CustomButtonIconPosition.trailing,
-//                         icon: Symbols.arrow_forward_rounded,
-//                         onPressed: null,
-//                       )
-//                     : CustomButton(
-//                         text: StringConstants.continu,
-//                         size: CustomButtonSize.small,
-//                         iconPosition: CustomButtonIconPosition.trailing,
-//                         icon: Symbols.arrow_forward_rounded,
-//                         onPressed: () {
-//                           developer.log(
-//                               'make offer page userOfferAmount: ${_selectedOffer.value}');
-//                           widget.onContinue(
-//                               tempVal, _standardCharges, _selectedOffer.value);
-//                         },
-//                       ),
-//               ],
-//             )),
-//         16.verticalSpace,
-//       ],
-//     );
-//   }
-// }
 class MakeOfferPage extends StatefulWidget {
   final Function(int selectedOffer) onChanged;
   final List<QuestionModel> selectedServices;
   final dynamic onContinue;
   final VoidCallback onPrevious;
-
   const MakeOfferPage({
     super.key,
     required this.onChanged,
@@ -386,266 +40,311 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
   var tempVal = '';
 
   @override
+  void initState() {
+    _selectedOffer.value = widget.selectedServices
+        .map(
+          (e) => e.fee,
+        )
+        // .reduce(
+        //   (a, b) => a + b,
+        // )
+        .fold(0, (a, b) => a + b)
+        .floor();
+    _standardCharges = _selectedOffer.value;
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _dateTimeController.dispose(); // Clean up controller
     super.dispose();
   }
 
-  /// Helper method to calculate charges
-  void _calculateCharges() {
-    _standardCharges = widget.selectedServices.fold(
-      0,
-      (sum, item) => sum + item.fee,
-    );
-    _selectedOffer.value = _standardCharges;
-
-    log("MakeOfferPage Updated: Standard Charges = $_standardCharges");
-    log("Selected Offer = ${_selectedOffer.value}");
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Calculate charges dynamically on build
-    _calculateCharges();
-
     return Column(
       children: [
         Expanded(
-          child: Padding(
-            padding: 16.allPadding,
-            child: Column(
-              children: [
-                12.verticalSpace,
-                SubServicesChipWrapView(
-                  servicesList:
-                      widget.selectedServices.map((e) => e.name).toList(),
-                  variant: SubServicesChipWrapViewVariant.forQuestionnaire,
-                ),
-                28.verticalSpace,
-                Text(
-                  StringConstants.pleaseEnterYourDesiredOfferAmount,
-                  textAlign: TextAlign.center,
-                  style: TextStyleTheme.bodyMedium
-                      .copyWith(color: ColorTheme.secondaryText),
-                ),
-                32.verticalSpace,
-                Container(
-                  padding: 16.verticalPadding,
-                  decoration: BoxDecoration(
-                    color: ColorTheme.white,
-                    borderRadius: 16.borderRadius,
-                    border:
-                        Border.all(color: ColorTheme.neutral2.withOpacity(0.5)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: ColorTheme.black.withOpacity(0.03),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 14, 0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                StringConstants.makeYourOffer,
-                                style: TextStyleTheme.titleMedium,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () => Toast.show(
-                                context: context,
-                                variant: SnackbarVariantEnum.normal,
-                                title: StringConstants.standardRates,
-                                message: StringConstants
-                                        .standardChargesForTheSelectedServicesIsRs +
-                                    _standardCharges.toString(),
-                              ),
-                              child: const Icon(
-                                Symbols.info_rounded,
-                                color: ColorTheme.neutral3,
-                              ),
-                            ),
+            child: Padding(
+                padding: 16.allPadding,
+                // decoration: BoxDecoration(
+                //   color: ColorTheme.white,
+                //   borderRadius: 16.borderRadius,
+                //   border: Border.all(color: ColorTheme.neutral2.withOpacity(0.5)),
+                //   boxShadow: [
+                //     BoxShadow(
+                //       color: ColorTheme.black.withOpacity(0.03),
+                //       blurRadius: 10,
+                //       offset: const Offset(0, 4),
+                //     )
+                //   ],
+                // ),
+                child: Column(
+                  children: [
+                    12.verticalSpace,
+                    SubServicesChipWrapView(
+                      servicesList:
+                          widget.selectedServices.map((e) => e.name).toList(),
+                      variant: SubServicesChipWrapViewVariant.forQuestionnaire,
+                    ),
+                    28.verticalSpace,
+                    Text(
+                      StringConstants.pleaseEnterYourDesiredOfferAmount,
+                      textAlign: TextAlign.center,
+                      style: TextStyleTheme.bodyMedium
+                          .copyWith(color: ColorTheme.secondaryText),
+                    ),
+                    32.verticalSpace,
+                    Container(
+                        padding: 16.verticalPadding,
+                        decoration: BoxDecoration(
+                          color: ColorTheme.white,
+                          borderRadius: 16.borderRadius,
+                          border: Border.all(
+                              color: ColorTheme.neutral2.withOpacity(0.5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: ColorTheme.black.withOpacity(0.03),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            )
                           ],
                         ),
-                      ),
-                      16.verticalSpace,
-                      Padding(
-                        padding: 16.horizontalPadding,
-                        child: Row(
+                        child: Column(
                           children: [
-                            CustomButton(
-                              onPressed: () {
-                                if (_selectedOffer.value > 50) {
-                                  _selectedOffer.value -= 50;
-                                }
-                                widget.onChanged(_selectedOffer.value);
-                              },
-                              type: CustomButtonType.tertiary,
-                              icon: Symbols.remove_rounded,
-                            ),
-                            24.horizontalSpace,
-                            Expanded(
-                              child: ValueListenableBuilder(
-                                valueListenable: _selectedOffer,
-                                builder: (context, value, child) {
-                                  return TextField(
-                                    controller: TextEditingController(
-                                      text: _selectedOffer.value.currencyFormat,
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyleTheme.titleLarge.copyWith(
-                                      fontSize: 24,
-                                      color: ColorTheme.secondaryText,
-                                    ),
-                                    decoration: const InputDecoration(
-                                      enabledBorder: UnderlineInputBorder(),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            style: BorderStyle.solid),
+                            Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 0, 14, 0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        child: Text(
+                                      StringConstants.makeYourOffer,
+                                      style: TextStyleTheme.titleMedium,
+                                    )),
+                                    GestureDetector(
+                                      onTap: () => Toast.show(
+                                        context: context,
+                                        variant: SnackbarVariantEnum.normal,
+                                        title: StringConstants.standardRates,
+                                        message: StringConstants
+                                                .standardChargesForTheSelectedServicesIsRs +
+                                            _standardCharges.toString(),
                                       ),
+                                      child: const Icon(Symbols.info_rounded,
+                                          color: ColorTheme.neutral3),
                                     ),
-                                    onChanged: (text) {
-                                      int? newOffer = int.tryParse(text);
-                                      if (newOffer != null) {
-                                        _selectedOffer.value = newOffer;
+                                  ],
+                                )),
+                            16.verticalSpace,
+                            Padding(
+                                padding: 16.horizontalPadding,
+                                child: Row(
+                                  children: [
+                                    CustomButton(
+                                      onPressed: () {
+                                        if (_selectedOffer.value > 50) {
+                                          _selectedOffer.value -= 50;
+                                        }
                                         widget.onChanged(_selectedOffer.value);
-                                      }
-                                    },
-                                  );
-                                },
-                              ),
-                            ),
-                            24.horizontalSpace,
-                            CustomButton(
-                              onPressed: () {
-                                _selectedOffer.value += 50;
-                                widget.onChanged(_selectedOffer.value);
-                              },
-                              type: CustomButtonType.tertiary,
-                              icon: Symbols.add_rounded,
-                            ),
+                                      },
+                                      type: CustomButtonType.tertiary,
+                                      icon: Symbols.remove_rounded,
+                                    ),
+                                    24.horizontalSpace,
+                                    Expanded(
+                                        child: ValueListenableBuilder(
+                                            valueListenable: _selectedOffer,
+                                            builder: (context, value, child) {
+                                              return TextField(
+                                                controller:
+                                                    TextEditingController(
+                                                  text: _selectedOffer
+                                                      .value.currencyFormat
+                                                      .toString(),
+                                                ),
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyleTheme.titleLarge
+                                                    .copyWith(
+                                                        fontSize: 24,
+                                                        color: ColorTheme
+                                                            .secondaryText),
+                                                decoration:
+                                                    const InputDecoration(
+                                                  //border: InputBorder.none,
+                                                  enabledBorder:
+                                                      UnderlineInputBorder(),
+                                                  focusedBorder:
+                                                      UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        // color: ColorTheme.onSecondary,
+                                                        style:
+                                                            BorderStyle.solid),
+                                                  ),
+                                                ),
+                                                onChanged: (text) {
+                                                  // Update _selectedOffer when the user manually changes the value
+                                                  int? newOffer =
+                                                      int.tryParse(text);
+                                                  if (newOffer != null) {
+                                                    _selectedOffer.value =
+                                                        newOffer;
+                                                    widget.onChanged(
+                                                        _selectedOffer.value);
+                                                  }
+                                                },
+                                              );
+
+                                              // return FittedBox(
+                                              //       fit: BoxFit.scaleDown,
+                                              //       child: Text(
+                                              //         _selectedOffer
+                                              //             .value.currencyFormat,
+                                              //         textAlign:
+                                              //             TextAlign.center,
+                                              //         style: TextStyleTheme
+                                              //             .titleLarge
+                                              //             .copyWith(
+                                              //                 fontSize: 32,
+                                              //                 color: ColorTheme
+                                              //                     .secondaryText),
+                                              //       ));
+                                            })),
+                                    24.horizontalSpace,
+                                    CustomButton(
+                                      onPressed: () {
+                                        _selectedOffer.value += 50;
+                                        widget.onChanged(_selectedOffer.value);
+                                      },
+                                      type: CustomButtonType.tertiary,
+                                      icon: Symbols.add_rounded,
+                                    ),
+                                  ],
+                                )),
                           ],
+                        )),
+                    Padding(
+                      padding: 24.allPadding,
+                      child: TextField(
+                        controller: _dateTimeController,
+                        readOnly: true,
+                        decoration: const InputDecoration(
+                          labelText: StringConstants.preferredDateTime,
+                          hintText: StringConstants.selectDateTime,
+                          suffixIcon: Icon(Icons.calendar_today),
+                          border: OutlineInputBorder(),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: 24.allPadding,
-                  child: TextField(
-                    controller: _dateTimeController,
-                    readOnly: true,
-                    decoration: const InputDecoration(
-                      labelText: StringConstants.preferredDateTime,
-                      hintText: StringConstants.selectDateTime,
-                      suffixIcon: Icon(Icons.calendar_today),
-                      border: OutlineInputBorder(),
-                    ),
-                    onTap: () async {
-                      // Date picker logic
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2025),
-                        builder: (BuildContext context, Widget? child) {
-                          return Theme(
-                            data: ThemeData.light().copyWith(
-                              colorScheme: const ColorScheme.light(
-                                primary: ColorTheme.onPrimary,
-                                onPrimary: ColorTheme.white,
-                                onSurface: ColorTheme.onSecondary,
-                              ),
-                              dialogBackgroundColor: ColorTheme.white,
-                            ),
-                            child: child!,
-                          );
-                        },
-                      );
-
-                      if (pickedDate != null) {
-                        TimeOfDay? pickedTime = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.now(),
-                          builder: (BuildContext context, Widget? child) {
-                            return Theme(
-                              data: ThemeData.light().copyWith(
-                                colorScheme: const ColorScheme.light(
-                                  primary: ColorTheme.onPrimary,
-                                  onPrimary: ColorTheme.white,
-                                  onSurface: ColorTheme.onSecondary,
+                        onTap: () async {
+                          // Show date picker
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2025),
+                            builder: (BuildContext context, Widget? child) {
+                              return Theme(
+                                data: ThemeData.light().copyWith(
+                                  colorScheme: const ColorScheme.light(
+                                    primary: ColorTheme
+                                        .onPrimary, // Header background color
+                                    onPrimary:
+                                        ColorTheme.white, // Header text color
+                                    onSurface: ColorTheme
+                                        .onSecondary, // Body text color
+                                  ),
+                                  dialogBackgroundColor:
+                                      ColorTheme.white, // Background color
                                 ),
-                                dialogBackgroundColor: ColorTheme.white,
-                              ),
-                              child: child!,
-                            );
-                          },
-                        );
+                                child: child!,
+                              );
+                            },
+                          );
 
-                        if (pickedTime != null) {
-                          setState(() {
-                            selectedDateTime = DateTime(
-                              pickedDate.year,
-                              pickedDate.month,
-                              pickedDate.day,
-                              pickedTime.hour,
-                              pickedTime.minute,
+                          if (pickedDate != null) {
+                            // Show time picker after date is selected
+                            TimeOfDay? pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                              builder: (BuildContext context, Widget? child) {
+                                return Theme(
+                                  data: ThemeData.light().copyWith(
+                                    colorScheme: const ColorScheme.light(
+                                      primary: ColorTheme
+                                          .onPrimary, // Header background color
+                                      onPrimary:
+                                          ColorTheme.white, // Header text color
+                                      onSurface: ColorTheme
+                                          .onSecondary, // Body text color
+                                    ),
+                                    dialogBackgroundColor:
+                                        ColorTheme.white, // Background color
+                                  ),
+                                  child: child!,
+                                );
+                              },
                             );
 
-                            _dateTimeController.text =
-                                "${selectedDateTime!.formattedDate()}, ${selectedDateTime!.to12HourFormat}";
-                          });
-                        }
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Padding(
-          padding: 20.horizontalPadding,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomButton(
-                size: CustomButtonSize.small,
-                icon: Symbols.arrow_back_rounded,
-                type: CustomButtonType.tertiary,
-                onPressed: widget.onPrevious,
-              ),
-              selectedDateTime == null
-                  ? CustomButton(
-                      type: CustomButtonType.tertiary,
-                      text: StringConstants.continu,
-                      size: CustomButtonSize.small,
-                      iconPosition: CustomButtonIconPosition.trailing,
-                      icon: Symbols.arrow_forward_rounded,
-                      onPressed: null,
-                    )
-                  : CustomButton(
-                      text: StringConstants.continu,
-                      size: CustomButtonSize.small,
-                      iconPosition: CustomButtonIconPosition.trailing,
-                      icon: Symbols.arrow_forward_rounded,
-                      onPressed: () {
-                        developer.log(
-                          'make offer page userOfferAmount: ${_selectedOffer.value}',
-                        );
-                        widget.onContinue(
-                            tempVal, _standardCharges, _selectedOffer.value);
-                      },
+                            if (pickedTime != null) {
+                              // Combine the picked date and time into a DateTime object
+                              setState(() {
+                                selectedDateTime = DateTime(
+                                  pickedDate.year,
+                                  pickedDate.month,
+                                  pickedDate.day,
+                                  pickedTime.hour,
+                                  pickedTime.minute,
+                                );
+                                // Format and show the selected date and time in the TextField
+                                tempVal = _dateTimeController.text =
+                                    DateFormat('yyyy-MM-dd HH:mm')
+                                        .format(selectedDateTime!);
+
+                                _dateTimeController.text =
+                                    "${selectedDateTime!.formattedDate()}, ${selectedDateTime!.to12HourFormat}";
+                              });
+                            }
+                          }
+                        },
+                      ),
                     ),
-            ],
-          ),
-        ),
+                  ],
+                ))),
+        Padding(
+            padding: 20.horizontalPadding,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomButton(
+                  size: CustomButtonSize.small,
+                  icon: Symbols.arrow_back_rounded,
+                  type: CustomButtonType.tertiary,
+                  onPressed: widget.onPrevious,
+                ),
+                selectedDateTime == null
+                    ? CustomButton(
+                        type: CustomButtonType.tertiary,
+                        text: StringConstants.continu,
+                        size: CustomButtonSize.small,
+                        iconPosition: CustomButtonIconPosition.trailing,
+                        icon: Symbols.arrow_forward_rounded,
+                        onPressed: null,
+                      )
+                    : CustomButton(
+                        text: StringConstants.continu,
+                        size: CustomButtonSize.small,
+                        iconPosition: CustomButtonIconPosition.trailing,
+                        icon: Symbols.arrow_forward_rounded,
+                        onPressed: () {
+                          developer.log(
+                              'make offer page userOfferAmount: ${_selectedOffer.value}');
+                          widget.onContinue(
+                              tempVal, _standardCharges, _selectedOffer.value);
+                        },
+                      ),
+              ],
+            )),
         16.verticalSpace,
       ],
     );

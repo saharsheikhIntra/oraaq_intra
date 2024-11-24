@@ -119,8 +119,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                 //   _selected.contains(value) ? _selected.remove(value) : _selected.add(value);
                                 //   widget.onSelect(_selected);
                                 // },
-                                onChanged: (value) =>
-                                    _handleCheckboxChange(value),
+                                onChanged: (value) => _handleCheckboxChange(e),
                               )),
                       ],
                     )))),

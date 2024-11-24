@@ -10,6 +10,8 @@ import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_l
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_screen.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/sub_services_args.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/sub_services_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/reuqest_history/request_history_screen.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/change_password/change_password_screen.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/forgot_password/forget_password_arguement.dart';
@@ -81,6 +83,11 @@ class AppRoutes {
       RouteConstants.questionnaireRoute => _generateRoute(
           QuestionnaireScreen(
               args: settings.arguments as QuestionnaireArgument),
+          settings),
+      RouteConstants.subServiceRoute => _generateRoute(
+          SubServicesScreen(
+            args: settings.arguments as SubServicesArgs,
+          ),
           settings),
       RouteConstants.customerHomeScreenRoute =>
         _generateRoute(const CustomerHomeScreen(), settings),

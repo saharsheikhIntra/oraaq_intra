@@ -10,11 +10,13 @@ import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/core/extensions/widget_extension.dart';
 import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
+import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/injection_container.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_states.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/sub_services_args.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/make_offer_page.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/questions_page.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/single_question_tile.dart';
@@ -41,10 +43,11 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
   final PageController _pageController = PageController(viewportFraction: 0.9);
   final _currentPage = ValueNotifier<int>(1);
 
-  final List<ServiceEntity> _selectedOptions = [];
   final List<ServiceEntity> _services = [];
-  final List<ServiceEntity> _selectedCategories = []; //new
-  bool _isSelectingCategories = true; // Start with Stage 1
+  final List<ServiceEntity> _selectedMainServices =
+      []; // Track selected services
+
+  final List<ServiceEntity> _selectedOptions = []; // Track options
 
   @override
   void initState() {
@@ -53,6 +56,66 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
       _cubit.fetchServices(widget.args.category.id);
     });
     super.initState();
+  }
+
+  void _showHairLengthBottomSheet(ServiceEntity hairService) {
+    // Display the bottom sheet
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Select Hair Length",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              16.verticalSpace,
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: hairService.services.length,
+                itemBuilder: (context, index) {
+                  final subService = hairService.services[index];
+                  return ListTile(
+                    title: Text(subService.shortTitle),
+                    onTap: () {
+                      // Add the selected sub-service to _selectedMainServices
+                      setState(() {
+                        _selectedMainServices.remove(hairService);
+                        _selectedMainServices.add(subService);
+                      });
+                      Navigator.pop(context); // Close the bottom sheet
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _navigateToSubServicesScreen() {
+    if (_selectedMainServices.isEmpty) {
+      Toast.show(
+        context: context,
+        variant: SnackbarVariantEnum.warning,
+        title: "Please select at least one service",
+      );
+      return;
+    }
+
+    Navigator.pushNamed(
+      context,
+      RouteConstants.subServiceRoute,
+      arguments: SubServicesArgs(_selectedMainServices),
+    );
   }
 
   @override
@@ -87,335 +150,83 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
           return Scaffold(
               appBar: AppBar(
                 title: Text(widget.args.category.name),
-                // actions: [
-                //   if (_services.isNotEmpty)
-                //     ValueListenableBuilder(
-                //         valueListenable: _currentPage,
-                //         builder: (context, value, child) => Stack(
-                //               alignment: Alignment.center,
-                //               children: [
-                //                 LoadingIndicator(
-                //                   value: value / (_services.length + 1),
-                //                   size: 24,
-                //                 ),
-                //                 Text("$value",
-                //                     style: const TextStyle(
-                //                       height: 0,
-                //                       fontSize: 12,
-                //                       fontWeight: FontWeight.w900,
-                //                     )).wrapInPadding(1.bottomPadding),
-                //               ],
-                //             ).wrapInPadding(12.horizontalPadding))
-                // ],
+                actions: [
+                  if (_services.isNotEmpty)
+                    ValueListenableBuilder(
+                        valueListenable: _currentPage,
+                        builder: (context, value, child) => Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                LoadingIndicator(
+                                  value: value / (_services.length + 1),
+                                  size: 24,
+                                ),
+                                Text("$value",
+                                    style: const TextStyle(
+                                      height: 0,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w900,
+                                    )).wrapInPadding(1.bottomPadding),
+                              ],
+                            ).wrapInPadding(12.horizontalPadding))
+                ],
               ),
               body: SafeArea(
-                child: _isSelectingCategories
-                    ? _buildTopLevelServices() // Stage 1: Show top-level services
-                    : _buildSubServiceNavigation(), // Stage 2: Show sub-services
-                //  _services.isEmpty
-                // ? const NoDataFound(
-                //     text: StringConstants.failedToFetchServices)
-                // : Column(children: [
-                //     const Text(StringConstants
-                //         .getTheBestSalonServicesAtYourFingerTips),
-                //     Expanded(
-                //         child: PageView.builder(
-                //             controller: _pageController,
-                //             itemCount: _services.length + 1,
-                //             itemBuilder: (context, index) {
-                //               List<QuestionModel> newList =
-                //                   _selectedOptions
-                //                       .map((e) => QuestionModel(
-                //                           id: e.serviceId,
-                //                           name: e.shortTitle,
-                //                           prompt: '',
-                //                           level: -1,
-                //                           isSelected: true,
-                //                           questions: [],
-                //                           fee: e.price.toInt()))
-                //                       .toList();
-                //               return index < _services.length
-                //                   ? QuestionsPage(
-                //                       service: _services[index],
-                //                       onSelect: (selected) {
-                //                         for (var e in selected) {
-                //                           _selectedOptions.contains(e)
-                //                               ? _selectedOptions.remove(e)
-                //                               : _selectedOptions.add(e);
-                //                         }
-                //                       },
-                //                       onNext: () {
-                //                         _currentPage.value = index + 2;
-                //                         _pageController.nextPage(
-                //                           duration: 600.milliseconds,
-                //                           curve: Curves.easeInOutCubic,
-                //                         );
-                //                       },
-                //                       onPrevious: () {
-                //                         if (index != 0) {
-                //                           _currentPage.value = index;
-                //                         }
-                //                         _pageController.previousPage(
-                //                           duration: 600.milliseconds,
-                //                           curve: Curves.easeInOutCubic,
-                //                         );
-                //                       },
-                //                     )
-                //                   : MakeOfferPage(
-                //                       onChanged: (offer) =>
-                //                           Logger().i(offer),
-                //                       selectedServices: newList,
-                //                       // selectedServices: const [],
-                //                       onContinue:
-                //                           (String datetimeSelected,
-                //                               int amount,
-                //                               int userOfferAmount) {
-                //                         log('amount: $amount userOfferAmount: $userOfferAmount');
-                //                         context.pushNamed(
-                //                             arguments:
-                //                                 PickLocationScreenArgument(
-                //                                     widget
-                //                                         .args.category.id,
-                //                                     newList,
-                //                                     datetimeSelected,
-                //                                     amount,
-                //                                     userOfferAmount),
-                //                             RouteConstants
-                //                                 .pickLocationRoute);
-                //                       },
-                //                       onPrevious: () {
-                //                         if (index != 0) {
-                //                           _currentPage.value = index;
-                //                         }
-                //                         _pageController.previousPage(
-                //                           duration: 600.milliseconds,
-                //                           curve: Curves.easeInOutCubic,
-                //                         );
-                //                       });
-                //             })),
-                //   ])
+                child: _services.isEmpty
+                    ? const NoDataFound(
+                        text: StringConstants.failedToFetchServices)
+                    : Column(
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                                itemCount: _services.length,
+                                itemBuilder: (context, index) {
+                                  final service = _services[index];
+                                  return SingleQuestionTile(
+                                      title: service.shortTitle,
+                                      subtitle: service.description,
+                                      onChanged: (val) {
+                                        if (val) {
+                                          if (!_selectedMainServices
+                                              .contains(service)) {
+                                            _selectedMainServices.add(service);
+                                            if (service.shortTitle ==
+                                                "Hair Services") {
+                                              _showHairLengthBottomSheet(
+                                                  service);
+                                            }
+                                            log(_selectedMainServices
+                                                .toString());
+                                          }
+                                        } else {
+                                          _selectedMainServices.remove(service);
+                                          log(_selectedMainServices.toString());
+                                        }
+                                      });
+                                }),
+                          ),
+                          // CustomButton(
+                          //   text: StringConstants.next,
+                          //   onPressed: () {
+                          //     if (_selectedMainServices.isEmpty) {
+                          //       Toast.show(
+                          //         context: context,
+                          //         variant: SnackbarVariantEnum.warning,
+                          //         title: "Please select at least one service",
+                          //       );
+                          //       return;
+                          //     }
+                          //     Navigator.pushNamed(
+                          //         context, RouteConstants.subServiceRoute, arguments: SubServicesArgs(_selectedMainServices));
+                          //   },
+                          // )
+                          CustomButton(
+                            text: StringConstants.next,
+                            onPressed: _navigateToSubServicesScreen,
+                          ),
+                        ],
+                      ),
               ));
         }));
-  }
-
-  Widget _buildTopLevelServices() {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            itemCount: _services.length,
-            itemBuilder: (context, index) {
-              final service = _services[index];
-              return SingleQuestionTile(
-                title: service.shortTitle,
-                subtitle: service.description,
-                onChanged: (isSelected) {
-                  setState(() {
-                    if (isSelected) {
-                      if (!_selectedCategories.contains(service)) {
-                        _selectedCategories.add(service);
-                        // Add selected service
-                        log(_selectedCategories.toString());
-                      }
-                    } else {
-                      _selectedCategories
-                          .remove(service); // Remove unselected service
-                    }
-                  });
-                },
-              );
-            },
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            if (_selectedCategories.isNotEmpty) {
-              setState(() {
-                _isSelectingCategories =
-                    false; // Switch to sub-services navigation
-              });
-            } else {
-              Toast.show(
-                context: context,
-                variant: SnackbarVariantEnum.warning,
-                title: "Please select at least one category.",
-              );
-            }
-          },
-          child: Text("Next"),
-        ),
-      ],
-    );
-  }
-
-  // Widget _buildSubServiceNavigation() {
-  //   return PageView.builder(
-  //     controller: _pageController,
-  //     itemCount: _selectedCategories.length + 1, // +1 for final review page
-  //     onPageChanged: (page) => _currentPage.value = page + 1,
-  //     itemBuilder: (context, index) {
-  //       List<QuestionModel> newList = _selectedOptions
-  //           .map((e) => QuestionModel(
-  //               id: e.serviceId,
-  //               name: e.shortTitle,
-  //               prompt: '',
-  //               level: -1,
-  //               isSelected: true,
-  //               questions: [],
-  //               fee: e.price.toInt()))
-  //           .toList();
-  //       log(newList.toString());
-  //       if (index < _selectedCategories.length) {
-  //         final category = _selectedCategories[index];
-  //         return QuestionsPage(
-  //           service: category, // Show sub-services for this category
-  //           onSelect: (selectedSubServices) {
-  //             for (var service in selectedSubServices) {
-  //               if (!_selectedOptions.contains(service)) {
-  //                 _selectedOptions
-  //                     .add(service); // Add user-selected sub-services
-  //               }
-  //             }
-  //           },
-  //           onNext: () {
-  //             _pageController.nextPage(
-  //               duration: const Duration(milliseconds: 500),
-  //               curve: Curves.easeInOut,
-  //             );
-  //           },
-  //           onPrevious: () {
-  //             _pageController.previousPage(
-  //               duration: const Duration(milliseconds: 500),
-  //               curve: Curves.easeInOut,
-  //             );
-  //           },
-  //         );
-  //       } else {
-  //         return MakeOfferPage(
-  //           selectedServices: newList, // Pass all selected sub-services
-  //           onChanged: (offer) => log("Offer: $offer"),
-  //           onContinue:
-  //               (String datetimeSelected, int amount, int userOfferAmount) {
-  //             Navigator.pushNamed(
-  //               context,
-  //               RouteConstants.pickLocationRoute,
-  //               arguments: PickLocationScreenArgument(
-  //                 widget.args.category.id,
-  //                 newList,
-  //                 datetimeSelected,
-  //                 amount,
-  //                 userOfferAmount,
-  //               ),
-  //             );
-  //           },
-  //           onPrevious: () {
-  //             _pageController.previousPage(
-  //               duration: const Duration(milliseconds: 500),
-  //               curve: Curves.easeInOut,
-  //             );
-  //           },
-  //         );
-  //       }
-  //     },
-  //   );
-  // }
-  final ValueNotifier<List<ServiceEntity>> _selectedOptionsNotifier =
-      ValueNotifier([]);
-
-  Widget _buildSubServiceNavigation() {
-    return PageView.builder(
-      controller: _pageController,
-      itemCount: _selectedCategories.length + 1, // +1 for MakeOfferPage
-      onPageChanged: (page) => _currentPage.value = page + 1,
-      itemBuilder: (context, index) {
-        if (index < _selectedCategories.length) {
-          final category = _selectedCategories[index];
-          return QuestionsPage(
-            service: category,
-            onSelect: (selectedSubServices) {
-              // Merge new selections with existing ones
-              final updatedSelections = [..._selectedOptionsNotifier.value];
-              for (var service in selectedSubServices) {
-                if (!updatedSelections.contains(service)) {
-                  updatedSelections.add(service);
-                }
-              }
-
-              // Update the notifier
-              _selectedOptionsNotifier.value = updatedSelections;
-              log("Updated _selectedOptions: ${_selectedOptionsNotifier.value}");
-            },
-            // onSelect: (selectedSubServices) {
-            //   // Update _selectedOptions dynamically
-            //   _selectedOptionsNotifier.value = [...selectedSubServices];
-            //   log("Updated _selectedOptions: ${_selectedOptionsNotifier.value}");
-            // },
-            onNext: () {
-              _pageController.nextPage(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-              );
-            },
-            onPrevious: () {
-              _pageController.previousPage(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-              );
-            },
-          );
-        } else {
-          return ValueListenableBuilder<List<ServiceEntity>>(
-            valueListenable: _selectedOptionsNotifier,
-            builder: (context, selectedOptions, _) {
-              return MakeOfferPage(
-                selectedServices: selectedOptions.map((service) {
-                  return QuestionModel(
-                    id: service.serviceId,
-                    name: service.shortTitle,
-                    prompt: service.prompt,
-                    level: -1,
-                    isSelected: true,
-                    questions: [],
-                    fee: service.price.toInt(),
-                  );
-                }).toList(),
-                onChanged: (offer) => log("Offer updated: $offer"),
-                onContinue:
-                    (String datetimeSelected, int amount, int userOfferAmount) {
-                  log("Offer details: DateTime=$datetimeSelected, Amount=$amount, UserOffer=$userOfferAmount");
-                  Navigator.pushNamed(
-                    context,
-                    RouteConstants.pickLocationRoute,
-                    arguments: PickLocationScreenArgument(
-                      widget.args.category.id,
-                      selectedOptions.map((service) {
-                        return QuestionModel(
-                          id: service.serviceId,
-                          name: service.shortTitle,
-                          prompt: '',
-                          level: -1,
-                          isSelected: true,
-                          questions: [],
-                          fee: service.price.toInt(),
-                        );
-                      }).toList(),
-                      datetimeSelected,
-                      amount,
-                      userOfferAmount,
-                    ),
-                  );
-                },
-                onPrevious: () {
-                  _pageController.previousPage(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut,
-                  );
-                },
-              );
-            },
-          );
-        }
-      },
-    );
   }
 }
