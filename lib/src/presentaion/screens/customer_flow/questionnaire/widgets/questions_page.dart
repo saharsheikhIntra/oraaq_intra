@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
@@ -39,13 +41,14 @@ class _QuestionsPageState extends State<QuestionsPage> {
     super.initState();
   }
 
-  // new code snippet
   void _handleCheckboxChange(ServiceEntity service) {
     setState(() {
       if (_selected.contains(service)) {
         _selected.remove(service);
+        log(_selected.toString());
       } else {
         _selected.add(service);
+        log(_selected.toString());
       }
       widget.onSelect(_selected);
     });
@@ -69,7 +72,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
                 decoration: BoxDecoration(
                   color: ColorTheme.white,
                   borderRadius: 16.borderRadius,
-                  border: Border.all(color: ColorTheme.neutral2.withOpacity(0.5)),
+                  border:
+                      Border.all(color: ColorTheme.neutral2.withOpacity(0.5)),
                   boxShadow: [
                     BoxShadow(
                       color: ColorTheme.black.withOpacity(0.03),
@@ -98,7 +102,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
                             child: Text(
                               widget.service.prompt,
                               textAlign: TextAlign.center,
-                              style: TextStyleTheme.bodyMedium.copyWith(color: ColorTheme.secondaryText),
+                              style: TextStyleTheme.bodyMedium
+                                  .copyWith(color: ColorTheme.secondaryText),
                             )),
                         40.verticalSpace,
                         ..._options.map((e) => e.services.isEmpty
@@ -110,15 +115,16 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                 //   widget.onSelect(_selected);
                                 // },
                                 onChanged: (value) => _handleCheckboxChange(e),
-                                )
+                              )
                             : QuestionsAccordion(
                                 service: e,
                                 // onChanged: (value) {
                                 //   _selected.contains(value) ? _selected.remove(value) : _selected.add(value);
                                 //   widget.onSelect(_selected);
                                 // },
-                                onChanged: (value) => _handleCheckboxChange(e),
-                                )),
+                                onChanged: (value) =>
+                                    _handleCheckboxChange(value),
+                              )),
                       ],
                     )))),
         Padding(
@@ -153,4 +159,3 @@ class _QuestionsPageState extends State<QuestionsPage> {
     );
   }
 }
-

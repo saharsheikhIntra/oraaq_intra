@@ -20,7 +20,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             _buildParagraph('Effective Date: [Insert Date]'),
             _buildHeading('1. Introduction'),
             _buildParagraph(
-                'Welcome to pk.Oraaq.com. We are dedicated to protecting your privacy and ensuring your personal information is managed safely and responsibly. This Privacy Policy outlines how we collect, use, disclose, and protect your information when you use our listings and coupon service.'),
+                'Welcome to oraaq.com . We are dedicated to protecting your privacy and ensuring your personal information is managed safely and responsibly. This Privacy Policy outlines how we collect, use, disclose, and protect your information when you use our listings and coupon service.'),
             _buildHeading('2. Information We Collect'),
             _buildParagraph(
                 'We may collect the following types of information:'),

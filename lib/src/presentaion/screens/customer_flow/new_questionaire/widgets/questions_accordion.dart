@@ -225,7 +225,7 @@ class _QuestionsAccordion2State extends State<QuestionsAccordion2> {
                       ),
                       itemBuilder: (BuildContext context, int index) {
                         var option = _options[index];
-                        log(option.isRadio.toString());
+                        // log(option.isRadio.toString());
                         option.isLastLeaf;
                         return ListTile(
                             contentPadding: EdgeInsets.fromLTRB(option.isLastLeaf ? 40 : 12, 8, 8, 8),

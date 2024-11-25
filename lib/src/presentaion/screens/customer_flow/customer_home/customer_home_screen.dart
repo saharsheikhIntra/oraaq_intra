@@ -29,9 +29,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await _cubit.fetchCategories();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.fetchAcceptedRequest();
+      await _cubit.fetchCategories();
     });
   }
 
@@ -275,15 +275,16 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                       : ListView.separated(
                           shrinkWrap: true,
                           padding: 16.horizontalPadding,
+
                           itemCount: _categories.length,
                           separatorBuilder: (c, i) => 16.verticalSpace,
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (c, i) => ServiceCard(
                               category: _categories[i],
                               onTap: () => context.pushNamed(
-                                    RouteConstants.questionnaireRoute2,
+                                    RouteConstants.questionnaireRoute,
                                     arguments:
-                                        NewQuestionnaireArgument(_categories[i],<ServiceEntity>[],<ServiceEntity>[],false),
+                                        QuestionnaireArgument(_categories[i]),
                                   ))),
                 ]));
           },

@@ -63,6 +63,16 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
 
   @override
   Widget build(BuildContext context) {
+    _selectedOffer.value = widget.selectedServices
+        .map(
+          (e) => e.fee,
+        )
+        // .reduce(
+        //   (a, b) => a + b,
+        // )
+        .fold(0, (a, b) => a + b)
+        .floor();
+    _standardCharges = _selectedOffer.value;
     return Column(
       children: [
         Expanded(
@@ -342,7 +352,8 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                         iconPosition: CustomButtonIconPosition.trailing,
                         icon: Symbols.arrow_forward_rounded,
                         onPressed: () {
-                          developer.log('make offer page userOfferAmount: ${_selectedOffer.value}');
+                          developer.log(
+                              'make offer page userOfferAmount: ${_selectedOffer.value}');
                           widget.onContinue(
                               tempVal, _standardCharges, _selectedOffer.value);
                         },

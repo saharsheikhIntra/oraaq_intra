@@ -94,7 +94,7 @@ class StringConstants {
   static const String secondUser = "Amber Doe";
   static const String email = "john.doe@mail.com";
 
-  static const String userName = "Fullname";
+  static const String userName = "Full Name";
   static const String changePassword = "Change Password";
   static const String oldPassword = "Old Password";
   static const String newPassword = "New Password";
