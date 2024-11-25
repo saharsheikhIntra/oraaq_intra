@@ -200,6 +200,20 @@ class JobManagementService {
   }
 
   //
+  // MARK: GET SERVICE REQUESTS
+  //
+  Future<Either<Failure, List<NewServiceRequestResponseDto>>>
+      getServiceRequests(int merchantId) async {
+    var result = await _jobsRepository.getServiceRequests(merchantId);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        return Right(r);
+      },
+    );
+  }
+
+  //
   //
   // MARK: CANCEL WORK ORDER
   //

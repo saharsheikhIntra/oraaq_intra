@@ -33,6 +33,8 @@ class ApiConstants {
       '/ords/oraaq/api/cancelWorkOrder?';
   static const String getAllServiceRequests =
       "/ords/oraaq/api/getAllNewRequests?merchant_id=";
+  static const String getAllRequests = "/ords/oraaq/api/GetAllNewRequestForMerchant?merchant_id=";
+
   static const String postBid = "/ords/oraaq/api/submitBid";
   static const String addRating = "/ords/oraaq/api/addRating";
   static const String getMerchantWithinRadius =

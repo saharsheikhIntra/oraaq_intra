@@ -231,7 +231,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                   width: double.infinity,
                   type: widget.variant == NewQuoteSheetSheetVariant.newQuote
                       ? CustomButtonType.primary
-                      : CustomButtonType.danger,
+                      : CustomButtonType.primary,
                   text: widget.sheetName != ""? "Action" : widget.variant == NewQuoteSheetSheetVariant.newQuote
                       ? StringConstants.sendQuote
                       : StringConstants.cancel,
@@ -330,7 +330,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
   void _increment() {
     if (_defaultValue < maxAmount) {
       setState(() {
-        _defaultValue += 100;
+        _defaultValue += 25;
         _amountController.text = _defaultValue.toString();
         _errorMessage = null;
       });
@@ -344,7 +344,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
   void _decrement() {
     if (_defaultValue >= minAmount) {
       setState(() {
-        _defaultValue -= 100;
+        _defaultValue -= 25;
         _amountController.text = _defaultValue.toString();
         _errorMessage = null;
       });

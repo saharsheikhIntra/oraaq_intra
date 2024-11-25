@@ -184,6 +184,32 @@ class JobManagementRepository {
   }
 
   //
+  // MARK: GET SERVICE REQUESTS
+  //
+
+  Future<Either<Failure, List<NewServiceRequestResponseDto>>>
+      getServiceRequests(int merchantId) async {
+    final result = await _datasource
+        .get("${ApiConstants.getAllRequests}$merchantId");
+    return result.fold(
+      (l) { 
+        return Left(l);
+      },
+      (r) {
+        var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data is List
+                ? data
+                    .map((e) => NewServiceRequestResponseDto.fromMap(e))
+                    .toList()
+                : <NewServiceRequestResponseDto>[]).data;
+        log('3 $responseDto');
+        return Right(responseDto!);
+      },
+    );
+  }
+
+  //
   //
   // MARK: CANCEL WORK ORDER
   //

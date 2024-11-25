@@ -282,10 +282,12 @@ import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_l
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_states.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/make_offer_page.dart';
+
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/questions_page.dart';
 import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
 import 'package:oraaq/src/presentaion/widgets/sub_services_wrap_view.dart';
+
+import './widgets/make_offer_page.dart';
 
 class NewQuestionnaireScreen extends StatefulWidget {
   final NewQuestionnaireArgument args;

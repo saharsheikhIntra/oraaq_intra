@@ -50,6 +50,19 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
   }
 
 //
+// MARK: ALL SERVICE REQUESTS
+//
+
+  Future<void> fetchServiceRequests() async {
+    emit(MerchantHomeLoading());
+    final result = await _jobManagementService.getServiceRequests(user.id);
+    result.fold(
+      (l) => emit(MerchantHomeError(l)),
+      (r) => emit(ServiceRequestsLoaded(r)),
+    );
+  }
+
+//
 // MARK: NEW SERVICE REQUESTS CRON
 //
   Future<void> fetchAllServiceRequestsCron() async {

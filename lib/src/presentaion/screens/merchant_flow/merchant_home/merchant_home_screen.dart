@@ -14,16 +14,30 @@ class MerchantHomeScreen extends StatefulWidget {
 
 class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
   final MerchantHomeScreenCubit _cubit = getIt<MerchantHomeScreenCubit>();
-  MerchantJobsFilter selectedFilter = MerchantJobsFilter.allRequests;
+  MerchantJobsFilter selectedFilter = MerchantJobsFilter.newRequests;
 
   final ValueNotifier<List<RequestEntity>> workInProgressOrdersNotifier =
       ValueNotifier([]);
   final ValueNotifier<List<NewServiceRequestResponseDto>>
       serviceRequestsNotifier = ValueNotifier([]);
+  final ValueNotifier<List<NewServiceRequestResponseDto>>
+      allServiceRequestsNotifier = ValueNotifier([]);
   final ValueNotifier<List<RequestEntity>> appliedJobsNotifier =
       ValueNotifier([]);
 
   final cron = Cron();
+
+  String getSelectedServiceName(){
+    if(selectedFilter == MerchantJobsFilter.newRequests)
+      {return StringConstants.latestServiceRequests;}
+    else if(selectedFilter == MerchantJobsFilter.alreadyQuoted)
+      { return StringConstants.alreadyQuoted;}
+    else if(selectedFilter == MerchantJobsFilter.allRequests)
+      {return StringConstants.allServiceRequests;}
+    else{
+      return '';
+    }
+  }
 
   @override
   void initState() {
@@ -32,6 +46,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       await _cubit.fetchWorkInProgressOrders();
       await _cubit.fetchAllServiceRequests();
       await _cubit.fetchAppliedJobs();
+      await _cubit.fetchServiceRequests();
 
       cron.schedule(
         Schedule(seconds: 5),
@@ -56,6 +71,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       _cubit.fetchAllServiceRequests();
     } else if (filter == "Already Quoted") {
       _cubit.fetchAppliedJobs();
+    } else if (filter == "New Requests") {
+      _cubit.fetchServiceRequests();
     }
   }
 
@@ -145,6 +162,11 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
               DialogComponent.hideLoading(context);
 
               serviceRequestsNotifier.value = state.serviceRequests;
+            }
+            if (state is ServiceRequestsLoaded) {
+              DialogComponent.hideLoading(context);
+
+              allServiceRequestsNotifier.value = state.serviceRequests;
             }
             if (state is WorkInProgressOrdersCronLoaded) {
               log('cron loaded');
@@ -247,9 +269,10 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     children: [
                       Expanded(
                         child: Text(
-                          selectedFilter == MerchantJobsFilter.allRequests
-                              ? StringConstants.latestServiceRequests
-                              : StringConstants.alreadyQuoted,
+                          getSelectedServiceName(),
+                          // selectedFilter == MerchantJobsFilter.allRequests
+                          //     ? StringConstants.latestServiceRequests
+                          //     : StringConstants.alreadyQuoted,
                           style: TextStyleTheme.titleMedium.copyWith(
                             color: ColorTheme.secondaryText,
                           ),
@@ -271,7 +294,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                             if (value != null) {
                               var temp = MerchantJobsFilter.values.firstWhere(
                                 (e) => e.value == value,
-                                orElse: () => MerchantJobsFilter.allRequests,
+                                orElse: () => MerchantJobsFilter.newRequests,
                               );
                               if (temp != selectedFilter) {
                                 setState(() {
@@ -299,7 +322,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   ),
                 ),
                 12.verticalSpace,
-                if (selectedFilter == MerchantJobsFilter.allRequests)
+                if (selectedFilter == MerchantJobsFilter.newRequests)
                   ValueListenableBuilder<List<NewServiceRequestResponseDto>>(
                     valueListenable: serviceRequestsNotifier,
                     builder: (context, serviceRequests, child) {
@@ -315,6 +338,15 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                         (BuildContext context, dynamic value, Widget? child) {
                       return value.isNotEmpty
                           ? _buildAppliedJobsView(value)
+                          : const Center(child: Text('No Data'));
+                    },
+                  )
+                else if (selectedFilter == MerchantJobsFilter.allRequests)
+                  ValueListenableBuilder<List<NewServiceRequestResponseDto>>(
+                    valueListenable: allServiceRequestsNotifier,
+                    builder: (context, serviceRequests, child) {
+                      return serviceRequests.isNotEmpty
+                          ? _buildAllServiceRequestsView(serviceRequests)
                           : const Center(child: Text('No Data'));
                     },
                   ),
@@ -401,6 +433,47 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   onSubmit: (double bidAmount) =>
                       _cubit.postBid(job.serviceRequestId, bidAmount),
                   variant: NewQuoteSheetSheetVariant.newQuote)),
+          child: NewRequestCard(
+            buttonText: job.status,
+            userName: job.customerName,
+            distance: job.distance, //"45 km",
+            date: DateTime.tryParse(job.requestDate)!.formattedDate(),
+            time: DateTime.tryParse(job.requestDate)!.to12HourFormat,
+            price: job.totalPrice.toString(),
+            servicesList: job.serviceNames,
+            variant: NewRequestCardVariant.newRequest,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAllServiceRequestsView(
+      List<NewServiceRequestResponseDto> serviceRequests) {
+    return ListView.separated(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: serviceRequests.length,
+      padding: 16.horizontalPadding,
+      separatorBuilder: (context, index) => 12.verticalSpace,
+      itemBuilder: (BuildContext context, int index) {
+        final job = serviceRequests[index];
+        return GestureDetector(
+          onTap: () => SheetComponenet.show(context,
+              isScrollControlled: true,
+              child: NewQuoteSheet(
+                  name: job.customerName,
+                  date: DateTime.tryParse(job.requestDate)!.formattedDate(),
+                  email: job.customerName,
+                  distance: job.distance,
+                  servicesList: job.serviceNames,
+                  time: DateTime.tryParse(job.requestDate)!
+                      .to12HourFormat, //"3:30pm",
+                  defaultValue: job.totalPrice,
+                  onCancel: () => context.pop(),
+                  onSubmit: (double bidAmount) =>
+                      _cubit.postBid(job.serviceRequestId, bidAmount),
+                  variant: job.status == "Open"? NewQuoteSheetSheetVariant.newQuote : NewQuoteSheetSheetVariant.alreadyQuoted)),
           child: NewRequestCard(
             buttonText: job.status,
             userName: job.customerName,

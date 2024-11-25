@@ -117,7 +117,7 @@ class _RequestSheetState extends State<RequestSheet> {
           padding: 24.horizontalPadding,
           child: CustomButton(
             width: double.infinity,
-            type: CustomButtonType.danger,
+            type: CustomButtonType.primary,
             text: "Cancel",
             onPressed: () {
               SheetComponenet.showWarningSheet(context,
@@ -134,7 +134,7 @@ class _RequestSheetState extends State<RequestSheet> {
                   },
                   // context.popUntil(RouteConstants.customerHomeScreenRoute),
                   onCancelTap: () {
-                    widget.onCancel();
+                    // widget.onCancel();
                     context.pop();
 
                     // context.popUntil(RouteConstants.customerHomeScreenRoute);

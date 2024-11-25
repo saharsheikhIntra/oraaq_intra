@@ -33,9 +33,9 @@ class LoginCubit extends Cubit<LoginState> {
   socialSignIn(SocialSignInEnum signinProvidor, UserType userType) async {
     var result =
         await _authenticationServices.socialSignIn(signinProvidor, userType);
-
+    print(result);
     result.fold(
-      (l) => Logger().e(l),
+      (l) => Logger().e(l), 
       (r) => Logger().i(r),
     );
   }

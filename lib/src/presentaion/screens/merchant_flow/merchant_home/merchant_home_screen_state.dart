@@ -21,6 +21,10 @@ class AllServiceRequestsLoaded extends MerchantHomeScreenState {
   final List<NewServiceRequestResponseDto> serviceRequests;
   AllServiceRequestsLoaded(this.serviceRequests);
 }
+class ServiceRequestsLoaded extends MerchantHomeScreenState {
+  final List<NewServiceRequestResponseDto> serviceRequests;
+  ServiceRequestsLoaded(this.serviceRequests);
+}
 
 class AppliedJobsLoaded extends MerchantHomeScreenState {
   final List<RequestEntity> appliedJobs;
