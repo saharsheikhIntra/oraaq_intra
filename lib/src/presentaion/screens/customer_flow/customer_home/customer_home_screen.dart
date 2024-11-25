@@ -27,9 +27,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await _cubit.fetchCategories();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.fetchAcceptedRequest();
+      await _cubit.fetchCategories();
     });
   }
 

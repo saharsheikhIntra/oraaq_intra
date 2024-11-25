@@ -60,45 +60,68 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
 
   void _showHairLengthBottomSheet(ServiceEntity hairService) {
     // Display the bottom sheet
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "Select Hair Length",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              16.verticalSpace,
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: hairService.services.length,
-                itemBuilder: (context, index) {
-                  final subService = hairService.services[index];
-                  return ListTile(
-                    title: Text(subService.shortTitle),
-                    onTap: () {
-                      // Add the selected sub-service to _selectedMainServices
-                      setState(() {
-                        _selectedMainServices.remove(hairService);
-                        _selectedMainServices.add(subService);
-                      });
-                      Navigator.pop(context); // Close the bottom sheet
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
+    // showModalBottomSheet(
+    //   context: context,
+    //   shape: RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    //   ),
+    //   builder: (context) {
+    //     return Padding(
+    //       padding: const EdgeInsets.all(16.0),
+    //       child: Column(
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           Text(
+    //             "Select Hair Length",
+    //             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    //           ),
+    //           16.verticalSpace,
+    //           ListView.builder(
+    //             shrinkWrap: true,
+    //             itemCount: hairService.services.length,
+    //             itemBuilder: (context, index) {
+    //               final subService = hairService.services[index];
+    //               return ListTile(
+    //                 title: Text(subService.shortTitle),
+    //                 onTap: () {
+    //                   // Add the selected sub-service to _selectedMainServices
+    //                   setState(() {
+    //                     _selectedMainServices.remove(hairService);
+    //                     _selectedMainServices.add(subService);
+    //                   });
+    //                   Navigator.pop(context); // Close the bottom sheet
+    //                 },
+    //               );
+    //             },
+    //           ),
+    //         ],
+    //       ),
+    //     );
+    //   },
+    // );
+    SheetComponenet.showSelectionSheet(
+      context,
+      title: "Select Hair Length",
+      options:
+          hairService.services.map((service) => service.shortTitle).toList(),
+      selected: null, // No pre-selection by default
+    ).then((selected) {
+      if (selected != null) {
+        // Find the selected service by title
+        final selectedSubService = hairService.services.firstWhere(
+          (service) => service.shortTitle == selected,
         );
-      },
-    );
+
+        // Update the selected main services list
+        setState(() {
+          _selectedMainServices.remove(hairService);
+          _selectedMainServices
+              .removeWhere((service) => hairService.services.contains(service));
+
+          _selectedMainServices.add(selectedSubService);
+        });
+      }
+    });
   }
 
   void _navigateToSubServicesScreen() {
@@ -149,27 +172,28 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
         }, builder: (context, state) {
           return Scaffold(
               appBar: AppBar(
+                automaticallyImplyLeading: false,
                 title: Text(widget.args.category.name),
-                actions: [
-                  if (_services.isNotEmpty)
-                    ValueListenableBuilder(
-                        valueListenable: _currentPage,
-                        builder: (context, value, child) => Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                LoadingIndicator(
-                                  value: value / (_services.length + 1),
-                                  size: 24,
-                                ),
-                                Text("$value",
-                                    style: const TextStyle(
-                                      height: 0,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w900,
-                                    )).wrapInPadding(1.bottomPadding),
-                              ],
-                            ).wrapInPadding(12.horizontalPadding))
-                ],
+                // actions: [
+                //   if (_services.isNotEmpty)
+                //     ValueListenableBuilder(
+                //         valueListenable: _currentPage,
+                //         builder: (context, value, child) => Stack(
+                //               alignment: Alignment.center,
+                //               children: [
+                //                 LoadingIndicator(
+                //                   value: value / (_services.length + 1),
+                //                   size: 24,
+                //                 ),
+                //                 Text("$value",
+                //                     style: const TextStyle(
+                //                       height: 0,
+                //                       fontSize: 12,
+                //                       fontWeight: FontWeight.w900,
+                //                     )).wrapInPadding(1.bottomPadding),
+                //               ],
+                //             ).wrapInPadding(12.horizontalPadding))
+                // ],
               ),
               body: SafeArea(
                 child: _services.isEmpty
@@ -220,9 +244,33 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
                           //         context, RouteConstants.subServiceRoute, arguments: SubServicesArgs(_selectedMainServices));
                           //   },
                           // )
-                          CustomButton(
-                            text: StringConstants.next,
-                            onPressed: _navigateToSubServicesScreen,
+                          Padding(
+                            padding: 32.leftPadding +
+                                36.rightPadding +
+                                16.bottomPadding,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomButton(
+                                  icon: Symbols.arrow_back_rounded,
+                                  type: CustomButtonType.tertiary,
+                                  size: CustomButtonSize.small,
+                                  onPressed: () {
+                                    context.pushNamed(
+                                        RouteConstants.customerHomeScreenRoute);
+                                  },
+                                ),
+                                16.horizontalSpace,
+                                CustomButton(
+                                  size: CustomButtonSize.small,
+                                  text: StringConstants.next,
+                                  iconPosition:
+                                      CustomButtonIconPosition.trailing,
+                                  icon: Symbols.arrow_forward_rounded,
+                                  onPressed: _navigateToSubServicesScreen,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
