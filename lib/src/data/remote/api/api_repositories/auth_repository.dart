@@ -7,6 +7,7 @@ import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/change_p
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/update_customer_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/forget_password_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/set_new_password.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/social_login_dto.dart';
 
 import 'package:oraaq/src/data/remote/api/api_request_dtos/merchant_flow/update_merchant_profile_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/change_password_response_dto.dart';
@@ -55,6 +56,32 @@ class ApiAuthRepository {
   ) async {
     Either<Failure, Response> result = await _datasource.post(
       ApiConstants.login,
+      data: dto.toMap(),
+    );
+    return result.fold(
+      (l) => Left(l),
+      (r) {
+        var res = BaseResponseDto.fromJson(
+          r.data,
+          (data) => LoginResponseDto.fromMap(data),
+        ).data;
+        if (res == null) Left(Failure(StringConstants.somethingWentWrong));
+        return Right(res!);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: LOGIN social
+  //
+  //
+
+  Future<Either<Failure, LoginResponseDto>> loginViaSocial(
+    SocialLoginRequestDto dto,
+  ) async {
+    Either<Failure, Response> result = await _datasource.post(
+      ApiConstants.loginViaSocial,
       data: dto.toMap(),
     );
     return result.fold(

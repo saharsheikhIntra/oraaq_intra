@@ -1,12 +1,14 @@
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:oraaq/src/data/local/local_auth_repository.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/change_password.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/update_customer_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/forget_password_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/set_new_password.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/social_login_dto.dart';
 
 import 'package:oraaq/src/data/remote/api/api_request_dtos/merchant_flow/update_merchant_profile_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/forget_password_dto.dart';
@@ -206,7 +208,7 @@ class AuthenticationServices {
   //
   //
 
-  Future<Either<Failure, String>> socialSignIn(
+  Future<Either<Failure, User>> socialSignIn(
     // Future<Either<Failure, UserEntity>> socialSignIn(
     SocialSignInEnum signinProvidor,
     UserType userType,
@@ -227,7 +229,8 @@ class AuthenticationServices {
           return Left(Failure(StringConstants.somethingWentWrong));
         }
         return Right(
-          r.user!.displayName ?? r.additionalUserInfo?.username ?? "-",
+          // r.user!.displayName ?? r.additionalUserInfo?.username ?? "-",
+          r.user!
         );
 
         // var apiResult = await _apiAuthRepository.socialSignIn(
@@ -260,6 +263,29 @@ class AuthenticationServices {
       },
     );
   }
+
+  //
+  //
+  // MARK: SOCIAL-SIGN-IN SERVER API
+  //
+  //
+  Future<Either<Failure, UserEntity>> loginViaSocial(SocialLoginRequestDto dto) async {
+    var result = await _apiAuthRepository.loginViaSocial(dto);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        UserEntity user = r.user.toUserEntity.copyWith(token: r.token);
+        await _localAuthRepository.setUser(user);
+        await _localAuthRepository.setToken(r.token);
+        if (getIt.isRegistered<UserEntity>()) getIt.unregister<UserEntity>();
+        getIt.registerSingleton<UserEntity>(user);
+        log('${user.role}');
+        return Right(user);
+      },
+    );
+  }
+
+
 
   //
   //

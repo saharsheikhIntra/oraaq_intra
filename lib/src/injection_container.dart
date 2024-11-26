@@ -54,6 +54,7 @@ void initializeInjectedDependencies() {
 
 injectDatasources() {
   getIt.registerSingleton(LocalDatasource());
+  // getIt.re
 
   Dio dio = Dio(BaseOptions(
     baseUrl: ApiConstants.baseUrl,

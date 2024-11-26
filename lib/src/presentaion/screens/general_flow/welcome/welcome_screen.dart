@@ -84,6 +84,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   ? null
                                   : () {
                                       print(_selectedType.value);
+                                      // if (getIt.isRegistered<UserType>()) getIt.unregister<UserType>();
                                       // getIt.registerSingleton<UserType>(
                                       //     _selectedType.value!);
                                       context.pushNamed(

@@ -17,6 +17,7 @@ class ApiConstants {
   static const String changePassword = "/ords/oraaq/api/changePassword";
   static const String forgetPassword = "/ords/oraaq/api/forgetPassword";
   static const String setNewPassword = "/ords/oraaq/api/setNewPassword";
+  static const String loginViaSocial= "/ords/oraaq/api/SocialRegisterLogin";
   //
   //MERCHANT FLOW
   static const String updateMerchantProfile =

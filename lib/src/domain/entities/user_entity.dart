@@ -19,6 +19,7 @@ class UserEntity {
   final String latitude;
   final String longitude;
   String? isOtpVerified;
+  String? isSocial;
   UserEntity({
     required this.id,
     required this.userId,
@@ -35,6 +36,7 @@ class UserEntity {
     required this.latitude,
     required this.longitude,
     this.isOtpVerified,
+    this.isSocial
   });
 
   UserEntity copyWith({
@@ -53,6 +55,7 @@ class UserEntity {
     String? latitude,
     String? longitude,
     String? isOtpVerified,
+    String? isSocial
   }) {
     return UserEntity(
       id: id ?? this.id,
@@ -70,6 +73,7 @@ class UserEntity {
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       isOtpVerified: isOtpVerified ?? "Y",
+      isSocial: isSocial ?? "Y",
     );
   }
 
@@ -90,6 +94,7 @@ class UserEntity {
       'latitude': latitude,
       'longitude': longitude,
       'is_otp_verified': isOtpVerified,
+      'is_social': isSocial,
     };
   }
 
@@ -113,6 +118,7 @@ class UserEntity {
       latitude: map['latitude'] as String,
       longitude: map['longitude'] as String,
       isOtpVerified: map['is_otp_verified'] as String,
+      isSocial: map['is_social'] as String,
     );
   }
 
@@ -123,7 +129,7 @@ class UserEntity {
 
   @override
   String toString() {
-    return 'UserEntity(id: $id,  userId: $userId, name: $name, email: $email, phone: $phone, role: $role, serviceType: $serviceType, cnicNtn: $cnicNtn, token: $token, opening_time: $openingTime, closing_time: $closingTime, holidays: $holidays, latitude: $latitude, longitude: $longitude, is_otp_verified: $isOtpVerified)';
+    return 'UserEntity(id: $id,  userId: $userId, name: $name, email: $email, phone: $phone, role: $role, serviceType: $serviceType, cnicNtn: $cnicNtn, token: $token, opening_time: $openingTime, closing_time: $closingTime, holidays: $holidays, latitude: $latitude, longitude: $longitude, is_otp_verified: $isOtpVerified, is_social: $isSocial)';
   }
 
   @override
@@ -144,7 +150,8 @@ class UserEntity {
         other.holidays == holidays &&
         other.latitude == latitude &&
         other.longitude == longitude &&
-        other.isOtpVerified == isOtpVerified;
+        other.isOtpVerified == isOtpVerified &&
+        other.isSocial == isSocial;
   }
 
   @override
@@ -163,6 +170,7 @@ class UserEntity {
         holidays.hashCode ^
         latitude.hashCode ^
         longitude.hashCode ^
-        isOtpVerified.hashCode;
+        isOtpVerified.hashCode ^
+        isSocial.hashCode;
   }
 }

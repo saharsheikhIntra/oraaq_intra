@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:oraaq/src/core/extensions/widget_extension.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
 import 'package:oraaq/src/domain/entities/service_entity.dart';
@@ -29,7 +30,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((Timestamp) async {
       await _cubit.fetchAcceptedRequest();
       await _cubit.fetchCategories();
     });
@@ -53,8 +54,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
               );
             }
             if (state is CustomerHomeStateCategories) {
-              DialogComponent.hideLoading(context);
               _categories = state.categories;
+              DialogComponent.hideLoading(context);
             }
             if (state is CustomerHomeStateAcceptedJobs) {
               DialogComponent.hideLoading(context);

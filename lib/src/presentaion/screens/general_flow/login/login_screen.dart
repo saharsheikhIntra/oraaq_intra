@@ -67,7 +67,12 @@ class _LoginScreenState extends State<LoginScreen> {
               if (state.user.latitude.isEmpty ||
                   state.user.longitude.isEmpty ||
                   state.user.latitude == "null" ||
-                  state.user.longitude == "null") {
+                  state.user.longitude == "null"||
+                  state.user.latitude == "" ||
+                  state.user.longitude == "" ||
+                  state.user.name == " " ||
+                  state.user.name == ""
+                  ) {
                 context.popAllNamed(
                     RouteConstants.customerEditProfileRoute);
               } else {
@@ -235,10 +240,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                         child: CustomButton(
                                           icon: e.icon,
                                           type: CustomButtonType.tertiary,
-                                          onPressed: () => _cubit.socialSignIn(
+                                          onPressed: () {
+                                            if (getIt
+                                                .isRegistered<UserType>()) {
+                                              getIt.unregister<UserType>();
+                                            }
+                                            print(widget
+                                                .arguments.selectedUserType);
+                                            getIt.registerSingleton<UserType>(
+                                                widget.arguments
+                                                    .selectedUserType);
+                                             _cubit.socialSignIn(
                                             e,
                                             widget.arguments.selectedUserType,
-                                          ),
+                                          );},
                                         )))
                                     .toList()),
                             20.verticalSpace,
