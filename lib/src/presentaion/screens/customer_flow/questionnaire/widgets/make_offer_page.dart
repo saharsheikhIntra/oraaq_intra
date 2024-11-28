@@ -40,6 +40,13 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
   DateTime? selectedDateTime;
   var tempVal = '';
 
+  int get25P(int amount){
+
+      var newVal = amount!=0?amount/4:0;
+      return newVal.toInt();
+
+  }
+
   @override
   void initState() {
     _selectedOffer.value = widget.selectedServices
@@ -154,8 +161,8 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                   children: [
                                     CustomButton(
                                       onPressed: () {
-                                        if (_selectedOffer.value > 50) {
-                                          _selectedOffer.value -= 50;
+                                        if (_selectedOffer.value > get25P(_selectedOffer.value)) {
+                                          _selectedOffer.value -= get25P(_selectedOffer.value);
                                         }
                                         widget.onChanged(_selectedOffer.value);
                                       },
@@ -226,7 +233,7 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                     24.horizontalSpace,
                                     CustomButton(
                                       onPressed: () {
-                                        _selectedOffer.value += 50;
+                                        _selectedOffer.value += get25P(_selectedOffer.value);
                                         widget.onChanged(_selectedOffer.value);
                                       },
                                       type: CustomButtonType.tertiary,
@@ -325,10 +332,10 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
         Padding(
             padding: 20.horizontalPadding,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
-                  text:'Back',
+                  // text:'Back',
                   size: CustomButtonSize.small,
                   icon: Symbols.arrow_back_rounded,
                   type: CustomButtonType.tertiary,

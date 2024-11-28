@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:oraaq/src/core/extensions/context_extensions.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/forgot_password/forget_password_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_state.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/splash/splash_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -64,6 +67,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     RouteConstants.merchantHomeScreenRoute);
               }
             } else if (type == UserType.customer) {
+              log('customer runn $type ${state.user.isOtpVerified}');
+              if (state.user.isOtpVerified != 'Y') {
+                context.pushReplacementNamed(RouteConstants.otpRoute,
+                      arguments: OtpArguement(widget.arguments.selectedUserType, state.user.email, 'login'));
+                return;
+              }
               if (state.user.latitude.isEmpty ||
                   state.user.longitude.isEmpty ||
                   state.user.latitude == "null" ||

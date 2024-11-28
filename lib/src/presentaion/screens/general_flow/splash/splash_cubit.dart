@@ -34,7 +34,13 @@ class SplashCubit extends Cubit<SplashState> {
           return;
         }
         if (user.latitude.toString().isEmpty ||
-            user.longitude.toString().isEmpty) {
+            user.longitude.toString().isEmpty || 
+            user.latitude == "null" ||
+                  user.longitude == "null"||
+                  user.latitude == "" ||
+                  user.longitude == "" ||
+                  user.name == " " ||
+                  user.name == "" ) {
           emit(SplashStateRedirect(RouteConstants.customerEditProfileRoute));
           return;
         } else {

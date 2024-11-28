@@ -41,11 +41,10 @@ class LoginCubit extends Cubit<LoginState> {
     result.fold(
       (l) => Logger().e(l), 
       (r)async{
+        emit(LoginStateLoading()); 
         Logger().e(r.displayName);
-        log(userType.id.toString());
-        log('login social');
         // var result =
-        var socialApiRes = await _authenticationServices.loginViaSocial(SocialLoginRequestDto(role: userType.id, email: r.email!, phone: "", provider: "google", socialId: r.uid));
+        var socialApiRes = await _authenticationServices.loginViaSocial(SocialLoginRequestDto(role: userType.id, email: r.email!, phone: "", provider: signinProvidor.name, socialId: r.uid));
         log(socialApiRes.toString());
         socialApiRes.fold(
       (l) => emit(LoginStateError(l)),
