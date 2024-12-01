@@ -63,6 +63,7 @@ class AuthenticationServices {
       (l) => Left(l),
       (r) async {
         UserEntity user = r.user.toUserEntity.copyWith(token: r.token);
+        log('otp verified: ${user.isOtpVerified.toString()}');
         await _localAuthRepository.setUser(user);
         await _localAuthRepository.setToken(r.token);
         if (getIt.isRegistered<UserEntity>()) getIt.unregister<UserEntity>();

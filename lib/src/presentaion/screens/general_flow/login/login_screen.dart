@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
               }
             } else if (type == UserType.customer) {
               log('customer runn $type ${state.user.isOtpVerified}');
-              if (state.user.isOtpVerified != 'Y') {
+              if (state.user.isOtpVerified == 'N') {
                 context.pushReplacementNamed(RouteConstants.otpRoute,
                       arguments: OtpArguement(widget.arguments.selectedUserType, state.user.email, 'login'));
                 return;

@@ -72,8 +72,8 @@ class UserEntity {
       holidays: holidays ?? this.holidays,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
-      isOtpVerified: isOtpVerified ?? "Y",
-      isSocial: isSocial ?? "Y",
+      isOtpVerified: isOtpVerified ?? this.isOtpVerified,
+      isSocial: isSocial ?? this.isSocial,
     );
   }
 

@@ -65,6 +65,7 @@ class ApiAuthRepository {
           r.data,
           (data) => LoginResponseDto.fromMap(data),
         ).data;
+
         if (res == null) Left(Failure(StringConstants.somethingWentWrong));
         return Right(res!);
       },

@@ -15,7 +15,7 @@ class ApiConstants {
   static const String generateOtp = "/ords/oraaq/api/GenerateOtp";
   static const String verifyOtp = "/ords/oraaq/api/verifyOTP";
   static const String changePassword = "/ords/oraaq/api/changePassword";
-  static const String aforgetPassword = "/ords/oraaq/api/forgetPassword";
+  static const String forgetPassword = "/ords/oraaq/api/forgetPassword";
   static const String setNewPassword = "/ords/oraaq/api/setNewPassword";
   static const String loginViaSocial= "/ords/oraaq/api/SocialRegisterLogin";
   //

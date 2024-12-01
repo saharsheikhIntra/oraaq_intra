@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:developer';
+
 import 'package:oraaq/src/core/enum/user_type.dart';
 import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/imports.dart';
@@ -15,6 +17,7 @@ class LoginResponseDto {
   // UserType currentType = getIt.get<UserType>();
 
   factory LoginResponseDto.fromMap(Map<String, dynamic> map) {
+    log('is otp lrd: ${map['user']['is_otp_verified']}');
     return LoginResponseDto(
       user: getIt.get<UserType>() != UserType.merchant
           ? map['user'] != null
@@ -142,7 +145,7 @@ class LoginResponseUserDto {
       holidays: offDays ?? "",
       latitude: latitude.toString(),
       longitude: longitude.toString(),
-      isOtpVerified: isOtpVerified,
+      isOtpVerified: isOtpVerified ,
       isSocial: isSocial,
       token: "",
     );
@@ -173,7 +176,7 @@ class LoginResponseConsumerDto {
     this.emergencyNo,
     this.latitude,
     this.longitude,
-    this.isOtpVerified,
+    this.isOtpVerified = 'N',
     this.isSocial
   });
 
