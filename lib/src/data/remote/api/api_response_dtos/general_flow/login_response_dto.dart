@@ -80,7 +80,7 @@ class LoginResponseUserDto {
     return LoginResponseUserDto(
       merchantId: map['merchant_id'] != null ? map['merchant_id'] as int : -1,
       merchantUserId:
-          map['merchant_user_id'] != null ? map['merchant_user_id'] as int : -1,
+          map['merchant_user_id'] is int ? map['merchant_user_id'] as int : int.parse(map['merchant_user_id']),
       merchantName:
           map['merchant_name'] != null ? map['merchant_name'] as String : "",
       email: map['email'] != null ? map['email'] as String : "",
