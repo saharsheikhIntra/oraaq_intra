@@ -5,7 +5,7 @@ import 'package:oraaq/src/config/themes/app_theme.dart';
 import 'config/routes/routes.dart';
 import 'core/constants/app_constants.dart';
 import 'core/constants/route_constants.dart';
-
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 class App extends StatefulWidget {
   const App({super.key});
   @override
@@ -13,6 +13,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  
   @override
   Widget build(BuildContext context) => LayoutBuilder(
       builder: (context, constraints) => ScreenUtilInit(
@@ -22,6 +23,7 @@ class _AppState extends State<App> {
               debugShowCheckedModeBanner: false,
               title: AppConstants.appName,
               theme: AppTheme.get,
+              navigatorKey: navigatorKey,
               initialRoute: RouteConstants.splashRoute,
               onGenerateRoute: AppRoutes.onGenerateRoute,
               scrollBehavior: ScrollConfiguration.of(context)
