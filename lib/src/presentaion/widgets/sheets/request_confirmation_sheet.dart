@@ -1,14 +1,4 @@
-import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:material_symbols_icons/symbols.dart';
-import 'package:oraaq/src/config/themes/color_theme.dart';
-import 'package:oraaq/src/core/constants/route_constants.dart';
-import 'package:oraaq/src/core/extensions/datetime_extensions.dart';
-import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/imports.dart';
-import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
-import '../../../config/themes/text_style_theme.dart';
 import '../sub_services_wrap_view.dart';
 
 class RequestConfirmationSheet extends StatefulWidget {
@@ -18,7 +8,7 @@ class RequestConfirmationSheet extends StatefulWidget {
   final String offeredAmount;
   final String datetime;
   final List<String> services;
-  RequestConfirmationSheet({
+  const RequestConfirmationSheet({
     super.key,
     required this.onConfirm,
     required this.address,

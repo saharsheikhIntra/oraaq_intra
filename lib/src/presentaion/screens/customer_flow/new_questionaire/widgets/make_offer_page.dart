@@ -1,20 +1,9 @@
-import 'dart:math';
 import 'dart:developer' as developer;
 
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:oraaq/src/config/themes/color_theme.dart';
-import 'package:oraaq/src/config/themes/text_style_theme.dart';
-import 'package:oraaq/src/core/constants/string_constants.dart';
-import 'package:oraaq/src/core/extensions/datetime_extensions.dart';
-import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
 import 'package:oraaq/src/imports.dart';
-import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
 import 'package:oraaq/src/presentaion/widgets/sub_services_wrap_view.dart';
-import 'package:oraaq/src/presentaion/widgets/toast.dart';
 
 class MakeOfferPage extends StatefulWidget {
   final Function(int selectedOffer) onChanged;
@@ -40,14 +29,10 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
   DateTime? selectedDateTime;
   var tempVal = '';
 
-  int get25P(int amount){
-
-      var newVal = amount!=0?amount/4:0;
-      return newVal.toInt();
-
+  int get25P(int amount) {
+    var newVal = amount != 0 ? amount / 4 : 0;
+    return newVal.toInt();
   }
-
-  
 
   @override
   void initState() {
@@ -222,7 +207,8 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                     24.horizontalSpace,
                                     CustomButton(
                                       onPressed: () {
-                                        _selectedOffer.value += get25P(_selectedOffer.value);
+                                        _selectedOffer.value +=
+                                            get25P(_selectedOffer.value);
                                         widget.onChanged(_selectedOffer.value);
                                       },
                                       type: CustomButtonType.tertiary,
@@ -324,11 +310,11 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomButton(
-                  text:'Back',
+                  text: 'Back',
                   size: CustomButtonSize.small,
                   icon: Symbols.arrow_back_rounded,
                   type: CustomButtonType.tertiary,
-                  onPressed: (){
+                  onPressed: () {
                     context.pop();
                   },
                 ),
@@ -348,7 +334,8 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                         iconPosition: CustomButtonIconPosition.trailing,
                         icon: Symbols.arrow_forward_rounded,
                         onPressed: () {
-                          developer.log('make offer page userOfferAmount: ${_selectedOffer.value}');
+                          developer.log(
+                              'make offer page userOfferAmount: ${_selectedOffer.value}');
                           widget.onContinue(
                               tempVal, _standardCharges, _selectedOffer.value);
                         },

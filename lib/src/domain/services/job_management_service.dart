@@ -3,15 +3,9 @@ import 'package:oraaq/src/core/enum/request_status_enum.dart';
 import 'package:oraaq/src/data/remote/api/api_repositories/job_management_repository.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
 
-import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
-
-import 'package:oraaq/src/domain/entities/request_entity.dart';
 import 'package:oraaq/src/imports.dart';
 
 import '../../data/remote/api/api_request_dtos/merchant_flow/post_bid_request_dto.dart';
-import '../../data/remote/api/api_response_dtos/merchant_flow/applied_jobs_response_dto.dart';
-import '../../data/remote/api/api_response_dtos/merchant_flow/get_all_new_response_dto.dart';
-import '../entities/category_entity.dart';
 import '../entities/failure.dart';
 
 class JobManagementService {
@@ -234,7 +228,8 @@ class JobManagementService {
   //
   Future<Either<Failure, String>> completeWorkOrder(
       int workOrderId, int merchantId) async {
-    var result = await _jobsRepository.completeWorkOrder(workOrderId, merchantId);
+    var result =
+        await _jobsRepository.completeWorkOrder(workOrderId, merchantId);
     return result.fold(
       (l) => Left(l),
       (r) => Right(r),
@@ -248,7 +243,8 @@ class JobManagementService {
   //
   Future<Either<Failure, String>> cancelWorkOrderFromMerchantAppliedRequests(
       int workOrderId, int merchantId) async {
-    var result = await _jobsRepository.cancelWorkOrderFromMerchantAppliedRequests(workOrderId, merchantId);
+    var result = await _jobsRepository
+        .cancelWorkOrderFromMerchantAppliedRequests(workOrderId, merchantId);
     return result.fold(
       (l) => Left(l),
       (r) => Right(r),

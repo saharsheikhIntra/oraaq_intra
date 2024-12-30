@@ -1,31 +1,15 @@
 import 'dart:developer';
 
-import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
-import 'package:oraaq/src/core/constants/route_constants.dart';
-import 'package:oraaq/src/core/constants/string_constants.dart';
-import 'package:oraaq/src/core/extensions/num_extension.dart';
-import 'package:oraaq/src/core/extensions/widget_extension.dart';
-import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
 import 'package:oraaq/src/imports.dart';
-import 'package:oraaq/src/injection_container.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_states.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/sub_services_args.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/make_offer_page.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/questions_page.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/single_question_tile.dart';
-import 'package:oraaq/src/presentaion/widgets/loading_indicator.dart';
 import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
-import 'package:oraaq/src/presentaion/widgets/toast.dart';
 
 import '../../../../domain/entities/service_entity.dart';
-import '../../../widgets/dialog_component.dart';
 
 class QuestionnaireScreen extends StatefulWidget {
   final QuestionnaireArgument args;

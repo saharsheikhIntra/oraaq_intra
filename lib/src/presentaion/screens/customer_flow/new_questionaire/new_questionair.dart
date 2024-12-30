@@ -268,22 +268,17 @@
 
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
 import 'package:oraaq/src/domain/entities/service_entity.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/new_questionaire/NewQuestionnaireArgument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/new_questionaire/widgets/questions_accordion.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/new_questionaire/widgets/questions_page.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/new_questionaire/widgets/single_question_tile.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_states.dart';
 
-import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/questions_page.dart';
 import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
 import 'package:oraaq/src/presentaion/widgets/sub_services_wrap_view.dart';
 
@@ -452,20 +447,20 @@ class _NewQuestionnaireScreenState extends State<NewQuestionnaireScreen> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CustomButton(
                                     text: 'Back',
-
                                     type: CustomButtonType.tertiary,
-                                    iconPosition: CustomButtonIconPosition.leading,
-                        icon: Symbols.arrow_back_rounded,
-                                    size: CustomButtonSize.small, 
+                                    iconPosition:
+                                        CustomButtonIconPosition.leading,
+                                    icon: Symbols.arrow_back_rounded,
+                                    size: CustomButtonSize.small,
                                     onPressed: () {
                                       context.pop();
                                     },
-                                  ), 16.horizontalSpace,
+                                  ),
+                                  16.horizontalSpace,
                                   CustomButton(
                                     onPressed: () {
                                       // context.pop();
@@ -537,8 +532,9 @@ class _NewQuestionnaireScreenState extends State<NewQuestionnaireScreen> {
                                     },
                                     text: 'Next',
                                     size: CustomButtonSize.small,
-                                    iconPosition: CustomButtonIconPosition.trailing,
-                        icon: Symbols.arrow_forward_rounded,
+                                    iconPosition:
+                                        CustomButtonIconPosition.trailing,
+                                    icon: Symbols.arrow_forward_rounded,
                                   )
                                 ]),
                           ),

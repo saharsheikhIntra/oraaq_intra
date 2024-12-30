@@ -4,8 +4,6 @@ import 'package:oraaq/src/core/constants/route_constants.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_edit_profile/customer_edit_profile_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_profile/customer_profile_screen.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/new_questionaire/NewQuestionnaireArgument.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/new_questionaire/new_questionair.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_received_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_recieved_arguments.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';

@@ -1,12 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:oraaq/src/core/extensions/widget_extension.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
-import 'package:oraaq/src/domain/entities/service_entity.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_state.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/widgets/service_card.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/new_questionaire/NewQuestionnaireArgument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
 import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
 import 'package:oraaq/src/presentaion/widgets/ongoing_request_card.dart';
@@ -276,7 +273,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                       : ListView.separated(
                           shrinkWrap: true,
                           padding: 16.horizontalPadding,
-
                           itemCount: _categories.length,
                           separatorBuilder: (c, i) => 16.verticalSpace,
                           physics: const NeverScrollableScrollPhysics(),

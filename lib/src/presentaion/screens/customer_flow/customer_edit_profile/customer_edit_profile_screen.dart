@@ -1,18 +1,7 @@
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_edit_profile/customer_edit_profile_cubit.dart';
-import 'package:oraaq/src/presentaion/screens/general_flow/change_password/change_password_cubit.dart';
-
-import '../../../../config/themes/color_theme.dart';
-import '../../../../config/themes/text_style_theme.dart';
-import '../../../../core/constants/string_constants.dart';
-import '../../../widgets/custom_button.dart';
-import '../../../widgets/sheets/sheet_component.dart';
 
 class CustomerEditProfileScreen extends StatefulWidget {
   const CustomerEditProfileScreen({super.key});
@@ -39,10 +28,9 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
     emailController.text = user.email;
     phoneNumberController.text = user.phone;
     nameController.text = user.name;
-    locationController.text =
-        user.longitude == "" || user.latitude == ""
-            ? StringConstants.selectServiceLocation
-            : "${user.latitude}, ${user.longitude}";
+    locationController.text = user.longitude == "" || user.latitude == ""
+        ? StringConstants.selectServiceLocation
+        : "${user.latitude}, ${user.longitude}";
     log(user.id.toString());
     super.initState();
   }
@@ -68,11 +56,16 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
             // TODO: implement listener
             if (state is CustomerEditProfileSuccess) {
               DialogComponent.hideLoading(context);
-              context.pushReplacementNamed(RouteConstants.customerHomeScreenRoute);
-            }else if(state is CustomerEditProfileError){
+              context
+                  .pushReplacementNamed(RouteConstants.customerHomeScreenRoute);
+            } else if (state is CustomerEditProfileError) {
               DialogComponent.hideLoading(context);
-              Toast.show(variant: SnackbarVariantEnum.warning,title: state.error.code! , message: state.error.message, context: context);
-            }else if(state is CustomerEditProfileLoading){
+              Toast.show(
+                  variant: SnackbarVariantEnum.warning,
+                  title: state.error.code!,
+                  message: state.error.message,
+                  context: context);
+            } else if (state is CustomerEditProfileLoading) {
               DialogComponent.showLoading(context);
             }
           },
@@ -147,8 +140,12 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                         email: emailController.text,
                         name: nameController.text,
                         phone: phoneNumberController.text,
-                        latitude: double.parse(_selectedPosition?.latitude.toString() ?? user.latitude),
-                        longitude: double.parse(_selectedPosition?.longitude.toString() ?? user.latitude));
+                        latitude: double.parse(
+                            _selectedPosition?.latitude.toString() ??
+                                user.latitude),
+                        longitude: double.parse(
+                            _selectedPosition?.longitude.toString() ??
+                                user.latitude));
                   },
                 ),
                 12.verticalSpace,
