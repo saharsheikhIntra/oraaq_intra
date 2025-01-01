@@ -5,6 +5,7 @@ class AssetConstants {
 
   static const String logo = 'assets/images/oraaq_logo.jpg';
   static const String logoIcon = 'assets/images/oraaq_icon.png';
+  static const String logoIconWhite = 'assets/images/logo_white_variant.png';
   static const String splashBackground = 'assets/images/splash_background.jpg';
   static const String homeAppbarBackground =
       'assets/images/home_appbar_background.jpg';

@@ -100,11 +100,22 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Text(
+                        //   StringConstants.goodMorning,
+                        //   style: TextStyleTheme.titleSmall.copyWith(
+                        //     color: ColorTheme.neutral3,
+                        //   ),
+                        // ),
                         Text(
-                          StringConstants.goodMorning,
-                          style: TextStyleTheme.titleSmall.copyWith(
-                            color: ColorTheme.neutral3,
-                          ),
+                          DateTime.now().hour >=  6 &&
+                              DateTime.now().hour <= 12
+                              ? StringConstants.goodMorning
+                              : DateTime.now().hour > 12 &&
+                              DateTime.now().hour <= 16
+                              ? StringConstants.goodAfterNoon
+                              : StringConstants.goodEvening,
+                          style: TextStyleTheme.titleSmall
+                              .copyWith(color: ColorTheme.neutral3),
                         ),
                         Text(
                           getIt<UserEntity>().name,

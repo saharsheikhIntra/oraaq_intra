@@ -82,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                     child: Hero(
                                         tag: "logo",
                                         child: Image.asset(
-                                          AssetConstants.logo,
+                                          AssetConstants.logoIconWhite,
                                           fit: BoxFit.cover,
                                           height: 100,
                                         ))),

@@ -130,8 +130,8 @@ class _ResgisterScreenState extends State<ResgisterScreen> {
                             children: [
                               const Spacer(),
                               Image.asset(
-                                AssetConstants.logoIcon,
-                                height: 80,
+                                AssetConstants.logoIconWhite,
+                                height: 70,
                               ),
                               const Spacer(),
                               Text(

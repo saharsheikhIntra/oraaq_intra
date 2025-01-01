@@ -98,11 +98,11 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                   //       .copyWith(color: ColorTheme.neutral3),
                                   // ),
                                   Text(
-                                    DateTime.now().hour >= 6 &&
+                                    DateTime.now().hour >=  6 &&
                                             DateTime.now().hour <= 12
                                         ? StringConstants.goodMorning
                                         : DateTime.now().hour > 12 &&
-                                                DateTime.now().hour <= 17
+                                                DateTime.now().hour <= 16
                                             ? StringConstants.goodAfterNoon
                                             : StringConstants.goodEvening,
                                     style: TextStyleTheme.titleSmall

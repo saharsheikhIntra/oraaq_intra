@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "204429620300",
     "project_id": "oraaq-a7ff0",
-    "storage_bucket": "oraaq-a7ff0.appspot.com"
+    "storage_bucket": "oraaq-a7ff0.firebasestorage.app"
   },
   "client": [
     {
@@ -13,6 +13,58 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "204429620300-25hu85tgvc8guclvrb8rdqb4tab73qac.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.oraaq",
+            "certificate_hash": "21355454666e5920cbdc1aaddc09257a1fe47f4d"
+          }
+        },
+        {
+          "client_id": "204429620300-9ks3ejv9009cpu7m5ngvms1hat4bbt1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3IwerZOp3qJb-924Gk3U6zdLY8NCloGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "204429620300-9ks3ejv9009cpu7m5ngvms1hat4bbt1o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "204429620300-a5018o7hlof3r0cqthg7vm94ovg1459s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.oraaq"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204429620300:android:6492169e07d69f551930e9",
+        "android_client_info": {
+          "package_name": "com.intra.oraaqintra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "204429620300-n1et8a7icvrh6peqtdqomjddg1v2k23g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.intra.oraaqintra",
+            "certificate_hash": "21355454666e5920cbdc1aaddc09257a1fe47f4d"
+          }
+        },
         {
           "client_id": "204429620300-9ks3ejv9009cpu7m5ngvms1hat4bbt1o.apps.googleusercontent.com",
           "client_type": 3

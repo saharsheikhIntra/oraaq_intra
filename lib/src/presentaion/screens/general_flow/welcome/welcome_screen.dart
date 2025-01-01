@@ -44,7 +44,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               child: Image.asset(
                                 height: 80,
                                 fit: BoxFit.cover,
-                                AssetConstants.logo,
+                                AssetConstants.logoIconWhite,
                               )),
                           const Spacer(flex: 2),
                           Text(

@@ -261,8 +261,8 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                                           },
                                           onDistanceTap: () {
                                             LauncherUtil.openMap(
-                                              bid.merchantLatitude ?? 25.3960,
-                                              bid.merchantLongitude ?? 68.3578,
+                                              bid.merchantLatitude,
+                                              bid.merchantLongitude,
                                             );
                                           },
                                         ),

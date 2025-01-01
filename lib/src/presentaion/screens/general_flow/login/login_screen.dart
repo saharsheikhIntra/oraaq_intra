@@ -60,33 +60,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   state.user.openingTime.isEmpty ||
                   state.user.closingTime.isEmpty) {
                 // context.pushNamed(RouteConstants.merchantEditProfileRoute);
-                context.popAllNamed(
-                    RouteConstants.merchantEditProfileRoute);
+                context.popAllNamed(RouteConstants.merchantEditProfileRoute);
               } else {
-                context.popAllNamed(
-                    RouteConstants.merchantHomeScreenRoute);
+                context.popAllNamed(RouteConstants.merchantHomeScreenRoute);
               }
             } else if (type == UserType.customer) {
               log('customer runn $type ${state.user.isOtpVerified}');
               if (state.user.isOtpVerified == 'N') {
                 context.pushReplacementNamed(RouteConstants.otpRoute,
-                      arguments: OtpArguement(widget.arguments.selectedUserType, state.user.email, 'login'));
+                    arguments: OtpArguement(widget.arguments.selectedUserType,
+                        state.user.email, 'login'));
                 return;
               }
               if (state.user.latitude.isEmpty ||
                   state.user.longitude.isEmpty ||
                   state.user.latitude == "null" ||
-                  state.user.longitude == "null"||
+                  state.user.longitude == "null" ||
                   state.user.latitude == "" ||
                   state.user.longitude == "" ||
                   state.user.name == " " ||
-                  state.user.name == ""
-                  ) {
-                context.popAllNamed(
-                    RouteConstants.customerEditProfileRoute);
+                  state.user.name == "") {
+                context.popAllNamed(RouteConstants.customerEditProfileRoute);
               } else {
-                context.popAllNamed(
-                    RouteConstants.customerHomeScreenRoute);
+                context.popAllNamed(RouteConstants.customerHomeScreenRoute);
               }
             }
           }
@@ -136,8 +132,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             const Spacer(),
                             Image.asset(
-                              AssetConstants.logoIcon,
-                              height: 80,
+                              AssetConstants.logoIconWhite,
+                              height: 70,
                             ),
                             const Spacer(),
                             Text(
@@ -259,10 +255,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                             getIt.registerSingleton<UserType>(
                                                 widget.arguments
                                                     .selectedUserType);
-                                             _cubit.socialSignIn(
-                                            e,
-                                            widget.arguments.selectedUserType,
-                                          );},
+                                            _cubit.socialSignIn(
+                                              e,
+                                              widget.arguments.selectedUserType,
+                                            );
+                                          },
                                         )))
                                     .toList()),
                             20.verticalSpace,

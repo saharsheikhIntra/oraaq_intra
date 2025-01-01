@@ -151,7 +151,7 @@ class StringConstants {
   static const String alreadyQuoted = "Already Quoted";
   static const String allServiceRequests = "All Service Requests";
   static const String saloon = "Saloon";
-  static const String approvedJobs = "Approved Jobs";
+  static const String approvedJobs = "Ongoing Jobs";
   static const String offersReceived = "Offers Received";
 
   static const String waitingMerchant = "Waiting for merchant offers.";
