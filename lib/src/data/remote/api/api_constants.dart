@@ -21,7 +21,7 @@ class ApiConstants {
   //
   //MERCHANT FLOW
   static const String updateMerchantProfile =
-      "/ords/oraaq/api/Update_MerchantProfile";
+      "/ords/oraaq/api/UpdateMerchantProfile";
   static const String getCanceledWorkOrdersForMerchant =
       "/ords/oraaq/api/merchantWorkorders?";
   static const String getCompletedWorkOrderMerchant =
