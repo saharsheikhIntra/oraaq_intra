@@ -27,7 +27,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((Timestamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.fetchAcceptedRequest();
       await _cubit.fetchCategories();
     });
@@ -98,7 +98,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                   //       .copyWith(color: ColorTheme.neutral3),
                                   // ),
                                   Text(
-                                    DateTime.now().hour >=  6 &&
+                                    DateTime.now().hour >= 6 &&
                                             DateTime.now().hour <= 12
                                         ? StringConstants.goodMorning
                                         : DateTime.now().hour > 12 &&

@@ -236,7 +236,9 @@ class NotificationService {
         if (message.data.containsKey('orderId')) {
           navigatorKey.currentState
               ?.pushNamed(RouteConstants.requestHistoryScreenRoute);
-        } else {
+        } else if (message.data.containsKey('workOrderId')) {
+          navigatorKey.currentState
+              ?.pushNamed(RouteConstants.merchantViewAllOrdersRoute);
           print("OrderId key is missing in notification data.");
         }
       } else {

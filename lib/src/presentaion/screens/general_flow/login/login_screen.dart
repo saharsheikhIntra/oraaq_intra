@@ -88,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
           }
           if (state is LoginStateError) {
             DialogComponent.hideLoading(context);
+            FocusScope.of(context).unfocus();
             Toast.show(
               context: context,
               variant: SnackbarVariantEnum.warning,
@@ -170,7 +171,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 builder: (context, value, child) {
                                   return TextFormField(
                                       controller: passwordTextController,
-                                      focusNode: passwordFocusNode,
+                                      // focusNode: passwordFocusNode,
+                                      // onEditingComplete: FocusScope.of(context)
+                                      //     .unfocus,
                                       keyboardType:
                                           TextInputType.visiblePassword,
                                       validator: (value) => null,
