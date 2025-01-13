@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
+import 'package:oraaq/src/core/utils/error_util.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/change_password.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/update_customer_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/forget_password_dto.dart';
@@ -219,26 +220,31 @@ class ApiAuthRepository {
       updateMerchantProfile(
     UpdateMerchantProfileRequestDto dto,
   ) async {
-    Either<Failure, Response> result = await _datasource.put(
-      ApiConstants.updateMerchantProfile,
-      data: dto.toMap(),
-    );
-    print("Raw response: ${result.fold((l) => l, (r) => r.data)}");
+    try {
+      Either<Failure, Response> result = await _datasource.put(
+        ApiConstants.updateMerchantProfile,
+        data: dto.toMap(),
+      );
+      print("Raw response: ${result.fold((l) => l, (r) => r.data)}");
 
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        print("Raw response: ${result.fold((l) => l, (r) => r.data)}");
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          print("Raw response: ${result.fold((l) => l, (r) => r.data)}");
 
-        var res = BaseResponseDto.fromJson(
-          r.data,
-          (data) => UpdateMerchantProfileResponseDto.fromMap(data),
-        ).data;
-        if (res == null) Left(Failure(StringConstants.somethingWentWrong));
-        return Right(res!);
-        //return Right(BaseResponseDto.fromJson(r.data, (data) => data).data!);
-      },
-    );
+          var res = BaseResponseDto.fromJson(
+            r.data,
+            (data) => UpdateMerchantProfileResponseDto.fromMap(data),
+          ).data;
+          if (res == null) Left(Failure(StringConstants.somethingWentWrong));
+          return Right(res!);
+          //return Right(BaseResponseDto.fromJson(r.data, (data) => data).data!);
+        },
+      );
+    } catch (e) {
+      print("Error: $e");
+      return Left(handleError(e));
+    }
   }
 
   //
