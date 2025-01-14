@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:oraaq/src/data/local/local_auth_repository.dart';
 import 'package:oraaq/src/imports.dart';
@@ -59,14 +61,14 @@ class RequestInterceptor extends Interceptor {
   }
 
   Future<String> _refreshTokenMethod() async {
+    print(
+        "Attempting to fetch new token from: ${ApiConstants.baseUrl + ApiConstants.getToken}");
     try {
-      print(
-          "Attempting to fetch new token from: ${ApiConstants.baseUrl + ApiConstants.getToken}");
       final response = await Dio().post(
         ApiConstants.baseUrl + ApiConstants.getToken,
       );
 
-      print("Status code: ${response.statusCode}");
+      log("Status code: ${response.statusCode}");
       print("Response data: ${response.data}");
 
       // final response = await Dio().post(
@@ -85,9 +87,10 @@ class RequestInterceptor extends Interceptor {
       } else {
         print("Unexpected response structure: ${response.data}");
         throw Exception('Failed to refresh token');
+        
       }
     } catch (e) {
-      print("Error while refreshing token: $e");
+      print("Error: $e");
       throw Exception('Failed to refresh token');
     }
   }

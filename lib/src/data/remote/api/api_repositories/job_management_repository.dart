@@ -54,7 +54,8 @@ class JobManagementRepository {
                 // [],
               ));
     } catch (e) {
-      return Left(Failure('Failed to fetch categories: $e'));
+      return Left(
+          Failure('Failed to fetch categories. Please try again later.'));
     }
   }
 
@@ -66,22 +67,28 @@ class JobManagementRepository {
 
   Future<Either<Failure, List<CompletedWorkOrderResponseMerchantDto>>>
       getCompletedWorkOrdersForMerchant(int merchantId) async {
-    final result = await _datasource.get(
-        "${ApiConstants.getCompletedWorkOrderMerchant}merchant_id=$merchantId&order_status_id=3");
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-          r.data,
-          (data) => data is List
-              ? data
-                  .map((e) => CompletedWorkOrderResponseMerchantDto.fromMap(e))
-                  .toList()
-              : <CompletedWorkOrderResponseMerchantDto>[],
-        ).data;
-        return Right(responseDto!);
-      },
-    );
+    try {
+      final result = await _datasource.get(
+          "${ApiConstants.getCompletedWorkOrderMerchant}merchant_id=$merchantId&order_status_id=3");
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data is List
+                ? data
+                    .map(
+                        (e) => CompletedWorkOrderResponseMerchantDto.fromMap(e))
+                    .toList()
+                : <CompletedWorkOrderResponseMerchantDto>[],
+          ).data;
+          return Right(responseDto!);
+        },
+      );
+    } catch (e) {
+      return Left(Failure(
+          'An error occurred while fetching completed work orders. Please try again later.'));
+    }
   }
 
   //
@@ -92,21 +99,28 @@ class JobManagementRepository {
 
   Future<Either<Failure, List<CancelWorkOrderResponseDto>>>
       getCanceledWorkOrdersForMerchant(int merchantId) async {
-    final result = await _datasource.get(
-      "${ApiConstants.getCanceledWorkOrdersForMerchant}merchant_id=$merchantId&order_status_id=2",
-    );
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-          r.data,
-          (data) => data is List
-              ? data.map((e) => CancelWorkOrderResponseDto.fromMap(e)).toList()
-              : <CancelWorkOrderResponseDto>[],
-        ).data;
-        return Right(responseDto!);
-      },
-    );
+    try {
+      final result = await _datasource.get(
+        "${ApiConstants.getCanceledWorkOrdersForMerchant}merchant_id=$merchantId&order_status_id=2",
+      );
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data is List
+                ? data
+                    .map((e) => CancelWorkOrderResponseDto.fromMap(e))
+                    .toList()
+                : <CancelWorkOrderResponseDto>[],
+          ).data;
+          return Right(responseDto!);
+        },
+      );
+    } catch (e) {
+      return Left(Failure(
+          'An error occurred while fetching cancelled work orders. Please try again later.'));
+    }
   }
 
   //
@@ -119,8 +133,8 @@ class JobManagementRepository {
       getAppliedJobsForMerchant(int merchantId) async {
     // final result = await _datasource.get(
     //     "${ApiConstants.getAppliedJobsForMerchant}merchant_id=$merchantId&order_status_id=22");
-    final result = await _datasource.get(
-        "${ApiConstants.getAppliedJobsNew}merchant_id=$merchantId");
+    final result = await _datasource
+        .get("${ApiConstants.getAppliedJobsNew}merchant_id=$merchantId");
     return result.fold(
       (l) => Left(l),
       (r) {
@@ -189,10 +203,10 @@ class JobManagementRepository {
 
   Future<Either<Failure, List<NewServiceRequestResponseDto>>>
       getServiceRequests(int merchantId) async {
-    final result = await _datasource
-        .get("${ApiConstants.getAllRequests}$merchantId");
+    final result =
+        await _datasource.get("${ApiConstants.getAllRequests}$merchantId");
     return result.fold(
-      (l) { 
+      (l) {
         return Left(l);
       },
       (r) {
@@ -348,7 +362,4 @@ class JobManagementRepository {
       },
     );
   }
-
 }
-
-

@@ -16,7 +16,13 @@ class LocalAuthRepository {
 
   Future<Either<Failure, String?>> getToken() async {
     try {
-      return Right(await _localDatasourcesService.read(LocalConstants.token));
+      var result = await _localDatasourcesService.read(LocalConstants.token);
+      if (result != null) {
+        Logger().i("Token Found");
+        return Right(result);
+      }
+
+      return Left(Failure("Token Not Found"));
     } catch (e) {
       Logger().e(e);
       return Left(Failure(e.toString()));

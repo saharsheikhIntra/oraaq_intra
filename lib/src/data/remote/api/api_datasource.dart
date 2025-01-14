@@ -10,7 +10,7 @@ import '../../../domain/entities/failure.dart';
 class ApiDatasource {
   final Dio dio;
   const ApiDatasource(this.dio);
-
+  
   //
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<---------GET--------->>>>>>>>>>>>>>>>>>>>>>>>>>>
   //
@@ -24,16 +24,14 @@ class ApiDatasource {
   }) async {
     try {
       dynamic res = await dio.get(
-          dio.options.baseUrl + endpoint,
-          onReceiveProgress: onReceiveProgress,
-          cancelToken: cancelToken,
-          options: options,
-          queryParameters: queryParameters,
-        );
-      log(res.toString());
-      return Right(
-        res
+        dio.options.baseUrl + endpoint,
+        onReceiveProgress: onReceiveProgress,
+        cancelToken: cancelToken,
+        options: options,
+        queryParameters: queryParameters,
       );
+      log(res.toString());
+      return Right(res);
       // return Right(
       //   await dio.get(
       //     dio.options.baseUrl + endpoint,
@@ -47,7 +45,7 @@ class ApiDatasource {
       log(e.toString());
       return Left(
         Failure(
-          e.response?.data["message"].toString() ?? e.toString() ,
+          e.response?.data["message"].toString() ?? e.toString(),
 //           Exception has occurred.
 // _TypeError (type 'String' is not a subtype of type 'int' of 'index')
           code: e.response?.statusCode.toString() ?? '-1',
@@ -83,6 +81,7 @@ class ApiDatasource {
       // Logger().i(response.data);
       return Right(response);
     } on DioException catch (e) {
+      Logger().e(e);
       return Left(
         Failure(
           e.response?.data["message"] ?? e.toString(),

@@ -62,7 +62,6 @@ injectDatasources() {
     receiveTimeout: 30000.milliseconds,
     sendTimeout: 30000.milliseconds,
   ));
-
   dio.interceptors.addAll([
     RequestInterceptor(dio),
     LoggerInterceptor.interceptor,
@@ -160,8 +159,7 @@ injectCubits() {
   getIt.registerFactory(() => ChangePasswordCubit(getIt()));
 
   getIt.registerFactory(() => CustomerEditProfileCubit(getIt()));
-  getIt.registerFactory(() => RequestHistoryCubit(getIt(),getIt()));
-
+  getIt.registerFactory(() => RequestHistoryCubit(getIt(), getIt()));
 
   getIt.registerFactory(() => OffersRecievedCubit(getIt()));
   getIt.registerFactory(() => CustomerProfileCubit(getIt()));

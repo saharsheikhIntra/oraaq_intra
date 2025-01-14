@@ -74,7 +74,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
             return Scaffold(
                 appBar: PreferredSize(
                     preferredSize:
-                        Size.fromHeight(ScreenUtil().statusBarHeight + 56),
+                        Size.fromHeight(ScreenUtil().statusBarHeight + 62),
                     child: Container(
                         padding: const EdgeInsets.fromLTRB(16, 16, 8, 16),
                         decoration: const BoxDecoration(
