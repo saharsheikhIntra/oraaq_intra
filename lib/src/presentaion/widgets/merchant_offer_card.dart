@@ -43,7 +43,9 @@ class MerchantOfferCard extends StatelessWidget {
           Row(
             children: [
               Expanded(child: Text(userName, style: TextStyleTheme.titleLarge)),
-              Text(distance, style: TextStyleTheme.bodyLarge.copyWith(color: ColorTheme.secondaryText)),
+              Text(distance,
+                  style: TextStyleTheme.bodyLarge
+                      .copyWith(color: ColorTheme.secondaryText)),
               8.horizontalSpace,
               Material(
                 color: Colors.transparent,
@@ -73,7 +75,7 @@ class MerchantOfferCard extends StatelessWidget {
           8.verticalSpace,
           _buildInfo(Symbols.call_rounded, phoneNo),
           4.verticalSpace,
-          _buildInfo(Symbols.mail_rounded, email),
+          _buildInfo(Symbols.location_pin, email),
           12.verticalSpace,
           Row(
             textBaseline: TextBaseline.alphabetic,
@@ -127,16 +129,18 @@ class MerchantOfferCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfo(IconData icon, String text) => text.isNotEmpty? Row(children: [
-        Icon(
-          icon,
-          color: ColorTheme.secondaryText,
-          size: 18.0,
-        ),
-        8.horizontalSpace,
-        Text(text,
-            style: TextStyleTheme.bodyMedium.copyWith(
-              color: ColorTheme.secondaryText,
-            )),
-      ]):const SizedBox();
+  Widget _buildInfo(IconData icon, String text) => text.isNotEmpty
+      ? Row(children: [
+          Icon(
+            icon,
+            color: ColorTheme.secondaryText,
+            size: 18.0,
+          ),
+          8.horizontalSpace,
+          Text(text,
+              style: TextStyleTheme.bodyMedium.copyWith(
+                color: ColorTheme.secondaryText,
+              )),
+        ])
+      : const SizedBox();
 }

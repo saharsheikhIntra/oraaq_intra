@@ -241,7 +241,7 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                                           userName: bid.merchantName,
                                           distance: bid.distance,
                                           phoneNo: "",
-                                          email: bid.merchantEmail,
+                                          email: "Fetching address...",
                                           price: bid.offerAmount.toString(),
                                           onAccept: () async {
                                             Map<String, dynamic> data = {

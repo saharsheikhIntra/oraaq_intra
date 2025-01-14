@@ -79,8 +79,9 @@ class LoginResponseUserDto {
   factory LoginResponseUserDto.fromMap(Map<String, dynamic> map) {
     return LoginResponseUserDto(
       merchantId: map['merchant_id'] != null ? map['merchant_id'] as int : -1,
-      merchantUserId:
-          map['merchant_user_id'] is int ? map['merchant_user_id'] as int : int.parse(map['merchant_user_id']),
+      merchantUserId: map['merchant_user_id'] is int
+          ? map['merchant_user_id'] as int
+          : int.parse(map['merchant_user_id']),
       merchantName:
           map['merchant_name'] != null ? map['merchant_name'] as String : "",
       email: map['email'] != null ? map['email'] as String : "",
@@ -102,9 +103,7 @@ class LoginResponseUserDto {
       isOtpVerified: map['is_otp_verified'] != null
           ? map['is_otp_verified'] as String
           : "",
-      isSocial: map['is_social'] != null
-          ? map['is_social'] as String
-          : "", 
+      isSocial: map['is_social'] != null ? map['is_social'] as String : "",
 
       // id: map['id'] != null ? map['id'] as int : -1,
       // name: map['name'] != null ? map['name'] as String : "",
@@ -145,7 +144,7 @@ class LoginResponseUserDto {
       holidays: offDays ?? "",
       latitude: latitude.toString(),
       longitude: longitude.toString(),
-      isOtpVerified: isOtpVerified ,
+      isOtpVerified: isOtpVerified,
       isSocial: isSocial,
       token: "",
     );
@@ -165,24 +164,25 @@ class LoginResponseConsumerDto {
   final String? longitude;
   final String? isOtpVerified;
   final String? isSocial;
-  LoginResponseConsumerDto({
-    this.customerId,
-    this.customerUserId,
-    this.name,
-    this.source,
-    this.phoneNumber,
-    this.email,
-    this.isActive,
-    this.emergencyNo,
-    this.latitude,
-    this.longitude,
-    this.isOtpVerified = 'N',
-    this.isSocial
-  });
+  LoginResponseConsumerDto(
+      {this.customerId,
+      this.customerUserId,
+      this.name,
+      this.source,
+      this.phoneNumber,
+      this.email,
+      this.isActive,
+      this.emergencyNo,
+      this.latitude,
+      this.longitude,
+      this.isOtpVerified = 'N',
+      this.isSocial});
 
   factory LoginResponseConsumerDto.fromMap(Map<String, dynamic> map) {
     return LoginResponseConsumerDto(
-      customerUserId: map['customer_user_id'] is int ? map['customer_user_id'] as int : int.parse(map['customer_user_id']),
+      customerUserId: map['customer_user_id'] is int
+          ? map['customer_user_id'] as int
+          : int.parse(map['customer_user_id']),
       customerId: map['customer_id'] as int,
       name:
           map['customer_name'] != null ? map['customer_name'] as String : null,
@@ -195,11 +195,9 @@ class LoginResponseConsumerDto {
       latitude: map['latitude'] != null ? map['latitude'].toString() : null,
       longitude: map['longitude'] != null ? map['longitude'].toString() : null,
       isOtpVerified: map['is_otp_verified'] != null
-         ? map['is_otp_verified'] as String
-           : "",
-      isSocial: map['is_social'] != null
-         ? map['is_social'] as String
-           : "",
+          ? map['is_otp_verified'] as String
+          : "",
+      isSocial: map['is_social'] != null ? map['is_social'] as String : "",
     );
   }
 

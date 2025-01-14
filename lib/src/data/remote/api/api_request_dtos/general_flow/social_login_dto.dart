@@ -34,12 +34,14 @@
 // // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 class SocialLoginRequestDto {
+  final String userName;
   final int role;
   final String email;
   final String phone;
   final String provider;
   final String socialId;
   SocialLoginRequestDto({
+    required this.userName,
     required this.role,
     required this.email,
     required this.phone,
@@ -49,6 +51,7 @@ class SocialLoginRequestDto {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'user_name': userName,
       'email': email,
       'social_id': socialId,
       'phone': phone,
@@ -57,4 +60,3 @@ class SocialLoginRequestDto {
     };
   }
 }
-

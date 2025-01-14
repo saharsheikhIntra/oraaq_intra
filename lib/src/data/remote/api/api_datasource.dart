@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
+import 'package:oraaq/src/core/utils/error_util.dart';
 import 'package:oraaq/src/data/remote/api/api_constants.dart';
 
 import '../../../domain/entities/failure.dart';
@@ -10,7 +11,7 @@ import '../../../domain/entities/failure.dart';
 class ApiDatasource {
   final Dio dio;
   const ApiDatasource(this.dio);
-  
+
   //
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<---------GET--------->>>>>>>>>>>>>>>>>>>>>>>>>>>
   //
@@ -32,6 +33,7 @@ class ApiDatasource {
       );
       log(res.toString());
       return Right(res);
+
       // return Right(
       //   await dio.get(
       //     dio.options.baseUrl + endpoint,
@@ -43,14 +45,15 @@ class ApiDatasource {
       // );
     } on DioException catch (e) {
       log(e.toString());
-      return Left(
-        Failure(
-          e.response?.data["message"].toString() ?? e.toString(),
-//           Exception has occurred.
-// _TypeError (type 'String' is not a subtype of type 'int' of 'index')
-          code: e.response?.statusCode.toString() ?? '-1',
-        ),
-      );
+      return Left(handleDioError(e));
+//         Failure(
+//           e.response?.data["message"].toString() ?? e.toString() ,
+// //           Exception has occurred.
+// // _TypeError (type 'String' is not a subtype of type 'int' of 'index')
+//           code: e.response?.statusCode.toString() ?? '-1',
+//         ),
+    } catch (e) {
+      return Left(handleError(e));
     }
   }
 
@@ -81,17 +84,19 @@ class ApiDatasource {
       // Logger().i(response.data);
       return Right(response);
     } on DioException catch (e) {
-      Logger().e(e);
-      return Left(
-        Failure(
-          e.response?.data["message"] ?? e.toString(),
-          code: e.response?.statusCode.toString() ?? '-1',
-        ),
-      );
+      log(e.toString());
+      return Left(handleDioError(e));
+      // return Left(
+      //   Failure(
+      //     e.response?.data["message"] ?? e.toString(),
+      //     code: e.response?.statusCode.toString() ?? '-1',
+      //   ),
+      // );
     } catch (e) {
-      return Left(
-        Failure(e.toString()),
-      );
+      return Left(handleError(e));
+      // return Left(
+      //   Failure(e.toString()),
+      // );
     }
   }
 
@@ -121,16 +126,19 @@ class ApiDatasource {
       // Logger().i(response.data);
       return Right(response);
     } on DioException catch (e) {
-      return Left(
-        Failure(
-          e.response?.data["message"] ?? e.toString(),
-          code: e.response?.statusCode.toString() ?? '-1',
-        ),
-      );
+      log(e.toString());
+      return Left(handleDioError(e));
+      // return Left(
+      //   Failure(
+      //     e.response?.data["message"] ?? e.toString(),
+      //     code: e.response?.statusCode.toString() ?? '-1',
+      //   ),
+      // );
     } catch (e) {
-      return Left(
-        Failure(e.toString()),
-      );
+      return Left(handleError(e));
+      // return Left(
+      //   Failure(e.toString()),
+      // );
     }
   }
 
@@ -154,12 +162,19 @@ class ApiDatasource {
         ),
       );
     } on DioException catch (e) {
-      return Left(
-        Failure(
-          e.response?.data["message"] ?? e.toString(),
-          code: e.response?.statusCode.toString(),
-        ),
-      );
+      log(e.toString());
+      return Left(handleDioError(e));
+      // return Left(
+      //   Failure(
+      //     e.response?.data["message"] ?? e.toString(),
+      //     code: e.response?.statusCode.toString(),
+      //   ),
+      // );
+    } catch (e) {
+      return Left(handleError(e));
+      // return Left(
+      //   Failure(e.toString()),
+      // );
     }
   }
 
@@ -188,12 +203,15 @@ class ApiDatasource {
       );
       return Right(response);
     } on DioException catch (e) {
-      return Left(
-        Failure(
-          e.response?.data["message"] ?? e.toString(),
-          code: e.response?.statusCode.toString() ?? '-1',
-        ),
-      );
+      log(e.toString());
+
+      return Left(handleDioError(e));
+      // Failure(
+      //   e.response?.data["message"] ?? e.toString(),
+      //   code: e.response?.statusCode.toString() ?? '-1',
+      // ),
+    } catch (e) {
+      return Left(handleError(e));
     }
   }
 
@@ -222,12 +240,19 @@ class ApiDatasource {
       );
       return Right(response);
     } on DioException catch (e) {
-      return Left(
-        Failure(
-          e.response?.data["message"] ?? e.toString(),
-          code: e.response?.statusCode.toString(),
-        ),
-      );
+      log(e.toString());
+      return Left(handleDioError(e));
+      // return Left(
+      //   Failure(
+      //     e.response?.data["message"] ?? e.toString(),
+      //     code: e.response?.statusCode.toString(),
+      //   ),
+      // );
+    } catch (e) {
+      return Left(handleError(e));
+      // return Left(
+      //   Failure(e.toString()),
+      // );
     }
   }
 
