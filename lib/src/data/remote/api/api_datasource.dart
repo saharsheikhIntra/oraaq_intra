@@ -12,6 +12,7 @@ class ApiDatasource {
   final Dio dio;
   const ApiDatasource(this.dio);
 
+
   //
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<---------GET--------->>>>>>>>>>>>>>>>>>>>>>>>>>>
   //
@@ -25,12 +26,12 @@ class ApiDatasource {
   }) async {
     try {
       dynamic res = await dio.get(
-        dio.options.baseUrl + endpoint,
-        onReceiveProgress: onReceiveProgress,
-        cancelToken: cancelToken,
-        options: options,
-        queryParameters: queryParameters,
-      );
+          dio.options.baseUrl + endpoint,
+          onReceiveProgress: onReceiveProgress,
+          cancelToken: cancelToken,
+          options: options,
+          queryParameters: queryParameters,
+        );
       log(res.toString());
       return Right(res);
 

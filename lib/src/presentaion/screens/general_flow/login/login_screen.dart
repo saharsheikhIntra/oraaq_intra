@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:oraaq/src/core/extensions/context_extensions.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/forgot_password/forget_password_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_state.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/splash/splash_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,8 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final LoginCubit _cubit = getIt.get<LoginCubit>();
 
   final loginFormKey = GlobalKey<FormState>();
-  TextEditingController emailTextController = TextEditingController(text: "h9186510@gmail.com"),
-      passwordTextController = TextEditingController(text: "Testing_123");
+  TextEditingController emailTextController = TextEditingController(),
+      passwordTextController = TextEditingController();
   FocusNode emailFocusNode = FocusNode(), passwordFocusNode = FocusNode();
 
   final ValueNotifier<bool> _isObscure = ValueNotifier<bool>(true);
@@ -57,22 +60,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   state.user.openingTime.isEmpty ||
                   state.user.closingTime.isEmpty) {
                 // context.pushNamed(RouteConstants.merchantEditProfileRoute);
-                context.popAllNamed(
-                    RouteConstants.merchantEditProfileRoute);
+                context.popAllNamed(RouteConstants.merchantEditProfileRoute);
               } else {
-                context.popAllNamed(
-                    RouteConstants.merchantHomeScreenRoute);
+                context.popAllNamed(RouteConstants.merchantHomeScreenRoute);
               }
             } else if (type == UserType.customer) {
+              log('customer runn $type ${state.user.isOtpVerified}');
+              if (state.user.isOtpVerified == 'N') {
+                context.pushReplacementNamed(RouteConstants.otpRoute,
+                    arguments: OtpArguement(widget.arguments.selectedUserType,
+                        state.user.email, 'login'));
+                return;
+              }
               if (state.user.latitude.isEmpty ||
                   state.user.longitude.isEmpty ||
                   state.user.latitude == "null" ||
-                  state.user.longitude == "null") {
-                context.popAllNamed(
-                    RouteConstants.customerEditProfileRoute);
+                  state.user.longitude == "null" ||
+                  state.user.latitude == "" ||
+                  state.user.longitude == "" ||
+                  state.user.name == " " ||
+                  state.user.name == "") {
+                context.popAllNamed(RouteConstants.customerEditProfileRoute);
               } else {
-                context.popAllNamed(
-                    RouteConstants.customerHomeScreenRoute);
+                context.popAllNamed(RouteConstants.customerHomeScreenRoute);
               }
             }
           }
@@ -123,8 +133,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             const Spacer(),
                             Image.asset(
-                              AssetConstants.logoIcon,
-                              height: 80,
+                              AssetConstants.logoIconWhite,
+                              height: 70,
                             ),
                             const Spacer(),
                             Text(
@@ -238,10 +248,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                         child: CustomButton(
                                           icon: e.icon,
                                           type: CustomButtonType.tertiary,
-                                          onPressed: () => _cubit.socialSignIn(
-                                            e,
-                                            widget.arguments.selectedUserType,
-                                          ),
+                                          onPressed: () {
+                                            if (getIt
+                                                .isRegistered<UserType>()) {
+                                              getIt.unregister<UserType>();
+                                            }
+                                            print(widget
+                                                .arguments.selectedUserType);
+                                            getIt.registerSingleton<UserType>(
+                                                widget.arguments
+                                                    .selectedUserType);
+                                            _cubit.socialSignIn(
+                                              e,
+                                              widget.arguments.selectedUserType,
+                                            );
+                                          },
                                         )))
                                     .toList()),
                             20.verticalSpace,

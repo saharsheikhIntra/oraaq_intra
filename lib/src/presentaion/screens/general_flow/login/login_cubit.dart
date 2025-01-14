@@ -19,7 +19,6 @@ class LoginCubit extends Cubit<LoginState> {
     String email,
     String password,
   ) async {
-    
     emit(LoginStateLoading());
     var result = await _authenticationServices.login(
       LoginRequestDto(

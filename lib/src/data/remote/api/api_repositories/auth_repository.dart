@@ -52,7 +52,6 @@ class ApiAuthRepository {
   Future<Either<Failure, LoginResponseDto>> login(
     LoginRequestDto dto,
   ) async {
-    
     Either<Failure, Response> result = await _datasource.post(
       ApiConstants.login,
       data: dto.toMap(),
