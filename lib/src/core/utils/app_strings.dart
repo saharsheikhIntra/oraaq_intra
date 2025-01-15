@@ -8,5 +8,9 @@ class AppString {
   static const String notFound = "Not Found";
   static const String userNotFound = "User Not Found";
   static const String signinUnsuccessful = "Signin Unsuccessful";
-  static const String success = "Success";
+  static const String success = "Success"; 
+  static const String noOngoingJobs = "No Ongoing Jobs";
+  static const String noCompletedJobs = "No Completed Jobs";
+  static const String noAppliedJobs = "No Applied Jobs";
+  static const String noNewRequests = "No New Requests";
 }

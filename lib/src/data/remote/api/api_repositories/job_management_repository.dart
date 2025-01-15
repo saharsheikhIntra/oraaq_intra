@@ -56,7 +56,7 @@ class JobManagementRepository {
               ));
     } catch (e) {
       return Left(handleError(e));
-      return Left(Failure('Failed to fetch categories: $e'));
+    
     }
   }
 

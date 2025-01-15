@@ -512,7 +512,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                     ],
                   );
                 } else {
-                  return const Text('No data');
+                  return const Center(child: Text('No data'));
                 }
               },
             )),
