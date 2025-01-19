@@ -30,8 +30,8 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
   DateTime? selectedDateTime;
   var tempVal = '';
 
-  int get25P(int amount) {
-    var newVal = amount != 0 ? amount / 4 : 0;
+  int getPercentage(int amount, double percentage) {
+    var newVal = amount != 0 ? (amount * percentage) : 0;
     return newVal.toInt();
   }
 
@@ -149,10 +149,15 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                   children: [
                                     CustomButton(
                                       onPressed: () {
-                                        if (_selectedOffer.value >
-                                            get25P(_selectedOffer.value)) {
-                                          _selectedOffer.value -=
-                                              get25P(_selectedOffer.value);
+                                        int minLimit = _standardCharges -
+                                            getPercentage(
+                                                _standardCharges, 0.1);
+                                        if (_selectedOffer.value > minLimit) {
+                                          _selectedOffer.value -= getPercentage(
+                                              _standardCharges, 0.1);
+                                          if (_selectedOffer.value < minLimit) {
+                                            _selectedOffer.value = minLimit;
+                                          }
                                         }
                                         widget.onChanged(_selectedOffer.value);
                                       },
@@ -223,8 +228,16 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                     24.horizontalSpace,
                                     CustomButton(
                                       onPressed: () {
-                                        _selectedOffer.value +=
-                                            get25P(_selectedOffer.value);
+                                        int maxLimit = _standardCharges +
+                                            getPercentage(
+                                                _standardCharges, 0.1);
+                                        if (_selectedOffer.value < maxLimit) {
+                                          _selectedOffer.value += getPercentage(
+                                              _standardCharges, 0.1);
+                                          if (_selectedOffer.value > maxLimit) {
+                                            _selectedOffer.value = maxLimit;
+                                          }
+                                        }
                                         widget.onChanged(_selectedOffer.value);
                                       },
                                       type: CustomButtonType.tertiary,

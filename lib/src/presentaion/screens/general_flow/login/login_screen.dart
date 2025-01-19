@@ -131,7 +131,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         key: loginFormKey,
                         child: Column(
                           children: [
-                            const Spacer(),
+                            const Spacer(
+                              flex: 2,
+                            ),
                             Image.asset(
                               AssetConstants.logoIconWhite,
                               height: 70,

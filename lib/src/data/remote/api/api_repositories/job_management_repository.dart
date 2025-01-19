@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
+import 'package:oraaq/src/core/utils/error_util.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
 
 import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_response_dto.dart';
@@ -54,7 +55,8 @@ class JobManagementRepository {
                 // [],
               ));
     } catch (e) {
-      return Left(Failure('Failed to fetch categories: $e'));
+      log("Error: $e");
+      return Left(handleError(e));
     }
   }
 
@@ -66,22 +68,28 @@ class JobManagementRepository {
 
   Future<Either<Failure, List<CompletedWorkOrderResponseMerchantDto>>>
       getCompletedWorkOrdersForMerchant(int merchantId) async {
-    final result = await _datasource.get(
-        "${ApiConstants.getCompletedWorkOrderMerchant}merchant_id=$merchantId&order_status_id=3");
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-          r.data,
-          (data) => data is List
-              ? data
-                  .map((e) => CompletedWorkOrderResponseMerchantDto.fromMap(e))
-                  .toList()
-              : <CompletedWorkOrderResponseMerchantDto>[],
-        ).data;
-        return Right(responseDto!);
-      },
-    );
+    try {
+      final result = await _datasource.get(
+          "${ApiConstants.getCompletedWorkOrderMerchant}merchant_id=$merchantId&order_status_id=3");
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data is List
+                ? data
+                    .map(
+                        (e) => CompletedWorkOrderResponseMerchantDto.fromMap(e))
+                    .toList()
+                : <CompletedWorkOrderResponseMerchantDto>[],
+          ).data;
+          return Right(responseDto!);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
   }
 
   //
@@ -92,21 +100,28 @@ class JobManagementRepository {
 
   Future<Either<Failure, List<CancelWorkOrderResponseDto>>>
       getCanceledWorkOrdersForMerchant(int merchantId) async {
-    final result = await _datasource.get(
-      "${ApiConstants.getCanceledWorkOrdersForMerchant}merchant_id=$merchantId&order_status_id=2",
-    );
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-          r.data,
-          (data) => data is List
-              ? data.map((e) => CancelWorkOrderResponseDto.fromMap(e)).toList()
-              : <CancelWorkOrderResponseDto>[],
-        ).data;
-        return Right(responseDto!);
-      },
-    );
+    try {
+      final result = await _datasource.get(
+        "${ApiConstants.getCanceledWorkOrdersForMerchant}merchant_id=$merchantId&order_status_id=2",
+      );
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data is List
+                ? data
+                    .map((e) => CancelWorkOrderResponseDto.fromMap(e))
+                    .toList()
+                : <CancelWorkOrderResponseDto>[],
+          ).data;
+          return Right(responseDto!);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
   }
 
   //
@@ -117,21 +132,26 @@ class JobManagementRepository {
 
   Future<Either<Failure, List<AppliedJobsResponseDto>>>
       getAppliedJobsForMerchant(int merchantId) async {
-    // final result = await _datasource.get(
-    //     "${ApiConstants.getAppliedJobsForMerchant}merchant_id=$merchantId&order_status_id=22");
-    final result = await _datasource.get(
-        "${ApiConstants.getAppliedJobsNew}merchant_id=$merchantId");
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-            r.data,
-            (data) => data is List
-                ? data.map((e) => AppliedJobsResponseDto.fromMap(e)).toList()
-                : <AppliedJobsResponseDto>[]).data;
-        return Right(responseDto!);
-      },
-    );
+    try {
+      // final result = await _datasource.get(
+      //     "${ApiConstants.getAppliedJobsForMerchant}merchant_id=$merchantId&order_status_id=22");
+      final result = await _datasource
+          .get("${ApiConstants.getAppliedJobsNew}merchant_id=$merchantId");
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+              r.data,
+              (data) => data is List
+                  ? data.map((e) => AppliedJobsResponseDto.fromMap(e)).toList()
+                  : <AppliedJobsResponseDto>[]).data;
+          return Right(responseDto!);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
   }
 
   //
@@ -142,22 +162,27 @@ class JobManagementRepository {
 
   Future<Either<Failure, List<InProgressWorkOrderResponseDto>>>
       getWorkInProgressOrdersForMerchant(int merchantId) async {
-    final result = await _datasource
-        .get("${ApiConstants.getWorkInProgressOrdersForMerchant}$merchantId");
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-          r.data,
-          (data) => data is List
-              ? data
-                  .map((e) => InProgressWorkOrderResponseDto.fromMap(e))
-                  .toList()
-              : <InProgressWorkOrderResponseDto>[],
-        ).data;
-        return Right(responseDto!);
-      },
-    );
+    try {
+      final result = await _datasource
+          .get("${ApiConstants.getWorkInProgressOrdersForMerchant}$merchantId");
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data is List
+                ? data
+                    .map((e) => InProgressWorkOrderResponseDto.fromMap(e))
+                    .toList()
+                : <InProgressWorkOrderResponseDto>[],
+          ).data;
+          return Right(responseDto!);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
   }
 
   //
@@ -166,21 +191,26 @@ class JobManagementRepository {
 
   Future<Either<Failure, List<NewServiceRequestResponseDto>>>
       getAllServiceRequests(int merchantId) async {
-    final result = await _datasource
-        .get("${ApiConstants.getAllServiceRequests}$merchantId");
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-            r.data,
-            (data) => data is List
-                ? data
-                    .map((e) => NewServiceRequestResponseDto.fromMap(e))
-                    .toList()
-                : <NewServiceRequestResponseDto>[]).data;
-        return Right(responseDto!);
-      },
-    );
+    try {
+      final result = await _datasource
+          .get("${ApiConstants.getAllServiceRequests}$merchantId");
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+              r.data,
+              (data) => data is List
+                  ? data
+                      .map((e) => NewServiceRequestResponseDto.fromMap(e))
+                      .toList()
+                  : <NewServiceRequestResponseDto>[]).data;
+          return Right(responseDto!);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
   }
 
   //
@@ -189,24 +219,29 @@ class JobManagementRepository {
 
   Future<Either<Failure, List<NewServiceRequestResponseDto>>>
       getServiceRequests(int merchantId) async {
-    final result = await _datasource
-        .get("${ApiConstants.getAllRequests}$merchantId");
-    return result.fold(
-      (l) { 
-        return Left(l);
-      },
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-            r.data,
-            (data) => data is List
-                ? data
-                    .map((e) => NewServiceRequestResponseDto.fromMap(e))
-                    .toList()
-                : <NewServiceRequestResponseDto>[]).data;
-        log('3 $responseDto');
-        return Right(responseDto!);
-      },
-    );
+    try {
+      final result =
+          await _datasource.get("${ApiConstants.getAllRequests}$merchantId");
+      return result.fold(
+        (l) {
+          return Left(l);
+        },
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+              r.data,
+              (data) => data is List
+                  ? data
+                      .map((e) => NewServiceRequestResponseDto.fromMap(e))
+                      .toList()
+                  : <NewServiceRequestResponseDto>[]).data;
+          log('3 $responseDto');
+          return Right(responseDto!);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
   }
 
   //
@@ -217,21 +252,25 @@ class JobManagementRepository {
 
   Future<Either<Failure, String>> cancelWorkOrder(
       int biddingId, int merchantId) async {
-    final result = await _datasource.put(
-      "${ApiConstants.cancelMerchantWorkOrder}bidding_id=$biddingId&merchant_id=$merchantId&order_status_id=2",
-    );
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-          r.data,
-          (data) => data.toString(),
-        ).message;
-        return Right(responseDto);
-      },
-    );
+    try {
+      final result = await _datasource.put(
+        "${ApiConstants.cancelMerchantWorkOrder}bidding_id=$biddingId&merchant_id=$merchantId&order_status_id=2",
+      );
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data.toString(),
+          ).message;
+          return Right(responseDto);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
   }
-
   //
   //
   // MARK: COMPLETE WORK ORDER
@@ -240,19 +279,24 @@ class JobManagementRepository {
 
   Future<Either<Failure, String>> completeWorkOrder(
       int biddingId, int merchantId) async {
-    final result = await _datasource.put(
-      "${ApiConstants.cancelMerchantWorkOrder}bidding_id=$biddingId&merchant_id=$merchantId&order_status_id=3",
-    );
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-          r.data,
-          (data) => data.toString(),
-        ).message;
-        return Right(responseDto);
-      },
-    );
+    try {
+      final result = await _datasource.put(
+        "${ApiConstants.cancelMerchantWorkOrder}bidding_id=$biddingId&merchant_id=$merchantId&order_status_id=3",
+      );
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data.toString(),
+          ).message;
+          return Right(responseDto);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
   }
 
 //
@@ -261,21 +305,26 @@ class JobManagementRepository {
   //
   //
   Future<Either<Failure, String>> postBid(PostBidRequestDto bidRequest) async {
-    final result = await _datasource.post(
-      ApiConstants.postBid,
-      data: bidRequest.toMap(),
-    );
+    try {
+      final result = await _datasource.post(
+        ApiConstants.postBid,
+        data: bidRequest.toMap(),
+      );
 
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-          r.data,
-          (data) => data.toString(),
-        ).message;
-        return Right(responseDto);
-      },
-    );
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data.toString(),
+          ).message;
+          return Right(responseDto);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
   }
   //
   //
@@ -284,21 +333,26 @@ class JobManagementRepository {
 
   Future<Either<Failure, String>> addRating(
       AddRatingRequestDto ratingRequest) async {
-    final result = await _datasource.post(
-      ApiConstants.addRating,
-      data: ratingRequest.toMap(),
-    );
+    try {
+      final result = await _datasource.post(
+        ApiConstants.addRating,
+        data: ratingRequest.toMap(),
+      );
 
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-          r.data,
-          (data) => data.toString(),
-        ).message;
-        return Right(responseDto);
-      },
-    );
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data.toString(),
+          ).message;
+          return Right(responseDto);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
   }
 
   //
@@ -307,23 +361,28 @@ class JobManagementRepository {
 
   Future<Either<Failure, List<NewServiceRequestResponseDto>>> getAllNewRequests(
       int merchantId) async {
-    final result = await _datasource
-        .get("${ApiConstants.getAllServiceRequests}$merchantId");
-    log('1 $result');
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        log('2 $r');
-        var responseDto = BaseResponseDto.fromJson(
-            r.data,
-            (data) => data is List
-                ? data
-                    .map((e) => NewServiceRequestResponseDto.fromMap(e))
-                    .toList()
-                : <NewServiceRequestResponseDto>[]).data;
-        return Right(responseDto!);
-      },
-    );
+    try {
+      final result = await _datasource
+          .get("${ApiConstants.getAllServiceRequests}$merchantId");
+      log('1 $result');
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          log('2 $r');
+          var responseDto = BaseResponseDto.fromJson(
+              r.data,
+              (data) => data is List
+                  ? data
+                      .map((e) => NewServiceRequestResponseDto.fromMap(e))
+                      .toList()
+                  : <NewServiceRequestResponseDto>[]).data;
+          return Right(responseDto!);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
   }
 
   //
@@ -334,21 +393,23 @@ class JobManagementRepository {
 
   Future<Either<Failure, String>> cancelWorkOrderFromMerchantAppliedRequests(
       int biddingId, int merchantId) async {
-    final result = await _datasource.put(
-      "${ApiConstants.cancelMerchantWorkOrderForAppliedRequests}bid_id=$biddingId&merchant_id=$merchantId",
-    );
-    return result.fold(
-      (l) => Left(l),
-      (r) {
-        var responseDto = BaseResponseDto.fromJson(
-          r.data,
-          (data) => data.toString(),
-        ).message;
-        return Right(responseDto);
-      },
-    );
+    try {
+      final result = await _datasource.put(
+        "${ApiConstants.cancelMerchantWorkOrderForAppliedRequests}bid_id=$biddingId&merchant_id=$merchantId",
+      );
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data.toString(),
+          ).message;
+          return Right(responseDto);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
   }
-
 }
-
-

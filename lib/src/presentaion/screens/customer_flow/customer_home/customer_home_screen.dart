@@ -110,9 +110,10 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                   ),
                                   Text(
                                     currentUser.name,
-                                    style: TextStyleTheme.displaySmall.copyWith(
-                                        color: ColorTheme.neutral3,
-                                        fontSize: 26),
+                                    style: TextStyleTheme.headlineSmall
+                                        .copyWith(
+                                            color: ColorTheme.neutral3,
+                                            fontSize: 18),
                                   ),
                                 ],
                               )),
