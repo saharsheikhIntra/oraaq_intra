@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/merchant_flow/update_merchant_profile_request_dto.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
@@ -35,7 +36,7 @@ class MerchantEditProfileCubit extends Cubit<MerchantEditProfileState> {
     required List<String> holidays,
   }) async {
     emit(MerchantProfileStateLoading());
-    print("Loading state emitted");
+    debugPrint("Loading state emitted");
     holidays.removeWhere((holiday) => holiday.isEmpty);
 
     var dto = UpdateMerchantProfileRequestDto(
@@ -56,19 +57,19 @@ class MerchantEditProfileCubit extends Cubit<MerchantEditProfileState> {
       serviceType: serviceType,
       holidays: holidays.join(','),
     );
-    print("DTO created: ${dto.toMap()}");
+    debugPrint("DTO created: ${dto.toMap()}");
 
     var result = await _authServices.updateMerchantProfile(dto);
-    print("Result from service: $result");
+    debugPrint("Result from service: $result");
     result.fold(
       (l) {
-        print("Error state emitted: ${l.message}");
+        debugPrint("Error state emitted: ${l.message}");
         emit(MerchantProfileStateError(l));
       },
       (r) {
-        print("Success state emitted: $r");
+        debugPrint("Success state emitted: $r");
         // final UserEntity user = getIt.get<UserEntity>();
-        // print("new user enityt  " + user.name);
+        // debugPrint("new user enityt  " + user.name);
         // getIt.get<MerchantProfileScreenCubit>().updateMerchantDetails(user);
         emit(MerchantProfileStateSuccess(r));
       },

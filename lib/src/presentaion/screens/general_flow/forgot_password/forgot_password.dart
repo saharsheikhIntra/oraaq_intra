@@ -23,7 +23,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('FormKey created for ${forgetPasswordFormKey.hashCode}');
+    debugPrint('FormKey created for ${forgetPasswordFormKey.hashCode}');
     return BlocProvider(
       create: (context) => _cubit,
       child: BlocListener<ForgetPasswordCubit, ForgetPasswordState>(

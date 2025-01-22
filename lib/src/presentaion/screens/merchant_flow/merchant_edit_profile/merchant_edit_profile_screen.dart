@@ -66,7 +66,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     closingTimeController.text = OnTimeOfDay.formatTo12Hour(user.closingTime);
     holidayController.text = user.holidays;
     holidays = user.holidays.split(",").map((e) => e.trim()).toList();
-    // print(getIt.get<UserEntity>());
+    // debugPrint(getIt.get<UserEntity>());
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _cubit.fetchCategories();
@@ -228,7 +228,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             context,
                             (time12h, time24h) {
                               openingTime.value = time24h;
-                              print(openingTime.value);
+                              debugPrint(openingTime.value);
                               return openingTimeController.text = time12h;
                             },
                           ),
@@ -246,7 +246,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             context,
                             (time12h, time24h) {
                               closingTime.value = time24h;
-                              print(closingTime.value);
+                              debugPrint(closingTime.value);
                               return closingTimeController.text = time12h;
                             },
                           ),

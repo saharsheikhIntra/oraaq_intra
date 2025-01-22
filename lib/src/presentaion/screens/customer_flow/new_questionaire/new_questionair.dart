@@ -436,8 +436,8 @@ class _NewQuestionnaireScreenState extends State<NewQuestionnaireScreen> {
                                               }
                                               log("c selected services length: ${_selectedServices.length}");
                                               log("c selected options length: ${_selectedOptions.length}");
-                                              log("c selected services : ${_selectedServices}");
-                                              log("c selected options : ${_selectedOptions}");
+                                              log("c selected services : $_selectedServices");
+                                              log("c selected options : $_selectedOptions");
                                             }
                                           });
                             },
@@ -494,7 +494,7 @@ class _NewQuestionnaireScreenState extends State<NewQuestionnaireScreen> {
                                         if (newList.isNotEmpty) {
                                           context.push(Scaffold(
                                             appBar: AppBar(
-                                              title: Text('Make Offer'),
+                                              title: const Text('Make Offer'),
                                             ),
                                             body: MakeOfferPage(
                                                 onChanged: (val) {},

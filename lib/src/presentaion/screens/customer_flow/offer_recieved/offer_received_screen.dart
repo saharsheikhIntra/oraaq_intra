@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 // import 'packagter_bloc/flutter_bloc.dart';
-import 'package:oraaq/src/data/remote/api/api_constants.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/fetch_offers_for_requests.dart';
 import 'package:oraaq/src/imports.dart';
@@ -9,7 +8,6 @@ import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/custom
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_recieved_arguments.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offers_recieved_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/reuqest_history/request_history_cubit.dart';
-import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_home/merchant_home_screen.dart';
 import 'package:oraaq/src/presentaion/widgets/merchant_offer_card.dart';
 import 'package:oraaq/src/presentaion/widgets/sheets/change_offer_sheet.dart';
 import 'package:oraaq/src/presentaion/widgets/toast_message_card.dart';
@@ -60,7 +58,7 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
               context.pushReplacementNamed(
                   RouteConstants.requestHistoryScreenRoute);
             },
-            child: Icon(Icons.arrow_back)),
+            child: const Icon(Icons.arrow_back)),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
@@ -114,7 +112,7 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                   }
                   if (state is OfferAccepted) {
                     log('updated: ${state.message}');
-                    context.pushAndRemoveUntil(CustomerHomeScreen());
+                    context.pushAndRemoveUntil(const CustomerHomeScreen());
                     Toast.show(
                         context: context,
                         variant: SnackbarVariantEnum.success,
@@ -122,7 +120,7 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                   }
                   if (state is OfferRejected) {
                     log('updated: ${state.failure.message}');
-                    context.pushAndRemoveUntil(CustomerHomeScreen());
+                    context.pushAndRemoveUntil(const CustomerHomeScreen());
                     Toast.show(
                         context: context,
                         variant: SnackbarVariantEnum.warning,

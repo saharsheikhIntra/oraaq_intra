@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:oraaq/src/config/themes/text_style_theme.dart';
 
 class TermsAndConditionsScreen extends StatelessWidget {
-  const TermsAndConditionsScreen({Key? key}) : super(key: key);
+  const TermsAndConditionsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

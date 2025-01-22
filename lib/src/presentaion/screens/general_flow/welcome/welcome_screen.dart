@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:oraaq/src/imports.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -91,7 +89,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               onPressed: _selectedType.value == null
                                   ? null
                                   : () {
-                                      print(_selectedType.value);
+                                      debugPrint(
+                                          _selectedType.value.toString());
                                       // if (getIt.isRegistered<UserType>()) getIt.unregister<UserType>();
                                       // getIt.registerSingleton<UserType>(
                                       //     _selectedType.value!);

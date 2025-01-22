@@ -1,5 +1,4 @@
 import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_arguement.dart';
-import 'package:oraaq/src/presentaion/screens/general_flow/register/register_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/register/register_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/register/register_state.dart';
 

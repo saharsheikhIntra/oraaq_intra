@@ -11,12 +11,12 @@ enum SocialSignInEnum {
     "facebook.com",
     "facebook",
     LineIcons.facebook,
-  ),
-  apple(
-    "apple.com",
-    "apple",
-    LineIcons.apple,
   );
+  // apple(
+  //   "apple.com",
+  //   "apple",
+  //   LineIcons.apple,
+  // );
 
   final String id;
   final String name;

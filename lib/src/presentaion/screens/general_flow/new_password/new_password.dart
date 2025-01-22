@@ -34,21 +34,21 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('FormKey created for ${newPasswordFormKey.hashCode}');
+    debugPrint('FormKey created for ${newPasswordFormKey.hashCode}');
     return BlocProvider(
       create: (context) => _cubit,
       child: BlocConsumer<NewPasswordCubit, NewPasswordState>(
         listener: (context, state) {
           // TODO: implement listener
           if (state is NewPasswordStateSuccess) {
-            print(state.response);
+            debugPrint(state.response);
             DialogComponent.hideLoading(context);
             Toast.show(
               context: context,
               variant: SnackbarVariantEnum.success,
               title: state.response,
             );
-            print(widget.arguement.selectedUserType);
+            debugPrint(widget.arguement.selectedUserType.toString());
             context.pushNamed(
               RouteConstants.loginRoute,
               arguments: LoginArguments(widget.arguement.selectedUserType),

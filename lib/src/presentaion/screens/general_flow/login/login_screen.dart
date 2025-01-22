@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('FormKey created for ${loginFormKey.hashCode}');
+    debugPrint('FormKey created for ${loginFormKey.hashCode}');
     return BlocProvider(
       create: (context) => _cubit,
       child: BlocListener<LoginCubit, LoginState>(
@@ -225,8 +225,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 .isRegistered<UserType>()) {
                                               getIt.unregister<UserType>();
                                             }
-                                            print(widget
-                                                .arguments.selectedUserType);
+                                            debugPrint(widget
+                                                .arguments.selectedUserType
+                                                .toString());
                                             getIt.registerSingleton<UserType>(
                                                 widget.arguments
                                                     .selectedUserType);
@@ -260,8 +261,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 .isRegistered<UserType>()) {
                                               getIt.unregister<UserType>();
                                             }
-                                            print(widget
-                                                .arguments.selectedUserType);
+                                            debugPrint(widget
+                                                .arguments.selectedUserType
+                                                .toString());
                                             getIt.registerSingleton<UserType>(
                                                 widget.arguments
                                                     .selectedUserType);
@@ -292,12 +294,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                         if (getIt.isRegistered<UserType>()) {
                                           getIt.unregister<UserType>();
                                         }
-                                        print(
-                                            widget.arguments.selectedUserType);
+                                        debugPrint(widget
+                                            .arguments.selectedUserType
+                                            .toString());
                                         getIt.registerSingleton<UserType>(
                                             widget.arguments.selectedUserType);
-                                        print(
-                                            widget.arguments.selectedUserType);
+                                        debugPrint(widget
+                                            .arguments.selectedUserType
+                                            .toString());
                                         context.pushNamed(
                                           RouteConstants.signupRoute,
                                         );

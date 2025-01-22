@@ -1,4 +1,3 @@
-import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -27,8 +26,6 @@ class ChangeOfferSheet extends StatefulWidget {
 }
 
 class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
-  int _defaultValue = 0;
-
   @override
   void initState() {
     // _defaultValue = widget.defaultValue;
@@ -84,32 +81,30 @@ class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
                 ),
               if (widget.variant == ChangeOfferSheetVariant.price)
                 ValueListenableBuilder(
-                  valueListenable: _value,
-                  builder: (context,value,child) {
-                    return Text(
-                      "${_value.value}",
-                      style: const TextStyle(
-                        color: ColorTheme.secondaryText,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 32.0,
-                      ),
-                    );
-                  }
-                ),
+                    valueListenable: _value,
+                    builder: (context, value, child) {
+                      return Text(
+                        "${_value.value}",
+                        style: const TextStyle(
+                          color: ColorTheme.secondaryText,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 32.0,
+                        ),
+                      );
+                    }),
               if (widget.variant == ChangeOfferSheetVariant.distance)
                 ValueListenableBuilder(
-                  valueListenable: _value,
-                  builder: (context,value,child) {
-                    return Text(
-                      "${_value.value}",
-                      style: const TextStyle(
-                        color: ColorTheme.secondaryText,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 32.0,
-                      ),
-                    );
-                  }
-                ),
+                    valueListenable: _value,
+                    builder: (context, value, child) {
+                      return Text(
+                        "${_value.value}",
+                        style: const TextStyle(
+                          color: ColorTheme.secondaryText,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 32.0,
+                        ),
+                      );
+                    }),
               if (widget.variant == ChangeOfferSheetVariant.distance)
                 const Text(
                   "Km",
@@ -147,23 +142,22 @@ class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
   void _increment() {
     // setState(() {
 
-      if(widget.variant==ChangeOfferSheetVariant.price){
-        _value.value = _value.value+100;
-      }else{
-        _value.value = _value.value+5;
-      }
+    if (widget.variant == ChangeOfferSheetVariant.price) {
+      _value.value = _value.value + 100;
+    } else {
+      _value.value = _value.value + 5;
+    }
 
     // });
   }
 
   void _decrement() {
-    
-    if(_value.value>0){
-      if(widget.variant==ChangeOfferSheetVariant.price){
-        _value.value = _value.value-100;
-    }else{
-        _value.value = _value.value-5;
-    }
+    if (_value.value > 0) {
+      if (widget.variant == ChangeOfferSheetVariant.price) {
+        _value.value = _value.value - 100;
+      } else {
+        _value.value = _value.value - 5;
+      }
     }
   }
 }

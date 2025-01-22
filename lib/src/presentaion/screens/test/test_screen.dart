@@ -532,7 +532,7 @@ class _TestScreenState extends State<TestScreen> {
                   datetime: '',
                   serviceType: '',
                   offeredAmount: '',
-                  services: [],
+                  services: const [],
                 ),
               )),
       OutlinedButton(

@@ -21,7 +21,7 @@ class CustomerEditProfileCubit extends Cubit<CustomerEditProfileState> {
       required double latitude,
       required double longitude}) async {
     emit(CustomerEditProfileLoading());
-    print("Loading state emitted");
+    debugPrint("Loading state emitted");
     var dto = UpdateCustomerRequestDto(
       customerId: user.id,
       customerName: name,
@@ -30,10 +30,10 @@ class CustomerEditProfileCubit extends Cubit<CustomerEditProfileState> {
       latitude: latitude,
       longitude: longitude,
     );
-    print("DTO created: ${dto.toMap()}");
+    debugPrint("DTO created: ${dto.toMap()}");
     var result = await _authServices.updateCustomerProfile(dto);
 
-    print("Result from service: $result");
+    debugPrint("Result from service: $result");
     log(user.isOtpVerified.toString());
     result.fold(
       (l) {

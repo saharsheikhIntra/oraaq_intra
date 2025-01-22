@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:oraaq/src/core/enum/merchant_jobs_filter.dart';
-import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/applied_jobs_response_dto.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_home/merchant_home_screen_cubit.dart';
 import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
@@ -216,11 +215,11 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                 variant: SnackbarVariantEnum.success,
                 title: state.message,
               );
-              print(state.message);
+              debugPrint(state.message);
             }
           },
           builder: (context, state) {
-            print('Current state: $state');
+            debugPrint('Current state: $state');
 
             return ListView(
               padding: 20.verticalPadding,

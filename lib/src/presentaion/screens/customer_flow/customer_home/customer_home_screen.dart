@@ -57,7 +57,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
             if (state is CustomerHomeStateAcceptedJobs) {
               DialogComponent.hideLoading(context);
               acceptedJobs.value = state.acceptedJobs;
-              // print(acceptedJobs.value);
+              // debugPrint(acceptedJobs.value);
             }
             if (state is CancelCustomerRequestSuccessState) {
               DialogComponent.hideLoading(context);
