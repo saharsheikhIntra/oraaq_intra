@@ -26,6 +26,7 @@ class CompletedJobSheet extends StatefulWidget {
   final String? totalAmount;
   final String? serviceType;
   final int rating;
+  final String? ratingByMerchant;
   final CompletedJobSheetVariant variant;
   const CompletedJobSheet({
     super.key,
@@ -39,6 +40,7 @@ class CompletedJobSheet extends StatefulWidget {
     this.serviceType = '',
     required this.rating,
     required this.variant,
+    this.ratingByMerchant,
   });
 
   @override
@@ -121,7 +123,7 @@ class _CompletedJobSheetSheetState extends State<CompletedJobSheet> {
             _buildDetails(
               Symbols.star_half_rounded,
               "Rated by Merchant",
-              "4 / 5",
+              widget.ratingByMerchant ?? "4 / 5",
             ),
             _buildDetails(
               Symbols.payments_rounded,

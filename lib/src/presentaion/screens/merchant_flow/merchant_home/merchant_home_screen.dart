@@ -4,6 +4,7 @@ import 'package:oraaq/src/core/enum/merchant_jobs_filter.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/applied_jobs_response_dto.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_home/merchant_home_screen_cubit.dart';
+import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
 
 class MerchantHomeScreen extends StatefulWidget {
   const MerchantHomeScreen({super.key});
@@ -27,14 +28,14 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
 
   final cron = Cron();
 
-  String getSelectedServiceName(){
-    if(selectedFilter == MerchantJobsFilter.newRequests)
-      {return StringConstants.latestServiceRequests;}
-    else if(selectedFilter == MerchantJobsFilter.alreadyQuoted)
-      { return StringConstants.alreadyQuoted;}
-    else if(selectedFilter == MerchantJobsFilter.allRequests)
-      {return StringConstants.allServiceRequests;}
-    else{
+  String getSelectedServiceName() {
+    if (selectedFilter == MerchantJobsFilter.newRequests) {
+      return StringConstants.latestServiceRequests;
+    } else if (selectedFilter == MerchantJobsFilter.alreadyQuoted) {
+      return StringConstants.alreadyQuoted;
+    } else if (selectedFilter == MerchantJobsFilter.allRequests) {
+      return StringConstants.allServiceRequests;
+    } else {
       return '';
     }
   }
@@ -107,13 +108,12 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                         //   ),
                         // ),
                         Text(
-                          DateTime.now().hour >=  6 &&
-                              DateTime.now().hour <= 12
+                          DateTime.now().hour >= 6 && DateTime.now().hour <= 12
                               ? StringConstants.goodMorning
                               : DateTime.now().hour > 12 &&
-                              DateTime.now().hour <= 16
-                              ? StringConstants.goodAfterNoon
-                              : StringConstants.goodEvening,
+                                      DateTime.now().hour <= 16
+                                  ? StringConstants.goodAfterNoon
+                                  : StringConstants.goodEvening,
                           style: TextStyleTheme.titleSmall
                               .copyWith(color: ColorTheme.neutral3),
                         ),
@@ -130,11 +130,13 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     size: CustomButtonSize.small,
                     type: CustomButtonType.tertiary,
                     icon: Symbols.refresh_rounded,
-                    onPressed: () async{
+                    onPressed: () async {
                       await _cubit.fetchWorkInProgressOrders();
                     },
                   ),
-                  const SizedBox(width: 10,),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   CustomButton(
                     size: CustomButtonSize.small,
                     type: CustomButtonType.tertiary,
@@ -143,8 +145,6 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                         .pushNamed(RouteConstants.merchantProfileRoute)
                         .then((_) => setState(() {})),
                   ),
-                  
-                  
                 ],
               ),
             ),
@@ -268,9 +268,13 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                       builder: (context, value, child) {
                         return value.isNotEmpty
                             ? _buildWorkInProgress(value)
-                            : const Center(
-                                child: Text('No Data'),
+                            : const NoDataFound(
+                                text: StringConstants.firstMerchantOrder,
+                                fontSize: 12,
                               );
+                        // const Center(
+                        //     child: Text('No Data'),
+                        //   );
                       },
                     )),
                 40.verticalSpace,
@@ -339,7 +343,10 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     builder: (context, serviceRequests, child) {
                       return serviceRequests.isNotEmpty
                           ? _buildServiceRequestsView(serviceRequests)
-                          : const Center(child: Text('No Data'));
+                          : const NoDataFound(
+                              text: StringConstants.noRequestFound,
+                              fontSize: 12,
+                            );
                     },
                   )
                 else if (selectedFilter == MerchantJobsFilter.alreadyQuoted)
@@ -349,7 +356,10 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                         (BuildContext context, dynamic value, Widget? child) {
                       return value.isNotEmpty
                           ? _buildAppliedJobsView(value)
-                          : const Center(child: Text('No Data'));
+                          : const NoDataFound(
+                              text: StringConstants.noRequestFound,
+                              fontSize: 12,
+                            );
                     },
                   )
                 else if (selectedFilter == MerchantJobsFilter.allRequests)
@@ -358,7 +368,10 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     builder: (context, serviceRequests, child) {
                       return serviceRequests.isNotEmpty
                           ? _buildAllServiceRequestsView(serviceRequests)
-                          : const Center(child: Text('No Data'));
+                          : const NoDataFound(
+                              text: StringConstants.noRequestFound,
+                              fontSize: 12,
+                            );
                     },
                   ),
               ],
@@ -394,7 +407,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                       context.pop();
                       _cubit.cancelWorkOrder(order.bidId);
                     },
-                    onSubmit:  (double bidAmount) {
+                    onSubmit: (double bidAmount) {
                       context.pop();
                       _cubit.completeWorkOrder(order.bidId);
                     },
@@ -484,7 +497,9 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   onCancel: () => context.pop(),
                   onSubmit: (double bidAmount) =>
                       _cubit.postBid(job.serviceRequestId, bidAmount),
-                  variant: job.status == "Open"? NewQuoteSheetSheetVariant.newQuote : NewQuoteSheetSheetVariant.alreadyQuoted)),
+                  variant: job.status == "Open"
+                      ? NewQuoteSheetSheetVariant.newQuote
+                      : NewQuoteSheetSheetVariant.alreadyQuoted)),
           child: NewRequestCard(
             buttonText: job.status,
             userName: job.customerName,

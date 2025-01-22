@@ -6,6 +6,7 @@ import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/custom
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_recieved_arguments.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/reuqest_history/request_history_cubit.dart';
+import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
 
 import '../../../widgets/ongoing_request_card.dart';
 
@@ -260,9 +261,13 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                           ),
                                         ),
                                       )
-                                    : const Center(
-                                        child: Text('No Data'),
+                                    : const NoDataFound(
+                                        text: StringConstants.firstOrder,
+                                        fontSize: 12,
                                       );
+                                // const Center(
+                                //     child: Text('No Data'),
+                                //   );
                               },
                             ),
                           ),
@@ -450,6 +455,9 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                                     .formattedDate(),
                                                 time: currentRequest
                                                     .requestDate.to12HourFormat,
+                                                ratingByMerchant: currentRequest
+                                                    .ratingMerchant
+                                                    .toString(),
                                                 variant:
                                                     CompletedJobSheetVariant
                                                         .customer),
@@ -467,9 +475,13 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                         },
                                       );
                                     })
-                                : const Center(
-                                    child: Text('No Data'),
+                                : const NoDataFound(
+                                    text: StringConstants.firstOrder,
+                                    fontSize: 14,
                                   );
+                            // const Center(
+                            //     child: Text('No Data'),
+                            //   );
                           }),
                       //
                       //
@@ -505,9 +517,13 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                         onTap: () {},
                                       );
                                     })
-                                : const Center(
-                                    child: Text('No Data'),
+                                : const NoDataFound(
+                                    text: StringConstants.firstCancelOrder,
+                                    fontSize: 14,
                                   );
+                            // const Center(
+                            //     child: Text('No Data'),
+                            //   );
                           }),
                     ],
                   );

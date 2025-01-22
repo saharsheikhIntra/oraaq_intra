@@ -131,6 +131,7 @@ class StringConstants {
   static const String pleaseEnterYourDesiredOfferAmount =
       "Please enter your desired offer amount. Merchants will respond with bids based on your offer.";
   static const String makeYourOffer = "Make Your Offer";
+  static const String preferredSlot = "Please select your Slot";
   static const String upcomingJobs = "Upcoming Jobs";
   static const String rs = "Rs ";
   static const String standardRates = "Standard Rates";
@@ -181,6 +182,10 @@ class StringConstants {
   static const String noDataFound = "No Data Found";
   static const String noCategoriesFound = "No Categories Found";
   static const String failedToFetchServices = "Failed to fetch services";
+  static const String firstOrder = "Initiate your first order";
+  static const String firstCancelOrder = "No cancel order found";
+  static const String firstMerchantOrder = "Bid to get first order";
+  static const String noRequestFound = "No request Found!";
   static const String preferredDateTime = "Preferred Date & Time";
 
   static const String selectDateTime = "Select a date and time";

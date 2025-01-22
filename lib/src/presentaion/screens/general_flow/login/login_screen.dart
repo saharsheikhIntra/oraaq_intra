@@ -89,6 +89,11 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is LoginStateError) {
             DialogComponent.hideLoading(context);
             FocusScope.of(context).unfocus();
+
+            if (getIt.isRegistered<UserEntity>()) {
+              getIt.unregister<UserEntity>();
+            }
+
             Toast.show(
               context: context,
               variant: SnackbarVariantEnum.warning,

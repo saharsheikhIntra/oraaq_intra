@@ -6,9 +6,11 @@ import '../../config/themes/color_theme.dart';
 
 class NoDataFound extends StatelessWidget {
   final String? text;
+  final double? fontSize;
   const NoDataFound({
     this.text,
     super.key,
+    this.fontSize,
   });
 
   @override
@@ -24,8 +26,8 @@ class NoDataFound extends StatelessWidget {
           Positioned(
               bottom: 24,
               child: Text(text ?? StringConstants.noDataFound,
-                  style: const TextStyle(
-                    fontSize: 24,
+                  style: TextStyle(
+                    fontSize: fontSize ?? 24,
                     fontWeight: FontWeight.w600,
                     color: ColorTheme.secondaryText,
                   ))),

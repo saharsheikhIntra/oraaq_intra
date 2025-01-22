@@ -52,6 +52,7 @@ class SocialAuthRepository {
 
   Future<Either<Failure, UserCredential>> signInWithGoogle() async {
     try {
+      await _googleSignIn.signOut();
       GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       log('googleUser: $googleUser');
       if (googleUser != null) {

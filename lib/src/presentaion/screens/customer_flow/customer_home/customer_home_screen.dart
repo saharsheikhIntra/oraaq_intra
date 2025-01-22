@@ -227,9 +227,13 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                   ),
                                                 ),
                                               ))))
-                              : const Center(
-                                  child: Text('No Data'),
+                              : const NoDataFound(
+                                  text: StringConstants.firstOrder,
+                                  fontSize: 12,
                                 );
+                          // const Center(
+                          //     child: Text('No Data'),
+                          //   );
                         },
                         // child: ListView.separated(
                         //     shrinkWrap: true,

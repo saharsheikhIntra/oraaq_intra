@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:oraaq/src/imports.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -9,6 +11,11 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   final ValueNotifier<UserType?> _selectedType = ValueNotifier(null);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +60,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             style: TextStyleTheme.headlineSmall
                                 .copyWith(color: ColorTheme.primaryText),
                           ),
+
                           16.verticalSpace,
                           Text(
                             StringConstants.welcomeMessage,
