@@ -84,7 +84,6 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ScreenUtil().statusBarHeight + 77),
           child: Container(
-            padding: const EdgeInsets.fromLTRB(16, 16, 8, 16),
             decoration: const BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.fill,
@@ -92,59 +91,62 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
               ),
             ),
             child: SafeArea(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Text(
-                        //   StringConstants.goodMorning,
-                        //   style: TextStyleTheme.titleSmall.copyWith(
-                        //     color: ColorTheme.neutral3,
-                        //   ),
-                        // ),
-                        Text(
-                          DateTime.now().hour >= 6 && DateTime.now().hour <= 12
-                              ? StringConstants.goodMorning
-                              : DateTime.now().hour > 12 &&
-                                      DateTime.now().hour <= 16
-                                  ? StringConstants.goodAfterNoon
-                                  : StringConstants.goodEvening,
-                          style: TextStyleTheme.titleSmall
-                              .copyWith(color: ColorTheme.neutral3),
-                        ),
-                        Text(
-                          getIt<UserEntity>().name,
-                          style: TextStyleTheme.displaySmall.copyWith(
-                            color: ColorTheme.neutral3,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Text(
+                          //   StringConstants.goodMorning,
+                          //   style: TextStyleTheme.titleSmall.copyWith(
+                          //     color: ColorTheme.neutral3,
+                          //   ),
+                          // ),
+                          Text(
+                            DateTime.now().hour >= 6 &&
+                                    DateTime.now().hour <= 12
+                                ? StringConstants.goodMorning
+                                : DateTime.now().hour > 12 &&
+                                        DateTime.now().hour <= 16
+                                    ? StringConstants.goodAfterNoon
+                                    : StringConstants.goodEvening,
+                            style: TextStyleTheme.titleSmall
+                                .copyWith(color: ColorTheme.neutral3),
                           ),
-                        ),
-                      ],
+                          Text(
+                            getIt<UserEntity>().name,
+                            style: TextStyleTheme.headlineSmall.copyWith(
+                                color: ColorTheme.neutral3, fontSize: 18),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  CustomButton(
-                    size: CustomButtonSize.small,
-                    type: CustomButtonType.tertiary,
-                    icon: Symbols.refresh_rounded,
-                    onPressed: () async {
-                      await _cubit.fetchWorkInProgressOrders();
-                    },
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  CustomButton(
-                    size: CustomButtonSize.small,
-                    type: CustomButtonType.tertiary,
-                    icon: Symbols.account_circle_filled_rounded,
-                    onPressed: () => context
-                        .pushNamed(RouteConstants.merchantProfileRoute)
-                        .then((_) => setState(() {})),
-                  ),
-                ],
+                    CustomButton(
+                      size: CustomButtonSize.small,
+                      type: CustomButtonType.tertiary,
+                      icon: Symbols.refresh_rounded,
+                      onPressed: () async {
+                        await _cubit.fetchWorkInProgressOrders();
+                      },
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    CustomButton(
+                      size: CustomButtonSize.small,
+                      type: CustomButtonType.tertiary,
+                      icon: Symbols.account_circle_filled_rounded,
+                      onPressed: () => context
+                          .pushNamed(RouteConstants.merchantProfileRoute)
+                          .then((_) => setState(() {})),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -269,7 +271,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                             ? _buildWorkInProgress(value)
                             : const NoDataFound(
                                 text: StringConstants.firstMerchantOrder,
-                                fontSize: 12,
+                                fontSize: 11,
                               );
                         // const Center(
                         //     child: Text('No Data'),

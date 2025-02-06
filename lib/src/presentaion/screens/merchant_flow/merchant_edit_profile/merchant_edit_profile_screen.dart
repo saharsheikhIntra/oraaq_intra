@@ -25,6 +25,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               getIt.get<UserEntity>().longitude);
   final TextEditingController cnicNtnController =
       TextEditingController(text: getIt.get<UserEntity>().cnicNtn);
+  final TextEditingController businessController =
+      TextEditingController(text: getIt.get<UserEntity>().cnicNtn);
   final TextEditingController openingTimeController =
       TextEditingController(text: getIt.get<UserEntity>().openingTime);
   final TextEditingController closingTimeController =
@@ -62,6 +64,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     nameController.text = user.name;
     locationController.text = user.latitude + user.longitude;
     cnicNtnController.text = user.cnicNtn;
+    businessController.text = user.cnicNtn;
     openingTimeController.text = OnTimeOfDay.formatTo12Hour(user.openingTime);
     closingTimeController.text = OnTimeOfDay.formatTo12Hour(user.closingTime);
     holidayController.text = user.holidays;
@@ -192,6 +195,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           }
                         });
                       }),
+                  16.verticalSpace,
+                  TextFormField(
+                    controller: businessController,
+                    decoration: const InputDecoration(
+                        labelText: StringConstants.businessName),
+                  ),
                   16.verticalSpace,
                   TextFormField(
                       // onTap: () => SheetComponenet.showSelectionSheet(

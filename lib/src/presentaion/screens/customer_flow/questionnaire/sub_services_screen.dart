@@ -128,7 +128,8 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
                                   .toList(),
                               datetimeSelected,
                               amount,
-                              userOfferAmount),
+                              userOfferAmount,
+                              amount),
                           RouteConstants.pickLocationRoute);
                 },
                 onPrevious: () {

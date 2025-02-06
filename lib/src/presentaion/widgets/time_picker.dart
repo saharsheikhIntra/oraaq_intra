@@ -6,7 +6,7 @@ Future<void> selectTime(BuildContext context,
     Function(String time12h, String time24h) onSelectedTime) async {
   final TimeOfDay? picked = await showTimePicker(
     context: context,
-    initialTime: TimeOfDay.now(),
+    initialTime: TimeOfDay(hour: 12, minute: 0),
     builder: (BuildContext context, Widget? child) {
       return Theme(
         data: ThemeData.light().copyWith(
@@ -52,9 +52,20 @@ Future<void> selectTime(BuildContext context,
     },
   );
 
+  // if (picked != null) {
+
+  //   String formattedTime12h = picked.timeFormat; // Display format
+  //   String formattedTime24h = picked.time24hFormat;
+  //   onSelectedTime(formattedTime12h, formattedTime24h);
+  // }
   if (picked != null) {
-    String formattedTime12h = picked.timeFormat; // Display format
-    String formattedTime24h = picked.time24hFormat;
+    // Round the selected time to the nearest 30-minute interval
+    final int roundedMinute = (picked.minute / 30).round() * 30;
+    final TimeOfDay roundedTime = TimeOfDay(
+        hour: picked.hour, minute: roundedMinute == 60 ? 0 : roundedMinute);
+
+    String formattedTime12h = roundedTime.timeFormat; // Display format
+    String formattedTime24h = roundedTime.time24hFormat;
     onSelectedTime(formattedTime12h, formattedTime24h);
   }
 }

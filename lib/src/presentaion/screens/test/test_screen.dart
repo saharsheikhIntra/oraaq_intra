@@ -527,6 +527,7 @@ class _TestScreenState extends State<TestScreen> {
                 context,
                 isScrollControlled: true,
                 child: RequestConfirmationSheet(
+                  standardAmount: '',
                   onConfirm: () {},
                   address: '',
                   datetime: '',

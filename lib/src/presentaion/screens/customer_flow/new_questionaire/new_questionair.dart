@@ -511,7 +511,8 @@ class _NewQuestionnaireScreenState extends State<NewQuestionnaireScreen> {
                                                               newList,
                                                               datetimeSelected,
                                                               amount,
-                                                              userOfferAmount),
+                                                              userOfferAmount,
+                                                              amount),
                                                       RouteConstants
                                                           .pickLocationRoute);
                                                 },

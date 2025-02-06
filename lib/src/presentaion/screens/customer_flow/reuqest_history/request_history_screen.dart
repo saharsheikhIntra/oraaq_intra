@@ -438,6 +438,9 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                             context,
                                             isScrollControlled: true,
                                             child: CompletedJobSheet(
+                                                totalAmount: currentRequest
+                                                    .bidAmount
+                                                    .toString(),
                                                 rating: currentRequest
                                                         .ratingCustomer ??
                                                     0,

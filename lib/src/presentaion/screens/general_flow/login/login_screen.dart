@@ -52,6 +52,12 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is LoginStateLoaded) {
             var type = getIt.get<UserType>();
             if (type == UserType.merchant) {
+              if (state.user.isOtpVerified == 'N') {
+                context.pushNamed(RouteConstants.otpRoute,
+                    arguments: OtpArguement(widget.arguments.selectedUserType,
+                        state.user.email, 'login'));
+                return;
+              }
               if (state.user.name.isEmpty ||
                   state.user.cnicNtn.isEmpty ||
                   state.user.serviceType == -1 ||
@@ -160,13 +166,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             const Spacer(),
                             TextFormField(
                                 controller: emailTextController,
-                                focusNode: emailFocusNode,
+                                // focusNode: emailFocusNode,
                                 keyboardType: TextInputType.emailAddress,
                                 validator: (value) =>
                                     ValidationUtils.checkEmail(value),
                                 onChanged: (value) => _validate(),
-                                onEditingComplete: () => FocusScope.of(context)
-                                    .requestFocus(passwordFocusNode),
+                                // onEditingComplete: () => FocusScope.of(context)
+                                //     .requestFocus(passwordFocusNode),
                                 decoration: InputDecoration(
                                   labelText: StringConstants.emailAddress,
                                   labelStyle: TextStyleTheme.bodyLarge
@@ -289,7 +295,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   CustomButton(
                                       size: CustomButtonSize.small,
                                       text: StringConstants.registerNow,
-                                      type: CustomButtonType.tertiary,
+                                      type: CustomButtonType.primary,
                                       onPressed: () {
                                         if (getIt.isRegistered<UserType>()) {
                                           getIt.unregister<UserType>();

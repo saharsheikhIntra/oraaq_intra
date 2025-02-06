@@ -226,6 +226,14 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                       StringConstants.makeYourOffer,
                                       style: TextStyleTheme.titleMedium,
                                     )),
+                                    // Expanded(
+                                    //   child: Text(
+                                    //       "Amount can be adjust to 10% of standard charges",
+                                    //       style: TextStyleTheme.bodyMedium
+                                    //           .copyWith(
+                                    //               color: ColorTheme.neutral3)),
+                                    // ),
+
                                     GestureDetector(
                                       onTap: () => Toast.show(
                                         context: context,
@@ -240,6 +248,11 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                     ),
                                   ],
                                 )),
+                            16.verticalSpace,
+                            Text("Amount can be adjust to 10% of standard charges",
+                                    style: TextStyleTheme.bodyMedium
+                                        .copyWith(color: ColorTheme.neutral3))
+                                .wrapInPadding(20.horizontalPadding),
                             16.verticalSpace,
                             Padding(
                                 padding: 16.horizontalPadding,

@@ -66,7 +66,7 @@ class _ResendOtpWidgetState extends State<ResendOtpWidget> {
     return isTimerCompleted
         ? CustomButton(
             text: 'Resend',
-            type: CustomButtonType.tertiary,
+            type: CustomButtonType.primary,
             size: CustomButtonSize.small,
             onPressed: _onResendPress,
           )

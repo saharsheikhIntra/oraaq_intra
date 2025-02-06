@@ -60,10 +60,10 @@ class _RequestSheetState extends State<RequestSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 23.0),
             child: Column(
               children: [
-                _buildTime(Symbols.phone_rounded, widget.phoneNumber ?? "N/A"),
-                12.verticalSpace,
-                _buildTime(Symbols.mail_rounded, widget.email ?? "N/A"),
-                12.verticalSpace,
+                // _buildTime(Symbols.phone_rounded, widget.phoneNumber ?? "N/A"),
+                // 12.verticalSpace,
+                // _buildTime(Symbols.mail_rounded, widget.email ?? "N/A"),
+                // 12.verticalSpace,
                 _buildTime(
                     Symbols.my_location_rounded, widget.distance ?? "N/A"),
               ],

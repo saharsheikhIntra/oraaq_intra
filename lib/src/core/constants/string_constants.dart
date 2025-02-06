@@ -31,7 +31,7 @@ class StringConstants {
 
   static const String registerButton = "Register";
   static const String alreadyHaveAccount = "Already have an account?";
-  static const String acceptall = "I accept all the";
+  static const String acceptall = "I accept all";
   static const String termsAndConditions = "Terms and Conditions";
 
   //MARK: - otp
@@ -104,6 +104,7 @@ class StringConstants {
   static const String phone = "Phone";
   static const String yourName = "Your Name";
   static const String cnicNtn = "CNIC / NTN";
+  static const String businessName = "Business Name";
   static const String serviceType = "Service Type";
   static const String selectServiceType = "Select Service Type";
   static const String selectServiceLocation = "Select Your Location";
@@ -130,7 +131,7 @@ class StringConstants {
   static const String previous = "Previous";
   static const String pleaseEnterYourDesiredOfferAmount =
       "Please enter your desired offer amount. Merchants will respond with bids based on your offer.";
-  static const String makeYourOffer = "Make Your Offer";
+  static const String makeYourOffer = "Your Budget";
   static const String preferredSlot = "Please select your Slot";
   static const String upcomingJobs = "Upcoming Jobs";
   static const String rs = "Rs ";
@@ -192,4 +193,5 @@ class StringConstants {
   static const String failedToFetchMerchants = "Failed To Fetch Merchants";
   static const String fillAllFields = "Fill all fields";
   static const String genericErrorMessage = 'Something went wrong';
+  static const String logout = 'Log out';
 }

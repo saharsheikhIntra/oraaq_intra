@@ -17,6 +17,8 @@ class CustomButton extends StatelessWidget {
   // final bool isEnabled;
   final double? width;
   final double? height;
+  final Color? bgColor;
+  final Color? fgColor;
   final VoidCallback? onPressed;
   final CustomButtonType type;
   final CustomButtonSize size;
@@ -32,6 +34,8 @@ class CustomButton extends StatelessWidget {
     this.type = CustomButtonType.primary,
     this.size = CustomButtonSize.large,
     this.iconPosition = CustomButtonIconPosition.leading,
+    this.bgColor,
+    this.fgColor,
   }) {
     assert(
       text != null || icon != null,
@@ -47,53 +51,53 @@ class CustomButton extends StatelessWidget {
 
     switch (type) {
       case CustomButtonType.primary when isEnabled:
-        backgroundColor = ColorTheme.primary.shade400;
-        foregroundColor = ColorTheme.white;
+        backgroundColor = bgColor ?? ColorTheme.primary.shade400;
+        foregroundColor = fgColor ?? ColorTheme.white;
         break;
 
       case CustomButtonType.secondary when isEnabled:
-        backgroundColor = ColorTheme.secondary.shade400;
-        foregroundColor = ColorTheme.onSecondary;
+        backgroundColor = bgColor ?? ColorTheme.secondary.shade400;
+        foregroundColor = fgColor ?? ColorTheme.onSecondary;
         break;
 
       case CustomButtonType.tertiary when isEnabled:
-        backgroundColor = ColorTheme.neutral1;
-        foregroundColor = ColorTheme.primaryText;
+        backgroundColor = bgColor ?? ColorTheme.neutral1;
+        foregroundColor = fgColor ?? ColorTheme.primaryText;
         break;
 
       case CustomButtonType.tertiaryBordered when isEnabled:
-        backgroundColor = ColorTheme.white;
-        foregroundColor = ColorTheme.primaryText;
+        backgroundColor = bgColor ?? ColorTheme.white;
+        foregroundColor = fgColor ?? ColorTheme.primaryText;
         break;
 
       case CustomButtonType.danger when isEnabled:
-        backgroundColor = ColorTheme.error;
-        foregroundColor = ColorTheme.white;
+        backgroundColor = bgColor ?? ColorTheme.error;
+        foregroundColor = fgColor ?? ColorTheme.white;
         break;
 
       case CustomButtonType.primary:
-        backgroundColor = ColorTheme.primary.shade100;
-        foregroundColor = ColorTheme.neutral3;
+        backgroundColor = bgColor ?? ColorTheme.primary.shade100;
+        foregroundColor = fgColor ?? ColorTheme.neutral3;
         break;
 
       case CustomButtonType.secondary:
-        backgroundColor = ColorTheme.secondary.shade100;
-        foregroundColor = ColorTheme.neutral3;
+        backgroundColor = bgColor ?? ColorTheme.secondary.shade100;
+        foregroundColor = fgColor ?? ColorTheme.neutral3;
         break;
 
       case CustomButtonType.tertiary:
-        backgroundColor = ColorTheme.scaffold;
-        foregroundColor = ColorTheme.neutral3;
+        backgroundColor = bgColor ?? ColorTheme.scaffold;
+        foregroundColor = fgColor ?? ColorTheme.neutral3;
         break;
 
       case CustomButtonType.tertiaryBordered:
-        backgroundColor = ColorTheme.scaffold;
-        foregroundColor = ColorTheme.neutral3;
+        backgroundColor = bgColor ?? ColorTheme.scaffold;
+        foregroundColor = fgColor ?? ColorTheme.neutral3;
         break;
 
       case CustomButtonType.danger:
-        backgroundColor = const Color(0xFFFFC0BC);
-        foregroundColor = ColorTheme.white;
+        backgroundColor = bgColor ?? const Color(0xFFFFC0BC);
+        foregroundColor = fgColor ?? ColorTheme.white;
         break;
     }
 

@@ -4,6 +4,7 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:oraaq/src/config/themes/color_theme.dart';
 import 'package:oraaq/src/config/themes/text_style_theme.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
+import 'package:oraaq/src/imports.dart';
 
 enum SnackbarVariantEnum { success, warning, normal }
 
@@ -17,13 +18,14 @@ class Toast {
     final toast = FToast().init(context);
     toast.removeQueuedCustomToasts();
     toast.showToast(
-      child: _ToastUI(
-        context: context,
-        variant: variant,
-        title: title,
-        message: message,
-      ),
-    );
+        child: _ToastUI(
+          context: context,
+          variant: variant,
+          title: title,
+          message: message,
+        ),
+        // gravity: ToastGravity.TOP,
+        toastDuration: 5.seconds);
   }
 }
 
@@ -68,7 +70,9 @@ class _ToastUI extends StatelessWidget {
               Padding(
                   padding: 16.endPadding,
                   child: Icon(
-                    variant == SnackbarVariantEnum.warning ? Symbols.brightness_alert_rounded : Symbols.verified_rounded,
+                    variant == SnackbarVariantEnum.warning
+                        ? Symbols.brightness_alert_rounded
+                        : Symbols.verified_rounded,
                     color: foregroundColor,
                     size: 40,
                   )),
@@ -78,14 +82,16 @@ class _ToastUI extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyleTheme.titleSmall.copyWith(color: foregroundColor),
+                  style: TextStyleTheme.titleSmall
+                      .copyWith(color: foregroundColor),
                 ),
                 if (message != null)
                   Padding(
                       padding: 4.topPadding,
                       child: Text(
                         message!,
-                        style: TextStyleTheme.bodyMedium.copyWith(color: ColorTheme.primaryText),
+                        style: TextStyleTheme.bodyMedium
+                            .copyWith(color: ColorTheme.primaryText),
                       )),
               ],
             ))

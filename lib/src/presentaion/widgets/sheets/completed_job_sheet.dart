@@ -69,18 +69,18 @@ class _CompletedJobSheetSheetState extends State<CompletedJobSheet> {
               style: TextStyleTheme.displaySmall
                   .copyWith(fontSize: 36, fontWeight: FontWeight.w600),
             )),
-        8.verticalSpace,
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 23.0),
-            child: Row(
-              children: [
-                _buildTime(Symbols.phone_rounded,
-                    widget.phoneNumber ?? "031234563451"),
-                16.horizontalSpace,
-                _buildTime(
-                    Symbols.mail_rounded, widget.email ?? "amber.doe@mail,com"),
-              ],
-            )),
+        // 8.verticalSpace,
+        // Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 23.0),
+        //     child: Row(
+        //       children: [
+        //         _buildTime(Symbols.phone_rounded,
+        //             widget.phoneNumber ?? "031234563451"),
+        //         16.horizontalSpace,
+        //         _buildTime(
+        //             Symbols.mail_rounded, widget.email ?? "amber.doe@mail,com"),
+        //       ],
+        //     )),
         25.verticalSpace,
         Container(
             width: double.infinity,
@@ -128,7 +128,7 @@ class _CompletedJobSheetSheetState extends State<CompletedJobSheet> {
             _buildDetails(
               Symbols.payments_rounded,
               "Service Charges",
-              widget.totalAmount ?? "Rs 15000",
+              widget.totalAmount ?? "Rs 0",
             ),
           ]),
         ),

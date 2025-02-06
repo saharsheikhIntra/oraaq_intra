@@ -336,7 +336,7 @@ class _ResgisterScreenState extends State<ResgisterScreen> {
                                     CustomButton(
                                         size: CustomButtonSize.small,
                                         text: StringConstants.signIn,
-                                        type: CustomButtonType.tertiary,
+                                        type: CustomButtonType.primary,
                                         onPressed: () => {
                                               context.pushNamed(
                                                 RouteConstants.welcomeRoute,
