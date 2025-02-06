@@ -1,7 +1,7 @@
-import 'dart:math';
 import 'dart:developer' as developer;
 
 import 'package:intl/intl.dart';
+import 'package:oraaq/src/core/extensions/widget_extension.dart';
 import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/widgets/sub_services_wrap_view.dart';
@@ -30,8 +30,8 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
   DateTime? selectedDateTime;
   var tempVal = '';
 
-  int get25P(int amount) {
-    var newVal = amount != 0 ? amount / 4 : 0;
+  int getPercentage(int amount, double percentage) {
+    var newVal = amount != 0 ? (amount * percentage) : 0;
     return newVal.toInt();
   }
 
@@ -118,9 +118,107 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                         ),
                         child: Column(
                           children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                StringConstants.preferredSlot,
+                                style: TextStyleTheme.titleMedium
+                                    .copyWith(fontSize: 14),
+                              ),
+                            ).wrapInPadding(16.horizontalPadding),
+                            Padding(
+                              padding: 24.allPadding,
+                              child: TextField(
+                                controller: _dateTimeController,
+                                readOnly: true,
+                                decoration: const InputDecoration(
+                                  filled: true,
+                                  fillColor: ColorTheme.neutral1,
+                                  labelText: StringConstants.preferredDateTime,
+                                  hintText: StringConstants.selectDateTime,
+                                  suffixIcon: Icon(Icons.calendar_today),
+                                  border: OutlineInputBorder(),
+                                ),
+                                onTap: () async {
+                                  // Show date picker
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime(2030),
+                                    builder:
+                                        (BuildContext context, Widget? child) {
+                                      return Theme(
+                                        data: ThemeData.light().copyWith(
+                                          colorScheme: const ColorScheme.light(
+                                            primary: ColorTheme
+                                                .onPrimary, // Header background color
+                                            onPrimary: ColorTheme
+                                                .white, // Header text color
+                                            onSurface: ColorTheme
+                                                .onSecondary, // Body text color
+                                          ),
+                                          dialogBackgroundColor: ColorTheme
+                                              .white, // Background color
+                                        ),
+                                        child: child!,
+                                      );
+                                    },
+                                  );
+
+                                  if (pickedDate != null) {
+                                    // Show time picker after date is selected
+                                    TimeOfDay? pickedTime =
+                                        await showTimePicker(
+                                      context: context,
+                                      initialTime: TimeOfDay.now(),
+                                      builder: (BuildContext context,
+                                          Widget? child) {
+                                        return Theme(
+                                          data: ThemeData.light().copyWith(
+                                            colorScheme:
+                                                const ColorScheme.light(
+                                              primary: ColorTheme
+                                                  .onPrimary, // Header background color
+                                              onPrimary: ColorTheme
+                                                  .white, // Header text color
+                                              onSurface: ColorTheme
+                                                  .onSecondary, // Body text color
+                                            ),
+                                            dialogBackgroundColor: ColorTheme
+                                                .white, // Background color
+                                          ),
+                                          child: child!,
+                                        );
+                                      },
+                                    );
+
+                                    if (pickedTime != null) {
+                                      // Combine the picked date and time into a DateTime object
+                                      setState(() {
+                                        selectedDateTime = DateTime(
+                                          pickedDate.year,
+                                          pickedDate.month,
+                                          pickedDate.day,
+                                          pickedTime.hour,
+                                          pickedTime.minute,
+                                        );
+                                        // Format and show the selected date and time in the TextField
+                                        tempVal = _dateTimeController.text =
+                                            DateFormat('yyyy-MM-dd HH:mm')
+                                                .format(selectedDateTime!);
+
+                                        _dateTimeController.text =
+                                            "${selectedDateTime!.formattedDate()}, ${selectedDateTime!.to12HourFormat}";
+                                      });
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
                             Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(20, 0, 14, 0),
+                                    const EdgeInsets.fromLTRB(20, 20, 14, 0),
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -128,6 +226,14 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                       StringConstants.makeYourOffer,
                                       style: TextStyleTheme.titleMedium,
                                     )),
+                                    // Expanded(
+                                    //   child: Text(
+                                    //       "Amount can be adjust to 10% of standard charges",
+                                    //       style: TextStyleTheme.bodyMedium
+                                    //           .copyWith(
+                                    //               color: ColorTheme.neutral3)),
+                                    // ),
+
                                     GestureDetector(
                                       onTap: () => Toast.show(
                                         context: context,
@@ -143,16 +249,26 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                   ],
                                 )),
                             16.verticalSpace,
+                            Text("Amount can be adjust to 10% of standard charges",
+                                    style: TextStyleTheme.bodyMedium
+                                        .copyWith(color: ColorTheme.neutral3))
+                                .wrapInPadding(20.horizontalPadding),
+                            16.verticalSpace,
                             Padding(
                                 padding: 16.horizontalPadding,
                                 child: Row(
                                   children: [
                                     CustomButton(
                                       onPressed: () {
-                                        if (_selectedOffer.value >
-                                            get25P(_selectedOffer.value)) {
-                                          _selectedOffer.value -=
-                                              get25P(_selectedOffer.value);
+                                        int minLimit = _standardCharges -
+                                            getPercentage(
+                                                _standardCharges, 0.1);
+                                        if (_selectedOffer.value > minLimit) {
+                                          _selectedOffer.value -= getPercentage(
+                                              _standardCharges, 0.1);
+                                          if (_selectedOffer.value < minLimit) {
+                                            _selectedOffer.value = minLimit;
+                                          }
                                         }
                                         widget.onChanged(_selectedOffer.value);
                                       },
@@ -223,8 +339,16 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                     24.horizontalSpace,
                                     CustomButton(
                                       onPressed: () {
-                                        _selectedOffer.value +=
-                                            get25P(_selectedOffer.value);
+                                        int maxLimit = _standardCharges +
+                                            getPercentage(
+                                                _standardCharges, 0.1);
+                                        if (_selectedOffer.value < maxLimit) {
+                                          _selectedOffer.value += getPercentage(
+                                              _standardCharges, 0.1);
+                                          if (_selectedOffer.value > maxLimit) {
+                                            _selectedOffer.value = maxLimit;
+                                          }
+                                        }
                                         widget.onChanged(_selectedOffer.value);
                                       },
                                       type: CustomButtonType.tertiary,
@@ -234,90 +358,90 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                 )),
                           ],
                         )),
-                    Padding(
-                      padding: 24.allPadding,
-                      child: TextField(
-                        controller: _dateTimeController,
-                        readOnly: true,
-                        decoration: const InputDecoration(
-                          labelText: StringConstants.preferredDateTime,
-                          hintText: StringConstants.selectDateTime,
-                          suffixIcon: Icon(Icons.calendar_today),
-                          border: OutlineInputBorder(),
-                        ),
-                        onTap: () async {
-                          // Show date picker
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2030),
-                            builder: (BuildContext context, Widget? child) {
-                              return Theme(
-                                data: ThemeData.light().copyWith(
-                                  colorScheme: const ColorScheme.light(
-                                    primary: ColorTheme
-                                        .onPrimary, // Header background color
-                                    onPrimary:
-                                        ColorTheme.white, // Header text color
-                                    onSurface: ColorTheme
-                                        .onSecondary, // Body text color
-                                  ),
-                                  dialogBackgroundColor:
-                                      ColorTheme.white, // Background color
-                                ),
-                                child: child!,
-                              );
-                            },
-                          );
+                    // Padding(
+                    //   padding: 24.allPadding,
+                    //   child: TextField(
+                    //     controller: _dateTimeController,
+                    //     readOnly: true,
+                    //     decoration: const InputDecoration(
+                    //       labelText: StringConstants.preferredDateTime,
+                    //       hintText: StringConstants.selectDateTime,
+                    //       suffixIcon: Icon(Icons.calendar_today),
+                    //       border: OutlineInputBorder(),
+                    //     ),
+                    //     onTap: () async {
+                    //       // Show date picker
+                    //       DateTime? pickedDate = await showDatePicker(
+                    //         context: context,
+                    //         initialDate: DateTime.now(),
+                    //         firstDate: DateTime.now(),
+                    //         lastDate: DateTime(2030),
+                    //         builder: (BuildContext context, Widget? child) {
+                    //           return Theme(
+                    //             data: ThemeData.light().copyWith(
+                    //               colorScheme: const ColorScheme.light(
+                    //                 primary: ColorTheme
+                    //                     .onPrimary, // Header background color
+                    //                 onPrimary:
+                    //                     ColorTheme.white, // Header text color
+                    //                 onSurface: ColorTheme
+                    //                     .onSecondary, // Body text color
+                    //               ),
+                    //               dialogBackgroundColor:
+                    //                   ColorTheme.white, // Background color
+                    //             ),
+                    //             child: child!,
+                    //           );
+                    //         },
+                    //       );
 
-                          if (pickedDate != null) {
-                            // Show time picker after date is selected
-                            TimeOfDay? pickedTime = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.now(),
-                              builder: (BuildContext context, Widget? child) {
-                                return Theme(
-                                  data: ThemeData.light().copyWith(
-                                    colorScheme: const ColorScheme.light(
-                                      primary: ColorTheme
-                                          .onPrimary, // Header background color
-                                      onPrimary:
-                                          ColorTheme.white, // Header text color
-                                      onSurface: ColorTheme
-                                          .onSecondary, // Body text color
-                                    ),
-                                    dialogBackgroundColor:
-                                        ColorTheme.white, // Background color
-                                  ),
-                                  child: child!,
-                                );
-                              },
-                            );
+                    //       if (pickedDate != null) {
+                    //         // Show time picker after date is selected
+                    //         TimeOfDay? pickedTime = await showTimePicker(
+                    //           context: context,
+                    //           initialTime: TimeOfDay.now(),
+                    //           builder: (BuildContext context, Widget? child) {
+                    //             return Theme(
+                    //               data: ThemeData.light().copyWith(
+                    //                 colorScheme: const ColorScheme.light(
+                    //                   primary: ColorTheme
+                    //                       .onPrimary, // Header background color
+                    //                   onPrimary:
+                    //                       ColorTheme.white, // Header text color
+                    //                   onSurface: ColorTheme
+                    //                       .onSecondary, // Body text color
+                    //                 ),
+                    //                 dialogBackgroundColor:
+                    //                     ColorTheme.white, // Background color
+                    //               ),
+                    //               child: child!,
+                    //             );
+                    //           },
+                    //         );
 
-                            if (pickedTime != null) {
-                              // Combine the picked date and time into a DateTime object
-                              setState(() {
-                                selectedDateTime = DateTime(
-                                  pickedDate.year,
-                                  pickedDate.month,
-                                  pickedDate.day,
-                                  pickedTime.hour,
-                                  pickedTime.minute,
-                                );
-                                // Format and show the selected date and time in the TextField
-                                tempVal = _dateTimeController.text =
-                                    DateFormat('yyyy-MM-dd HH:mm')
-                                        .format(selectedDateTime!);
+                    //         if (pickedTime != null) {
+                    //           // Combine the picked date and time into a DateTime object
+                    //           setState(() {
+                    //             selectedDateTime = DateTime(
+                    //               pickedDate.year,
+                    //               pickedDate.month,
+                    //               pickedDate.day,
+                    //               pickedTime.hour,
+                    //               pickedTime.minute,
+                    //             );
+                    //             // Format and show the selected date and time in the TextField
+                    //             tempVal = _dateTimeController.text =
+                    //                 DateFormat('yyyy-MM-dd HH:mm')
+                    //                     .format(selectedDateTime!);
 
-                                _dateTimeController.text =
-                                    "${selectedDateTime!.formattedDate()}, ${selectedDateTime!.to12HourFormat}";
-                              });
-                            }
-                          }
-                        },
-                      ),
-                    ),
+                    //             _dateTimeController.text =
+                    //                 "${selectedDateTime!.formattedDate()}, ${selectedDateTime!.to12HourFormat}";
+                    //           });
+                    //         }
+                    //       }
+                    //     },
+                    //   ),
+                    // ),
                   ],
                 ))),
         Padding(

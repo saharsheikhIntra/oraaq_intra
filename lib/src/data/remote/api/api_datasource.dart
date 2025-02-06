@@ -54,6 +54,7 @@ class ApiDatasource {
 //           code: e.response?.statusCode.toString() ?? '-1',
 //         ),
     } catch (e) {
+      log(e.toString());
       return Left(handleError(e));
     }
   }
@@ -94,6 +95,7 @@ class ApiDatasource {
       //   ),
       // );
     } catch (e) {
+      log(e.toString());
       return Left(handleError(e));
       // return Left(
       //   Failure(e.toString()),
@@ -136,6 +138,7 @@ class ApiDatasource {
       //   ),
       // );
     } catch (e) {
+      log(e.toString());
       return Left(handleError(e));
       // return Left(
       //   Failure(e.toString()),
@@ -172,6 +175,7 @@ class ApiDatasource {
       //   ),
       // );
     } catch (e) {
+      log(e.toString());
       return Left(handleError(e));
       // return Left(
       //   Failure(e.toString()),
@@ -212,6 +216,7 @@ class ApiDatasource {
       //   code: e.response?.statusCode.toString() ?? '-1',
       // ),
     } catch (e) {
+      log(e.toString());
       return Left(handleError(e));
     }
   }
@@ -250,6 +255,7 @@ class ApiDatasource {
       //   ),
       // );
     } catch (e) {
+      log(e.toString());
       return Left(handleError(e));
       // return Left(
       //   Failure(e.toString()),

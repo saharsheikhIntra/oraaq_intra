@@ -1,3 +1,4 @@
+import 'package:oraaq/src/core/extensions/double_extension.dart';
 import 'package:oraaq/src/imports.dart';
 
 import '../sub_services_wrap_view.dart';
@@ -54,7 +55,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
   @override
   void initState() {
     _defaultValue = widget.defaultValue;
-    _amountController = TextEditingController(text: _defaultValue.toString());
+    _amountController = TextEditingController(text: _defaultValue.asIntString);
     super.initState();
   }
 
@@ -218,7 +219,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                           .copyWith(color: ColorTheme.primary),
                     ),
                     Text(
-                      "$_defaultValue",
+                      _defaultValue.asIntString,
                       style: TextStyleTheme.titleLarge
                           .copyWith(color: ColorTheme.primary),
                     )
@@ -232,36 +233,40 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                   type: widget.variant == NewQuoteSheetSheetVariant.newQuote
                       ? CustomButtonType.primary
                       : CustomButtonType.primary,
-                  text: widget.sheetName != ""? "Action" : widget.variant == NewQuoteSheetSheetVariant.newQuote
-                      ? StringConstants.sendQuote
-                      : StringConstants.cancel,
+                  text: widget.sheetName != ""
+                      ? "Action"
+                      : widget.variant == NewQuoteSheetSheetVariant.newQuote
+                          ? StringConstants.sendQuote
+                          : StringConstants.cancel,
                   onPressed: () {
                     if (widget.variant ==
                         NewQuoteSheetSheetVariant.alreadyQuoted) {
-                      SheetComponenet.showWarningSheet(context,
-                          title: StringConstants.cancelJobTitle,
-                          message: StringConstants.cancelJobMessage,
-                          ctaText: "Cancel Job",
-                          cancelText: "${widget.sheetName == ""?"Keep":"Complete"} Job",
-                          onCtaTap: () {
-                            // widget.cubit!.cancelWorkOrder(widget.workOrderId ?? -1, getIt<UserEntity>().id);
+                      SheetComponenet.showWarningSheet(
+                        context,
+                        title: StringConstants.cancelJobTitle,
+                        message: StringConstants.cancelJobMessage,
+                        ctaText: "Cancel Job",
+                        cancelText:
+                            "${widget.sheetName == "" ? "Keep" : "Complete"} Job",
+                        onCtaTap: () {
+                          // widget.cubit!.cancelWorkOrder(widget.workOrderId ?? -1, getIt<UserEntity>().id);
 
-                            widget.onCancel();
-                            context.pop();
+                          widget.onCancel();
+                          context.pop();
 
-                            //context.popUntil(RouteConstants.merchantHomeScreenRoute);
-                          },
-                          onCancelTap: () {
-                            // widget.cubit!.cancelWorkOrder(widget.workOrderId ?? -1, getIt<UserEntity>().id);
+                          //context.popUntil(RouteConstants.merchantHomeScreenRoute);
+                        },
+                        onCancelTap: () {
+                          // widget.cubit!.cancelWorkOrder(widget.workOrderId ?? -1, getIt<UserEntity>().id);
 
-                            widget.onSubmit(0.0);
-                            context.pop();
+                          widget.onSubmit(0.0);
+                          context.pop();
 
-                            //context.popUntil(RouteConstants.merchantHomeScreenRoute);
-                          },
-                          // context
-                          //     .popUntil(RouteConstants.merchantHomeScreenRoute),
-                          );
+                          //context.popUntil(RouteConstants.merchantHomeScreenRoute);
+                        },
+                        // context
+                        //     .popUntil(RouteConstants.merchantHomeScreenRoute),
+                      );
                     } else {
                       if (_defaultValue < minAmount ||
                           _defaultValue > maxAmount) {
@@ -278,8 +283,8 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                         //       'Please enter an amount between $minAmount and $maxAmount',
                         // );
                       } else {
-                        widget.onSubmit!(_defaultValue);
-                        print("default value sent in api $_defaultValue");
+                        widget.onSubmit(_defaultValue);
+                        debugPrint("default value sent in api $_defaultValue");
                         //context.pop();
                       }
                     }
@@ -331,7 +336,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
     if (_defaultValue < maxAmount) {
       setState(() {
         _defaultValue += 25;
-        _amountController.text = _defaultValue.toString();
+        _amountController.text = _defaultValue.asIntString;
         _errorMessage = null;
       });
     }
@@ -345,7 +350,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
     if (_defaultValue >= minAmount) {
       setState(() {
         _defaultValue -= 25;
-        _amountController.text = _defaultValue.toString();
+        _amountController.text = _defaultValue.asIntString;
         _errorMessage = null;
       });
     }

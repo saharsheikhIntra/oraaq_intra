@@ -6,10 +6,7 @@ import 'package:oraaq/src/config/themes/text_style_theme.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/domain/entities/service_entity.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/new_questionaire/widgets/questions_accordion.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/new_questionaire/widgets/single_question_tile.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/questions_accordion.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/single_question_tile.dart';
 import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
 
 class QuestionsPage2 extends StatefulWidget {
@@ -71,7 +68,8 @@ class _QuestionsPage2State extends State<QuestionsPage2> {
                 decoration: BoxDecoration(
                   color: ColorTheme.white,
                   borderRadius: 16.borderRadius,
-                  border: Border.all(color: ColorTheme.neutral2.withOpacity(0.5)),
+                  border:
+                      Border.all(color: ColorTheme.neutral2.withOpacity(0.5)),
                   boxShadow: [
                     BoxShadow(
                       color: ColorTheme.black.withOpacity(0.03),
@@ -100,19 +98,21 @@ class _QuestionsPage2State extends State<QuestionsPage2> {
                             child: Text(
                               'widget.service.prompt',
                               textAlign: TextAlign.center,
-                              style: TextStyleTheme.bodyMedium.copyWith(color: ColorTheme.secondaryText),
+                              style: TextStyleTheme.bodyMedium
+                                  .copyWith(color: ColorTheme.secondaryText),
                             )),
                         40.verticalSpace,
-                        ..._options.map((e) => 
-                        // e.services.isEmpty ? 
-                        SingleQuestionTile2(
-                                title: e.shortTitle,
-                                subtitle: "Rs. ${e.price}",
-                                // onChanged: (value) {
-                                //   _selected.contains(e) ? _selected.remove(e) : _selected.add(e);
-                                //   widget.onSelect(_selected);
-                                // },
-                                onChanged: (value) => _handleCheckboxChange(e),
+                        ..._options.map((e) =>
+                                // e.services.isEmpty ?
+                                SingleQuestionTile2(
+                                  title: e.shortTitle,
+                                  subtitle: "Rs. ${e.price}",
+                                  // onChanged: (value) {
+                                  //   _selected.contains(e) ? _selected.remove(e) : _selected.add(e);
+                                  //   widget.onSelect(_selected);
+                                  // },
+                                  onChanged: (value) =>
+                                      _handleCheckboxChange(e),
                                 )
                             // : QuestionsAccordion2(
                             //     service: e,
@@ -122,7 +122,7 @@ class _QuestionsPage2State extends State<QuestionsPage2> {
                             //     // },
                             //     onChanged: (value) => _handleCheckboxChange(e),
                             //     ),
-                                ),
+                            ),
                       ],
                     )))),
         Padding(
@@ -157,4 +157,3 @@ class _QuestionsPage2State extends State<QuestionsPage2> {
     );
   }
 }
-

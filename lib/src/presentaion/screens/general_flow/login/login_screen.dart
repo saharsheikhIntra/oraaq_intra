@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('FormKey created for ${loginFormKey.hashCode}');
+    debugPrint('FormKey created for ${loginFormKey.hashCode}');
     return BlocProvider(
       create: (context) => _cubit,
       child: BlocListener<LoginCubit, LoginState>(
@@ -52,6 +52,12 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is LoginStateLoaded) {
             var type = getIt.get<UserType>();
             if (type == UserType.merchant) {
+              if (state.user.isOtpVerified == 'N') {
+                context.pushNamed(RouteConstants.otpRoute,
+                    arguments: OtpArguement(widget.arguments.selectedUserType,
+                        state.user.email, 'login'));
+                return;
+              }
               if (state.user.name.isEmpty ||
                   state.user.cnicNtn.isEmpty ||
                   state.user.serviceType == -1 ||
@@ -89,6 +95,11 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is LoginStateError) {
             DialogComponent.hideLoading(context);
             FocusScope.of(context).unfocus();
+
+            if (getIt.isRegistered<UserEntity>()) {
+              getIt.unregister<UserEntity>();
+            }
+
             Toast.show(
               context: context,
               variant: SnackbarVariantEnum.warning,
@@ -131,7 +142,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         key: loginFormKey,
                         child: Column(
                           children: [
-                            const Spacer(),
+                            const Spacer(
+                              flex: 2,
+                            ),
                             Image.asset(
                               AssetConstants.logoIconWhite,
                               height: 70,
@@ -153,13 +166,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             const Spacer(),
                             TextFormField(
                                 controller: emailTextController,
-                                focusNode: emailFocusNode,
+                                // focusNode: emailFocusNode,
                                 keyboardType: TextInputType.emailAddress,
                                 validator: (value) =>
                                     ValidationUtils.checkEmail(value),
                                 onChanged: (value) => _validate(),
-                                onEditingComplete: () => FocusScope.of(context)
-                                    .requestFocus(passwordFocusNode),
+                                // onEditingComplete: () => FocusScope.of(context)
+                                //     .requestFocus(passwordFocusNode),
                                 decoration: InputDecoration(
                                   labelText: StringConstants.emailAddress,
                                   labelStyle: TextStyleTheme.bodyLarge
@@ -218,8 +231,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 .isRegistered<UserType>()) {
                                               getIt.unregister<UserType>();
                                             }
-                                            print(widget
-                                                .arguments.selectedUserType);
+                                            debugPrint(widget
+                                                .arguments.selectedUserType
+                                                .toString());
                                             getIt.registerSingleton<UserType>(
                                                 widget.arguments
                                                     .selectedUserType);
@@ -253,8 +267,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 .isRegistered<UserType>()) {
                                               getIt.unregister<UserType>();
                                             }
-                                            print(widget
-                                                .arguments.selectedUserType);
+                                            debugPrint(widget
+                                                .arguments.selectedUserType
+                                                .toString());
                                             getIt.registerSingleton<UserType>(
                                                 widget.arguments
                                                     .selectedUserType);
@@ -280,17 +295,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                   CustomButton(
                                       size: CustomButtonSize.small,
                                       text: StringConstants.registerNow,
-                                      type: CustomButtonType.tertiary,
+                                      type: CustomButtonType.primary,
                                       onPressed: () {
                                         if (getIt.isRegistered<UserType>()) {
                                           getIt.unregister<UserType>();
                                         }
-                                        print(
-                                            widget.arguments.selectedUserType);
+                                        debugPrint(widget
+                                            .arguments.selectedUserType
+                                            .toString());
                                         getIt.registerSingleton<UserType>(
                                             widget.arguments.selectedUserType);
-                                        print(
-                                            widget.arguments.selectedUserType);
+                                        debugPrint(widget
+                                            .arguments.selectedUserType
+                                            .toString());
                                         context.pushNamed(
                                           RouteConstants.signupRoute,
                                         );

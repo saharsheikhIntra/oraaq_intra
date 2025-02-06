@@ -57,7 +57,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
             if (state is CustomerHomeStateAcceptedJobs) {
               DialogComponent.hideLoading(context);
               acceptedJobs.value = state.acceptedJobs;
-              // print(acceptedJobs.value);
+              // debugPrint(acceptedJobs.value);
             }
             if (state is CancelCustomerRequestSuccessState) {
               DialogComponent.hideLoading(context);
@@ -72,60 +72,60 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           },
           builder: (context, state) {
             return Scaffold(
-              appBar: PreferredSize(
-                  preferredSize:
-                      Size.fromHeight(ScreenUtil().statusBarHeight + 56),
-                  child: Container(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 8, 16),
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: AssetImage(
-                                AssetConstants.homeAppbarBackground,
-                              ))),
-                      child: SafeArea(
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                            Expanded(
-                                child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Text(
-                                //   StringConstants.goodMorning,
-                                //   style: TextStyleTheme.titleSmall
-                                //       .copyWith(color: ColorTheme.neutral3),
-                                // ),
-                                Text(
-                                  DateTime.now().hour >= 6 &&
-                                          DateTime.now().hour <= 12
-                                      ? StringConstants.goodMorning
-                                      : DateTime.now().hour > 12 &&
-                                              DateTime.now().hour <= 17
-                                          ? StringConstants.goodAfterNoon
-                                          : StringConstants.goodEvening,
-                                  style: TextStyleTheme.titleSmall
-                                      .copyWith(color: ColorTheme.neutral3),
-                                ),
-                                Text(
-                                  currentUser.name,
-                                  style: TextStyleTheme.displaySmall.copyWith(
-                                      color: ColorTheme.neutral3, fontSize: 26),
-                                ),
-                              ],
-                            )),
-                            CustomButton(
-                              size: CustomButtonSize.small,
-                              type: CustomButtonType.tertiary,
-                              icon: Symbols.account_circle_filled_rounded,
-                              onPressed: () => context.pushNamed(
-                                  RouteConstants.customerProfileRoute),
-                            ),
-                          ])))),
-              body: ListView(
-                padding: 20.verticalPadding,
-                children: [
+                appBar: PreferredSize(
+                    preferredSize:
+                        Size.fromHeight(ScreenUtil().statusBarHeight + 56),
+                    child: Container(
+                        padding: const EdgeInsets.fromLTRB(16, 16, 8, 16),
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: AssetImage(
+                                  AssetConstants.homeAppbarBackground,
+                                ))),
+                        child: SafeArea(
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                              Expanded(
+                                  child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Text(
+                                  //   StringConstants.goodMorning,
+                                  //   style: TextStyleTheme.titleSmall
+                                  //       .copyWith(color: ColorTheme.neutral3),
+                                  // ),
+                                  Text(
+                                    DateTime.now().hour >= 6 &&
+                                            DateTime.now().hour <= 12
+                                        ? StringConstants.goodMorning
+                                        : DateTime.now().hour > 12 &&
+                                                DateTime.now().hour <= 16
+                                            ? StringConstants.goodAfterNoon
+                                            : StringConstants.goodEvening,
+                                    style: TextStyleTheme.titleSmall
+                                        .copyWith(color: ColorTheme.neutral3),
+                                  ),
+                                  Text(
+                                    currentUser.name,
+                                    style: TextStyleTheme.headlineSmall
+                                        .copyWith(
+                                            color: ColorTheme.neutral3,
+                                            fontSize: 18),
+                                  ),
+                                ],
+                              )),
+                              CustomButton(
+                                size: CustomButtonSize.small,
+                                type: CustomButtonType.tertiary,
+                                icon: Symbols.account_circle_filled_rounded,
+                                onPressed: () => context.pushNamed(
+                                    RouteConstants.customerProfileRoute),
+                              ),
+                            ])))),
+                body: ListView(padding: 20.verticalPadding, children: [
                   Padding(
                       padding: 16.horizontalPadding,
                       child: Row(children: [
@@ -227,9 +227,13 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                   ),
                                                 ),
                                               ))))
-                              : const Center(
-                                  child: Text('No Data'),
+                              : const NoDataFound(
+                                  text: StringConstants.firstOrder,
+                                  fontSize: 12,
                                 );
+                          // const Center(
+                          //     child: Text('No Data'),
+                          //   );
                         },
                         // child: ListView.separated(
                         //     shrinkWrap: true,

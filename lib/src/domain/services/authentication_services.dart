@@ -216,11 +216,11 @@ class AuthenticationServices {
   ) async {
     var result = switch (signinProvidor) {
       SocialSignInEnum.google => await _socialAuthRepository.signInWithGoogle(),
-      SocialSignInEnum.apple => await _socialAuthRepository.signInWithApple(),
+      // SocialSignInEnum.apple => await _socialAuthRepository.signInWithApple(),
       SocialSignInEnum.facebook =>
         await _socialAuthRepository.signInWithFacebook(),
     };
-    log(result.toString()); 
+    log(result.toString());
 
     return result.fold(
       (l) => Left(l),
@@ -230,9 +230,8 @@ class AuthenticationServices {
           return Left(Failure(StringConstants.somethingWentWrong));
         }
         return Right(
-          // r.user!.displayName ?? r.additionalUserInfo?.username ?? "-",
-          r.user!
-        );
+            // r.user!.displayName ?? r.additionalUserInfo?.username ?? "-",
+            r.user!);
 
         // var apiResult = await _apiAuthRepository.socialSignIn(
         //   SocialLoginRequestDto(
@@ -270,7 +269,8 @@ class AuthenticationServices {
   // MARK: SOCIAL-SIGN-IN SERVER API
   //
   //
-  Future<Either<Failure, UserEntity>> loginViaSocial(SocialLoginRequestDto dto) async {
+  Future<Either<Failure, UserEntity>> loginViaSocial(
+      SocialLoginRequestDto dto) async {
     var result = await _apiAuthRepository.loginViaSocial(dto);
     return result.fold(
       (l) => Left(l),
@@ -285,8 +285,6 @@ class AuthenticationServices {
       },
     );
   }
-
-
 
   //
   //

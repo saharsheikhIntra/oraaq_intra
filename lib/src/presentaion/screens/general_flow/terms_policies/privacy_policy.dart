@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oraaq/src/config/themes/app_theme.dart';
 import 'package:oraaq/src/config/themes/text_style_theme.dart';
-import 'package:oraaq/src/core/extensions/num_extension.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});

@@ -55,8 +55,8 @@ class JobManagementRepository {
                 // [],
               ));
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
-    
     }
   }
 
@@ -87,6 +87,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -118,6 +119,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -147,6 +149,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -177,6 +180,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -204,6 +208,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -234,6 +239,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -261,10 +267,10 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
-
   //
   //
   // MARK: COMPLETE WORK ORDER
@@ -288,6 +294,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -315,6 +322,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -342,6 +350,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -371,6 +380,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -398,10 +408,8 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
-
 }
-
-

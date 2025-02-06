@@ -25,6 +25,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               getIt.get<UserEntity>().longitude);
   final TextEditingController cnicNtnController =
       TextEditingController(text: getIt.get<UserEntity>().cnicNtn);
+  final TextEditingController businessController =
+      TextEditingController(text: getIt.get<UserEntity>().cnicNtn);
   final TextEditingController openingTimeController =
       TextEditingController(text: getIt.get<UserEntity>().openingTime);
   final TextEditingController closingTimeController =
@@ -62,11 +64,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     nameController.text = user.name;
     locationController.text = user.latitude + user.longitude;
     cnicNtnController.text = user.cnicNtn;
+    businessController.text = user.cnicNtn;
     openingTimeController.text = OnTimeOfDay.formatTo12Hour(user.openingTime);
     closingTimeController.text = OnTimeOfDay.formatTo12Hour(user.closingTime);
     holidayController.text = user.holidays;
     holidays = user.holidays.split(",").map((e) => e.trim()).toList();
-    // print(getIt.get<UserEntity>());
+    // debugPrint(getIt.get<UserEntity>());
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _cubit.fetchCategories();
@@ -194,6 +197,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       }),
                   16.verticalSpace,
                   TextFormField(
+                    controller: businessController,
+                    decoration: const InputDecoration(
+                        labelText: StringConstants.businessName),
+                  ),
+                  16.verticalSpace,
+                  TextFormField(
                       // onTap: () => SheetComponenet.showSelectionSheet(
                       //       context,
                       //       title: "Select Serviced Type",
@@ -228,7 +237,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             context,
                             (time12h, time24h) {
                               openingTime.value = time24h;
-                              print(openingTime.value);
+                              debugPrint(openingTime.value);
                               return openingTimeController.text = time12h;
                             },
                           ),
@@ -246,7 +255,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             context,
                             (time12h, time24h) {
                               closingTime.value = time24h;
-                              print(closingTime.value);
+                              debugPrint(closingTime.value);
                               return closingTimeController.text = time12h;
                             },
                           ),

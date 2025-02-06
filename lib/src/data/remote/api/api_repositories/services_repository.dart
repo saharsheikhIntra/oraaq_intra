@@ -35,7 +35,9 @@ class ServicesRepository {
         (r) => Right(GetServicesResponseDto.fromMap(r.data)),
       );
     } catch (e) {
-      return Left(handleError(e));
+      log(e.toString());
+
+      return Left(Failure('${StringConstants.failedToFetchServices}: $e'));
     }
   }
 
@@ -96,6 +98,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -125,6 +128,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -156,6 +160,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -187,6 +192,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -215,6 +221,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -243,6 +250,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -271,6 +279,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -296,6 +305,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -321,6 +331,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -346,6 +357,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -377,6 +389,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }
@@ -439,6 +452,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }

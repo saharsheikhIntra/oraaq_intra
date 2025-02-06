@@ -1,5 +1,4 @@
 import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_arguement.dart';
-import 'package:oraaq/src/presentaion/screens/general_flow/register/register_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/register/register_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/register/register_state.dart';
 
@@ -337,7 +336,7 @@ class _ResgisterScreenState extends State<ResgisterScreen> {
                                     CustomButton(
                                         size: CustomButtonSize.small,
                                         text: StringConstants.signIn,
-                                        type: CustomButtonType.tertiary,
+                                        type: CustomButtonType.primary,
                                         onPressed: () => {
                                               context.pushNamed(
                                                 RouteConstants.welcomeRoute,

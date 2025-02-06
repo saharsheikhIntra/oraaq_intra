@@ -2,8 +2,6 @@
 
 import 'dart:developer';
 
-import 'package:oraaq/src/core/enum/user_type.dart';
-import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/imports.dart';
 
 class LoginResponseDto {
@@ -126,7 +124,7 @@ class LoginResponseUserDto {
   }
 
   UserEntity get toUserEntity {
-    //print(this);
+    //debugPrint(this);
     return UserEntity(
       id: merchantId,
       userId: merchantUserId,

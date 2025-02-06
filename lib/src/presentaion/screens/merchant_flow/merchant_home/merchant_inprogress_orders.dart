@@ -1,5 +1,7 @@
+import 'package:oraaq/src/core/extensions/double_extension.dart';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_home/merchant_home_screen_cubit.dart';
 import 'package:oraaq/src/imports.dart';
+import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
 
 class WorkInProgressScreen extends StatefulWidget {
   const WorkInProgressScreen({
@@ -27,7 +29,7 @@ class _WorkInProgressScreenState extends State<WorkInProgressScreen> {
       create: (context) => _cubit,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(StringConstants.workInProgress),
+          title: const Text(StringConstants.approvedJobs),
         ),
         body: BlocConsumer<MerchantHomeScreenCubit, MerchantHomeScreenState>(
           listener: (context, state) {
@@ -57,50 +59,56 @@ class _WorkInProgressScreenState extends State<WorkInProgressScreen> {
           },
           builder: (context, state) {
             if (state is WorkInProgressOrdersLoaded) {
-              return ListView.separated(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: state.workInProgressOrders.length,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 16.0),
-                separatorBuilder: (context, index) => 12.verticalSpace,
-                itemBuilder: (BuildContext context, int index) {
-                  final order = state.workInProgressOrders[index];
+              return state.workInProgressOrders.isEmpty
+                  ? const NoDataFound(
+                      text: StringConstants.firstMerchantOrder,
+                      fontSize: 12,
+                    )
+                  : ListView.separated(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: state.workInProgressOrders.length,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 16.0),
+                      separatorBuilder: (context, index) => 12.verticalSpace,
+                      itemBuilder: (BuildContext context, int index) {
+                        final order = state.workInProgressOrders[index];
 
-                  return GestureDetector(
-                    onTap: () {
-                      SheetComponenet.show(context,
-                          isScrollControlled: true,
-                          child: NewQuoteSheet(
-                              name: order.customerName,
-                              email: order.customerEmail,
-                              phoneNumber: order.customerContactNumber,
-                              servicesList: order.serviceNames,
-                              workOrderId: order.workOrderId,
-                              onCancel: () {
-                                context.pop();
-                                _cubit.cancelWorkOrder(order.workOrderId);
-                              },
-                              onSubmit: (double bidAmmount) => context.pop(),
-                              defaultValue: order.bidAmount.toDouble(), //15000,
-                              variant:
-                                  NewQuoteSheetSheetVariant.alreadyQuoted));
-                    },
-                    child: SizedBox(
-                      width: 245,
-                      child: ApprovedRequestCard(
-                        userName: order.customerName,
-                        distance: order.distance
-                            .toString(), // Placeholder, update as needed
-                        date: order.requestDate.formattedDate(),
-                        time: order.requestDate.to12HourFormat,
-                        price: order.bidAmount.toString(),
-                        variant: ApprovedRequestCardVariant.urgent,
-                      ),
-                    ),
-                  );
-                },
-              );
+                        return GestureDetector(
+                          onTap: () {
+                            SheetComponenet.show(context,
+                                isScrollControlled: true,
+                                child: NewQuoteSheet(
+                                    name: order.customerName,
+                                    email: order.customerEmail,
+                                    phoneNumber: order.customerContactNumber,
+                                    servicesList: order.serviceNames,
+                                    workOrderId: order.workOrderId,
+                                    onCancel: () {
+                                      context.pop();
+                                      _cubit.cancelWorkOrder(order.workOrderId);
+                                    },
+                                    onSubmit: (double bidAmmount) =>
+                                        context.pop(),
+                                    defaultValue: order.bidAmount, //15000,
+                                    variant: NewQuoteSheetSheetVariant
+                                        .alreadyQuoted));
+                          },
+                          child: SizedBox(
+                            width: 245,
+                            child: ApprovedRequestCard(
+                              userName: order.customerName,
+                              distance: order.distance
+                                  .toString(), // Placeholder, update as needed
+                              date: order.requestDate.formattedDate(),
+                              time: order.requestDate.to12HourFormat,
+                              price: order.bidAmount.asIntString,
+                              variant: ApprovedRequestCardVariant.urgent,
+                            ),
+                          ),
+                        );
+                      },
+                    );
             } else {
               return const Center(child: Text('No Data'));
             }

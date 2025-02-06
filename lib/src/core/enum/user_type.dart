@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 enum UserType {
-  merchant(
-    title: "Merchant",
-    icon: Symbols.shopping_basket_rounded,
-    id: 2,
-    value: "merchant",
-  ),
+  // merchant(
+  //   title: "Merchant",
+  //   icon: Symbols.shopping_basket_rounded,
+  //   id: 2,
+  //   value: "merchant",
+  // ),
   customer(
     title: "Customer",
     icon: Symbols.store_rounded,
     id: 3,
     value: "customer",
+  ),
+  merchant(
+    title: "Merchant",
+    icon: Symbols.shopping_basket_rounded,
+    id: 2,
+    value: "merchant",
   );
 
   final String title;

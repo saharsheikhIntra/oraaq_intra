@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:oraaq/src/core/extensions/double_extension.dart';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_history/history_screen_cubit.dart';
 import 'package:oraaq/src/imports.dart';
 
@@ -98,7 +99,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     .toString(),
                                 // "4 / 5",
                                 price: state.completedOrders[index].bidAmount
-                                    .toString(), //"12000",
+                                    .asIntString, //"12000",
                                 servicesList: state.completedOrders[index]
                                     .serviceNames, //const [],
                                 duration: '4 hr 40 mints',

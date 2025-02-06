@@ -1,9 +1,10 @@
 import 'dart:developer';
 
 import 'package:oraaq/src/core/enum/merchant_jobs_filter.dart';
-import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/applied_jobs_response_dto.dart';
+import 'package:oraaq/src/core/extensions/double_extension.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_home/merchant_home_screen_cubit.dart';
+import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
 
 class MerchantHomeScreen extends StatefulWidget {
   const MerchantHomeScreen({super.key});
@@ -27,14 +28,14 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
 
   final cron = Cron();
 
-  String getSelectedServiceName(){
-    if(selectedFilter == MerchantJobsFilter.newRequests)
-      {return StringConstants.latestServiceRequests;}
-    else if(selectedFilter == MerchantJobsFilter.alreadyQuoted)
-      { return StringConstants.alreadyQuoted;}
-    else if(selectedFilter == MerchantJobsFilter.allRequests)
-      {return StringConstants.allServiceRequests;}
-    else{
+  String getSelectedServiceName() {
+    if (selectedFilter == MerchantJobsFilter.newRequests) {
+      return StringConstants.latestServiceRequests;
+    } else if (selectedFilter == MerchantJobsFilter.alreadyQuoted) {
+      return StringConstants.alreadyQuoted;
+    } else if (selectedFilter == MerchantJobsFilter.allRequests) {
+      return StringConstants.allServiceRequests;
+    } else {
       return '';
     }
   }
@@ -84,7 +85,6 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ScreenUtil().statusBarHeight + 77),
           child: Container(
-            padding: const EdgeInsets.fromLTRB(16, 16, 8, 16),
             decoration: const BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.fill,
@@ -92,60 +92,62 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
               ),
             ),
             child: SafeArea(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Text(
-                        //   StringConstants.goodMorning,
-                        //   style: TextStyleTheme.titleSmall.copyWith(
-                        //     color: ColorTheme.neutral3,
-                        //   ),
-                        // ),
-                        Text(
-                          DateTime.now().hour >=  6 &&
-                              DateTime.now().hour <= 12
-                              ? StringConstants.goodMorning
-                              : DateTime.now().hour > 12 &&
-                              DateTime.now().hour <= 16
-                              ? StringConstants.goodAfterNoon
-                              : StringConstants.goodEvening,
-                          style: TextStyleTheme.titleSmall
-                              .copyWith(color: ColorTheme.neutral3),
-                        ),
-                        Text(
-                          getIt<UserEntity>().name,
-                          style: TextStyleTheme.displaySmall.copyWith(
-                            color: ColorTheme.neutral3,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Text(
+                          //   StringConstants.goodMorning,
+                          //   style: TextStyleTheme.titleSmall.copyWith(
+                          //     color: ColorTheme.neutral3,
+                          //   ),
+                          // ),
+                          Text(
+                            DateTime.now().hour >= 6 &&
+                                    DateTime.now().hour <= 12
+                                ? StringConstants.goodMorning
+                                : DateTime.now().hour > 12 &&
+                                        DateTime.now().hour <= 16
+                                    ? StringConstants.goodAfterNoon
+                                    : StringConstants.goodEvening,
+                            style: TextStyleTheme.titleSmall
+                                .copyWith(color: ColorTheme.neutral3),
                           ),
-                        ),
-                      ],
+                          Text(
+                            getIt<UserEntity>().name,
+                            style: TextStyleTheme.headlineSmall.copyWith(
+                                color: ColorTheme.neutral3, fontSize: 18),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  CustomButton(
-                    size: CustomButtonSize.small,
-                    type: CustomButtonType.tertiary,
-                    icon: Symbols.refresh_rounded,
-                    onPressed: () async{
-                      await _cubit.fetchWorkInProgressOrders();
-                    },
-                  ),
-                  const SizedBox(width: 10,),
-                  CustomButton(
-                    size: CustomButtonSize.small,
-                    type: CustomButtonType.tertiary,
-                    icon: Symbols.account_circle_filled_rounded,
-                    onPressed: () => context
-                        .pushNamed(RouteConstants.merchantProfileRoute)
-                        .then((_) => setState(() {})),
-                  ),
-                  
-                  
-                ],
+                    CustomButton(
+                      size: CustomButtonSize.small,
+                      type: CustomButtonType.tertiary,
+                      icon: Symbols.refresh_rounded,
+                      onPressed: () async {
+                        await _cubit.fetchWorkInProgressOrders();
+                      },
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    CustomButton(
+                      size: CustomButtonSize.small,
+                      type: CustomButtonType.tertiary,
+                      icon: Symbols.account_circle_filled_rounded,
+                      onPressed: () => context
+                          .pushNamed(RouteConstants.merchantProfileRoute)
+                          .then((_) => setState(() {})),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -216,11 +218,11 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                 variant: SnackbarVariantEnum.success,
                 title: state.message,
               );
-              print(state.message);
+              debugPrint(state.message);
             }
           },
           builder: (context, state) {
-            print('Current state: $state');
+            debugPrint('Current state: $state');
 
             return ListView(
               padding: 20.verticalPadding,
@@ -268,9 +270,13 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                       builder: (context, value, child) {
                         return value.isNotEmpty
                             ? _buildWorkInProgress(value)
-                            : const Center(
-                                child: Text('No Data'),
+                            : const NoDataFound(
+                                text: StringConstants.firstMerchantOrder,
+                                fontSize: 11,
                               );
+                        // const Center(
+                        //     child: Text('No Data'),
+                        //   );
                       },
                     )),
                 40.verticalSpace,
@@ -339,7 +345,10 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     builder: (context, serviceRequests, child) {
                       return serviceRequests.isNotEmpty
                           ? _buildServiceRequestsView(serviceRequests)
-                          : const Center(child: Text('No Data'));
+                          : const NoDataFound(
+                              text: StringConstants.noRequestFound,
+                              fontSize: 12,
+                            );
                     },
                   )
                 else if (selectedFilter == MerchantJobsFilter.alreadyQuoted)
@@ -349,7 +358,10 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                         (BuildContext context, dynamic value, Widget? child) {
                       return value.isNotEmpty
                           ? _buildAppliedJobsView(value)
-                          : const Center(child: Text('No Data'));
+                          : const NoDataFound(
+                              text: StringConstants.noRequestFound,
+                              fontSize: 12,
+                            );
                     },
                   )
                 else if (selectedFilter == MerchantJobsFilter.allRequests)
@@ -358,7 +370,10 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     builder: (context, serviceRequests, child) {
                       return serviceRequests.isNotEmpty
                           ? _buildAllServiceRequestsView(serviceRequests)
-                          : const Center(child: Text('No Data'));
+                          : const NoDataFound(
+                              text: StringConstants.noRequestFound,
+                              fontSize: 12,
+                            );
                     },
                   ),
               ],
@@ -389,16 +404,18 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     phoneNumber: order.customerContactNumber,
                     servicesList: order.serviceNames,
                     workOrderId: order.workOrderId,
+                    date: order.bidDate.formattedDate(),
+                    time: order.bidDate.to12HourFormat,
                     sheetName: "Action",
                     onCancel: () {
                       context.pop();
                       _cubit.cancelWorkOrder(order.bidId);
                     },
-                    onSubmit:  (double bidAmount) {
+                    onSubmit: (double bidAmount) {
                       context.pop();
                       _cubit.completeWorkOrder(order.bidId);
                     },
-                    defaultValue: order.bidAmount.toDouble(), //15000,
+                    defaultValue: order.bidAmount, //15000,
                     variant: NewQuoteSheetSheetVariant.alreadyQuoted));
           },
           child: SizedBox(
@@ -409,7 +426,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   order.distance.toString(), // Placeholder, update as needed
               date: order.requestDate.formattedDate(),
               time: order.requestDate.to12HourFormat,
-              price: order.bidAmount.toString(),
+              price: order.bidAmount.asIntString,
               variant: ApprovedRequestCardVariant.urgent,
             ),
           ),
@@ -450,7 +467,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             distance: job.distance, //"45 km",
             date: DateTime.tryParse(job.requestDate)!.formattedDate(),
             time: DateTime.tryParse(job.requestDate)!.to12HourFormat,
-            price: job.totalPrice.toString(),
+            price: job.totalPrice.asIntString,
             servicesList: job.serviceNames,
             variant: NewRequestCardVariant.newRequest,
           ),
@@ -484,14 +501,16 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   onCancel: () => context.pop(),
                   onSubmit: (double bidAmount) =>
                       _cubit.postBid(job.serviceRequestId, bidAmount),
-                  variant: job.status == "Open"? NewQuoteSheetSheetVariant.newQuote : NewQuoteSheetSheetVariant.alreadyQuoted)),
+                  variant: job.status == "Open"
+                      ? NewQuoteSheetSheetVariant.newQuote
+                      : NewQuoteSheetSheetVariant.alreadyQuoted)),
           child: NewRequestCard(
             buttonText: job.status,
             userName: job.customerName,
             distance: job.distance, //"45 km",
             date: DateTime.tryParse(job.requestDate)!.formattedDate(),
             time: DateTime.tryParse(job.requestDate)!.to12HourFormat,
-            price: job.totalPrice.toString(),
+            price: job.totalPrice.asIntString,
             servicesList: job.serviceNames,
             variant: NewRequestCardVariant.newRequest,
           ),
@@ -522,7 +541,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   servicesList: job.serviceNames,
                   time: job.bidDate.to12HourFormat,
                   //DateTime.tryParse(job.requestDate)!                     .formattedDate(), //"3:30pm",
-                  defaultValue: job.bidAmount.toDouble(),
+                  defaultValue: job.bidAmount,
                   onCancel: () {
                     context.pop();
                     _cubit
@@ -538,7 +557,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             //DateTime.tryParse(job.bidDate)!.formattedDate(),
             time: job.bidDate.to12HourFormat,
             //DateTime.tryParse(job.bidDate)!.to12HourFormat,
-            price: job.bidAmount.toString(),
+            price: job.bidAmount.asIntString,
             servicesList: job.serviceNames,
             variant: NewRequestCardVariant.alreadyApplied,
           ),

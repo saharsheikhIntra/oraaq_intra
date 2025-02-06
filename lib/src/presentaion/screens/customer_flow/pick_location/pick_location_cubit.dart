@@ -1,12 +1,7 @@
-import 'dart:developer';
-import 'dart:math' as math;
-
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/create_order_dto.dart';
-import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/get_merchant_radius.dart';
-import 'package:oraaq/src/domain/entities/failure.dart';
 import 'package:oraaq/src/domain/services/services_service.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_state.dart';
 
@@ -41,7 +36,8 @@ class PickLocationCubit extends Cubit<PickLocationState> {
     //   results.add(LatLng(newLatitude, newLongitude));
     // }
 
-    final res = await _servicesService.getMerchantWithinRadius2(center.latitude, center.longitude, radius.toInt(), 2);
+    final res = await _servicesService.getMerchantWithinRadius2(
+        center.latitude, center.longitude, radius.toInt(), 2);
     res.fold(
       (failure) => emit(PickLocationStateError(failure)),
       (merchants) {
@@ -85,7 +81,8 @@ class PickLocationCubit extends Cubit<PickLocationState> {
     // }
 
     // final res = await _servicesService.getMerchantWithinRadius2(24, 67, 100, 2);
-    final res = await _servicesService.getMerchantWithinRadius2(center.latitude, center.longitude, radius.toInt(), 2);
+    final res = await _servicesService.getMerchantWithinRadius2(
+        center.latitude, center.longitude, radius.toInt(), 2);
     res.fold(
       (failure) => emit(PickLocationStateError(failure)),
       (merchants) {

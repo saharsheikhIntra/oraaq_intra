@@ -6,6 +6,7 @@ class RequestConfirmationSheet extends StatefulWidget {
   final String address;
   final String serviceType;
   final String offeredAmount;
+  final String standardAmount;
   final String datetime;
   final List<String> services;
   const RequestConfirmationSheet({
@@ -16,6 +17,7 @@ class RequestConfirmationSheet extends StatefulWidget {
     required this.offeredAmount,
     required this.datetime,
     required this.services,
+    required this.standardAmount,
   });
 
   @override
@@ -72,7 +74,12 @@ class _RequestConfirmationSheetState extends State<RequestConfirmationSheet> {
           ),
           _buildDetails(
             Symbols.payments_rounded,
-            "Offered Amount",
+            "Average Market Price ",
+            widget.standardAmount,
+          ),
+          _buildDetails(
+            Symbols.payments_rounded,
+            "My Budget",
             widget.offeredAmount,
           ),
           _buildDetails(

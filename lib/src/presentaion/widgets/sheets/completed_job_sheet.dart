@@ -26,6 +26,7 @@ class CompletedJobSheet extends StatefulWidget {
   final String? totalAmount;
   final String? serviceType;
   final int rating;
+  final String? ratingByMerchant;
   final CompletedJobSheetVariant variant;
   const CompletedJobSheet({
     super.key,
@@ -39,6 +40,7 @@ class CompletedJobSheet extends StatefulWidget {
     this.serviceType = '',
     required this.rating,
     required this.variant,
+    this.ratingByMerchant,
   });
 
   @override
@@ -67,18 +69,18 @@ class _CompletedJobSheetSheetState extends State<CompletedJobSheet> {
               style: TextStyleTheme.displaySmall
                   .copyWith(fontSize: 36, fontWeight: FontWeight.w600),
             )),
-        8.verticalSpace,
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 23.0),
-            child: Row(
-              children: [
-                _buildTime(Symbols.phone_rounded,
-                    widget.phoneNumber ?? "031234563451"),
-                16.horizontalSpace,
-                _buildTime(
-                    Symbols.mail_rounded, widget.email ?? "amber.doe@mail,com"),
-              ],
-            )),
+        // 8.verticalSpace,
+        // Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 23.0),
+        //     child: Row(
+        //       children: [
+        //         _buildTime(Symbols.phone_rounded,
+        //             widget.phoneNumber ?? "031234563451"),
+        //         16.horizontalSpace,
+        //         _buildTime(
+        //             Symbols.mail_rounded, widget.email ?? "amber.doe@mail,com"),
+        //       ],
+        //     )),
         25.verticalSpace,
         Container(
             width: double.infinity,
@@ -121,12 +123,12 @@ class _CompletedJobSheetSheetState extends State<CompletedJobSheet> {
             _buildDetails(
               Symbols.star_half_rounded,
               "Rated by Merchant",
-              "4 / 5",
+              widget.ratingByMerchant ?? "4 / 5",
             ),
             _buildDetails(
               Symbols.payments_rounded,
               "Service Charges",
-              widget.totalAmount ?? "Rs 15000",
+              widget.totalAmount ?? "Rs 0",
             ),
           ]),
         ),

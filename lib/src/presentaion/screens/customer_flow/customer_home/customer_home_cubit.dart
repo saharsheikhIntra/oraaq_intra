@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_customer_request.dart';
-import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/domain/services/services_service.dart';
 import 'package:oraaq/src/imports.dart';
 

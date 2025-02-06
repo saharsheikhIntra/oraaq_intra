@@ -72,10 +72,13 @@ class _OtpScreenState extends State<OtpScreen> {
             if (widget.arguement.routeName == 'register') {
               final user = getIt<UserEntity>();
               user.isOtpVerified = 'Y';
+
               if (widget.arguement.selectedUserType == UserType.customer) {
-                context.pushNamed(RouteConstants.customerEditProfileRoute);
+                context.pushReplacementNamed(
+                    RouteConstants.customerEditProfileRoute);
               } else {
-                context.pushNamed(RouteConstants.merchantEditProfileRoute);
+                context.pushReplacementNamed(
+                    RouteConstants.merchantEditProfileRoute);
               }
             } else {
               context.pushNamed(RouteConstants.newPasswordRoute,
@@ -137,6 +140,17 @@ class _OtpScreenState extends State<OtpScreen> {
                           child: Column(
                             children: [
                               const Spacer(),
+                              Align(
+                                  alignment: Alignment.topRight,
+                                  child: CustomButton(
+                                    icon: Symbols.logout_rounded,
+                                    type: CustomButtonType.primary,
+                                    size: CustomButtonSize.small,
+                                    onPressed: () {
+                                      _cubit.forgetPassword(
+                                          widget.arguement.email);
+                                    },
+                                  )),
                               Image.asset(
                                 AssetConstants.logoIcon,
                                 height: 80,
@@ -161,12 +175,6 @@ class _OtpScreenState extends State<OtpScreen> {
                                 textAlign: TextAlign.center,
                                 style: TextStyleTheme
                                     .titleSmall //labelLarge not showing bold
-                                    .copyWith(color: ColorTheme.onPrimary),
-                              ),
-                              Text(
-                                StringConstants.samplePhoneNumber,
-                                textAlign: TextAlign.center,
-                                style: TextStyleTheme.titleSmall
                                     .copyWith(color: ColorTheme.onPrimary),
                               ),
                               const Spacer(
@@ -216,6 +224,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                           widget.arguement.email),
                                     ),
                                   ]),
+                              Spacer(),
                             ],
                           )))));
         },
