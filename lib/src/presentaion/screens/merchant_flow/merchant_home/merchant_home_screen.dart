@@ -403,6 +403,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     email: order.customerEmail,
                     phoneNumber: order.customerContactNumber,
                     servicesList: order.serviceNames,
+                    distance: order.distance,
                     workOrderId: order.workOrderId,
                     date: order.bidDate.formattedDate(),
                     time: order.bidDate.to12HourFormat,
@@ -445,6 +446,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       separatorBuilder: (context, index) => 12.verticalSpace,
       itemBuilder: (BuildContext context, int index) {
         final job = serviceRequests[index];
+        log(job.customerName);
+        log(job.distance.toString());
         return GestureDetector(
           onTap: () => SheetComponenet.show(context,
               isScrollControlled: true,

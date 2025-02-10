@@ -33,7 +33,7 @@ class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
     super.initState();
   }
 
-  ValueNotifier<int> _value = ValueNotifier<int>(0);
+  final ValueNotifier<int> _value = ValueNotifier<int>(0);
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +133,7 @@ class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
                 : "Update Offer",
             onPressed: () => widget.onTap(_value.value),
           ),
-          32.verticalSpace,
+          20.verticalSpace,
         ],
       ),
     );

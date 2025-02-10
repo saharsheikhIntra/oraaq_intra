@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 // import 'packagter_bloc/flutter_bloc.dart';
+import 'package:oraaq/src/core/extensions/double_extension.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/fetch_offers_for_requests.dart';
 import 'package:oraaq/src/imports.dart';
@@ -238,9 +239,9 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                                         child: MerchantOfferCard(
                                           userName: bid.merchantName,
                                           distance: bid.distance,
-                                          phoneNo: "",
-                                          email: "Fetching address...",
-                                          price: bid.offerAmount.toString(),
+                                          // phoneNo: "",
+                                          // email: "",
+                                          price: bid.offerAmount.asIntString,
                                           onAccept: () async {
                                             Map<String, dynamic> data = {
                                               'offer_id': bid.offerId,

@@ -95,7 +95,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     .customerName, //"AC REPAIRING",
                                 date: state.completedOrders[index].requestDate
                                     .formattedDate(), //"4th March",
-                                ratings: state.completedOrders[index].ratingCustomer
+                                ratings: state
+                                    .completedOrders[index].ratingCustomer
                                     .toString(),
                                 // "4 / 5",
                                 price: state.completedOrders[index].bidAmount
@@ -103,8 +104,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 servicesList: state.completedOrders[index]
                                     .serviceNames, //const [],
                                 duration: '4 hr 40 mints',
-                                rating:
-                                    state.completedOrders[index].ratingMerchant??0,
+                                rating: state.completedOrders[index]
+                                        .ratingMerchant ??
+                                    0,
                                 variant: CompletedRequestCardVariant.customer,
                                 onTap: () async {
                                   final rating = await SheetComponenet.show(

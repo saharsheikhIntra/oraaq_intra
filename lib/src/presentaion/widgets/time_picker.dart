@@ -6,7 +6,7 @@ Future<void> selectTime(BuildContext context,
     Function(String time12h, String time24h) onSelectedTime) async {
   final TimeOfDay? picked = await showTimePicker(
     context: context,
-    initialTime: TimeOfDay(hour: 12, minute: 0),
+    initialTime: const TimeOfDay(hour: 12, minute: 0),
     builder: (BuildContext context, Widget? child) {
       return Theme(
         data: ThemeData.light().copyWith(

@@ -7,7 +7,8 @@ final class MerchantProfileScreenInitial extends MerchantProfileScreenState {}
 
 final class MerchantProfileScreenLoading extends MerchantProfileScreenState {}
 
-final class MerchantProfileScreenLogoutSuccess extends MerchantProfileScreenState {}
+final class MerchantProfileScreenLogoutSuccess
+    extends MerchantProfileScreenState {}
 
 // final class MerchantProfileScreenLoaded extends MerchantProfileScreenState {
 //   final UserEntity user;

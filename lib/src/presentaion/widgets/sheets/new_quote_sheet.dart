@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:oraaq/src/core/extensions/double_extension.dart';
 import 'package:oraaq/src/imports.dart';
 
@@ -87,8 +89,8 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                     // _buildDetails(
                     //     Symbols.mail_rounded, widget.email ?? "amber.doe@mail,com"),
                     // 12.verticalSpace,
-                    _buildDetails(Symbols.my_location_rounded,
-                        widget.distance ?? "18 km away"),
+                    _buildDetails(
+                        Symbols.my_location_rounded, widget.distance ?? "N/A"),
                   ],
                 )),
             25.verticalSpace,

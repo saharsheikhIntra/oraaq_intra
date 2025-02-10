@@ -78,11 +78,13 @@ class ApiAuthRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+
+      log("Login error: $e");
       return Left(handleError(e));
+    
     }
   }
-
+  
   //
   //
   // MARK: LOGIN social

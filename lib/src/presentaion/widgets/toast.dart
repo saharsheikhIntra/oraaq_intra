@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:oraaq/src/config/themes/color_theme.dart';
-import 'package:oraaq/src/config/themes/text_style_theme.dart';
-import 'package:oraaq/src/core/extensions/num_extension.dart';
+
 import 'package:oraaq/src/imports.dart';
 
 enum SnackbarVariantEnum { success, warning, normal }
