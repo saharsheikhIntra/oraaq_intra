@@ -149,7 +149,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                     // Text(
                     //   "$_defaultValue",
                     //   style: const TextStyle(
-                    //     color: ColorTheme.secondaryText,
+                    //     color: ColorTheme.secondaryText, //ColorTheme.primary,
                     //     fontWeight: FontWeight.w600,
                     //     fontSize: 32.0,
                     //   ),

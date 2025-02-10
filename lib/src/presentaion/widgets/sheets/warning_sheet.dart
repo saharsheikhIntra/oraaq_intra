@@ -44,7 +44,7 @@ class _WarningSheet extends StatelessWidget {
           onPressed: onCancelTap,
           text: cancelText,
           size: CustomButtonSize.large,
-          type: CustomButtonType.tertiary,
+          type: CustomButtonType.primary,
         ),
       ],
     ).paddingOnly(top: 24, left: 24, right: 24, bottom: 24);

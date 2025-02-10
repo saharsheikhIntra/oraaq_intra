@@ -194,7 +194,11 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             }
             if (state is CancelMerchantOrderState) {
               DialogComponent.hideLoading(context);
-              _cubit.fetchWorkInProgressOrders();
+              if (selectedFilter == MerchantJobsFilter.alreadyQuoted) {
+                _cubit.fetchAppliedJobs();
+              } else {
+                _cubit.fetchWorkInProgressOrders();
+              }
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.success,
@@ -405,8 +409,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     servicesList: order.serviceNames,
                     distance: order.distance,
                     workOrderId: order.workOrderId,
-                    date: order.bidDate.formattedDate(),
-                    time: order.bidDate.to12HourFormat,
+                    date: order.requestDate.formattedDate(),
+                    time: order.requestDate.to12HourFormat,
                     sheetName: "Action",
                     onCancel: () {
                       context.pop();

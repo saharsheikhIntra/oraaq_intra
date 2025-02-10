@@ -84,6 +84,10 @@ class _WorkInProgressScreenState extends State<WorkInProgressScreen> {
                                     phoneNumber: order.customerContactNumber,
                                     servicesList: order.serviceNames,
                                     workOrderId: order.workOrderId,
+                                    sheetName: "Action",
+                                    time: order.requestDate.to12HourFormat,
+                                    date: order.requestDate.formattedDate(),
+                                    distance: order.distance.toString(),
                                     onCancel: () {
                                       context.pop();
                                       _cubit.cancelWorkOrder(order.workOrderId);
