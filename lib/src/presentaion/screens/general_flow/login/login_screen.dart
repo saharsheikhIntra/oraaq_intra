@@ -23,8 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final LoginCubit _cubit = getIt.get<LoginCubit>();
 
   final loginFormKey = GlobalKey<FormState>();
-  TextEditingController emailTextController = TextEditingController(),
-      passwordTextController = TextEditingController();
+  TextEditingController emailTextController =
+          TextEditingController(text: "shaffayqazi641@gmail.com"),
+      passwordTextController = TextEditingController(text: "Qazi_112233");
   FocusNode emailFocusNode = FocusNode(), passwordFocusNode = FocusNode();
 
   final ValueNotifier<bool> _isObscure = ValueNotifier<bool>(true);

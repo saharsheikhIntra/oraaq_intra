@@ -35,7 +35,7 @@ class ServicesRepository {
         (r) => Right(GetServicesResponseDto.fromMap(r.data)),
       );
     } catch (e) {
-      log(e.toString());
+      log("Get Services Error: $e");
 
       return Left(Failure('${StringConstants.failedToFetchServices}: $e'));
     }
@@ -71,6 +71,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("GET MERCHANTS WITHIN RADIUS Error: $e");
       return Left(handleError(e));
     }
   }
@@ -98,7 +99,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("BIDS FOR CUSTOMER REQUEST Error: $e");
       return Left(handleError(e));
     }
   }
@@ -113,6 +114,7 @@ class ServicesRepository {
     try {
       final result = await _datasource
           .get("${ApiConstants.fetchAcceptedRequests}customer_id=$customerId");
+      log(result.toString());
       return result.fold(
         (l) => Left(l),
         (r) {
@@ -128,7 +130,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("GET ACCEPTED REQUESTS Error: $e");
       return Left(handleError(e));
     }
   }
@@ -160,7 +162,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("CUSTOMER CANCELLED WORK ORDER Error: $e");
       return Left(handleError(e));
     }
   }
@@ -192,7 +194,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("CUSTOMER COMPLETED WORK ORDER Error: $e");
       return Left(handleError(e));
     }
   }
@@ -221,7 +223,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("CUSTOMER NEW REQUEST Error: $e");
       return Left(handleError(e));
     }
   }
@@ -232,10 +234,10 @@ class ServicesRepository {
   //
   //
   Future<Either<Failure, String>> cancelCustomerCreateRequests(
-      cancelCustomerCreatedRequestsDto cancelRequest) async {
+      cancelCustomerConfirmedRequestsDto cancelRequest) async {
     try {
       final result = await _datasource.put(
-        ApiConstants.cancelCustomerCreatedRequest,
+        ApiConstants.cancelCustomerConfirmedRequest,
         data: cancelRequest.toMap(),
       );
 
@@ -250,7 +252,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("CANCEL CUSTOMER CRATED REQUESTS Error: $e");
       return Left(handleError(e));
     }
   }
@@ -279,7 +281,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("CUSTOMER NEW REQUEST Error: $e");
       return Left(handleError(e));
     }
   }
@@ -305,7 +307,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("UPDATE OFFER AMOUNT Error: $e");
       return Left(handleError(e));
     }
   }
@@ -331,7 +333,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("ACCEPT OR REJECT OFFERS Error: $e");
       return Left(handleError(e));
     }
   }
@@ -357,7 +359,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("UPDATE OFFER RADIUS Error: $e");
       return Left(handleError(e));
     }
   }
@@ -389,7 +391,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("GET MERCHANT WITHIN RADIUS 2 Error: $e");
       return Left(handleError(e));
     }
   }
@@ -424,6 +426,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
+      log("GENERATE ORDER Error: $e");
       return Left(handleError(e));
     }
   }
@@ -452,7 +455,7 @@ class ServicesRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("CANCEL WORK ORDER Error: $e");
       return Left(handleError(e));
     }
   }

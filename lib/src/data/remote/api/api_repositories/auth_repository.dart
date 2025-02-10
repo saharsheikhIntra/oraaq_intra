@@ -46,7 +46,7 @@ class ApiAuthRepository {
         (r) => Right(GetTokenResponseDto.fromMap(r.data).access),
       );
     } catch (e) {
-      log("Error: $e");
+      log("Get Token error: $e");
       return Left(handleError(e));
     }
   }
@@ -78,13 +78,11 @@ class ApiAuthRepository {
         },
       );
     } catch (e) {
-
       log("Login error: $e");
       return Left(handleError(e));
-    
     }
   }
-  
+
   //
   //
   // MARK: LOGIN social
@@ -111,7 +109,7 @@ class ApiAuthRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("Login with Social: $e");
       return Left(handleError(e));
     }
   }
@@ -144,7 +142,7 @@ class ApiAuthRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("Register: $e");
       return Left(handleError(e));
     }
   }
@@ -169,7 +167,7 @@ class ApiAuthRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("Generate OTP: $e");
       return Left(handleError(e));
     }
   }
@@ -194,7 +192,7 @@ class ApiAuthRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("Verify OTP: $e");
       return Left(handleError(e));
     }
   }
@@ -222,7 +220,7 @@ class ApiAuthRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("Change Password: $e");
       return Left(handleError(e));
     }
   }
@@ -250,7 +248,7 @@ class ApiAuthRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("Set New Password: $e");
       return Left(handleError(e));
     }
   }
@@ -287,7 +285,7 @@ class ApiAuthRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("Update Merchant Profile: $e");
       return Left(handleError(e));
     }
   }
@@ -324,7 +322,7 @@ class ApiAuthRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("UPDATE CUSTOMER PROFILE: $e");
       return Left(handleError(e));
     }
   }
@@ -344,7 +342,7 @@ class ApiAuthRepository {
         return right(responseDto);
       });
     } catch (e) {
-      log("Error: $e");
+      log("Forget Password: $e");
       return Left(handleError(e));
     }
   }

@@ -43,10 +43,14 @@ class CustomerHomeCubit extends Cubit<CustomerHomeState> {
   }
 
   // MARK: CANCEL CUSTOMER CREATED REQUEST
-  Future cancelCustomerCreatedRequest(int requestId) async {
+  Future cancelCustomerCreatedRequest(
+    int orderId,
+    int customerId,
+  ) async {
     emit(CustomerHomeStateLoading());
     final result = await _servicesService.cancelCustomerCreatedRequest(
-        cancelCustomerCreatedRequestsDto(requestId: requestId));
+        cancelCustomerConfirmedRequestsDto(
+            orderId: orderId, customerId: customerId));
     result.fold((l) => emit(CustomerHomeStateError(l)),
         (r) => emit(CancelCustomerRequestSuccessState(r)));
   }

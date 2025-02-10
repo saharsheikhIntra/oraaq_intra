@@ -214,7 +214,7 @@ class ServicesService {
   //
 
   Future<Either<Failure, String>> cancelCustomerCreatedRequest(
-      cancelCustomerCreatedRequestsDto cancelRequest) async {
+      cancelCustomerConfirmedRequestsDto cancelRequest) async {
     return await _servicesRepository
         .cancelCustomerCreateRequests(cancelRequest);
   }
@@ -351,7 +351,6 @@ class ServicesService {
     );
   }
 
-
   //
   //
   // MARK: CANCEL CONFIRMED WORK ORDER
@@ -365,5 +364,4 @@ class ServicesService {
       (r) => Right(r),
     );
   }
-
 }

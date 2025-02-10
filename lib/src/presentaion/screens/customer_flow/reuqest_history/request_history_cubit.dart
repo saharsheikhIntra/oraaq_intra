@@ -15,29 +15,26 @@ part 'request_history_state.dart';
 class RequestHistoryCubit extends Cubit<RequestHistoryState> {
   final ServicesService _servicesRepository;
   final JobManagementService _jobManagementService;
-  
-  RequestHistoryCubit(this._servicesRepository,this._jobManagementService)
+
+  RequestHistoryCubit(this._servicesRepository, this._jobManagementService)
       : super(RequestHistoryInitial());
 
   UserEntity user = getIt.get<UserEntity>();
 
-   Future<List<CustomerNewRequestDto>> fetchOnlyNewRequests() async { 
+  Future<List<CustomerNewRequestDto>> fetchOnlyNewRequests() async {
     final newRequestResult =
         await _servicesRepository.getCustomerNewRequests(user.id);
-    if (
-        newRequestResult.isLeft()) {
-      final failure =
-          newRequestResult.fold((l) => l, (r) => null);
+    if (newRequestResult.isLeft()) {
+      final failure = newRequestResult.fold((l) => l, (r) => null);
       emit(RequestHistoryScreenError(failure!));
       throw failure;
     } else {
       final newOrders = newRequestResult.getOrElse(() => []);
       return newOrders;
-
     }
   }
 
-    //
+  //
 // MARK: Fetch only new requests
 //
   Future<void> fetchNewRequests() async {
@@ -105,10 +102,10 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
   }
 
   // MARK: CANCEL CUSTOMER CREATED REQUEST
-  Future cancelCustomerCreatedRequest(int requestId) async {
+  Future cancelCustomerCreatedRequest(int orderId) async {
     emit(RequestHistoryScreenLoading());
     final result = await _servicesRepository.cancelCustomerCreatedRequest(
-        cancelCustomerCreatedRequestsDto(requestId: requestId));
+        cancelCustomerConfirmedRequestsDto(orderId: orderId));
     result.fold((l) => emit(RequestHistoryScreenError(l)),
         (r) => emit(CancelCustomerRequestSuccessState(r)));
   }
@@ -119,7 +116,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
   //
   //
 
-  Future<void> submitRating(int orderId, int merchantId,int rating) async {
+  Future<void> submitRating(int orderId, int merchantId, int rating) async {
     final user = getIt.get<UserEntity>();
     final addRating = AddRatingRequestDto(
         orderId: orderId,
@@ -146,8 +143,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
 
   Future<void> cancelWorkOrder(int orderId) async {
     emit(RequestHistoryScreenLoading());
-    final result =
-        await _servicesRepository.cancelWorkOrder(orderId, user.id);
+    final result = await _servicesRepository.cancelWorkOrder(orderId, user.id);
     result.fold(
       (l) {
         emit(RequestHistoryScreenError(l));
@@ -157,6 +153,4 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
       },
     );
   }
-
-
 }

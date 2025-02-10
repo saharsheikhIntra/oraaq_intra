@@ -55,7 +55,7 @@ class JobManagementRepository {
                 // [],
               ));
     } catch (e) {
-      log("Error: $e");
+      log("GET CATEGORY: $e");
       return Left(handleError(e));
     }
   }
@@ -87,7 +87,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("COMPLETED WORK ORDER: $e");
       return Left(handleError(e));
     }
   }
@@ -119,7 +119,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("CANCELLED WORK ORDER: $e");
       return Left(handleError(e));
     }
   }
@@ -149,7 +149,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("GET APPLIED JOBS: $e");
       return Left(handleError(e));
     }
   }
@@ -180,7 +180,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("MERCHANT WORK IN PROGRESS: $e");
       return Left(handleError(e));
     }
   }
@@ -208,7 +208,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("GET ALL SERVICE REQUESTS: $e");
       return Left(handleError(e));
     }
   }
@@ -239,7 +239,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("GET SERVICE REQUESTS: $e");
       return Left(handleError(e));
     }
   }
@@ -267,7 +267,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("CANCEL WORK ORDER: $e");
       return Left(handleError(e));
     }
   }
@@ -294,7 +294,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("COMPLETE WORK ORDER: $e");
       return Left(handleError(e));
     }
   }
@@ -322,7 +322,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("POST BID: $e");
       return Left(handleError(e));
     }
   }
@@ -350,7 +350,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("ADD RATINGS: $e");
       return Left(handleError(e));
     }
   }
@@ -380,7 +380,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("GET ALL NEW REQUESTS: $e");
       return Left(handleError(e));
     }
   }
@@ -408,7 +408,7 @@ class JobManagementRepository {
         },
       );
     } catch (e) {
-      log("Error: $e");
+      log("CANCEL WORK ORDER FROM MERCHANT APPLIED REQUESTS: $e");
       return Left(handleError(e));
     }
   }
