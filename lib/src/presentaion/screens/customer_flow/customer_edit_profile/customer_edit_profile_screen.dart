@@ -20,6 +20,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
   UserEntity user = getIt.get<UserEntity>();
 
   LatLng? _selectedPosition;
+  final _formKey = GlobalKey<FormState>();
 
   CustomerEditProfileCubit _cubit = getIt.get<CustomerEditProfileCubit>();
 
@@ -72,84 +73,93 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  enabled: false,
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: StringConstants.email,
-                    labelStyle: TextStyleTheme.labelMedium
-                        .copyWith(color: ColorTheme.neutral3),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    enabled: false,
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      labelText: StringConstants.email,
+                      labelStyle: TextStyleTheme.labelMedium
+                          .copyWith(color: ColorTheme.neutral3),
+                    ),
                   ),
-                ),
-                24.verticalSpace,
-                TextFormField(
-                  enabled: true,
-                  controller: phoneNumberController,
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    labelText: StringConstants.phone,
-                    labelStyle: TextStyleTheme.labelMedium
-                        .copyWith(color: ColorTheme.neutral3),
+                  24.verticalSpace,
+                  TextFormField(
+                    enabled: true,
+                    controller: phoneNumberController,
+                    keyboardType: TextInputType.phone,
+                    validator: (value) =>
+                        ValidationUtils.checkPhoneNumber(value),
+                    decoration: InputDecoration(
+                      labelText: StringConstants.phone,
+                      labelStyle: TextStyleTheme.labelMedium
+                          .copyWith(color: ColorTheme.neutral3),
+                    ),
                   ),
-                ),
-                24.verticalSpace,
-                TextFormField(
-                    controller: nameController,
-                    keyboardType: TextInputType.name,
-                    decoration: const InputDecoration(
-                      labelText: StringConstants.yourName,
-                    )),
-                24.verticalSpace,
-                TextFormField(
-                    onTap: () async {
-                      // SheetComponenet.showSelectionSheet(
-                      //     context,
-                      //     title: "Select Serviced Type",
-                      //     selected: "Option 3",
-                      //     options: List.generate(3, (index) => "Option $index"),
-                      //   ) ;
-                      var result = await context
-                          .pushNamed(RouteConstants.pickMerchantLocation);
-                      if (result is LatLng) {
-                        locationController.text =
-                            "${result.latitude.toStringAsFixed(4)}, ${result.longitude.toStringAsFixed(4)}";
-                        _selectedPosition = result;
+                  24.verticalSpace,
+                  TextFormField(
+                      controller: nameController,
+                      validator: (value) =>
+                          ValidationUtils.checkEmptyField(value),
+                      keyboardType: TextInputType.name,
+                      decoration: const InputDecoration(
+                        labelText: StringConstants.yourName,
+                      )),
+                  24.verticalSpace,
+                  TextFormField(
+                      onTap: () async {
+                        // SheetComponenet.showSelectionSheet(
+                        //     context,
+                        //     title: "Select Serviced Type",
+                        //     selected: "Option 3",
+                        //     options: List.generate(3, (index) => "Option $index"),
+                        //   ) ;
+                        var result = await context
+                            .pushNamed(RouteConstants.pickMerchantLocation);
+                        if (result is LatLng) {
+                          locationController.text =
+                              "${result.latitude.toStringAsFixed(4)}, ${result.longitude.toStringAsFixed(4)}";
+                          _selectedPosition = result;
+                        }
+                      },
+                      readOnly: true,
+                      controller: locationController,
+                      decoration: const InputDecoration(
+                          hintText: StringConstants.yourLocation,
+                          labelText: StringConstants.yourLocation,
+                          suffixIcon: Icon(
+                            Symbols.distance_rounded,
+                            size: 24,
+                          ))),
+                  const Spacer(),
+                  CustomButton(
+                    width: double.infinity,
+                    type: CustomButtonType.primary,
+                    text: "Save",
+                    onPressed: () {
+                      // context.pushReplacementNamed(RouteConstants.customerHomeScreenRoute);
+                      if (_formKey.currentState?.validate() ?? false) {
+                        _cubit.updateCustomerProfile(
+                            email: emailController.text,
+                            name: nameController.text,
+                            phone: phoneNumberController.text,
+                            latitude: double.parse(
+                                _selectedPosition?.latitude.toString() ??
+                                    user.latitude),
+                            longitude: double.parse(
+                                _selectedPosition?.longitude.toString() ??
+                                    user.latitude));
                       }
                     },
-                    readOnly: true,
-                    controller: locationController,
-                    decoration: const InputDecoration(
-                        hintText: StringConstants.yourLocation,
-                        labelText: StringConstants.yourLocation,
-                        suffixIcon: Icon(
-                          Symbols.distance_rounded,
-                          size: 24,
-                        ))),
-                const Spacer(),
-                CustomButton(
-                  width: double.infinity,
-                  type: CustomButtonType.primary,
-                  text: "Save",
-                  onPressed: () {
-                    // context.pushReplacementNamed(RouteConstants.customerHomeScreenRoute);
-                    _cubit.updateCustomerProfile(
-                        email: emailController.text,
-                        name: nameController.text,
-                        phone: phoneNumberController.text,
-                        latitude: double.parse(
-                            _selectedPosition?.latitude.toString() ??
-                                user.latitude),
-                        longitude: double.parse(
-                            _selectedPosition?.longitude.toString() ??
-                                user.latitude));
-                  },
-                ),
-                12.verticalSpace,
-              ],
+                  ),
+                  12.verticalSpace,
+                ],
+              ),
             ),
           ),
         ),

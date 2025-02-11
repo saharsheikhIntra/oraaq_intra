@@ -55,7 +55,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   List<CategoryEntity> categories = [];
   List<String> holidays = [];
   CategoryEntity? selectedCategory;
-
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -122,218 +122,236 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    StringConstants.personalInfo,
-                    style: TextStyleTheme.displaySmall
-                        .copyWith(color: ColorTheme.neutral3),
-                  ),
-                  24.verticalSpace,
-                  TextFormField(
-                    controller: nameController,
-                    keyboardType: TextInputType.name,
-                    decoration: const InputDecoration(
-                        labelText: StringConstants.yourName),
-                  ),
-                  16.verticalSpace,
-                  TextFormField(
-                      // enabled: false,
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: StringConstants.email,
-                        labelStyle: TextStyleTheme.labelMedium
-                            .copyWith(color: ColorTheme.neutral3),
-                      )),
-                  16.verticalSpace,
-                  TextFormField(
-                    // enabled: false,
-                    controller: phoneNumberController,
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      labelText: StringConstants.phone,
-                      labelStyle: TextStyleTheme.labelMedium
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      StringConstants.personalInfo,
+                      style: TextStyleTheme.displaySmall
                           .copyWith(color: ColorTheme.neutral3),
                     ),
-                  ),
-                  40.verticalSpace,
-                  Text(
-                    StringConstants.businessInfo,
-                    style: TextStyleTheme.displaySmall
-                        .copyWith(color: ColorTheme.neutral3),
-                  ),
-                  24.verticalSpace,
-                  TextFormField(
-                    controller: cnicNtnController,
-                    decoration: const InputDecoration(
-                        labelText: StringConstants.cnicNtn),
-                  ),
-                  16.verticalSpace,
-                  TextFormField(
-                      controller: serviceController,
-                      readOnly: true,
+                    24.verticalSpace,
+                    TextFormField(
+                      controller: nameController,
+                      keyboardType: TextInputType.name,
+                      validator: (value) =>
+                          ValidationUtils.checkEmptyField(value),
                       decoration: const InputDecoration(
-                          hintText: StringConstants.selectServiceType,
-                          labelText: StringConstants.serviceType,
-                          suffixIcon: Icon(Symbols.keyboard_arrow_down_rounded,
-                              size: 24)),
-                      onTap: () {
-                        SheetComponenet.showSelectionSheet(
-                          context,
-                          title: StringConstants.selectServiceType,
-                          options: categories
-                              .map((category) => category.name)
-                              .toList(),
-                          selected: selectedCategory?.name,
-                        ).then((selected) {
-                          if (selected != null) {
-                            serviceController.text = selected;
-                            selectedCategory = categories.firstWhere(
-                                (category) => category.name == selected);
+                          labelText: StringConstants.yourName),
+                    ),
+                    16.verticalSpace,
+                    TextFormField(
+                        enabled: false,
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) => ValidationUtils.checkEmail(value),
+                        decoration: InputDecoration(
+                          labelText: StringConstants.email,
+                          labelStyle: TextStyleTheme.labelMedium
+                              .copyWith(color: ColorTheme.neutral3),
+                        )),
+                    16.verticalSpace,
+                    TextFormField(
+                      // enabled: false,
+                      controller: phoneNumberController,
+                      keyboardType: TextInputType.phone,
+                      validator: (value) =>
+                          ValidationUtils.checkPhoneNumber(value),
+                      decoration: InputDecoration(
+                        labelText: StringConstants.phone,
+                        labelStyle: TextStyleTheme.labelMedium
+                            .copyWith(color: ColorTheme.neutral3),
+                      ),
+                    ),
+                    40.verticalSpace,
+                    Text(
+                      StringConstants.businessInfo,
+                      style: TextStyleTheme.displaySmall
+                          .copyWith(color: ColorTheme.neutral3),
+                    ),
+                    24.verticalSpace,
+                    TextFormField(
+                      controller: cnicNtnController,
+                      validator: (value) => ValidationUtils.checkCnic(value),
+                      decoration: const InputDecoration(
+                          labelText: StringConstants.cnicNtn),
+                    ),
+                    16.verticalSpace,
+                    TextFormField(
+                        controller: serviceController,
+                        readOnly: true,
+                        decoration: const InputDecoration(
+                            hintText: StringConstants.selectServiceType,
+                            labelText: StringConstants.serviceType,
+                            suffixIcon: Icon(
+                                Symbols.keyboard_arrow_down_rounded,
+                                size: 24)),
+                        onTap: () {
+                          SheetComponenet.showSelectionSheet(
+                            context,
+                            title: StringConstants.selectServiceType,
+                            options: categories
+                                .map((category) => category.name)
+                                .toList(),
+                            selected: selectedCategory?.name,
+                          ).then((selected) {
+                            if (selected != null) {
+                              serviceController.text = selected;
+                              selectedCategory = categories.firstWhere(
+                                  (category) => category.name == selected);
+                            }
+                          });
+                        }),
+                    16.verticalSpace,
+                    TextFormField(
+                      controller: businessController,
+                      validator: (value) =>
+                          ValidationUtils.checkBusinessName(value),
+                      decoration: const InputDecoration(
+                          labelText: StringConstants.businessName),
+                    ),
+                    16.verticalSpace,
+                    TextFormField(
+                        // onTap: () => SheetComponenet.showSelectionSheet(
+                        //       context,
+                        //       title: "Select Serviced Type",
+                        //       selected: "Option 2",
+                        //       options:
+                        //           List.generate(3, (index) => "Option $index"),
+                        //     ),
+                        onTap: () async {
+                          var result = await context
+                              .pushNamed(RouteConstants.pickMerchantLocation);
+                          if (result is LatLng) {
+                            locationController.text =
+                                "${result.latitude.toStringAsFixed(4)}, ${result.longitude.toStringAsFixed(4)}";
+                            _selectedPosition = result;
                           }
-                        });
-                      }),
-                  16.verticalSpace,
-                  TextFormField(
-                    controller: businessController,
-                    decoration: const InputDecoration(
-                        labelText: StringConstants.businessName),
-                  ),
-                  16.verticalSpace,
-                  TextFormField(
-                      // onTap: () => SheetComponenet.showSelectionSheet(
-                      //       context,
-                      //       title: "Select Serviced Type",
-                      //       selected: "Option 2",
-                      //       options:
-                      //           List.generate(3, (index) => "Option $index"),
-                      //     ),
-                      onTap: () async {
-                        var result = await context
-                            .pushNamed(RouteConstants.pickMerchantLocation);
-                        if (result is LatLng) {
-                          locationController.text =
-                              "${result.latitude.toStringAsFixed(4)}, ${result.longitude.toStringAsFixed(4)}";
-                          _selectedPosition = result;
-                        }
-                      },
-                      readOnly: true,
-                      controller: locationController,
-                      validator: (value) =>
-                          ValidationUtils.checkEmptyField(value),
-                      decoration: const InputDecoration(
-                          hintText: StringConstants.selectServiceLocation,
-                          labelText: StringConstants.serviceLocation,
-                          suffixIcon: Icon(
-                            Symbols.distance_rounded,
-                            size: 24,
-                          ))),
-                  16.verticalSpace,
-                  TextFormField(
-                      readOnly: true,
-                      onTap: () => selectTime(
+                        },
+                        readOnly: true,
+                        controller: locationController,
+                        validator: (value) =>
+                            ValidationUtils.checkEmptyField(value),
+                        decoration: const InputDecoration(
+                            hintText: StringConstants.selectServiceLocation,
+                            labelText: StringConstants.serviceLocation,
+                            suffixIcon: Icon(
+                              Symbols.distance_rounded,
+                              size: 24,
+                            ))),
+                    16.verticalSpace,
+                    TextFormField(
+                        readOnly: true,
+                        onTap: () => selectTime(
+                              context,
+                              (time12h, time24h) {
+                                openingTime.value = time24h;
+                                debugPrint(openingTime.value);
+                                return openingTimeController.text = time12h;
+                              },
+                            ),
+                        controller: openingTimeController,
+                        validator: (value) =>
+                            ValidationUtils.checkEmptyField(value),
+                        decoration: const InputDecoration(
+                          hintText: StringConstants.selectopeningTime,
+                          labelText: StringConstants.openingTime,
+                        )),
+                    16.verticalSpace,
+                    TextFormField(
+                        readOnly: true,
+                        onTap: () => selectTime(
+                              context,
+                              (time12h, time24h) {
+                                closingTime.value = time24h;
+                                debugPrint(closingTime.value);
+                                return closingTimeController.text = time12h;
+                              },
+                            ),
+                        controller: closingTimeController,
+                        validator: (value) =>
+                            ValidationUtils.checkEmptyField(value),
+                        decoration: const InputDecoration(
+                          hintText: StringConstants.selectclosingTime,
+                          labelText: StringConstants.closingTime,
+                        )),
+                    16.verticalSpace,
+                    TextFormField(
+                        onTap: () async {
+                          var result =
+                              await SheetComponenet.showMultipleSelectionSheet(
                             context,
-                            (time12h, time24h) {
-                              openingTime.value = time24h;
-                              debugPrint(openingTime.value);
-                              return openingTimeController.text = time12h;
-                            },
-                          ),
-                      controller: openingTimeController,
-                      validator: (value) =>
-                          ValidationUtils.checkEmptyField(value),
-                      decoration: const InputDecoration(
-                        hintText: StringConstants.selectopeningTime,
-                        labelText: StringConstants.openingTime,
-                      )),
-                  16.verticalSpace,
-                  TextFormField(
-                      readOnly: true,
-                      onTap: () => selectTime(
-                            context,
-                            (time12h, time24h) {
-                              closingTime.value = time24h;
-                              debugPrint(closingTime.value);
-                              return closingTimeController.text = time12h;
-                            },
-                          ),
-                      controller: closingTimeController,
-                      validator: (value) =>
-                          ValidationUtils.checkEmptyField(value),
-                      decoration: const InputDecoration(
-                        hintText: StringConstants.selectclosingTime,
-                        labelText: StringConstants.closingTime,
-                      )),
-                  16.verticalSpace,
-                  TextFormField(
-                      onTap: () async {
-                        var result =
-                            await SheetComponenet.showMultipleSelectionSheet(
-                          context,
-                          title: StringConstants.selectHolidays,
-                          selectedOptions: holidays,
-                          options: days,
-                        );
-                        if (result is List<String>) {
-                          holidays = result;
-                          holidayController.text = result
-                              .toString()
-                              .replaceFirst(',', '')
-                              .replaceAll('[', '')
-                              .replaceAll(']', '');
-                        }
-                      },
-                      readOnly: true,
-                      controller: holidayController,
-                      decoration: const InputDecoration(
-                          hintText: StringConstants.holidays,
-                          suffixIcon: Icon(
-                            Symbols.keyboard_arrow_down_rounded,
-                            size: 24,
-                          ))),
-                  40.verticalSpace,
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                      child: CustomButton(
-                          width: double.infinity,
-                          type: CustomButtonType.primary,
-                          text: "Update Profile",
-                          onPressed: () => SheetComponenet.showWarningSheet(
-                                context,
-                                title: StringConstants.areYouSure,
-                                message: StringConstants
-                                    .yourProfileInformationWillBeUpdated,
-                                ctaText: StringConstants.saveChanges,
-                                cancelText: StringConstants.cancel,
-                                onCancelTap: () => context.pop(),
-                                onCtaTap: () {
-                                  _cubit.updateMerchantProfile(
-                                    merchantName: nameController.text,
-                                    merchantNumber: phoneNumberController.text,
-                                    cnic: cnicNtnController.text,
-                                    email: emailController.text,
-                                    latitude: _selectedPosition?.latitude
-                                            .toString() ??
-                                        "",
-                                    longitude: _selectedPosition?.longitude
-                                            .toString() ??
-                                        "",
-                                    offDays: holidayController.text,
-                                    openingTime: openingTime.value,
-                                    closingTime: closingTime.value,
-                                    // openingTime: openingTimeController.text,
-                                    // closingTime: closingTimeController.text,
-                                    serviceType: selectedCategory?.id ??
-                                        user.serviceType,
-                                    holidays: holidays,
-                                  );
-                                  context.pop();
-                                },
-                              ))),
-                  40.verticalSpace,
-                ],
+                            title: StringConstants.selectHolidays,
+                            selectedOptions: holidays,
+                            options: days,
+                          );
+                          if (result is List<String>) {
+                            holidays = result;
+                            holidayController.text = result
+                                .toString()
+                                .replaceFirst(',', '')
+                                .replaceAll('[', '')
+                                .replaceAll(']', '');
+                          }
+                        },
+                        readOnly: true,
+                        controller: holidayController,
+                        decoration: const InputDecoration(
+                            hintText: StringConstants.holidays,
+                            suffixIcon: Icon(
+                              Symbols.keyboard_arrow_down_rounded,
+                              size: 24,
+                            ))),
+                    40.verticalSpace,
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                        child: CustomButton(
+                            width: double.infinity,
+                            type: CustomButtonType.primary,
+                            text: "Update Profile",
+                            onPressed: () => SheetComponenet.showWarningSheet(
+                                  context,
+                                  title: StringConstants.areYouSure,
+                                  message: StringConstants
+                                      .yourProfileInformationWillBeUpdated,
+                                  ctaText: StringConstants.saveChanges,
+                                  cancelText: StringConstants.cancel,
+                                  onCancelTap: () => context.pop(),
+                                  onCtaTap: () {
+                                    if (_formKey.currentState?.validate() ??
+                                        false) {
+                                      _cubit.updateMerchantProfile(
+                                        merchantName: nameController.text,
+                                        merchantNumber:
+                                            phoneNumberController.text,
+                                        cnic: cnicNtnController.text,
+                                        email: emailController.text,
+                                        latitude: _selectedPosition?.latitude
+                                                .toString() ??
+                                            "",
+                                        longitude: _selectedPosition?.longitude
+                                                .toString() ??
+                                            "",
+                                        offDays: holidayController.text,
+                                        openingTime: openingTime.value,
+                                        closingTime: closingTime.value,
+                                        // openingTime: openingTimeController.text,
+                                        // closingTime: closingTimeController.text,
+                                        serviceType: selectedCategory?.id ??
+                                            user.serviceType,
+                                        holidays: holidays,
+                                      );
+                                      context.pop();
+                                    } else {
+                                      context.pop();
+                                    }
+                                  },
+                                ))),
+                    40.verticalSpace,
+                  ],
+                ),
               ),
             ),
           ),

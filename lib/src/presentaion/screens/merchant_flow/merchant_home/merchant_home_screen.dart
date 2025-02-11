@@ -15,6 +15,8 @@ class MerchantHomeScreen extends StatefulWidget {
 
 class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
   final MerchantHomeScreenCubit _cubit = getIt<MerchantHomeScreenCubit>();
+  //get userID
+  final user = getIt<UserEntity>();
   MerchantJobsFilter selectedFilter = MerchantJobsFilter.newRequests;
 
   final ValueNotifier<List<RequestEntity>> workInProgressOrdersNotifier =
@@ -48,6 +50,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       await _cubit.fetchAllServiceRequests();
       await _cubit.fetchAppliedJobs();
       await _cubit.fetchServiceRequests();
+      log("Merchant Id : ${user.id}");
 
       cron.schedule(
         Schedule(seconds: 5),
@@ -397,6 +400,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       separatorBuilder: (context, index) => 12.horizontalSpace,
       itemBuilder: (BuildContext context, int index) {
         final order = workInProgressOrders[index];
+        
+        log("Order ID : ${order.bidId}");
 
         return GestureDetector(
           onTap: () {
