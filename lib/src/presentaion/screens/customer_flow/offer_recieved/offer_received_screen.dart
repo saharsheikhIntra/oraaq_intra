@@ -136,10 +136,13 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                           children: [
                             12.verticalSpace,
                             Row(
+                              textBaseline: TextBaseline.alphabetic,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
                               children: [
                                 Text(
-                                  StringConstants.saloon,
-                                  style: TextStyleTheme.displaySmall.copyWith(
+                                  widget.args.customerNewRequest.value.category,
+                                  // StringConstants.saloon,
+                                  style: TextStyleTheme.headlineMedium.copyWith(
                                       color: ColorTheme.secondaryText),
                                 ),
                                 const Spacer(),

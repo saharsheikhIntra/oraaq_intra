@@ -30,6 +30,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.fetchAcceptedRequest();
       await _cubit.fetchCategories();
+
+      print(acceptedJobs);
     });
   }
 
@@ -195,7 +197,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                         .cancelCustomerCreatedRequest(
                                                             acceptedJobs
                                                                 .value[index]
-                                                                .requestId),
+                                                                .orderId),
                                                     name: acceptedJobs
                                                         .value[index]
                                                         .merchantName,

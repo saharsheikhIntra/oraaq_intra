@@ -40,7 +40,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
       _cubit.fetchWorkOrders();
       _cubit.fetchAcceptedRequest();
       cron.schedule(
-        Schedule(minutes: 1),
+        Schedule(seconds: 2),
         () {
           log('run cron');
           _cubit.fetchNewRequests();
@@ -390,9 +390,13 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                                   ),
                                           );
                                         })
-                                    : const Center(
-                                        child: Center(child: Text('No Data')),
+                                    : const NoDataFound(
+                                        text: StringConstants.firstOrder,
+                                        fontSize: 14,
                                       );
+                                // const Center(
+                                //     child: Center(child: Text('No Data')),
+                                //   );
                               })
                         ],
                       ),
@@ -531,7 +535,11 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                     ],
                   );
                 } else {
-                  return const Text('No data');
+                  return const NoDataFound(
+                    text: StringConstants.firstOrder,
+                    fontSize: 14,
+                  );
+                  // const Text('No data');
                 }
               },
             )),

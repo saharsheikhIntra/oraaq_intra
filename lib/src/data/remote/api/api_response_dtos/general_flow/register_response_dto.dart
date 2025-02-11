@@ -34,6 +34,7 @@ class RegisterResponseUserDto {
   final String? longitude;
   final String? offDays;
   final int? serviceType;
+  final String? businessName;
   final String isOtpVerified;
 
   RegisterResponseUserDto({
@@ -51,6 +52,7 @@ class RegisterResponseUserDto {
     this.longitude,
     this.offDays,
     this.serviceType,
+    this.businessName,
     this.isOtpVerified = "",
   });
 
@@ -73,6 +75,8 @@ class RegisterResponseUserDto {
       offDays: map['off_days'] != null ? map['off_days'] as String : null,
       serviceType:
           map['service_type'] != null ? map['service_type'] as int : -1,
+      businessName:
+          map['business_name'] != null ? map['business_name'] as String : null,
       isOtpVerified: map['is_otp_verified'] != null
           ? map['is_otp_verified'] as String
           : "",
@@ -81,7 +85,7 @@ class RegisterResponseUserDto {
 
   @override
   String toString() {
-    return 'RegisterResponseUserDto(id: $id, name: $name, phone: $phone, email: $email, role: $role, userId: $userId, cnic: $cnic, isActive: $isActive, openingTime: $openingTime, closingTime: $closingTime, latitude: $latitude, longitude: $longitude, offDays: $offDays, serviceType: $serviceType, isOtpVerified: $isOtpVerified)';
+    return 'RegisterResponseUserDto(id: $id, name: $name, phone: $phone, email: $email, role: $role, userId: $userId, cnic: $cnic, isActive: $isActive, openingTime: $openingTime, closingTime: $closingTime, latitude: $latitude, longitude: $longitude, offDays: $offDays, serviceType: $serviceType, businessName: $businessName ,isOtpVerified: $isOtpVerified)';
   }
 
   UserEntity get toUserEntity {
@@ -96,6 +100,7 @@ class RegisterResponseUserDto {
         orElse: () => UserType.customer,
       ),
       serviceType: serviceType ?? -1,
+      bussinessName: businessName ?? "",
       cnicNtn: cnic ?? "",
       openingTime: openingTime ?? "",
       closingTime: closingTime ?? "",

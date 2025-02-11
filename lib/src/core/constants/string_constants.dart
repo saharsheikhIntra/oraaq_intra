@@ -176,10 +176,9 @@ class StringConstants {
   static const String saveChanges = "Save Changes";
   static const String saveAndContinue = "Save & Continue";
   static const String pickLocation = "Pick Location";
-  static const String cancelJobTitle =
-      "Are you sure you want to cancel this job?";
+  static const String cancelJobTitle = "What would you like to do?";
   static const String cancelJobMessage =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+      "You can either complete the order or cancel it. Select an option below.";
   static const String noDataFound = "No Data Found";
   static const String noCategoriesFound = "No Categories Found";
   static const String failedToFetchServices = "Failed to fetch services";

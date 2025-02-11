@@ -10,10 +10,11 @@ class UpdateMerchantProfileRequestDto {
   final String openingTime;
   final String closingTime;
   final int serviceType;
+  final String businessName;
   final String holidays; // Change to String for consistency with API
 
   UpdateMerchantProfileRequestDto({
-    required this.merchantId, // NEW
+    required this.merchantId,
     required this.merchantUserId,
     required this.merchantName,
     required this.merchantNumber,
@@ -24,7 +25,8 @@ class UpdateMerchantProfileRequestDto {
     required this.openingTime,
     required this.closingTime,
     required this.serviceType,
-    required this.holidays, // Change type to String
+    required this.businessName,
+    required this.holidays,
   });
 
   Map<String, dynamic> toMap() {
@@ -40,6 +42,7 @@ class UpdateMerchantProfileRequestDto {
       'opening_time': openingTime,
       'closing_time': closingTime,
       'service_type': serviceType,
+      'business_name': businessName,
       'holidays': holidays, // Send as a single string, e.g., "friday,saturday"
     };
   }

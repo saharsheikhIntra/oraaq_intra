@@ -25,6 +25,7 @@ class UpdateMerchantProfileResponseDto {
   final String? phone;
   final String? role;
   final int? serviceType;
+  final String? bussinessName;
   final String? cnicNtn;
   final String? openingTime;
   final String? closingTime;
@@ -41,6 +42,7 @@ class UpdateMerchantProfileResponseDto {
     this.phone,
     this.role,
     this.serviceType,
+    this.bussinessName,
     this.cnicNtn,
     this.openingTime,
     this.closingTime,
@@ -97,6 +99,8 @@ class UpdateMerchantProfileResponseDto {
       role: map['role'] != null ? map['role'] as String : null,
       serviceType:
           map['service_type'] != null ? map['service_type'] as int : null,
+      bussinessName:
+          map['business_name'] != null ? map['business_name'] as String : null,
       cnicNtn: map['cnic'] != null ? map['cnic'] as String : null,
       openingTime:
           map['opening_time'] != null ? map['opening_time'] as String : null,
@@ -132,6 +136,7 @@ class UpdateMerchantProfileResponseDto {
       //   orElse: () => curr.role,
       // ),
       serviceType: serviceType ?? curr.serviceType,
+      bussinessName: bussinessName ?? curr.bussinessName,
       cnicNtn: cnicNtn ?? curr.cnicNtn,
       openingTime: openingTime ?? curr.openingTime,
       closingTime: closingTime ?? curr.closingTime,

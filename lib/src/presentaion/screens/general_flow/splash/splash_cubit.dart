@@ -55,6 +55,7 @@ class SplashCubit extends Cubit<SplashState> {
         }
         if (user.latitude == 0 ||
             user.longitude == 0 ||
+            user.bussinessName.isEmpty ||
             user.cnicNtn.isEmpty ||
             user.serviceType == -1 ||
             user.openingTime.isEmpty ||

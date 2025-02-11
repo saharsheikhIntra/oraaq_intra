@@ -87,10 +87,9 @@ class _WorkInProgressScreenState extends State<WorkInProgressScreen> {
                                       context.pop();
                                       _cubit.cancelWorkOrder(order.workOrderId);
                                     },
-                                    onSubmit: (double bidAmmount) =>
-                                        context.pop(),
+                                    onSubmit: (int bidAmmount) => context.pop(),
                                     defaultValue:
-                                        order.bidAmount.toDouble(), //15000,
+                                        order.bidAmount.toInt(), //15000,
                                     variant: NewQuoteSheetSheetVariant
                                         .alreadyQuoted));
                           },

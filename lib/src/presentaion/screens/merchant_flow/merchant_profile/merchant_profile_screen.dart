@@ -1,3 +1,5 @@
+import 'package:geocoding/geocoding.dart';
+import 'package:logger/logger.dart';
 import 'package:oraaq/src/core/extensions/timeofday_extensions.dart';
 import 'package:oraaq/src/imports.dart';
 
@@ -14,6 +16,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final MerchantProfileScreenCubit _cubit =
       getIt.get<MerchantProfileScreenCubit>();
   UserEntity _user = getIt.get<UserEntity>();
+  final ValueNotifier _selectedAddress = ValueNotifier<String>("");
+  @override
+  void initState() {
+    _extractAddress(LatLng(
+        // 25.369587, 68.359168
+        double.tryParse(_user.latitude)!,
+        double.tryParse(_user.longitude)!));
+    print(_selectedAddress);
+
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,24 +128,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       children: [
                         16.verticalSpace,
-                        _buildData(
-                          Symbols.build_rounded,
-                          "Service Type",
+                        Row(
+                          children: [
+                            _buildData(
+                              Symbols.build_rounded,
+                              "Service Type",
 
-                          _user.serviceType == 1
-                              ? "AC Service"
-                              : _user.serviceType == 2
-                                  ? "Salon"
-                                  : _user.serviceType == 21
-                                      ? "Catering"
-                                      : _user.serviceType == 41
-                                          ? "Mechanic"
-                                          : "Other",
-                          //"Saloon"
+                              _user.serviceType == 1
+                                  ? "AC Service"
+                                  : _user.serviceType == 2
+                                      ? "Salon"
+                                      : _user.serviceType == 21
+                                          ? "Catering"
+                                          : _user.serviceType == 41
+                                              ? "Mechanic"
+                                              : "Other",
+                              //"Saloon"
+                            ),
+                          ],
                         ),
                         16.verticalSpace,
                         _buildData(
-                          Symbols.pin_rounded, "CNIC / NTN",
+                          Symbols.store, "Business Name",
+                          _user.bussinessName,
+                          //"41304-1234567-8"
+                        ),
+                        16.verticalSpace,
+                        _buildData(
+                          Symbols.pin_rounded, "CNIC",
                           _user.cnicNtn,
                           //"41304-1234567-8"
                         ),
@@ -163,11 +187,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         16.verticalSpace,
                         Row(
                           children: [
-                            _buildData(
-                              Symbols.distance_rounded,
-                              "Location",
-                              "${_user.latitude}, ${_user.longitude}",
-                            ),
+                            ValueListenableBuilder(
+                                valueListenable: _selectedAddress,
+                                builder: (context, value, child) {
+                                  return _buildData(
+                                    Symbols.distance_rounded,
+                                    "Location",
+                                    _selectedAddress.value,
+
+                                    // "${_user.latitude}, ${_user.longitude}",
+                                  );
+                                }),
+                            // _buildData(
+                            //   Symbols.distance_rounded,
+                            //   "Location",
+                            //   _selectedAddress.value,
+
+                            //   // "${_user.latitude}, ${_user.longitude}",
+                            // ),
                             const Spacer(),
                             Material(
                               color: Colors.transparent,
@@ -300,12 +337,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             Text(
               value,
-              style: TextStyleTheme.bodyLarge
-                  .copyWith(fontWeight: FontWeight.w400),
+              style: TextStyleTheme.labelSmall
+                  .copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),
           ],
         )
       ],
     );
+  }
+
+  _extractAddress(LatLng selectedPosition) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        selectedPosition.latitude,
+        selectedPosition.longitude,
+      );
+      if (placemarks.isNotEmpty) {
+        Placemark first = placemarks.first;
+        Set<String> tempAddress = {};
+
+        // if (first.name != null && first.name!.isNotEmpty) {
+        //   tempAddress.add(first.name!.trim());
+        // }
+        // if (first.street != null && first.street!.isNotEmpty) {
+        //   tempAddress.add(first.street!.trim());
+        // }
+        // if (first.subThoroughfare != null &&
+        //     first.subThoroughfare!.isNotEmpty) {
+        //   tempAddress.add(first.subThoroughfare!.trim());
+        // }
+        // if (first.thoroughfare != null && first.thoroughfare!.isNotEmpty) {
+        //   tempAddress.add(first.thoroughfare!.trim());
+        // }
+        if (first.subLocality != null && first.subLocality!.isNotEmpty) {
+          tempAddress.add(first.subLocality!.trim());
+        }
+        if (first.locality != null && first.locality!.isNotEmpty) {
+          tempAddress.add(first.locality!.trim());
+        }
+        if (first.subAdministrativeArea != null &&
+            first.subAdministrativeArea!.isNotEmpty) {
+          tempAddress.add(first.subAdministrativeArea!.trim());
+        }
+        if (first.administrativeArea != null &&
+            first.administrativeArea!.isNotEmpty) {
+          tempAddress.add(first.administrativeArea!.trim());
+        }
+        if (first.postalCode != null && first.postalCode!.isNotEmpty) {
+          tempAddress.add(first.postalCode!.trim());
+        }
+        if (first.country != null && first.country!.isNotEmpty) {
+          tempAddress.add(first.country!.trim());
+        }
+
+        _selectedAddress.value = tempAddress.join(", ");
+        print(_selectedAddress);
+      }
+    } on Exception catch (e) {
+      Logger().e(e);
+    }
   }
 }

@@ -117,13 +117,14 @@ class _RequestSheetState extends State<RequestSheet> {
           child: CustomButton(
             width: double.infinity,
             type: CustomButtonType.primary,
-            text: "Cancel",
+            text: "Action",
             onPressed: () {
+              context.pop();
               SheetComponenet.showWarningSheet(context,
-                  title: "Are you sure you want to cancel this job?",
+                  title: "What would you like to do?",
                   message:
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                  ctaText: "Cancel Job",
+                      "You can either cancel the order or keep it continue. Select an option below.",
+                  ctaText: "Cancel Order",
                   cancelText: "Keep Job", onCtaTap: () {
                 widget.onCancel();
                 context.pop();

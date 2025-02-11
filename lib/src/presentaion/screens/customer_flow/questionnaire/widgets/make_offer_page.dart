@@ -126,6 +126,12 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                     .copyWith(fontSize: 14),
                               ),
                             ).wrapInPadding(16.horizontalPadding),
+                            8.verticalSpace,
+                            Text(
+                              'Select an hours only. Minutes will be set to 00 automatically.',
+                              style: TextStyleTheme.bodySmall
+                                  .copyWith(color: ColorTheme.error),
+                            ),
                             Padding(
                               padding: 24.allPadding,
                               child: TextField(
@@ -145,7 +151,9 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                     context: context,
                                     initialDate: DateTime.now(),
                                     firstDate: DateTime.now(),
-                                    lastDate: DateTime(2030),
+                                    lastDate: DateTime.now().add(
+                                      const Duration(days: 30),
+                                    ),
                                     builder:
                                         (BuildContext context, Widget? child) {
                                       return Theme(
@@ -171,7 +179,8 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                     TimeOfDay? pickedTime =
                                         await showTimePicker(
                                       context: context,
-                                      initialTime: TimeOfDay.now(),
+                                      initialTime:
+                                          const TimeOfDay(hour: 12, minute: 0),
                                       builder: (BuildContext context,
                                           Widget? child) {
                                         return Theme(
@@ -201,7 +210,7 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                           pickedDate.month,
                                           pickedDate.day,
                                           pickedTime.hour,
-                                          pickedTime.minute,
+                                          0,
                                         );
                                         // Format and show the selected date and time in the TextField
                                         tempVal = _dateTimeController.text =

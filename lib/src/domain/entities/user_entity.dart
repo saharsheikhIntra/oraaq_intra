@@ -11,6 +11,7 @@ class UserEntity {
   final String phone;
   final UserType role;
   final int serviceType;
+  final String bussinessName;
   final String cnicNtn;
   final String token;
   final String openingTime;
@@ -20,43 +21,43 @@ class UserEntity {
   final String longitude;
   String? isOtpVerified;
   String? isSocial;
-  UserEntity({
-    required this.id,
-    required this.userId,
-    required this.name,
-    required this.email,
-    required this.phone,
-    required this.role,
-    required this.serviceType,
-    required this.cnicNtn,
-    required this.token,
-    required this.openingTime,
-    required this.closingTime,
-    required this.holidays,
-    required this.latitude,
-    required this.longitude,
-    this.isOtpVerified,
-    this.isSocial
-  });
+  UserEntity(
+      {required this.id,
+      required this.userId,
+      required this.name,
+      required this.email,
+      required this.phone,
+      required this.role,
+      required this.serviceType,
+      required this.bussinessName,
+      required this.cnicNtn,
+      required this.token,
+      required this.openingTime,
+      required this.closingTime,
+      required this.holidays,
+      required this.latitude,
+      required this.longitude,
+      this.isOtpVerified,
+      this.isSocial});
 
-  UserEntity copyWith({
-    int? id,
-    int? userId,
-    String? name,
-    String? email,
-    String? phone,
-    UserType? role,
-    int? serviceType,
-    String? cnicNtn,
-    String? token,
-    String? openingTime,
-    String? closingTime,
-    String? holidays,
-    String? latitude,
-    String? longitude,
-    String? isOtpVerified,
-    String? isSocial
-  }) {
+  UserEntity copyWith(
+      {int? id,
+      int? userId,
+      String? name,
+      String? email,
+      String? phone,
+      UserType? role,
+      int? serviceType,
+      String? bussinessName,
+      String? cnicNtn,
+      String? token,
+      String? openingTime,
+      String? closingTime,
+      String? holidays,
+      String? latitude,
+      String? longitude,
+      String? isOtpVerified,
+      String? isSocial}) {
     return UserEntity(
       id: id ?? this.id,
       userId: userId ?? this.userId,
@@ -65,6 +66,7 @@ class UserEntity {
       phone: phone ?? this.phone,
       role: role ?? this.role,
       serviceType: serviceType ?? this.serviceType,
+      bussinessName: bussinessName ?? this.bussinessName,
       cnicNtn: cnicNtn ?? this.cnicNtn,
       token: token ?? this.token,
       openingTime: openingTime ?? this.openingTime,
@@ -86,6 +88,7 @@ class UserEntity {
       'phone': phone,
       'role': role.id,
       'serviceType': serviceType,
+      'bussinessName': bussinessName,
       'cnicNtn': cnicNtn,
       'token': token,
       'opening_time': openingTime,
@@ -110,6 +113,7 @@ class UserEntity {
         orElse: () => UserType.customer,
       ),
       serviceType: map['serviceType'] as int,
+      bussinessName: map['bussinessName'] as String,
       cnicNtn: map['cnicNtn'] as String,
       token: map['token'] as String,
       openingTime: map['opening_time'] as String,
@@ -129,7 +133,7 @@ class UserEntity {
 
   @override
   String toString() {
-    return 'UserEntity(id: $id,  userId: $userId, name: $name, email: $email, phone: $phone, role: $role, serviceType: $serviceType, cnicNtn: $cnicNtn, token: $token, opening_time: $openingTime, closing_time: $closingTime, holidays: $holidays, latitude: $latitude, longitude: $longitude, is_otp_verified: $isOtpVerified, is_social: $isSocial)';
+    return 'UserEntity(id: $id,  userId: $userId, name: $name, email: $email, phone: $phone, role: $role, serviceType: $serviceType,bussinessName:$bussinessName,   cnicNtn: $cnicNtn, token: $token, opening_time: $openingTime, closing_time: $closingTime, holidays: $holidays, latitude: $latitude, longitude: $longitude, is_otp_verified: $isOtpVerified, is_social: $isSocial)';
   }
 
   @override
@@ -143,6 +147,7 @@ class UserEntity {
         other.phone == phone &&
         other.role == role &&
         other.serviceType == serviceType &&
+        other.bussinessName == bussinessName &&
         other.cnicNtn == cnicNtn &&
         other.token == token &&
         other.openingTime == openingTime &&
@@ -163,6 +168,7 @@ class UserEntity {
         phone.hashCode ^
         role.hashCode ^
         serviceType.hashCode ^
+        bussinessName.hashCode ^
         cnicNtn.hashCode ^
         token.hashCode ^
         openingTime.hashCode ^
