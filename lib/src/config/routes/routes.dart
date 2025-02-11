@@ -12,7 +12,7 @@ import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questi
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/sub_services_args.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/sub_services_screen.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/reuqest_history/request_history_screen.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/request_history/request_history_screen.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/change_password/change_password_screen.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/forgot_password/forget_password_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/forgot_password/forgot_password.dart';

@@ -10,7 +10,7 @@ import 'package:oraaq/src/presentaion/screens/customer_flow/customer_profile/cus
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offers_recieved_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_cubit.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/reuqest_history/request_history_cubit.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/request_history/request_history_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/change_password/change_password_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/forgot_password/forget_password_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_cubit.dart';

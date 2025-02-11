@@ -41,7 +41,8 @@ class _MultiSelectionSheetState extends State<_MultiSelectionSheet> {
         Text(
           widget.title,
           textAlign: TextAlign.center,
-          style: TextStyleTheme.headlineSmall.copyWith(color: ColorTheme.secondaryText),
+          style: TextStyleTheme.headlineSmall
+              .copyWith(color: ColorTheme.secondaryText),
         ),
         Flexible(
             child: Scrollbar(
@@ -50,7 +51,8 @@ class _MultiSelectionSheetState extends State<_MultiSelectionSheet> {
                 child: ListView.separated(
                     shrinkWrap: true,
                     itemCount: widget.options.length,
-                    padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 32, horizontal: 24),
                     separatorBuilder: (context, index) => 12.verticalSpace,
                     itemBuilder: (context, index) {
                       final option = widget.options[index];

@@ -8,7 +8,7 @@ import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_screen.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_recieved_arguments.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offers_recieved_cubit.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/reuqest_history/request_history_cubit.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/request_history/request_history_cubit.dart';
 import 'package:oraaq/src/presentaion/widgets/merchant_offer_card.dart';
 import 'package:oraaq/src/presentaion/widgets/sheets/change_offer_sheet.dart';
 import 'package:oraaq/src/presentaion/widgets/toast_message_card.dart';

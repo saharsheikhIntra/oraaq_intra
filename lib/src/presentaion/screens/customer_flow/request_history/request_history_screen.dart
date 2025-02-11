@@ -6,7 +6,7 @@ import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpte
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_recieved_arguments.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/reuqest_history/request_history_cubit.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/request_history/request_history_cubit.dart';
 import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
 
 import '../../../widgets/ongoing_request_card.dart';
@@ -417,15 +417,17 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                         (BuildContext context, int index) {
                                       RequestEntity currentRequest =
                                           state.completedOrders[index];
-                                      log('ratingC: ${currentRequest.ratingCustomer}, ratingM: ${currentRequest.ratingMerchant}');
+                                      // log("Completed Job: ${currentRequest.toString()}");
+                                      log('ratingC: ${currentRequest.ratingCustomer}, Price ${currentRequest.bidAmount}  ratingM: ${currentRequest.ratingMerchant}');
                                       return CompletedRequestCard(
                                         userName: currentRequest.customerName,
                                         date: currentRequest.requestDate
                                             .formattedDate(),
                                         ratings:
-                                            '${currentRequest.ratingMerchant ?? 0}',
-                                        price:
-                                            currentRequest.bidAmount.asIntString,
+                                            (currentRequest.ratingMerchant ?? 0)
+                                                .toString(),
+                                        price: currentRequest
+                                            .bidAmount.asIntString,
                                         servicesList:
                                             currentRequest.serviceNames,
                                         duration: '4 hr 40 mints',
@@ -440,8 +442,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                             isScrollControlled: true,
                                             child: CompletedJobSheet(
                                                 totalAmount: currentRequest
-                                                    .bidAmount
-                                                    .toString(),
+                                                    .bidAmount.asIntString,
                                                 rating: currentRequest
                                                         .ratingCustomer ??
                                                     0,
@@ -514,8 +515,8 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                             .formattedDate(),
                                         time: currentRequest
                                             .requestDate.to12HourFormat,
-                                        price:
-                                            currentRequest.bidAmount.asIntString,
+                                        price: currentRequest
+                                            .bidAmount.asIntString,
                                         servicesList:
                                             currentRequest.serviceNames,
                                         onTap: () {},

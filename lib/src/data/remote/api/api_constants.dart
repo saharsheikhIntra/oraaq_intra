@@ -40,7 +40,7 @@ class ApiConstants {
   static const String addRating = "/ords/oraaq/api/addRating";
   static const String getMerchantWithinRadius =
       "/ords/oraaq/api/getMerchantWithinRadius";
-  static const String getAppliedJobsNew =
+  static const String getAppliedJobsNew =     
       "/ords/oraaq/api/get_applied_merchant_work_order?";
   static const String cancelMerchantWorkOrderForAppliedRequests =
       '/ords/oraaq/api/cancel_bid_for_merchant?';
