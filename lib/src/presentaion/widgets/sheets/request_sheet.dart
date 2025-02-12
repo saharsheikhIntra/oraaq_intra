@@ -119,7 +119,6 @@ class _RequestSheetState extends State<RequestSheet> {
             type: CustomButtonType.primary,
             text: "Action",
             onPressed: () {
-              context.pop();
               SheetComponenet.showWarningSheet(context,
                   title: "What would you like to do?",
                   message:

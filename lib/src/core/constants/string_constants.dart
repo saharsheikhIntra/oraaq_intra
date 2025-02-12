@@ -70,7 +70,7 @@ class StringConstants {
   static const String preferredLocation = "Preferred Location";
   static const String continu = "Continue";
 
-  static const String searchingSaloons = "Searching Salons";
+  static const String searchingSaloons = "Searching";
   static const String km = "Km";
   static const String yourLocation = "Your location";
   static const String searchingRadius = "Searching Radius";

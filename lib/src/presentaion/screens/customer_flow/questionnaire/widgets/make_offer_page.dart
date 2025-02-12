@@ -131,7 +131,7 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                               'Select an hours only. Minutes will be set to 00 automatically.',
                               style: TextStyleTheme.bodySmall
                                   .copyWith(color: ColorTheme.error),
-                            ),
+                            ).wrapInPadding(20.horizontalPadding),
                             Padding(
                               padding: 24.allPadding,
                               child: TextField(
