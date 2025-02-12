@@ -94,7 +94,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     .customerName, //"AC REPAIRING",
                                 date: state.completedOrders[index].requestDate
                                     .formattedDate(), //"4th March",
-                                ratings: state.completedOrders[index].ratingCustomer
+                                ratings: state
+                                    .completedOrders[index].ratingCustomer
                                     .toString(),
                                 // "4 / 5",
                                 price: state.completedOrders[index].bidAmount
@@ -102,8 +103,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 servicesList: state.completedOrders[index]
                                     .serviceNames, //const [],
                                 duration: '4 hr 40 mints',
-                                rating:
-                                    state.completedOrders[index].ratingMerchant??0,
+                                rating: state.completedOrders[index]
+                                        .ratingMerchant ??
+                                    0,
                                 variant: CompletedRequestCardVariant.customer,
                                 onTap: () async {
                                   final rating = await SheetComponenet.show(
@@ -118,18 +120,22 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         email: state.completedOrders[index]
                                             .customerEmail,
                                         date: state
-                                            .completedOrders[index].bidDate
+                                            .completedOrders[index].requestDate
                                             .formattedDate(),
                                         time: state.completedOrders[index]
-                                            .bidDate.to12HourFormat,
+                                            .requestDate.to12HourFormat,
                                         servicesList: state
                                             .completedOrders[index]
                                             .serviceNames,
                                         totalAmount: state
                                             .completedOrders[index].bidAmount
                                             .toString(),
+                                        ratingByMerchant: state
+                                            .completedOrders[index]
+                                            .ratingCustomer
+                                            .toString(),
                                         rating: state.completedOrders[index]
-                                                .ratingMerchant ??
+                                                .rating ??
                                             0,
                                         variant:
                                             CompletedJobSheetVariant.merchant),

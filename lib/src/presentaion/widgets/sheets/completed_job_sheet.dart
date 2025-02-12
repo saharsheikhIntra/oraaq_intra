@@ -6,6 +6,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:oraaq/src/config/themes/color_theme.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
+import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
 
 import '../../../config/themes/text_style_theme.dart';
@@ -48,6 +49,7 @@ class CompletedJobSheet extends StatefulWidget {
 }
 
 class _CompletedJobSheetSheetState extends State<CompletedJobSheet> {
+  UserEntity user = getIt<UserEntity>();
   int rating = 0;
 
   @override
@@ -122,7 +124,9 @@ class _CompletedJobSheetSheetState extends State<CompletedJobSheet> {
             ),
             _buildDetails(
               Symbols.star_half_rounded,
-              "Rated by Merchant",
+              user.role == UserType.customer
+                  ? "Rated by Merchant"
+                  : "Rated by Customer",
               widget.ratingByMerchant ?? "4 / 5",
             ),
             _buildDetails(

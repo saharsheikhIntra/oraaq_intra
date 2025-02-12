@@ -183,7 +183,8 @@ class StringConstants {
   static const String noDataFound = "No Data Found";
   static const String noCategoriesFound = "No Categories Found";
   static const String failedToFetchServices = "Failed to fetch services";
-  static const String firstOrder = "Initiate your first order";
+  static const String selectService = "Select the service below";
+  static const String firstOrder = "& initiate your first order";
   static const String firstCancelOrder = "No cancel order found";
   static const String firstMerchantOrder = "Bid to get first order";
   static const String noRequestFound = "No request Found!";

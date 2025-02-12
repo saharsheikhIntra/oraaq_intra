@@ -213,6 +213,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             }
             if (state is BidPostedSuccessState) {
               DialogComponent.hideLoading(context);
+
               _cubit.fetchAllServiceRequests();
               Toast.show(
                 context: context,
