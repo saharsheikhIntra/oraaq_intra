@@ -8,7 +8,7 @@ class ApiConstants {
   //>>>>>>>>>>>>>>>>>>>>>---------END-POINTS---------<<<<<<<<<<<<<<<<<<<<<
   //
 //
-//GENERAL FLOW
+//MARK: GENERAL FLOW
   static const String getToken = "/ords/oraaq/api/token";
   static const String login = "/ords/oraaq/api/splogin";
   static const String register = "/ords/oraaq/api/register";
@@ -19,7 +19,7 @@ class ApiConstants {
   static const String setNewPassword = "/ords/oraaq/api/setNewPassword";
   static const String loginViaSocial= "/ords/oraaq/api/SocialRegisterLogin";
   //
-  //MERCHANT FLOW
+  // MARK: MERCHANT FLOW
   static const String updateMerchantProfile =
       "/ords/oraaq/api/UpdateMerchantProfile";
   static const String getCanceledWorkOrdersForMerchant =

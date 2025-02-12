@@ -234,8 +234,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                 ),
                                               ))))
                               : const NoDataFound(
+                                  tempText: StringConstants.selectService,
                                   text: StringConstants.firstOrder,
-                                  fontSize: 12,
+                                  fontSize: 10,
                                 );
                           // const Center(
                           //     child: Text('No Data'),

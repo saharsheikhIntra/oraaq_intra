@@ -290,6 +290,7 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                             valueListenable: _selectedOffer,
                                             builder: (context, value, child) {
                                               return TextField(
+                                                enabled: false,
                                                 controller:
                                                     TextEditingController(
                                                   text: _selectedOffer
@@ -317,17 +318,6 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                                             BorderStyle.solid),
                                                   ),
                                                 ),
-                                                onChanged: (text) {
-                                                  // Update _selectedOffer when the user manually changes the value
-                                                  int? newOffer =
-                                                      int.tryParse(text);
-                                                  if (newOffer != null) {
-                                                    _selectedOffer.value =
-                                                        newOffer;
-                                                    widget.onChanged(
-                                                        _selectedOffer.value);
-                                                  }
-                                                },
                                               );
 
                                               // return FittedBox(

@@ -81,83 +81,78 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   return TabBarView(
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
-                      state.completedOrders.isNotEmpty
-                          ? ListView.separated(
-                              shrinkWrap: true,
-                              itemCount: state.completedOrders.length, //3,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 16),
-                              separatorBuilder: (context, index) =>
-                                  12.verticalSpace,
-                              itemBuilder: (BuildContext context, int index) {
-                                log("completedOrders: ${state.completedOrders}");
-                                return CompletedRequestCard(
-                                  userName: state.completedOrders[index]
-                                      .customerName, //"AC REPAIRING",
-                                  date: state.completedOrders[index].requestDate
-                                      .formattedDate(), //"4th March",
-                                  ratings: state
-                                      .completedOrders[index].ratingCustomer
-                                      .toString(),
-                                  // "4 / 5",
-                                  price: state.completedOrders[index].bidAmount
-                                      .asIntString, //"12000",
-                                  servicesList: state.completedOrders[index]
-                                      .serviceNames, //const [],
-                                  duration: '4 hr 40 mints',
-                                  rating: state.completedOrders[index]
-                                          .ratingMerchant ??
-                                      0,
+                      if (state.completedOrders.isNotEmpty)
+                        ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: state.completedOrders.length, //3,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 16, horizontal: 16),
+                            separatorBuilder: (context, index) =>
+                                12.verticalSpace,
+                            itemBuilder: (BuildContext context, int index) {
+                              log("completedOrders: ${state.completedOrders}");
+                              return CompletedRequestCard(
+                                userName: state.completedOrders[index]
+                                    .customerName, //"AC REPAIRING",
+                                date: state.completedOrders[index].requestDate
+                                    .formattedDate(), //"4th March",
+                                ratings: state
+                                    .completedOrders[index].ratingCustomer
+                                    .toString(),
+                                // "4 / 5",
+                                price: state.completedOrders[index].bidAmount
+                                    .asIntString, //"12000",
+                                servicesList: state.completedOrders[index]
+                                    .serviceNames, //const [],
+                                duration: '4 hr 40 mints',
+                                rating: state.completedOrders[index]
+                                        .ratingMerchant ??
+                                    0,
 
-                                  variant: CompletedRequestCardVariant.customer,
-                                  onTap: () async {
-                                    final rating = await SheetComponenet.show(
-                                      context,
-                                      isScrollControlled: true,
-                                      child: CompletedJobSheet(
-                                        userName: state.completedOrders[index]
-                                            .customerName,
-                                        phoneNumber: state
-                                            .completedOrders[index]
-                                            .customerContactNumber,
-                                        email: state.completedOrders[index]
-                                            .customerEmail,
-                                        date: state
-                                            .completedOrders[index].bidDate
-                                            .formattedDate(),
-                                        time: state.completedOrders[index]
-                                            .bidDate.to12HourFormat,
-                                        servicesList: state
-                                            .completedOrders[index]
-                                            .serviceNames,
-                                        totalAmount: state
-                                            .completedOrders[index]
-                                            .bidAmount
-                                            .asIntString,
-                                        rating: state.completedOrders[index]
-                                                .ratingMerchant ??
-                                            0,
-                                        ratingByMerchant: state
-                                            .completedOrders[index]
-                                            .ratingCustomer
-                                            .toString(),
-                                        variant:
-                                            CompletedJobSheetVariant.merchant,
-                                      ),
-                                    );
-                                    log('rating: ${rating.toString()}');
-                                    if (rating != null && rating > 0) {
-                                      _cubit.submitRating(
-                                          state.completedOrders[index]
-                                              .workOrderId,
-                                          state.completedOrders[index]
-                                              .customerId,
-                                          rating);
-                                    }
-                                  },
-                                );
-                              })
-                          : const Center(child: Text('No Data')),
+                                variant: CompletedRequestCardVariant.customer,
+                                onTap: () async {
+                                  final rating = await SheetComponenet.show(
+                                    context,
+                                    isScrollControlled: true,
+                                    child: CompletedJobSheet(
+                                      userName: state
+                                          .completedOrders[index].customerName,
+                                      phoneNumber: state.completedOrders[index]
+                                          .customerContactNumber,
+                                      email: state
+                                          .completedOrders[index].customerEmail,
+                                      date: state
+                                          .completedOrders[index].requestDate
+                                          .formattedDate(),
+                                      time: state.completedOrders[index]
+                                          .requestDate.to12HourFormat,
+                                      servicesList: state
+                                          .completedOrders[index].serviceNames,
+                                      totalAmount: state.completedOrders[index]
+                                          .bidAmount.asIntString,
+                                      rating: state.completedOrders[index]
+                                              .ratingMerchant ??
+                                          0,
+                                      ratingByMerchant: state
+                                          .completedOrders[index].ratingCustomer
+                                          .toString(),
+                                      variant:
+                                          CompletedJobSheetVariant.merchant,
+                                    ),
+                                  );
+                                  log('rating: ${rating.toString()}');
+                                  if (rating != null && rating > 0) {
+                                    _cubit.submitRating(
+                                        state
+                                            .completedOrders[index].workOrderId,
+                                        state.completedOrders[index].customerId,
+                                        rating);
+                                  }
+                                },
+                              );
+                            })
+                      else
+                        const Center(child: Text('No Data')),
                       state.cancelledOrders.isNotEmpty
                           ? ListView.separated(
                               shrinkWrap: true,
