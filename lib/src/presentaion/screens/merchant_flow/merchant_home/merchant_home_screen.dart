@@ -400,7 +400,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       separatorBuilder: (context, index) => 12.horizontalSpace,
       itemBuilder: (BuildContext context, int index) {
         final order = workInProgressOrders[index];
-        
+
         log("Order ID : ${order.bidId}");
 
         return GestureDetector(
@@ -498,6 +498,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       separatorBuilder: (context, index) => 12.verticalSpace,
       itemBuilder: (BuildContext context, int index) {
         final job = serviceRequests[index];
+        log(job.toString());
         return GestureDetector(
           onTap: () => SheetComponenet.show(context,
               isScrollControlled: true,
