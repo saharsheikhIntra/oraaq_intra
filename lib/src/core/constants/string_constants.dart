@@ -31,8 +31,9 @@ class StringConstants {
 
   static const String registerButton = "Register";
   static const String alreadyHaveAccount = "Already have an account?";
-  static const String acceptall = "I accept all";
+  static const String acceptall = "I accept all ";
   static const String termsAndConditions = "Terms and Conditions";
+  static const String privacyPolicy = "Privacy Policy";
 
   //MARK: - otp
   static const String otpText = "OTP Verification";

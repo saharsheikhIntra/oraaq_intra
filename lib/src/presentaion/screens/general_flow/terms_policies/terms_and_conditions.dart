@@ -14,54 +14,73 @@ class TermsAndConditionsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            // _buildHeading('Terms and Conditions'),
-            _buildParagraph('Effective Date: [Insert Date]'),
+            // _buildParagraph('Effective Date: [Insert Date]'),
             _buildHeading('1. Introduction'),
             _buildParagraph(
-                'Welcome to oraaq.com . These Terms and Conditions govern your use of our listings and coupon service. By accessing or using our Service, you agree to comply with and be bound by these Terms. If you disagree with these Terms, please do not use our Service.'),
-            _buildHeading('2. Use of Service'),
+                'Welcome to Oraaq.com, owned and operated by Franchise Developers Pakistan Inc., a Delaware corporation, with its office located at 1901 Pennsylvania Ave NW, Suite 900-6, Washington DC, 20006 USA ("Company," "we," "us," or "our"). By accessing or using Oraaq.com, you agree to comply with and be bound by these Terms and Conditions ("Terms") and our Privacy Policy. If you do not agree with these Terms, please do not use the Website.'),
+            _buildHeading('2. Use of the Application'),
             _buildSubParagraph(
-                'a. Eligibility: You must be at least 18 years old to use our Service. By using our Service, you represent and warrant that you meet this age requirement.'),
+                '• Eligibility: You must be at least 18 years old to use our Website. By using the Website, you represent and warrant that you meet this requirement.'),
             _buildSubParagraph(
-                'b. Account Registration: To access certain features of our Service, you may need to register for an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete. You are responsible for maintaining the confidentiality of your account password and for all activities that occur under your account.'),
+                '• License: We grant you a limited, non-exclusive, non-transferable, and revocable license to use the Website for personal, non-commercial purposes.'),
+            _buildSubParagraph('• Prohibited Activities: You agree not to:'),
+            _buildSubParagraph('  o Use the Website for any unlawful purpose;'),
             _buildSubParagraph(
-                'c. Prohibited Activities: You agree not to use our Service for any unlawful purpose or in any way that could harm, disable, overburden, or impair our Service. You also agree not to use any automated means to access our Service, or to collect or harvest information from our Service without our prior written consent.'),
-            _buildHeading('3. Listings and Coupons'),
+                '  o Attempt to gain unauthorized access to the Website or its related systems;'),
             _buildSubParagraph(
-                'a. Accuracy of Information: We strive to ensure that the information provided on our Service is accurate and up-to-date. However, we do not guarantee the accuracy, completeness, or reliability of any listings or coupons.'),
-            _buildSubParagraph(
-                'b. Expiration and Availability: Coupons and listings may be subject to expiration dates and availability. We are not responsible for any expired or unavailable offers.'),
-            _buildSubParagraph(
-                'c. Third-Party Links: Our Service may contain links to third-party websites or services that are not owned or controlled by us. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party websites or services.'),
-            _buildHeading('4. Payment and Subscriptions'),
-            _buildSubParagraph(
-                'a. Fees: Certain features of our Service may require payment of fees. All fees are non-refundable, unless otherwise stated.'),
-            _buildSubParagraph(
-                'b. Billing Information: You agree to provide accurate and complete billing information, including valid credit card information, and to update such information as necessary.'),
-            _buildSubParagraph(
-                'c. Recurring Payments: If you subscribe to a recurring payment plan, you authorize us to charge your payment method on a recurring basis for the subscription term you selected.'),
-            _buildHeading('5. Intellectual Property'),
-            _buildSubParagraph(
-                'a. Ownership: The content, design, and other materials on our Service, including trademarks, logos, and service marks, are owned or licensed by us and are protected by intellectual property laws.'),
-            _buildSubParagraph(
-                'b. Limited License: We grant you a limited, non-exclusive, non-transferable license to access and use our Service for your personal, non-commercial use. You may not reproduce, distribute, modify, or create derivative works of our Service without our prior written consent.'),
-            _buildHeading('6. Disclaimers and Limitation of Liability'),
-            _buildSubParagraph(
-                'a. Disclaimers: We make no warranties, express or implied, regarding the operation or availability of our Service, or the information, content, or materials included in our Service.'),
-            _buildSubParagraph(
-                'b. Limitation of Liability: To the fullest extent permitted by law, we disclaim all liability for any indirect, incidental, consequential, or punitive damages arising out of or in connection with your use of our Service. Our total liability to you for any claims arising from or related to our Service shall not exceed the amount you paid us, if any, in the past twelve months.'),
-            _buildHeading('7. Indemnification'),
+                '  o Interfere with the security, functionality, or performance of the Website.'),
+            // _buildHeading('3. Free Discount Coupons'),
+            // _buildParagraph(
+            //     'The Website offers free discount coupons to visitors. We do not guarantee the availability, accuracy, or quality of the discounts provided by third parties. Any disputes arising from third-party offers should be directed to the respective provider.'),
+            _buildHeading('3. Data Collection and Privacy'),
             _buildParagraph(
-                'You agree to indemnify, defend, and hold harmless [Your Company Name], its officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, and expenses, including reasonable attorneys’ fees, arising out of or in any way connected with your use of our Service, your violation of these Terms, or your violation of any rights of another.'),
-            _buildHeading('8. Termination'),
+                'We collect basic information, including your name, email address, phone number, and city of residence. Your information is used to:'),
+            _buildSubParagraph('• Provide and improve our services;'),
+            _buildSubParagraph(
+                '• Communicate with you regarding offers and updates;'),
+            _buildSubParagraph('• Comply with legal obligations.'),
             _buildParagraph(
-                'We may terminate or suspend your access to our Service, without prior notice or liability, for any reason, including if you breach these Terms. Upon termination, your right to use our Service will immediately cease.'),
-            _buildHeading('9. Governing Law'),
+                'For more details, please refer to our Privacy Policy below.'),
+            _buildHeading('4. GDPR Compliance'),
             _buildParagraph(
-                'These Terms shall be governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to its conflict of law provisions.'),
-            _buildHeading('10. Changes to These Terms'),
+                'If you are a resident of the European Economic Area (EEA), you have certain data protection rights:'),
+            _buildSubParagraph(
+                '• The right to access, update, or delete your personal information;'),
+            _buildSubParagraph('• The right to data portability;'),
+            _buildSubParagraph('• The right to withdraw consent at any time.'),
             _buildParagraph(
-                'We may update these Terms from time to time. We will notify you of any changes by posting the new Terms on our website. You are advised to review these Terms periodically for any changes. Your continued use of our Service after the posting of any changes constitutes your acceptance of those changes.'),
+                'To exercise these rights, please contact us at [Insert Contact Email].'),
+            _buildHeading('5. DMCA Compliance'),
+            _buildParagraph(
+                'We respect intellectual property rights. If you believe your copyrighted material has been infringed on our Website, please submit a DMCA notice to:'),
+            _buildParagraph('DMCA Agent:'),
+            _buildParagraph('Franchise Developers Pakistan Inc.'),
+            _buildParagraph(
+                '1901 Pennsylvania Ave NW, Suite 900-6, Washington DC, 20006 USA'),
+            _buildParagraph('Email: dmca [at] oraaq dot com'),
+            _buildParagraph('Your notice must include:'),
+            _buildSubParagraph('• A description of the copyrighted work;'),
+            _buildSubParagraph('• Identification of the infringing material;'),
+            _buildSubParagraph('• Your contact information;'),
+            _buildSubParagraph(
+                '• A statement under penalty of perjury that your claim is accurate;'),
+            _buildSubParagraph('• Your electronic or physical signature.'),
+            _buildHeading('6. Limitation of Liability'),
+            _buildParagraph(
+                'We are not liable for any direct, indirect, incidental, or consequential damages arising from your use of the Website or the discount coupons provided.'),
+            _buildHeading('7. Changes to the Terms'),
+            _buildParagraph(
+                'We reserve the right to modify these Terms at any time. Changes will be effective immediately upon posting. Your continued use of the Website constitutes your acceptance of the updated Terms.'),
+            _buildHeading('8. Governing Law'),
+            _buildParagraph(
+                'These Terms are governed by the laws of the State of Delaware, USA, without regard to its conflict of law principles.'),
+            _buildHeading('9. Contact Information'),
+            _buildParagraph(
+                'For questions or concerns regarding these Terms or our Privacy Policy, please contact us at:'),
+            _buildParagraph('Franchise Developers Pakistan Inc.'),
+            _buildParagraph(
+                '1901 Pennsylvania Ave NW, Suite 900-6, Washington DC, 20006 USA'),
+            _buildParagraph('Email: info at oraaq dot com'),
           ],
         ),
       ),
