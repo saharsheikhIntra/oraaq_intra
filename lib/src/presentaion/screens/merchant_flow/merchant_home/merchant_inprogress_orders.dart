@@ -92,9 +92,9 @@ class _WorkInProgressScreenState extends State<WorkInProgressScreen> {
                                       context.pop();
                                       _cubit.cancelWorkOrder(order.workOrderId);
                                     },
-                                    onSubmit: (double bidAmmount) =>
-                                        context.pop(),
-                                    defaultValue: order.bidAmount, //15000,
+                                    onSubmit: (int bidAmmount) => context.pop(),
+                                    defaultValue:
+                                        order.bidAmount.toInt(), //15000,
                                     variant: NewQuoteSheetSheetVariant
                                         .alreadyQuoted));
                           },
@@ -106,7 +106,7 @@ class _WorkInProgressScreenState extends State<WorkInProgressScreen> {
                                   .toString(), // Placeholder, update as needed
                               date: order.requestDate.formattedDate(),
                               time: order.requestDate.to12HourFormat,
-                              price: order.bidAmount.asIntString,
+                              price: order.bidAmount.toString(),
                               variant: ApprovedRequestCardVariant.urgent,
                             ),
                           ),

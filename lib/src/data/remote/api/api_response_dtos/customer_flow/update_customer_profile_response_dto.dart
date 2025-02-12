@@ -61,6 +61,7 @@ class UpdateCustomerProfileResponseDto {
         longitude: longitude.toString(),
         role: UserType.customer,
         serviceType: -1,
+        bussinessName: '',
         cnicNtn: '',
         token: '',
         openingTime: '',

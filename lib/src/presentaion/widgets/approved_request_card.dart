@@ -39,7 +39,10 @@ class ApprovedRequestCard extends StatelessWidget {
           ),
         ],
         color: ColorTheme.white,
-        border: Border.all(color: variant == ApprovedRequestCardVariant.normal ? ColorTheme.neutral1 : ColorTheme.secondary),
+        border: Border.all(
+            color: variant == ApprovedRequestCardVariant.normal
+                ? ColorTheme.neutral1
+                : ColorTheme.secondary),
         borderRadius: 12.borderRadius,
       ),
       child: Column(
@@ -48,7 +51,10 @@ class ApprovedRequestCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(child: Text(userName, style: TextStyleTheme.titleSmall)),
+              Expanded(
+                  child: Text(userName,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyleTheme.titleSmall)),
               Text(distance, style: TextStyleTheme.bodyLarge),
               2.horizontalSpace,
               const Icon(
@@ -78,7 +84,9 @@ class ApprovedRequestCard extends StatelessWidget {
                 size: 16,
               ),
               4.horizontalSpace,
-              Text(time, style: TextStyleTheme.bodySmall.copyWith(color: ColorTheme.secondaryText)),
+              Text(time,
+                  style: TextStyleTheme.bodySmall
+                      .copyWith(color: ColorTheme.secondaryText)),
             ],
           ),
           20.verticalSpace,
@@ -87,12 +95,14 @@ class ApprovedRequestCard extends StatelessWidget {
             children: [
               Text(
                 "Rs ",
-                style: TextStyleTheme.bodySmall.copyWith(color: ColorTheme.primary, fontWeight: FontWeight.bold),
+                style: TextStyleTheme.bodySmall.copyWith(
+                    color: ColorTheme.primary, fontWeight: FontWeight.bold),
               ),
               2.horizontalSpace,
               Text(
                 price,
-                style: TextStyleTheme.titleSmall.copyWith(color: ColorTheme.primary),
+                style: TextStyleTheme.titleSmall
+                    .copyWith(color: ColorTheme.primary),
               ),
             ],
           ),

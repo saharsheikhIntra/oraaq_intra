@@ -10,8 +10,7 @@ class ValidationUtils {
 
   static final RegExp _numberPattern = RegExp(r'^[0-9]+$');
   static final RegExp _phoneNumberPattern = RegExp(r'^03\d{9}$');
-  //CNIC regex
-  static final RegExp _cnicPattern = RegExp(r'^[0-9+]{5}-[0-9+]{7}-[0-9]{1}$');
+  static final RegExp _cnicPattern = RegExp(r'^\d{5}-\d{7}-\d{1}$');
 
   static String? checkEmptyField(String? value) {
     return value != null && value.trim().isNotEmpty
@@ -31,11 +30,7 @@ class ValidationUtils {
         : StringConstants.confirmPasswordValidation;
   }
 
-  static String? checkCnic(String? value) {
-    return _cnicPattern.hasMatch(value ?? '')
-        ? null
-        : "Invalid CNIC format. Example: 12345-1234567-1";
-  }
+  
 
 static String? checkBusinessName(String? value) {
     return checkLength(value, 3, 50); // Ensure name is 3-50 characters long
@@ -78,6 +73,12 @@ static String? checkBusinessName(String? value) {
     return _numberPattern.hasMatch(value ?? '')
         ? null
         : "This field requires numeric input";
+  }
+
+  static String? checkCnic(String? value) {
+    return _cnicPattern.hasMatch(value ?? '')
+        ? null
+        : "Invalid CNIC format. Please enter as XXXXX-XXXXXXX-X";
   }
 
   static bool isValidEmail(String email) {

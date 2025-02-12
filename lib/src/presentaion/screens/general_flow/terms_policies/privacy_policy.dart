@@ -14,41 +14,44 @@ class PrivacyPolicyScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            _buildParagraph('Effective Date: [Insert Date]'),
+            // _buildHeading('Privacy Policy'),
+            _buildParagraph(
+                'Franchise Developers Pakistan Inc. is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit Oraaq.com.'),
             _buildHeading('1. Introduction'),
             _buildParagraph(
-                'Franchise Developers Pakistan Inc. ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit Oraaq.com.'),
+                'Franchise Developers Pakistan Inc. ("we," "us," or "our") is dedicated to protecting your privacy. This Privacy Policy outlines how we handle your personal information.'),
             _buildHeading('2. Information We Collect'),
             _buildSubParagraph(
-                'Personal Information: Name, email address, phone number, city of residence.'),
+                '• Personal Information: Name, email address, phone number, city of residence.'),
             _buildSubParagraph(
-                'Automatically Collected Data: IP address, browser type, operating system, and browsing behavior.'),
+                '• Automatically Collected Data: IP address, browser type, operating system, and browsing behavior.'),
             _buildHeading('3. How We Use Your Information'),
-            _buildSubParagraph('To provide and manage our services;'),
+            _buildSubParagraph('• To provide and manage our services;'),
             _buildSubParagraph(
-                'To communicate with you about offers and updates;'),
-            _buildSubParagraph('To comply with legal obligations.'),
+                '• To communicate with you about offers and updates;'),
+            _buildSubParagraph('• To comply with legal obligations.'),
             _buildHeading('4. Sharing of Information'),
             _buildParagraph(
                 'We do not sell or rent your personal information. We may share information with:'),
-            _buildSubParagraph('Service providers assisting with operations;'),
-            _buildSubParagraph('Legal authorities if required by law;'),
-            _buildSubParagraph('Third parties with your consent.'),
+            _buildSubParagraph(
+                '• Service providers assisting with operations;'),
+            _buildSubParagraph('• Legal authorities if required by law;'),
+            _buildSubParagraph('• Third parties with your consent.'),
             _buildHeading('5. Data Security'),
             _buildParagraph(
                 'We implement security measures to protect your personal information from unauthorized access, disclosure, alteration, or destruction.'),
             _buildHeading('6. Your Rights'),
             _buildSubParagraph(
-                'GDPR Rights: Access, rectify, erase, restrict processing, data portability, and withdraw consent.'),
+                '• GDPR Rights: Access, rectify, erase, restrict processing, data portability, and withdraw consent.'),
             _buildSubParagraph(
-                'California Privacy Rights: If applicable, you may request information about our data practices.'),
+                '• California Privacy Rights: If applicable, you may request information about our data practices.'),
             _buildHeading('7. Cookies'),
             _buildParagraph(
                 'We use cookies to enhance your experience. You can control cookie settings through your browser.'),
             _buildHeading('8. Third-Party Links'),
             _buildParagraph(
                 'Our Website may contain links to third-party websites. We are not responsible for their privacy practices.'),
-            _buildHeading('9. Children\'s Privacy'),
+            _buildHeading("9. Children's Privacy"),
             _buildParagraph(
                 'Our Website is not intended for individuals under 18. We do not knowingly collect data from minors.'),
             _buildHeading('10. Changes to This Policy'),
@@ -57,10 +60,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
             _buildHeading('11. Contact Us'),
             _buildParagraph(
                 'For any questions about this Privacy Policy, contact us at:'),
-            _buildParagraph('Franchise Developers Pakistan Inc.\n'
-                '1901 Pennsylvania Ave NW, Suite 900-6\n'
-                'Washington DC, 20006 USA\n'
-                'Email: info at oraaq dot com'),
+            _buildParagraph('Franchise Developers Pakistan Inc.'),
+            _buildParagraph(
+                '1901 Pennsylvania Ave NW, Suite 900-6, Washington DC, 20006 USA'),
+            _buildParagraph('Email: info at oraaq dot com'),
           ],
         ),
       ),

@@ -156,7 +156,7 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
 //
 // MARK: POST BID
 //
-  Future<void> postBid(int orderId, double bidAmount) async {
+  Future<void> postBid(int orderId, int bidAmount) async {
     // emit(MerchantHomeLoading());
 
     final bidRequest = PostBidRequestDto(

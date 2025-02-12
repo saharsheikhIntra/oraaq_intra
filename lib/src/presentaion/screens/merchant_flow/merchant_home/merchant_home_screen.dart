@@ -53,7 +53,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       log("Merchant Id : ${user.id}");
 
       cron.schedule(
-        Schedule(seconds: 5),
+        Schedule(seconds: 2),
         () {
           log('cron run');
           _cubit.fetchWorkInProgressOrdersCron();
@@ -197,11 +197,9 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             }
             if (state is CancelMerchantOrderState) {
               DialogComponent.hideLoading(context);
-              if (selectedFilter == MerchantJobsFilter.alreadyQuoted) {
-                _cubit.fetchAppliedJobs();
-              } else {
-                _cubit.fetchWorkInProgressOrders();
-              }
+              _cubit.fetchAppliedJobs();
+              _cubit.fetchWorkInProgressOrders();
+
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.success,
@@ -220,6 +218,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             if (state is BidPostedSuccessState) {
               DialogComponent.hideLoading(context);
               _cubit.fetchAllServiceRequests();
+              _cubit.fetchAppliedJobs();
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.success,
@@ -408,24 +407,27 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             SheetComponenet.show(context,
                 isScrollControlled: true,
                 child: NewQuoteSheet(
+                    date: order.requestDate.formattedDate(),
+                    time: order.requestDate.to12HourFormat,
+                    distance: order.distance.toString(),
                     name: order.customerName,
                     email: order.customerEmail,
                     phoneNumber: order.customerContactNumber,
                     servicesList: order.serviceNames,
-                    distance: order.distance,
+                    // distance: order.distance,
                     workOrderId: order.workOrderId,
-                    date: order.requestDate.formattedDate(),
-                    time: order.requestDate.to12HourFormat,
+                    // date: order.requestDate.formattedDate(),
+                    // time: order.requestDate.to12HourFormat,
                     sheetName: "Action",
                     onCancel: () {
                       context.pop();
                       _cubit.cancelWorkOrder(order.bidId);
                     },
-                    onSubmit: (double bidAmount) {
+                    onSubmit: (int bidAmount) {
                       context.pop();
                       _cubit.completeWorkOrder(order.bidId);
                     },
-                    defaultValue: order.bidAmount, //15000,
+                    defaultValue: order.bidAmount.toInt(), //15000,
                     variant: NewQuoteSheetSheetVariant.alreadyQuoted));
           },
           child: SizedBox(
@@ -466,11 +468,11 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   email: job.customerName,
                   distance: job.distance,
                   servicesList: job.serviceNames,
-                  time: DateTime.tryParse(job.requestDate)!
-                      .to12HourFormat, //"3:30pm",
+                  time: DateTime.tryParse(job.requestDate)!.to12HourFormat,
+                  //"3:30pm",
                   defaultValue: job.totalPrice,
                   onCancel: () => context.pop(),
-                  onSubmit: (double bidAmount) =>
+                  onSubmit: (int bidAmount) =>
                       _cubit.postBid(job.serviceRequestId, bidAmount),
                   variant: NewQuoteSheetSheetVariant.newQuote)),
           child: NewRequestCard(
@@ -479,7 +481,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             distance: job.distance, //"45 km",
             date: DateTime.tryParse(job.requestDate)!.formattedDate(),
             time: DateTime.tryParse(job.requestDate)!.to12HourFormat,
-            price: job.totalPrice.asIntString,
+            price: job.totalPrice.toString(),
             servicesList: job.serviceNames,
             variant: NewRequestCardVariant.newRequest,
           ),
@@ -512,7 +514,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                       .to12HourFormat, //"3:30pm",
                   defaultValue: job.totalPrice,
                   onCancel: () => context.pop(),
-                  onSubmit: (double bidAmount) =>
+                  onSubmit: (int bidAmount) =>
                       _cubit.postBid(job.serviceRequestId, bidAmount),
                   variant: job.status == "Open"
                       ? NewQuoteSheetSheetVariant.newQuote
@@ -523,7 +525,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             distance: job.distance, //"45 km",
             date: DateTime.tryParse(job.requestDate)!.formattedDate(),
             time: DateTime.tryParse(job.requestDate)!.to12HourFormat,
-            price: job.totalPrice.asIntString,
+            price: job.totalPrice.toString(),
             servicesList: job.serviceNames,
             variant: NewRequestCardVariant.newRequest,
           ),
@@ -554,13 +556,13 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   servicesList: job.serviceNames,
                   time: job.bidDate.to12HourFormat,
                   //DateTime.tryParse(job.requestDate)!                     .formattedDate(), //"3:30pm",
-                  defaultValue: job.bidAmount,
+                  defaultValue: job.bidAmount.toInt(),
                   onCancel: () {
                     context.pop();
                     _cubit
                         .cancelWorkOrderFromMerchantAppliedRequests(job.bidId);
                   },
-                  onSubmit: (double bidAmmount) => context.pop(),
+                  onSubmit: (int bidAmmount) => context.pop(),
                   variant: NewQuoteSheetSheetVariant.alreadyQuoted)),
           child: NewRequestCard(
             buttonText: job.status.name,

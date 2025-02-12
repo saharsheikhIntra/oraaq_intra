@@ -62,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
               if (state.user.name.isEmpty ||
                   state.user.cnicNtn.isEmpty ||
                   state.user.serviceType == -1 ||
+                  state.user.bussinessName.isEmpty ||
                   state.user.latitude.isEmpty ||
                   state.user.longitude.isEmpty ||
                   state.user.openingTime.isEmpty ||

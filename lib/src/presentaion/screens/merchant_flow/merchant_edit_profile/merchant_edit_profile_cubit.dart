@@ -33,6 +33,7 @@ class MerchantEditProfileCubit extends Cubit<MerchantEditProfileState> {
     required String openingTime,
     required String closingTime,
     required int serviceType,
+    required String businessName,
     required List<String> holidays,
   }) async {
     emit(MerchantProfileStateLoading());
@@ -46,6 +47,7 @@ class MerchantEditProfileCubit extends Cubit<MerchantEditProfileState> {
       merchantNumber: merchantNumber.isEmpty ? user.phone : merchantNumber,
       cnic: cnic.isEmpty ? user.cnicNtn : cnic,
       email: email.isEmpty ? user.email : email,
+      businessName: businessName.isEmpty ? user.bussinessName : businessName,
       latitude: latitude.isEmpty
           ? double.tryParse(user.latitude) ?? 0.0
           : double.tryParse(latitude) ?? 0.0,

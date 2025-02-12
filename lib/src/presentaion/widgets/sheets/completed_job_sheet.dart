@@ -123,7 +123,7 @@ class _CompletedJobSheetSheetState extends State<CompletedJobSheet> {
             _buildDetails(
               Symbols.star_half_rounded,
               "Rated by Merchant",
-              widget.ratingByMerchant ?? "4 / 5",
+              widget.ratingByMerchant ?? "0",
             ),
             _buildDetails(
               Symbols.payments_rounded,

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/register/register_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/register/register_state.dart';
@@ -279,19 +280,57 @@ class _ResgisterScreenState extends State<ResgisterScreen> {
                                       );
                                     },
                                   ),
-                                  Row(children: [
-                                    Text(StringConstants.acceptall,
+                                  RichText(
+                                      text: TextSpan(children: [
+                                    TextSpan(
+                                        text: StringConstants.acceptall,
                                         style: TextStyleTheme.bodyMedium
                                             .copyWith(
                                                 color:
                                                     ColorTheme.secondaryText)),
-                                    6.horizontalSpace,
-                                    Text(StringConstants.termsAndConditions,
-                                        style: TextStyleTheme.labelLarge
+                                    TextSpan(
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () => context.pushNamed(
+                                              RouteConstants
+                                                  .TermsAndConditionsScreen),
+                                        text:
+                                            StringConstants.termsAndConditions,
+                                        style: TextStyleTheme.bodySmall
+                                            .copyWith(
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                color: ColorTheme.primary)),
+                                    TextSpan(
+                                        text: ' & ',
+                                        style: TextStyleTheme.bodyMedium
                                             .copyWith(
                                                 color:
                                                     ColorTheme.secondaryText)),
-                                  ]),
+                                    TextSpan(
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () => context.pushNamed(
+                                              RouteConstants
+                                                  .PrivacyPolicyScreen),
+                                        text: StringConstants.privacyPolicy,
+                                        style: TextStyleTheme.bodySmall
+                                            .copyWith(
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                color: ColorTheme.primary))
+                                  ])),
+                                  // Row(children: [
+                                  //   Text(StringConstants.acceptall,
+                                  //       style: TextStyleTheme.bodyMedium
+                                  //           .copyWith(
+                                  //               color:
+                                  //                   ColorTheme.secondaryText)),
+                                  //   6.horizontalSpace,
+                                  //   Text(StringConstants.termsAndConditions,
+                                  //       style: TextStyleTheme.labelLarge
+                                  //           .copyWith(
+                                  //               color:
+                                  //                   ColorTheme.secondaryText)),
+                                  // ]),
                                 ],
                               ),
                               const Spacer(),

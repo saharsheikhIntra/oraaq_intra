@@ -89,30 +89,32 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   vertical: 16, horizontal: 16),
                               separatorBuilder: (context, index) =>
                                   12.verticalSpace,
-                              itemBuilder: (BuildContext context, int index) =>
-                                  CompletedRequestCard(
-                                userName: state.completedOrders[index]
-                                    .customerName, //"AC REPAIRING",
-                                date: state.completedOrders[index].requestDate
-                                    .formattedDate(), //"4th March",
-                                ratings: state
-                                    .completedOrders[index].ratingCustomer
-                                    .toString(),
-                                // "4 / 5",
-                                price: state.completedOrders[index].bidAmount
-                                    .asIntString, //"12000",
-                                servicesList: state.completedOrders[index]
-                                    .serviceNames, //const [],
-                                duration: '4 hr 40 mints',
-                                rating: state.completedOrders[index]
-                                        .ratingMerchant ??
-                                    0,
-                                variant: CompletedRequestCardVariant.customer,
-                                onTap: () async {
-                                  final rating = await SheetComponenet.show(
-                                    context,
-                                    isScrollControlled: true,
-                                    child: CompletedJobSheet(
+                              itemBuilder: (BuildContext context, int index) {
+                                log("completedOrders: ${state.completedOrders}");
+                                return CompletedRequestCard(
+                                  userName: state.completedOrders[index]
+                                      .customerName, //"AC REPAIRING",
+                                  date: state.completedOrders[index].requestDate
+                                      .formattedDate(), //"4th March",
+                                  ratings: state
+                                      .completedOrders[index].ratingCustomer
+                                      .toString(),
+                                  // "4 / 5",
+                                  price: state.completedOrders[index].bidAmount
+                                      .asIntString, //"12000",
+                                  servicesList: state.completedOrders[index]
+                                      .serviceNames, //const [],
+                                  duration: '4 hr 40 mints',
+                                  rating: state.completedOrders[index]
+                                          .ratingMerchant ??
+                                      0,
+
+                                  variant: CompletedRequestCardVariant.customer,
+                                  onTap: () async {
+                                    final rating = await SheetComponenet.show(
+                                      context,
+                                      isScrollControlled: true,
+                                      child: CompletedJobSheet(
                                         userName: state.completedOrders[index]
                                             .customerName,
                                         phoneNumber: state
@@ -129,25 +131,32 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             .completedOrders[index]
                                             .serviceNames,
                                         totalAmount: state
-                                            .completedOrders[index].bidAmount
-                                            .toString(),
+                                            .completedOrders[index]
+                                            .bidAmount
+                                            .asIntString,
                                         rating: state.completedOrders[index]
                                                 .ratingMerchant ??
                                             0,
+                                        ratingByMerchant: state
+                                            .completedOrders[index]
+                                            .ratingCustomer
+                                            .toString(),
                                         variant:
-                                            CompletedJobSheetVariant.merchant),
-                                  );
-                                  log('rating: ${rating.toString()}');
-                                  if (rating != null && rating > 0) {
-                                    _cubit.submitRating(
-                                        state
-                                            .completedOrders[index].workOrderId,
-                                        state.completedOrders[index].customerId,
-                                        rating);
-                                  }
-                                },
-                              ),
-                            )
+                                            CompletedJobSheetVariant.merchant,
+                                      ),
+                                    );
+                                    log('rating: ${rating.toString()}');
+                                    if (rating != null && rating > 0) {
+                                      _cubit.submitRating(
+                                          state.completedOrders[index]
+                                              .workOrderId,
+                                          state.completedOrders[index]
+                                              .customerId,
+                                          rating);
+                                    }
+                                  },
+                                );
+                              })
                           : const Center(child: Text('No Data')),
                       state.cancelledOrders.isNotEmpty
                           ? ListView.separated(
@@ -167,7 +176,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 time: state.cancelledOrders[index].requestDate
                                     .to12HourFormat, //"6:00 am",
                                 price: state.cancelledOrders[index].bidAmount
-                                    .toString(), //"10,000",
+                                    .asIntString, //"10,000",
                                 servicesList:
                                     state.cancelledOrders[index].serviceNames,
 

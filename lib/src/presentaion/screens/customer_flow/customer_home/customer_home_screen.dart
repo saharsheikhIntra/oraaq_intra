@@ -32,6 +32,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await _cubit.fetchCategories();
       await _cubit.fetchAcceptedRequest();
+      await _cubit.fetchCategories();
+
+      print(acceptedJobs);
     });
   }
 
@@ -162,65 +165,74 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                   padding: 16.horizontalPadding,
                                   separatorBuilder: (context, index) =>
                                       12.horizontalSpace,
-                                  itemBuilder:
-                                      (BuildContext context, int index) =>
-                                          GestureDetector(
-                                    child: SizedBox(
-                                      height: 96,
-                                      width: 245,
-                                      child: OnGoingRequestCard(
-                                        userName: acceptedJobs
-                                            .value[index].serviceName,
-                                        duration: "9hr 30 mints",
-                                        date: DateTime.tryParse(
-                                                acceptedJobs.value[index].date)!
-                                            .formattedDate(), //"21st May",
-                                        time: DateTime.tryParse(
-                                                acceptedJobs.value[index].date)!
-                                            .to12HourFormat, //"6:00 am",
-                                        profileName: acceptedJobs.value[index]
-                                            .merchantName, //"Zain Hashim",
-                                        price: acceptedJobs
-                                            .value[index].amount, //"10,000",
-                                        servicesList: const [],
-                                        variant: OngoingRequestCardVariant
-                                            .offerReceived,
-                                        onTap: () => SheetComponenet.show(
-                                          context,
-                                          isScrollControlled: true,
-                                          child: RequestSheet(
-                                            onCancel: () => _cubit
-                                                .cancelCustomerCreatedRequest(
-                                              acceptedJobs.value[index].orderId,
-                                              acceptedJobs
-                                                  .value[index].customerId,
-                                            ),
-                                            name: acceptedJobs
-                                                .value[index].merchantName,
-                                            email: acceptedJobs
-                                                .value[index].merchantEmail,
-                                            phoneNumber: acceptedJobs
-                                                .value[index].merchantPhone,
-                                            amount: acceptedJobs
-                                                .value[index].amount,
-                                            date: DateTime.tryParse(acceptedJobs
-                                                    .value[index].date)!
-                                                .formattedDate(),
-                                            time: DateTime.tryParse(acceptedJobs
-                                                    .value[index].date)!
-                                                .to12HourFormat,
-                                            distance: acceptedJobs
-                                                .value[index].distance,
-                                            serviceName: acceptedJobs
-                                                .value[index].serviceName,
-                                            servicesList: acceptedJobs
-                                                .value[index].services,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
+                                  itemBuilder: (BuildContext context,
+                                          int index) =>
+                                      GestureDetector(
+                                          child: SizedBox(
+                                              height: 96,
+                                              width: 245,
+                                              child: OnGoingRequestCard(
+                                                userName: acceptedJobs
+                                                    .value[index].serviceName,
+                                                duration: "9hr 30 mints",
+                                                date: DateTime.tryParse(
+                                                        acceptedJobs
+                                                            .value[index].date)!
+                                                    .formattedDate(), //"21st May",
+                                                time: DateTime.tryParse(
+                                                        acceptedJobs
+                                                            .value[index].date)!
+                                                    .to12HourFormat, //"6:00 am",
+                                                profileName: acceptedJobs
+                                                    .value[index]
+                                                    .merchantName, //"Zain Hashim",
+                                                price: acceptedJobs.value[index]
+                                                    .amount, //"10,000",
+                                                servicesList: const [],
+                                                variant:
+                                                    OngoingRequestCardVariant
+                                                        .offerReceived,
+                                                onTap: () =>
+                                                    SheetComponenet.show(
+                                                  context,
+                                                  isScrollControlled: true,
+                                                  child: RequestSheet(
+                                                    onCancel: () => _cubit
+                                                        .cancelCustomerCreatedRequest(
+                                                      acceptedJobs
+                                                          .value[index].orderId,
+                                                    ),
+                                                    name: acceptedJobs
+                                                        .value[index]
+                                                        .merchantName,
+                                                    email: acceptedJobs
+                                                        .value[index]
+                                                        .merchantEmail,
+                                                    phoneNumber: acceptedJobs
+                                                        .value[index]
+                                                        .merchantPhone,
+                                                    amount: acceptedJobs
+                                                        .value[index].amount,
+                                                    date: DateTime.tryParse(
+                                                            acceptedJobs
+                                                                .value[index]
+                                                                .date)!
+                                                        .formattedDate(),
+                                                    time: DateTime.tryParse(
+                                                            acceptedJobs
+                                                                .value[index]
+                                                                .date)!
+                                                        .to12HourFormat,
+                                                    distance: acceptedJobs
+                                                        .value[index].distance,
+                                                    serviceName: acceptedJobs
+                                                        .value[index]
+                                                        .serviceName,
+                                                    servicesList: acceptedJobs
+                                                        .value[index].services,
+                                                  ),
+                                                ),
+                                              ))))
                               : const NoDataFound(
                                   text: StringConstants.firstOrder,
                                   fontSize: 12,

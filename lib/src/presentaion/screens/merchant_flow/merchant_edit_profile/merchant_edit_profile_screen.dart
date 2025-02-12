@@ -10,6 +10,7 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  final editProfileFormKey = GlobalKey<FormState>();
   final MerchantEditProfileCubit _cubit = getIt.get<MerchantEditProfileCubit>();
   final user = getIt.get<UserEntity>();
   final TextEditingController emailController =
@@ -64,7 +65,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     nameController.text = user.name;
     locationController.text = user.latitude + user.longitude;
     cnicNtnController.text = user.cnicNtn;
-    businessController.text = user.cnicNtn;
+    businessController.text = user.bussinessName;
     openingTimeController.text = OnTimeOfDay.formatTo12Hour(user.openingTime);
     closingTimeController.text = OnTimeOfDay.formatTo12Hour(user.closingTime);
     holidayController.text = user.holidays;
@@ -123,7 +124,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               child: Form(
-                key: _formKey,
+                key: editProfileFormKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -136,17 +137,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     TextFormField(
                       controller: nameController,
                       keyboardType: TextInputType.name,
-                      validator: (value) =>
-                          ValidationUtils.checkEmptyField(value),
                       decoration: const InputDecoration(
                           labelText: StringConstants.yourName),
                     ),
                     16.verticalSpace,
                     TextFormField(
-                        enabled: false,
+                        // enabled: false,
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
-                        validator: (value) => ValidationUtils.checkEmail(value),
                         decoration: InputDecoration(
                           labelText: StringConstants.email,
                           labelStyle: TextStyleTheme.labelMedium
@@ -159,6 +157,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       keyboardType: TextInputType.phone,
                       validator: (value) =>
                           ValidationUtils.checkPhoneNumber(value),
+
                       decoration: InputDecoration(
                         labelText: StringConstants.phone,
                         labelStyle: TextStyleTheme.labelMedium
@@ -173,8 +172,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     24.verticalSpace,
                     TextFormField(
-                      controller: cnicNtnController,
                       validator: (value) => ValidationUtils.checkCnic(value),
+                      keyboardType: TextInputType.phone,
+                      controller: cnicNtnController,
                       decoration: const InputDecoration(
                           labelText: StringConstants.cnicNtn),
                     ),
@@ -207,8 +207,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     16.verticalSpace,
                     TextFormField(
                       controller: businessController,
-                      validator: (value) =>
-                          ValidationUtils.checkBusinessName(value),
                       decoration: const InputDecoration(
                           labelText: StringConstants.businessName),
                     ),
@@ -241,7 +239,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               Symbols.distance_rounded,
                               size: 24,
                             ))),
-                    16.verticalSpace,
+                    8.verticalSpace,
+                    Text(
+                      'Select an hours only. Minutes will be set to 00 automatically.',
+                      style: TextStyleTheme.bodySmall
+                          .copyWith(color: ColorTheme.error),
+                    ),
+                    8.verticalSpace,
                     TextFormField(
                         readOnly: true,
                         onTap: () => selectTime(
@@ -311,7 +315,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             width: double.infinity,
                             type: CustomButtonType.primary,
                             text: "Update Profile",
-                            onPressed: () => SheetComponenet.showWarningSheet(
+                            onPressed: () {
+                              if (editProfileFormKey.currentState!.validate()) {
+                                SheetComponenet.showWarningSheet(
                                   context,
                                   title: StringConstants.areYouSure,
                                   message: StringConstants
@@ -320,35 +326,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   cancelText: StringConstants.cancel,
                                   onCancelTap: () => context.pop(),
                                   onCtaTap: () {
-                                    if (_formKey.currentState?.validate() ??
-                                        false) {
-                                      _cubit.updateMerchantProfile(
-                                        merchantName: nameController.text,
-                                        merchantNumber:
-                                            phoneNumberController.text,
-                                        cnic: cnicNtnController.text,
-                                        email: emailController.text,
-                                        latitude: _selectedPosition?.latitude
-                                                .toString() ??
-                                            "",
-                                        longitude: _selectedPosition?.longitude
-                                                .toString() ??
-                                            "",
-                                        offDays: holidayController.text,
-                                        openingTime: openingTime.value,
-                                        closingTime: closingTime.value,
-                                        // openingTime: openingTimeController.text,
-                                        // closingTime: closingTimeController.text,
-                                        serviceType: selectedCategory?.id ??
-                                            user.serviceType,
-                                        holidays: holidays,
-                                      );
-                                      context.pop();
-                                    } else {
-                                      context.pop();
-                                    }
+                                    _cubit.updateMerchantProfile(
+                                      merchantName: nameController.text,
+                                      merchantNumber:
+                                          phoneNumberController.text,
+                                      cnic: cnicNtnController.text,
+                                      email: emailController.text,
+                                      businessName: businessController.text,
+                                      latitude: _selectedPosition?.latitude
+                                              .toString() ??
+                                          "",
+                                      longitude: _selectedPosition?.longitude
+                                              .toString() ??
+                                          "",
+                                      offDays: holidayController.text,
+                                      openingTime: openingTime.value,
+                                      closingTime: closingTime.value,
+                                      // openingTime: openingTimeController.text,
+                                      // closingTime: closingTimeController.text,
+                                      serviceType: selectedCategory?.id ??
+                                          user.serviceType,
+                                      holidays: holidays,
+                                    );
+                                    context.pop();
                                   },
-                                ))),
+                                );
+                              }
+                            })),
                     40.verticalSpace,
                   ],
                 ),

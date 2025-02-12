@@ -7,11 +7,13 @@ import '../../../../domain/services/job_management_service.dart';
 import 'customer_home_state.dart';
 
 class CustomerHomeCubit extends Cubit<CustomerHomeState> {
+  final ServicesService _servicesRepository;
   final JobManagementService _jobManagementService;
   final ServicesService _servicesService;
   CustomerHomeCubit(
     this._jobManagementService,
     this._servicesService,
+    this._servicesRepository,
   ) : super(CustomerHomeStateInitial());
   final user = getIt.get<UserEntity>();
 
@@ -45,12 +47,13 @@ class CustomerHomeCubit extends Cubit<CustomerHomeState> {
   // MARK: CANCEL CUSTOMER CREATED REQUEST
   Future cancelCustomerCreatedRequest(
     int orderId,
-    int customerId,
   ) async {
     emit(CustomerHomeStateLoading());
-    final result = await _servicesService.cancelCustomerCreatedRequest(
-        cancelCustomerConfirmedRequestsDto(
-            orderId: orderId, customerId: customerId));
+
+    final result =
+        await _servicesRepository.cancelWorkOrder(orderId, user.id);
+    // await _servicesService.cancelCustomerCreatedRequest(
+    //     cancelCustomerCreatedRequestsDto(requestId: requestId));
     result.fold((l) => emit(CustomerHomeStateError(l)),
         (r) => emit(CancelCustomerRequestSuccessState(r)));
   }

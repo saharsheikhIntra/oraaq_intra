@@ -6,7 +6,7 @@ class NewServiceRequestResponseDto {
   final String requestDate;
   final String status;
   final List<String> serviceNames;
-  final double totalPrice;
+  final int totalPrice;
 
   NewServiceRequestResponseDto({
     this.serviceRequestId = -1,
@@ -16,7 +16,7 @@ class NewServiceRequestResponseDto {
     this.requestDate = '',
     this.status = '',
     this.serviceNames = const [],
-    this.totalPrice = 0.0,
+    this.totalPrice = 0,
   });
 
   factory NewServiceRequestResponseDto.fromMap(Map<String, dynamic> map) {
@@ -30,9 +30,8 @@ class NewServiceRequestResponseDto {
       serviceNames: map['service_names'] != null
           ? List<String>.from(map['service_names'])
           : [],
-      totalPrice: map['total_price'] != null
-          ? (map['total_price'] as num).toDouble()
-          : 0.0,
+      totalPrice:
+          map['total_price'] != null ? (map['total_price'] as num).toInt() : 0,
     );
   }
 

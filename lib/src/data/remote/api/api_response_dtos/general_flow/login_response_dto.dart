@@ -50,6 +50,7 @@ class LoginResponseUserDto {
   final String openingTime;
   final String closingTime;
   final int? serviceType;
+  final String? bussinessName;
   final String isOtpVerified;
   final String isSocial;
 
@@ -70,6 +71,7 @@ class LoginResponseUserDto {
     this.openingTime = "",
     this.closingTime = "",
     this.serviceType = -1,
+    this.bussinessName = "",
     this.isOtpVerified = "N",
     this.isSocial = "N",
   });
@@ -98,6 +100,8 @@ class LoginResponseUserDto {
           map['closing_time'] != null ? map['closing_time'] as String : "",
       serviceType:
           map['service_type'] != null ? map['service_type'] as int : -1,
+      bussinessName:
+          map['business_name'] != null ? map['business_name'] as String : "",
       isOtpVerified: map['is_otp_verified'] != null
           ? map['is_otp_verified'] as String
           : "",
@@ -120,7 +124,7 @@ class LoginResponseUserDto {
 
   @override
   String toString() {
-    return 'LoginResponseUserDto(merchantId: $merchantId, merchantUserId: $merchantUserId, merchantName: $merchantName, email: $email, merchantNumber: $merchantNumber, isActive: $isActive, cnic: $cnic, phone: $phone, latitude: $latitude, longitude: $longitude, offDays: $offDays, openingTime: $openingTime, closingTime: $closingTime, serviceType: $serviceType, isOtpVerified: $isOtpVerified, isSocial: $isSocial)';
+    return 'LoginResponseUserDto(merchantId: $merchantId, merchantUserId: $merchantUserId, merchantName: $merchantName, email: $email, merchantNumber: $merchantNumber, isActive: $isActive, cnic: $cnic, phone: $phone, latitude: $latitude, longitude: $longitude, offDays: $offDays, openingTime: $openingTime, closingTime: $closingTime, serviceType: $serviceType, bussinessName: $bussinessName ,isOtpVerified: $isOtpVerified, isSocial: $isSocial)';
   }
 
   UserEntity get toUserEntity {
@@ -136,6 +140,7 @@ class LoginResponseUserDto {
         orElse: () => UserType.customer,
       ),
       serviceType: serviceType ?? -1,
+      bussinessName: bussinessName ?? "",
       cnicNtn: cnic ?? "",
       openingTime: openingTime,
       closingTime: closingTime,
@@ -208,6 +213,7 @@ class LoginResponseConsumerDto {
       phone: phoneNumber ?? "",
       role: UserType.customer,
       serviceType: -1,
+      bussinessName: "",
       cnicNtn: "",
       token: "",
       openingTime: "",
