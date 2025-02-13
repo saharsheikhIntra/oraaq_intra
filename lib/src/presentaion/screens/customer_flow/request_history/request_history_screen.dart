@@ -41,9 +41,12 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
       _cubit.fetchWorkOrders();
       _cubit.fetchAcceptedRequest();
       cron.schedule(
-        Schedule(minutes: 5),
+        Schedule(seconds: 10),
         () {
           log('run cron');
+          _cubit.fetchWorkOrdersCron();
+          _cubit.fetchAcceptedRequestCron();
+
           _cubit.fetchNewRequests();
         },
       );

@@ -26,6 +26,11 @@ class ChangeOfferSheet extends StatefulWidget {
 }
 
 class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
+  int getPercentage(int amount, double percentage) {
+    var newVal = amount != 0 ? (amount * percentage) : 0;
+    return newVal.toInt();
+  }
+
   @override
   void initState() {
     // _defaultValue = widget.defaultValue;
@@ -53,8 +58,8 @@ class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
           24.verticalSpace,
           Text(
             widget.variant == ChangeOfferSheetVariant.distance
-                ? "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa explicabo."
-                : "doloremque laudantium, totam rem aperiam, eaque ipsa explicabo. , totam rem aperiam,",
+                ? "Set the search radius to find the best offers for you."
+                : "Specify the amount you wish to offer for the requested service.",
             style: TextStyleTheme.bodyLarge
                 .copyWith(fontSize: 16, fontWeight: FontWeight.w400),
           ),
@@ -143,7 +148,15 @@ class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
     // setState(() {
 
     if (widget.variant == ChangeOfferSheetVariant.price) {
-      _value.value = _value.value + 100;
+      int maxLimit =
+          widget.defaultValue + getPercentage(widget.defaultValue, 0.1);
+      if (_value.value < maxLimit) {
+        _value.value += getPercentage(widget.defaultValue, 0.1);
+        if (_value.value > maxLimit) {
+          _value.value = maxLimit;
+        }
+      }
+      // _value.value = _value.value + 100;
     } else {
       _value.value = _value.value + 5;
     }
@@ -154,7 +167,14 @@ class _ChangeOfferSheetState extends State<ChangeOfferSheet> {
   void _decrement() {
     if (_value.value > 0) {
       if (widget.variant == ChangeOfferSheetVariant.price) {
-        _value.value = _value.value - 100;
+        int minLimit = widget.defaultValue - getPercentage(_value.value, 0.1);
+        if (_value.value > minLimit) {
+          _value.value -= getPercentage(widget.defaultValue, 0.1);
+          if (_value.value < minLimit) {
+            _value.value = minLimit;
+          }
+        }
+        // _value.value = _value.value - 100;
       } else {
         _value.value = _value.value - 5;
       }
