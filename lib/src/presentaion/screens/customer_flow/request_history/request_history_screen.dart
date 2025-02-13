@@ -212,8 +212,8 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                                 profileName: acceptedJobs
                                                     .value[index]
                                                     .merchantName, //"Zain Hashim",
-                                                price: acceptedJobs.value[index]
-                                                    .amount, //"10,000",
+                                                price: acceptedJobs
+                                                    .value[index].amount,
                                                 servicesList: const [],
                                                 variant:
                                                     OngoingRequestCardVariant

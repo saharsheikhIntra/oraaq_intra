@@ -1,5 +1,6 @@
 class NewServiceRequestResponseDto {
   final int serviceRequestId;
+  final int bidId;
   final int customerId;
   final String customerName;
   final String distance;
@@ -10,6 +11,7 @@ class NewServiceRequestResponseDto {
 
   NewServiceRequestResponseDto({
     this.serviceRequestId = -1,
+    this.bidId = -1,
     this.customerId = -1,
     this.customerName = '',
     this.distance = '',
@@ -22,6 +24,7 @@ class NewServiceRequestResponseDto {
   factory NewServiceRequestResponseDto.fromMap(Map<String, dynamic> map) {
     return NewServiceRequestResponseDto(
       serviceRequestId: map['service_request_id'] ?? -1,
+      bidId: map['bid_id'] ?? -1,
       customerId: map['customer_id'] ?? -1,
       customerName: map['customer_name'] ?? '',
       distance: map['distance'] ?? '',
@@ -37,6 +40,6 @@ class NewServiceRequestResponseDto {
 
   @override
   String toString() {
-    return 'ServiceRequestResponseDto(serviceRequestId: $serviceRequestId, customerId: $customerId, customerName: $customerName, distance: $distance, requestDate: $requestDate, status: $status, serviceNames: $serviceNames, totalPrice: $totalPrice)';
+    return 'ServiceRequestResponseDto(serviceRequestId: $serviceRequestId, bid_id : $bidId , customerId: $customerId, customerName: $customerName, distance: $distance, requestDate: $requestDate, status: $status, serviceNames: $serviceNames, totalPrice: $totalPrice)';
   }
 }

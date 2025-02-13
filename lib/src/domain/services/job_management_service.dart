@@ -29,7 +29,7 @@ class JobManagementService {
   //
   // MARK: GET COMPLETED ORDERS
   //
-  // 
+  //
   Future<Either<Failure, List<RequestEntity>>>
       getCompletedWorkOrdersForMerchant(int merchantId) async {
     var result =

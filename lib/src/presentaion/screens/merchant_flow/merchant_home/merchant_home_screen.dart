@@ -514,7 +514,11 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   time: DateTime.tryParse(job.requestDate)!
                       .to12HourFormat, //"3:30pm",
                   defaultValue: job.totalPrice,
-                  onCancel: () => context.pop(),
+                  onCancel: () {
+                    context.pop();
+                    _cubit
+                        .cancelWorkOrderFromMerchantAppliedRequests(job.bidId);
+                  },
                   onSubmit: (int bidAmount) =>
                       _cubit.postBid(job.serviceRequestId, bidAmount),
                   variant: job.status == "Open"

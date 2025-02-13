@@ -260,8 +260,9 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                         },
                         onCancelTap: () {
                           // widget.cubit!.cancelWorkOrder(widget.workOrderId ?? -1, getIt<UserEntity>().id);
-
-                          widget.onSubmit(0);
+                          widget.sheetName == ""
+                              ? context.pop() :
+                              widget.onSubmit(_defaultValue);
                           context.pop();
 
                           //context.popUntil(RouteConstants.merchantHomeScreenRoute);
