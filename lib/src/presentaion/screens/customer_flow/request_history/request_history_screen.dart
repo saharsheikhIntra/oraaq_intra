@@ -40,18 +40,23 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _cubit.fetchWorkOrders();
       _cubit.fetchAcceptedRequest();
-      cron.schedule(
-        Schedule(seconds: 10),
-        () {
-          log('run cron');
-          _cubit.fetchWorkOrdersCron();
-          _cubit.fetchAcceptedRequestCron();
+      _cubit.fetchNewRequests();
+      // cron.schedule(
+      //   Schedule(seconds: 10),
+      //   () {
+      //     log('run cron');
 
-          _cubit.fetchNewRequests();
-        },
-      );
+      //     _cubit.fetchNewRequests();
+      //   },
+      // );
     });
   }
+
+  // @override
+  // void dispose() {
+  //   cron.close();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +85,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
             body: BlocConsumer<RequestHistoryCubit, RequestHistoryState>(
               listener: (context, state) {
                 // TODO: implement listener
+                log("Current state: ${state.runtimeType}");
                 if (state is RequestHistoryScreenLoading) {
                   DialogComponent.showLoading(context);
                 }

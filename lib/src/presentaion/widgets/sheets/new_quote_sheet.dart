@@ -246,7 +246,9 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                       SheetComponenet.showWarningSheet(
                         context,
                         title: StringConstants.cancelJobTitle,
-                        message: StringConstants.cancelJobMessage,
+                        message: widget.sheetName == "Action"
+                            ? StringConstants.cancelJobMessage
+                            : StringConstants.cancelbidMessage,
                         ctaText: "Cancel Job",
                         cancelText:
                             "${widget.sheetName == "" ? "Keep" : "Complete"} Job",
@@ -260,10 +262,13 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                         },
                         onCancelTap: () {
                           // widget.cubit!.cancelWorkOrder(widget.workOrderId ?? -1, getIt<UserEntity>().id);
-                          widget.sheetName == ""
-                              ? context.pop() :
-                              widget.onSubmit(_defaultValue);
-                          context.pop();
+
+                          if (widget.sheetName == "Action") {
+                            widget.onSubmit(0);
+                            context.pop();
+                          } else {
+                            context.pop();
+                          }
 
                           //context.popUntil(RouteConstants.merchantHomeScreenRoute);
                         },

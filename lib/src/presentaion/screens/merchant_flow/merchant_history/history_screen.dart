@@ -115,30 +115,33 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     context,
                                     isScrollControlled: true,
                                     child: CompletedJobSheet(
-                                      userName: state
-                                          .completedOrders[index].customerName,
-                                      phoneNumber: state.completedOrders[index]
-                                          .customerContactNumber,
-                                      email: state
-                                          .completedOrders[index].customerEmail,
-                                      date: state
-                                          .completedOrders[index].requestDate
-                                          .formattedDate(),
-                                      time: state.completedOrders[index]
-                                          .requestDate.to12HourFormat,
-                                      servicesList: state
-                                          .completedOrders[index].serviceNames,
-                                      totalAmount: state.completedOrders[index]
-                                          .bidAmount.asIntString,
-                                      rating: state.completedOrders[index]
-                                              .ratingMerchant ??
-                                          0,
-                                      ratingByMerchant: state
-                                          .completedOrders[index].ratingCustomer
-                                          .toString(),
-                                      variant:
-                                          CompletedJobSheetVariant.merchant,
-                                    ),
+                                        userName: state.completedOrders[index]
+                                            .customerName,
+                                        phoneNumber: state
+                                            .completedOrders[index]
+                                            .customerContactNumber,
+                                        email: state.completedOrders[index]
+                                            .customerEmail,
+                                        date: state
+                                            .completedOrders[index].requestDate
+                                            .formattedDate(),
+                                        time: state.completedOrders[index]
+                                            .requestDate.to12HourFormat,
+                                        servicesList: state
+                                            .completedOrders[index]
+                                            .serviceNames,
+                                        totalAmount: state
+                                            .completedOrders[index].bidAmount
+                                            .toString(),
+                                        ratingByMerchant: state
+                                            .completedOrders[index]
+                                            .ratingCustomer
+                                            .toString(),
+                                        rating: state.completedOrders[index]
+                                                .ratingMerchant ??
+                                            0,
+                                        variant:
+                                            CompletedJobSheetVariant.merchant),
                                   );
                                   log('rating: ${rating.toString()}');
                                   if (rating != null && rating > 0) {

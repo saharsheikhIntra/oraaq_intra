@@ -124,10 +124,11 @@ class _RequestSheetState extends State<RequestSheet> {
                   message:
                       "You can either cancel the order or keep it continue. Select an option below.",
                   ctaText: "Cancel Order",
-                  cancelText: "Keep Job", onCtaTap: () {
+                  cancelText: "Keep Order", onCtaTap: () {
                 widget.onCancel();
                 context.pop();
                 context.pop();
+
                 // context.popUntil(RouteConstants.customerHomeScreenRoute);
               },
                   // context.popUntil(RouteConstants.customerHomeScreenRoute),
@@ -135,6 +136,7 @@ class _RequestSheetState extends State<RequestSheet> {
                 // widget.onCancel();
                 context.pop();
                 context.pop();
+
                 // context.popUntil(RouteConstants.customerHomeScreenRoute);
               }
                   // context.popUntil(RouteConstants.customerHomeScreenRoute),
