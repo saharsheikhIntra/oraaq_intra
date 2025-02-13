@@ -128,13 +128,14 @@ class _RequestSheetState extends State<RequestSheet> {
                   cancelText: "Keep Job", onCtaTap: () {
                 widget.onCancel();
                 context.pop();
+                context.pop();
                 // context.popUntil(RouteConstants.customerHomeScreenRoute);
               },
                   // context.popUntil(RouteConstants.customerHomeScreenRoute),
                   onCancelTap: () {
                 // widget.onCancel();
                 context.pop();
-
+                context.pop();
                 // context.popUntil(RouteConstants.customerHomeScreenRoute);
               }
                   // context.popUntil(RouteConstants.customerHomeScreenRoute),

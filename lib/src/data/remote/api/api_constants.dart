@@ -49,7 +49,7 @@ class ApiConstants {
 
   static const String updateCustomerProfile = '/ords/oraaq/api/updateCustomer';
 
-  static const String getMerchantById = "/api/get_merchant_by_id/";
+  static const String getMerchantById = "/api/get_merchant_by_id/"; //NO USE
 
   static const String getAllCategories = "/ords/oraaq/api/getCategories";
   static const String fetchAcceptedRequests =

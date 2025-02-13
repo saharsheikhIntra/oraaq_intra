@@ -197,11 +197,15 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                   context,
                                                   isScrollControlled: true,
                                                   child: RequestSheet(
-                                                    onCancel: () => _cubit
-                                                        .cancelCustomerCreatedRequest(
-                                                      acceptedJobs
-                                                          .value[index].orderId,
-                                                    ),
+                                                    onCancel: () {
+                                                      context.pop();
+                                                      _cubit
+                                                          .cancelCustomerCreatedRequest(
+                                                        acceptedJobs
+                                                            .value[index]
+                                                            .orderId,
+                                                      );
+                                                    },
                                                     name: acceptedJobs
                                                         .value[index]
                                                         .merchantName,
