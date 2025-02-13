@@ -135,7 +135,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             .ratingCustomer
                                             .toString(),
                                         rating: state.completedOrders[index]
-                                                .rating ??
+                                                .ratingMerchant ??
                                             0,
                                         variant:
                                             CompletedJobSheetVariant.merchant),

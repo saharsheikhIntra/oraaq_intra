@@ -85,59 +85,11 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
     }
   }
 
-  Future<void> fetchWorkOrdersCron() async {
-    log('fetchWorkOrdersCron');
-    // emit(RequestHistoryScreenLoading());
-    final completedResult =
-        await _servicesRepository.getCompletedWorkOrdersForCustomer(user.id);
-    final cancelledResult =
-        await _servicesRepository.getCanceledWorkOrdersForCustomer(user.id);
-    final newRequestResult =
-        await _servicesRepository.getCustomerNewRequests(user.id);
-
-    if (completedResult.isLeft() ||
-        cancelledResult.isLeft() ||
-        newRequestResult.isLeft()) {
-      final failure = completedResult.fold((l) => l, (r) => null) ??
-          cancelledResult.fold((l) => l, (r) => null) ??
-          newRequestResult.fold((l) => l, (r) => null);
-      emit(RequestHistoryScreenError(failure!));
-    } else {
-      final completedOrders = completedResult.getOrElse(() => []);
-      final cancelledOrders = cancelledResult.getOrElse(() => []);
-      final newOrders = newRequestResult.getOrElse(() => []);
-      emit(RequestHistoryScreenLoaded(
-        completedOrders: completedOrders,
-        cancelledOrders: cancelledOrders,
-        newRequestWorkOrders: newOrders,
-      ));
-      // emit(NewRequestWorkOrdersLoaded(newOrders));
-      // emit(CompletedRequestWorkOrdersLoaded(completedOrders));
-      // emit(CancelledRequestWorkOrdersLoaded(cancelledOrders));
-    }
-  }
-
   //
 // MARK: ACCEPTED REQUESTS
 //
   Future<void> fetchAcceptedRequest() async {
     // emit(RequestHistoryScreenLoading());
-
-    final result = await _servicesRepository.getAcceptedRequests(user.id);
-
-    result.fold(
-      (l) {
-        emit(RequestHistoryScreenError(l));
-      },
-      (r) {
-        emit(CustomerHomeStateAcceptedJobs(r));
-      },
-    );
-  }
-
-  Future<void> fetchAcceptedRequestCron() async {
-    // emit(RequestHistoryScreenLoading());
-    log('fetchAcceptedRequestCron');
 
     final result = await _servicesRepository.getAcceptedRequests(user.id);
 

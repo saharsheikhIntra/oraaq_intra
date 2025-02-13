@@ -180,6 +180,8 @@ class StringConstants {
   static const String cancelJobTitle = "What would you like to do?";
   static const String cancelJobMessage =
       "You can either complete the order or cancel it. Select an option below.";
+  static const String cancelbidMessage =
+      "You can either Cancel the bid or Keep it. Select an option below.";
   static const String noDataFound = "No Data Found";
   static const String noCategoriesFound = "No Categories Found";
   static const String failedToFetchServices = "Failed to fetch services";
