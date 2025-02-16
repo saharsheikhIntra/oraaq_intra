@@ -106,7 +106,7 @@ class _WorkInProgressScreenState extends State<WorkInProgressScreen> {
                                   .toString(), // Placeholder, update as needed
                               date: order.requestDate.formattedDate(),
                               time: order.requestDate.to12HourFormat,
-                              price: order.bidAmount.toString(),
+                              price: order.bidAmount.asIntString,
                               variant: ApprovedRequestCardVariant.urgent,
                             ),
                           ),
