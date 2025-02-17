@@ -199,7 +199,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
               DialogComponent.hideLoading(context);
               _cubit.fetchAppliedJobs();
               _cubit.fetchWorkInProgressOrders();
-
+              _cubit.fetchServiceRequests(); 
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.success,
@@ -209,6 +209,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             if (state is CompleteMerchantOrderState) {
               DialogComponent.hideLoading(context);
               _cubit.fetchWorkInProgressOrders();
+              _cubit.fetchAppliedJobs();
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.success,
@@ -217,15 +218,14 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             }
             if (state is BidPostedSuccessState) {
               DialogComponent.hideLoading(context);
-
               _cubit.fetchAllServiceRequests();
               _cubit.fetchAppliedJobs();
+              _cubit.fetchServiceRequests();
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.success,
                 title: state.message,
               );
-              debugPrint(state.message);
             }
           },
           builder: (context, state) {
@@ -502,6 +502,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       itemBuilder: (BuildContext context, int index) {
         final job = serviceRequests[index];
         log(job.toString());
+
         return GestureDetector(
           onTap: () => SheetComponenet.show(context,
               isScrollControlled: true,

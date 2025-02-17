@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
+import 'package:oraaq/src/core/utils/error_util.dart';
 
 import '../../domain/entities/failure.dart';
 import '../../domain/entities/user_entity.dart';
@@ -34,7 +35,7 @@ class LocalAuthRepository {
       return const Right(null);
     } on Exception catch (e) {
       Logger().e(e);
-      return Left(Failure(e.toString()));
+      return Left(handleError(e));
     }
   }
 
@@ -52,7 +53,7 @@ class LocalAuthRepository {
       }
     } catch (e) {
       Logger().e(e);
-      return Left(Failure(e.toString()));
+      return Left(handleError(e));
     }
   }
 
@@ -65,7 +66,7 @@ class LocalAuthRepository {
       return const Right(null);
     } on Exception catch (e) {
       Logger().e(e);
-      return Left(Failure(e.toString()));
+      return Left(handleError(e));
     }
   }
 
