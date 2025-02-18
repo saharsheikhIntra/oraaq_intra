@@ -2,6 +2,9 @@ import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_home/mercha
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
 
+import '../../../../core/constants/string_constants.dart';
+import '../../../widgets/no_data_found.dart';
+
 class WorkInProgressScreen extends StatefulWidget {
   const WorkInProgressScreen({
     super.key,
@@ -109,7 +112,11 @@ class _WorkInProgressScreenState extends State<WorkInProgressScreen> {
                       },
                     );
             } else {
-              return const Center(child: Text('No Data'));
+              return NoDataFound(
+                text: StringConstants.noDataFound,
+                fontSize: 14,
+              );
+              // const Center(child: Text('No Data'));
             }
           },
         ),

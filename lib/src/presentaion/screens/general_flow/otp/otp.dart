@@ -49,6 +49,13 @@ class _OtpScreenState extends State<OtpScreen> {
               title: state.error.message,
             );
           }
+          if (state is ForgetPasswordScreenLogoutSuccess) {
+            DialogComponent.showLoading(context);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              RouteConstants.welcomeRoute,
+              (Route<dynamic> route) => false,
+            );
+          }
           if (state is ForgetPasswordLoadingState) {
             DialogComponent.showLoading(context);
           }
@@ -69,6 +76,7 @@ class _OtpScreenState extends State<OtpScreen> {
             // user.isOtpVerified = 'Y';
 
             // log(user.toString());
+
             if (widget.arguement.routeName == 'register') {
               final user = getIt<UserEntity>();
               user.isOtpVerified = 'Y';
@@ -80,6 +88,19 @@ class _OtpScreenState extends State<OtpScreen> {
                 context.pushReplacementNamed(
                     RouteConstants.merchantEditProfileRoute);
               }
+            } else if (widget.arguement.routeName == 'login') {
+              final user = getIt<UserEntity>();
+              user.isOtpVerified == 'N'
+                  ? widget.arguement.selectedUserType == UserType.customer
+                      ? context.pushReplacementNamed(
+                          RouteConstants.customerEditProfileRoute)
+                      : context.pushReplacementNamed(
+                          RouteConstants.merchantEditProfileRoute)
+                  : widget.arguement.selectedUserType == UserType.customer
+                      ? context.pushReplacementNamed(
+                          RouteConstants.customerHomeScreenRoute)
+                      : context.pushReplacementNamed(
+                          RouteConstants.merchantHomeScreenRoute);
             } else {
               context.pushNamed(RouteConstants.newPasswordRoute,
                   arguments: NewPasswordArgs(widget.arguement.selectedUserType,
@@ -140,17 +161,6 @@ class _OtpScreenState extends State<OtpScreen> {
                           child: Column(
                             children: [
                               const Spacer(),
-                              Align(
-                                  alignment: Alignment.topRight,
-                                  child: CustomButton(
-                                    icon: Symbols.logout_rounded,
-                                    type: CustomButtonType.primary,
-                                    size: CustomButtonSize.small,
-                                    onPressed: () {
-                                      _cubit.forgetPassword(
-                                          widget.arguement.email);
-                                    },
-                                  )),
                               Image.asset(
                                 AssetConstants.logoIcon,
                                 height: 80,
@@ -224,7 +234,21 @@ class _OtpScreenState extends State<OtpScreen> {
                                           widget.arguement.email),
                                     ),
                                   ]),
-                              Spacer(),
+                              16.verticalSpace,
+                              TextButton.icon(
+                                onPressed: () => _cubit.logout(),
+                                icon: Icon(
+                                  Symbols.logout_rounded,
+                                  size: 24.sp,
+                                  color: ColorTheme.black,
+                                ),
+                                label: Text(
+                                  StringConstants.logout,
+                                  style: TextStyleTheme.bodyMedium
+                                      .copyWith(color: ColorTheme.black),
+                                ),
+                              ),
+                              8.verticalSpace,
                             ],
                           )))));
         },

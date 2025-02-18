@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_history/history_screen_cubit.dart';
 import 'package:oraaq/src/imports.dart';
 
+import '../../../../core/constants/string_constants.dart';
+import '../../../widgets/no_data_found.dart';
+
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
 
@@ -151,7 +154,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 },
                               ),
                             )
-                          : const Center(child: Text('No Data')),
+                          : const NoDataFound(
+                              text: StringConstants.noDataFound,
+                              fontSize: 14,
+                            ),
+
+                      // const Center(child: Text('No Data')),
                       state.cancelledOrders.isNotEmpty
                           ? ListView.separated(
                               shrinkWrap: true,
@@ -177,11 +185,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 onTap: () {},
                               ),
                             )
-                          : const Center(child: Text('No Data')),
+                          : const NoDataFound(
+                              text: StringConstants.noDataFound,
+                              fontSize: 14,
+                            ),
+                      // const Center(child: Text('No Data')),
                     ],
                   );
                 } else {
-                  return const Center(child: Text('No Data'));
+                  return const NoDataFound(
+                    text: StringConstants.noDataFound,
+                    fontSize: 14,
+                  );
+                  //  const Center(child: Text('No Data'));
                 }
               },
             )),

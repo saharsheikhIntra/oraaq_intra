@@ -21,6 +21,8 @@ final class OtpError extends OtpState {
 
 final class ForgetPasswordLoadingState extends OtpState {}
 
+final class ForgetPasswordScreenLogoutSuccess extends OtpState {}
+
 final class ForgetPasswordSuccessState extends OtpState {
   final ForgetPasswordResponseDto response;
   //final String message;
