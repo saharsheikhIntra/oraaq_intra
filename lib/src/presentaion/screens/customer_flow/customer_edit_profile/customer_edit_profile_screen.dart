@@ -153,7 +153,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                                     user.latitude),
                             longitude: double.parse(
                                 _selectedPosition?.longitude.toString() ??
-                                    user.latitude));
+                                    user.longitude));
                       }
                     },
                   ),
