@@ -6,7 +6,6 @@ import 'package:oraaq/src/injection_container.dart';
 import 'firebase_options.dart';
 import 'src/app.dart';
 
-
 @pragma('vm:entry-point')
 Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
   // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

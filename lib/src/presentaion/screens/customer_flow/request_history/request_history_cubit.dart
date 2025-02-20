@@ -62,7 +62,6 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
         await _servicesRepository.getCanceledWorkOrdersForCustomer(user.id);
     final newRequestResult =
         await _servicesRepository.getCustomerNewRequests(user.id);
-
     if (completedResult.isLeft() ||
         cancelledResult.isLeft() ||
         newRequestResult.isLeft()) {
@@ -84,6 +83,8 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
       // emit(CancelledRequestWorkOrdersLoaded(cancelledOrders));
     }
   }
+
+
 
   //
 // MARK: ACCEPTED REQUESTS
