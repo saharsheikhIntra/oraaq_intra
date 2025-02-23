@@ -73,18 +73,18 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
       final completedOrders = completedResult.getOrElse(() => []);
       final cancelledOrders = cancelledResult.getOrElse(() => []);
       final newOrders = newRequestResult.getOrElse(() => []);
-      emit(RequestHistoryScreenLoaded(
-        completedOrders: completedOrders,
-        cancelledOrders: cancelledOrders,
-        newRequestWorkOrders: newOrders,
-      ));
+      emit(
+        RequestHistoryScreenLoaded(
+          completedOrders: completedOrders,
+          cancelledOrders: cancelledOrders,
+          newRequestWorkOrders: newOrders,
+        ),
+      );
       // emit(NewRequestWorkOrdersLoaded(newOrders));
       // emit(CompletedRequestWorkOrdersLoaded(completedOrders));
       // emit(CancelledRequestWorkOrdersLoaded(cancelledOrders));
     }
   }
-
-
 
   //
 // MARK: ACCEPTED REQUESTS

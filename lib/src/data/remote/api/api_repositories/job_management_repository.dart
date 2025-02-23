@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/utils/error_util.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/base_response_dto2.dart';
 
 import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_response_dto.dart';
 
@@ -26,36 +27,29 @@ class JobManagementRepository {
   // MARK: GET CATEGORY
   //
   //
-
   Future<Either<Failure, List<CategoryResponseDto>>> getCategories() async {
     try {
       final result = await _datasource.get(ApiConstants.getAllCategories);
+      log("GET CATEGORY RESULT: $result");
       return result.fold(
-          (l) => Left(l),
-          (r) => Right(
-                BaseResponseDto.fromJson(
-                      r.data,
-                      (data) => data['categories'] is List
-                          ? (data['categories'] as List)
-                              .map((e) => CategoryResponseDto.fromMap(e))
-                              .toList()
-                          : null,
-                    ).data ??
-                    [],
+        (failure) => Left(failure),
+        (response) {
+          final baseResponse = BaseResponseDto2.fromJson(
+            response.data,
+            (data) {
+              // Since data is already the 'items' list, treat it as List directly.
+              if (data is List) {
+                return data.map((e) => CategoryResponseDto.fromMap(e)).toList();
+              }
+              return <CategoryResponseDto>[]; // Return empty list if data is not a list.
+            },
+          );
 
-                //     r.data,
-                //     (data) =>
-                //     data is List
-                //         ? data
-                //             .map(
-                //               (e) => CategoryResponseDto.fromMap(e),
-                //             )
-                //             .toList()
-                //         : null).data ??
-                // [],
-              ));
-    } catch (e) {
-      log("GET CATEGORY: $e");
+          return Right(baseResponse.data ?? []);
+        },
+      );
+    } catch (e, stackTrace) {
+      log("GET CATEGORY ERROR: $e", stackTrace: stackTrace);
       return Left(handleError(e));
     }
   }

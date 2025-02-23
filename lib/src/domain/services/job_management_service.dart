@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/enum/request_status_enum.dart';
 import 'package:oraaq/src/data/remote/api/api_repositories/job_management_repository.dart';
@@ -19,6 +21,7 @@ class JobManagementService {
 
   Future<Either<Failure, List<CategoryEntity>>> getCategories() async {
     var result = await _jobsRepository.getCategories();
+    log("fetchCategoriesService: $result");
     return result.fold(
       (l) => Left(l),
       (r) => Right(r.map((e) => e.toCategoryEntity).toList()),

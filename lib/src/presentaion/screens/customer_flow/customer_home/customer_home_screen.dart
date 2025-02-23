@@ -32,7 +32,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await _cubit.fetchCategories();
       await _cubit.fetchAcceptedRequest();
-      await _cubit.fetchCategories();
 
       print(acceptedJobs);
     });
@@ -67,7 +66,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
             if (state is CancelCustomerRequestSuccessState) {
               DialogComponent.hideLoading(context);
               _cubit.fetchAcceptedRequest();
-              
+
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.success,

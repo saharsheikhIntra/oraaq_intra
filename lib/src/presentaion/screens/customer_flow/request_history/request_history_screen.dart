@@ -177,7 +177,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                       //
                       // MARK: On-going orders tab
                       //
-                      //
+                      // 
                       ListView(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         children: [

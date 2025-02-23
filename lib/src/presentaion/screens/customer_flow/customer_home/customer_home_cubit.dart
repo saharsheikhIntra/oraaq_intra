@@ -1,5 +1,7 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
-import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_customer_request.dart';
+// import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_customer_request.dart';
 import 'package:oraaq/src/domain/services/services_service.dart';
 import 'package:oraaq/src/imports.dart';
 
@@ -20,6 +22,7 @@ class CustomerHomeCubit extends Cubit<CustomerHomeState> {
   Future<void> fetchCategories() async {
     emit(CustomerHomeStateLoading());
     final result = await _jobManagementService.getCategories();
+    log("fetchCategories: $result");
     result.fold(
       (l) => emit(CustomerHomeStateError(l)),
       (r) => emit(CustomerHomeStateCategories(r)),
@@ -50,8 +53,7 @@ class CustomerHomeCubit extends Cubit<CustomerHomeState> {
   ) async {
     emit(CustomerHomeStateLoading());
 
-    final result =
-        await _servicesRepository.cancelWorkOrder(orderId, user.id);
+    final result = await _servicesRepository.cancelWorkOrder(orderId, user.id);
     // await _servicesService.cancelCustomerCreatedRequest(
     //     cancelCustomerCreatedRequestsDto(requestId: requestId));
     result.fold((l) => emit(CustomerHomeStateError(l)),

@@ -7,9 +7,10 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:oraaq/src/core/extensions/base64_to_bytes_extensions.dart';
 import 'package:oraaq/src/imports.dart';
 
-enum ImageType { asset, file, network, unknown }
+enum ImageType { asset, file, network, base64, unknown }
 
 enum ImageFormat { raster, vector }
 
@@ -51,6 +52,7 @@ class ImageWidget extends StatelessWidget {
           ImageType.network => _buildImageNetwork(),
           ImageType.asset => _buildImageAsset(),
           ImageType.file => _buildImageFile(),
+          ImageType.base64 => _buildImageBase64(),
           ImageType.unknown => _buildError(),
         });
   }
@@ -64,9 +66,16 @@ class ImageWidget extends StatelessWidget {
       return ImageType.file;
     } else if (path.startsWith('assets/')) {
       return ImageType.asset;
+    } else if (_isBase64(path)) {
+      return ImageType.base64;
     } else {
       return ImageType.unknown;
     }
+  }
+
+  bool _isBase64(String str) {
+    final regex = RegExp(r'^[A-Za-z0-9+/=]+\$');
+    return regex.hasMatch(str) && str.length % 4 == 0;
   }
 
   bool get _isVector =>
@@ -166,5 +175,19 @@ class ImageWidget extends StatelessWidget {
                   value: progress.progress,
                   color: loadingIndicatorColor,
                 ))));
+  }
+
+  Widget _buildImageBase64() {
+    try {
+      final imageBytes = path.toImageBytes;
+      return Image.memory(
+        imageBytes,
+        fit: fit ?? BoxFit.cover,
+        width: width,
+        height: height,
+      );
+    } catch (e) {
+      return _buildError();
+    }
   }
 }

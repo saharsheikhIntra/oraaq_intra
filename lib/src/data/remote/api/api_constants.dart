@@ -17,7 +17,7 @@ class ApiConstants {
   static const String changePassword = "/ords/oraaq/api/changePassword";
   static const String forgetPassword = "/ords/oraaq/api/forgetPassword";
   static const String setNewPassword = "/ords/oraaq/api/setNewPassword";
-  static const String loginViaSocial= "/ords/oraaq/api/SocialRegisterLogin";
+  static const String loginViaSocial = "/ords/oraaq/api/SocialRegisterLogin";
   //
   // MARK: MERCHANT FLOW
   static const String updateMerchantProfile =
@@ -30,17 +30,18 @@ class ApiConstants {
       "/ords/oraaq/api/merchantWorkorders?";
   static const String getWorkInProgressOrdersForMerchant =
       '/ords/oraaq/api/GetInProgressWorkOrdersForMerchant?merchant_id=';
-  static const String cancelMerchantWorkOrder = 
+  static const String cancelMerchantWorkOrder =
       '/ords/oraaq/api/cancelWorkOrder?';
   static const String getAllServiceRequests =
       "/ords/oraaq/api/getAllNewRequests?merchant_id=";
-  static const String getAllRequests = "/ords/oraaq/api/GetAllNewRequestForMerchant?merchant_id=";
+  static const String getAllRequests =
+      "/ords/oraaq/api/GetAllNewRequestForMerchant?merchant_id=";
 
   static const String postBid = "/ords/oraaq/api/submitBid";
   static const String addRating = "/ords/oraaq/api/addRating";
   static const String getMerchantWithinRadius =
       "/ords/oraaq/api/getMerchantWithinRadius";
-  static const String getAppliedJobsNew =     
+  static const String getAppliedJobsNew =
       "/ords/oraaq/api/get_applied_merchant_work_order?";
   static const String cancelMerchantWorkOrderForAppliedRequests =
       '/ords/oraaq/api/cancel_bid_for_merchant?';
@@ -51,7 +52,7 @@ class ApiConstants {
 
   static const String getMerchantById = "/api/get_merchant_by_id/"; //NO USE
 
-  static const String getAllCategories = "/ords/oraaq/api/getCategories";
+  static const String getAllCategories = "/ords/oraaq/api/Get_Categories";
   static const String fetchAcceptedRequests =
       '/ords/oraaq/api/fetchAcceptedRequest?';
 

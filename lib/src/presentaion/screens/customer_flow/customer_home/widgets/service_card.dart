@@ -19,20 +19,19 @@ class ServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String assetImagePath =
-        categoryImageMap[category.name] ?? AssetConstants.services1;
+
     return InkWell(
         borderRadius: BorderRadius.circular(12.0),
         onTap: onTap,
         child: Stack(
           children: [
             ImageWidget(
-              assetImagePath,
+              category.imageBlob,
               // category.imageUrl,
               borderRadius: 12,
               height: 180,
               width: double.infinity,
-              type: ImageType.asset,
+              type: ImageType.base64,
             ),
             Ink(
                 height: 180,
