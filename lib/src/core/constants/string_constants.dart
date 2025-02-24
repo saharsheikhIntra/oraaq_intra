@@ -152,7 +152,10 @@ class StringConstants {
   static const String requests = "Requests";
   static const String latestServiceRequests = "Latest Service Requests";
   static const String alreadyQuoted = "Already Quoted";
+  static const String acceptedRequest = "Accepted Requests";
   static const String allServiceRequests = "All Service Requests";
+  static const String allRequests = "All Requests";
+  static const String pendingRequests = "Pending Requests";
   static const String saloon = "Saloon";
   static const String approvedJobs = "Ongoing Jobs";
   static const String offersReceived = "Offers Received";

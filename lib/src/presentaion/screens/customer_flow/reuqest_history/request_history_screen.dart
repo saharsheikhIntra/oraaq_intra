@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:oraaq/src/core/enum/customer_jobs_filters.dart';
+import 'package:oraaq/src/core/enum/merchant_jobs_filter.dart';
 import 'package:oraaq/src/core/extensions/widget_extension.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
@@ -31,6 +33,28 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
       newRequestCustomerWorkOrderNotifier = ValueNotifier([]);
   final ValueNotifier<List<AcceptedRequestsResponseDto>> acceptedJobs =
       ValueNotifier([]);
+  CustomerJobsFilter selectedFilter = CustomerJobsFilter.pendingRequests;
+  void filterRequests(String filter) {
+    if (filter == "All Requests") {
+      // _cubit.fetchAllServiceRequests();
+    } else if (filter == "Accepted Requests") {
+      // _cubit.fetchAcceptedRequest();
+    } else if (filter == "Pending Requests") {
+      // _cubit.fetchServiceRequests();
+    }
+  }
+
+  String getSelectedServiceName() {
+    if (selectedFilter == CustomerJobsFilter.pendingRequests) {
+      return StringConstants.pendingRequests;
+    } else if (selectedFilter == CustomerJobsFilter.acceptedRequest) {
+      return StringConstants.acceptedRequest;
+    } else if (selectedFilter == CustomerJobsFilter.allRequests) {
+      return StringConstants.allRequests;
+    } else {
+      return '';
+    }
+  }
 
   final cron = Cron();
   @override
@@ -71,7 +95,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                   splashBorderRadius: 12.topBorderRadius,
                   tabs: const [
                     Tab(
-                        text: "On Going",
+                        text: "All requests",
                         icon: Icon(Symbols.award_star_rounded)),
                     Tab(
                         text: "Completed",
@@ -162,24 +186,87 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                       // MARK: On-going orders tab
                       //
                       //
+
                       ListView(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         children: [
-                          Text(
-                            StringConstants.acceptedRequests,
-                            style: TextStyleTheme.titleSmall
-                                .copyWith(color: ColorTheme.secondaryText),
-                          ).wrapInPadding(16.horizontalPadding),
+                          Padding(
+                            padding: 16.horizontalPadding,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    getSelectedServiceName(),
+                                    // selectedFilter == MerchantJobsFilter.allRequests
+                                    //     ? StringConstants.latestServiceRequests
+                                    //     : StringConstants.alreadyQuoted,
+                                    style: TextStyleTheme.titleMedium.copyWith(
+                                      color: ColorTheme.secondaryText,
+                                    ),
+                                  ),
+                                ),
+                                CustomButton(
+                                  size: CustomButtonSize.small,
+                                  type: CustomButtonType.tertiary,
+                                  icon: Symbols.filter_list_rounded,
+                                  onPressed: () {
+                                    SheetComponenet.showSelectionSheet(
+                                      context,
+                                      title: "Filter Requests by",
+                                      selected: selectedFilter.value,
+                                      options: CustomerJobsFilter.values
+                                          .map((e) => e.value)
+                                          .toList(),
+                                    ).then((value) {
+                                      if (value != null) {
+                                        var temp = CustomerJobsFilter.values
+                                            .firstWhere(
+                                          (e) => e.value == value,
+                                          orElse: () => CustomerJobsFilter
+                                              .pendingRequests,
+                                        );
+                                        if (temp != selectedFilter) {
+                                          setState(() {
+                                            selectedFilter = temp;
+                                          });
+                                          filterRequests(value);
+                                        }
+                                      }
+                                    });
+                                  },
+                                ),
+                                16.horizontalSpace,
+                                CustomButton(
+                                  size: CustomButtonSize.small,
+                                  type: CustomButtonType.tertiary,
+                                  icon: Symbols.info_rounded,
+                                  onPressed: () => Toast.show(
+                                    context: context,
+                                    variant: SnackbarVariantEnum.normal,
+                                    title:
+                                        StringConstants.latestServiceRequests,
+                                    message:
+                                        StringConstants.serviceToastDetails,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Text(
+                          //   StringConstants.acceptedRequests,
+                          //   style: TextStyleTheme.titleSmall
+                          //       .copyWith(color: ColorTheme.secondaryText),
+                          // ).wrapInPadding(16.horizontalPadding),
                           12.verticalSpace,
-                          SizedBox(
-                            height: 120,
-                            child: ValueListenableBuilder(
+                          if (selectedFilter ==
+                              CustomerJobsFilter.acceptedRequest)
+                            ValueListenableBuilder(
                               valueListenable: acceptedJobs,
                               builder: (context, value, child) {
                                 return value.isNotEmpty
                                     ? ListView.builder(
                                         shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
+                                        scrollDirection: Axis.vertical,
                                         itemCount: acceptedJobs.value.length,
                                         padding: 16.horizontalPadding,
                                         itemBuilder:
@@ -200,7 +287,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                               ),
                                             ),
                                             child: SizedBox(
-                                              height: 96,
+                                              height: 120,
                                               width: 245,
                                               child: OnGoingRequestCard(
                                                 userName: acceptedJobs
@@ -229,7 +316,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                                   isScrollControlled: true,
                                                   child: RequestSheet(
                                                     onCancel: () {
-                                                      context.pop();
+                                                      // context.pop();
                                                       _cubit.cancelWorkOrder(
                                                           acceptedJobs
                                                               .value[index]
@@ -279,57 +366,95 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                 //   );
                               },
                             ),
-                          ),
-                          24.verticalSpace,
-                          Text(
-                            StringConstants.requests,
-                            style: TextStyleTheme.titleSmall
-                                .copyWith(color: ColorTheme.secondaryText),
-                          ).wrapInPadding(16.horizontalPadding),
-                          12.verticalSpace,
-                          ValueListenableBuilder(
-                              valueListenable:
-                                  newRequestCustomerWorkOrderNotifier,
-                              builder: (context, value, child) {
-                                return value.isNotEmpty
-                                    ? ListView.separated(
-                                        shrinkWrap: true,
-                                        itemCount: value.length,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        padding: 16.horizontalPadding,
-                                        separatorBuilder: (context, index) =>
-                                            12.verticalSpace,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          // CustomerNewRequestDto currentRequest =
-                                          //     value[index];
-                                          ValueNotifier<CustomerNewRequestDto>
-                                              currentRequest =
-                                              ValueNotifier(value[index]);
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 12.0),
-                                            child: currentRequest
-                                                        .value.offersReceived !=
-                                                    0
-                                                ? badges.Badge(
-                                                    badgeStyle:
-                                                        const badges.BadgeStyle(
-                                                            badgeColor:
-                                                                ColorTheme
-                                                                    .secondary),
-                                                    position:
-                                                        badges.BadgePosition
-                                                            .topEnd(
-                                                                top: -15,
-                                                                end: 1),
-                                                    badgeContent: Text(
-                                                      currentRequest
-                                                          .value.offersReceived
-                                                          .toString(),
-                                                    ),
-                                                    child: OnGoingRequestCard(
+
+                          // 24.verticalSpace,
+                          // Text(
+                          //   StringConstants.requests,
+                          //   style: TextStyleTheme.titleSmall
+                          //       .copyWith(color: ColorTheme.secondaryText),
+                          // ).wrapInPadding(16.horizontalPadding),
+                          // 12.verticalSpace,
+                          if (selectedFilter ==
+                              CustomerJobsFilter.pendingRequests)
+                            ValueListenableBuilder(
+                                valueListenable:
+                                    newRequestCustomerWorkOrderNotifier,
+                                builder: (context, value, child) {
+                                  return value.isNotEmpty
+                                      ? ListView.separated(
+                                          shrinkWrap: true,
+                                          itemCount: value.length,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          padding: 16.horizontalPadding,
+                                          separatorBuilder: (context, index) =>
+                                              12.verticalSpace,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            // CustomerNewRequestDto currentRequest =
+                                            //     value[index];
+                                            ValueNotifier<CustomerNewRequestDto>
+                                                currentRequest =
+                                                ValueNotifier(value[index]);
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 12.0),
+                                              child: currentRequest.value
+                                                          .offersReceived !=
+                                                      0
+                                                  ? badges.Badge(
+                                                      badgeStyle: const badges
+                                                          .BadgeStyle(
+                                                          badgeColor: ColorTheme
+                                                              .secondary),
+                                                      position:
+                                                          badges.BadgePosition
+                                                              .topEnd(
+                                                                  top: -15,
+                                                                  end: 1),
+                                                      badgeContent: Text(
+                                                        currentRequest.value
+                                                            .offersReceived
+                                                            .toString(),
+                                                      ),
+                                                      child: OnGoingRequestCard(
+                                                        userName: currentRequest
+                                                            .value.category,
+                                                        duration: currentRequest
+                                                            .value.duration,
+                                                        date: DateTime.tryParse(
+                                                                currentRequest
+                                                                    .value
+                                                                    .date)!
+                                                            .formattedDate(),
+                                                        time: DateTime.tryParse(
+                                                                currentRequest
+                                                                    .value
+                                                                    .date)!
+                                                            .to12HourFormat,
+                                                        profileName:
+                                                            "Zain Hashim",
+                                                        price: currentRequest
+                                                            .value.amount
+                                                            .toString(),
+                                                        servicesList:
+                                                            currentRequest
+                                                                .value.services,
+                                                        variant:
+                                                            OngoingRequestCardVariant
+                                                                .waiting,
+                                                        onTap: () {
+                                                          log("services list: ${currentRequest.value.services.toString()}");
+                                                          context.pushNamed(
+                                                            RouteConstants
+                                                                .offeredReceivedScreenRoute,
+                                                            arguments:
+                                                                OfferRecievedArguments(
+                                                                    currentRequest),
+                                                          );
+                                                        },
+                                                      ))
+                                                  : OnGoingRequestCard(
                                                       userName: currentRequest
                                                           .value.category,
                                                       duration: currentRequest
@@ -363,50 +488,17 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                                                   currentRequest),
                                                         );
                                                       },
-                                                    ))
-                                                : OnGoingRequestCard(
-                                                    userName: currentRequest
-                                                        .value.category,
-                                                    duration: currentRequest
-                                                        .value.duration,
-                                                    date: DateTime.tryParse(
-                                                            currentRequest
-                                                                .value.date)!
-                                                        .formattedDate(),
-                                                    time: DateTime.tryParse(
-                                                            currentRequest
-                                                                .value.date)!
-                                                        .to12HourFormat,
-                                                    profileName: "Zain Hashim",
-                                                    price: currentRequest
-                                                        .value.amount
-                                                        .toString(),
-                                                    servicesList: currentRequest
-                                                        .value.services,
-                                                    variant:
-                                                        OngoingRequestCardVariant
-                                                            .waiting,
-                                                    onTap: () {
-                                                      log("services list: ${currentRequest.value.services.toString()}");
-                                                      context.pushNamed(
-                                                        RouteConstants
-                                                            .offeredReceivedScreenRoute,
-                                                        arguments:
-                                                            OfferRecievedArguments(
-                                                                currentRequest),
-                                                      );
-                                                    },
-                                                  ),
-                                          );
-                                        })
-                                    : const NoDataFound(
-                                        text: StringConstants.firstOrder,
-                                        fontSize: 14,
-                                      );
-                                // const Center(
-                                //     child: Center(child: Text('No Data')),
-                                //   );
-                              })
+                                                    ),
+                                            );
+                                          })
+                                      : const NoDataFound(
+                                          text: StringConstants.firstOrder,
+                                          fontSize: 14,
+                                        );
+                                  // const Center(
+                                  //     child: Center(child: Text('No Data')),
+                                  //   );
+                                })
                         ],
                       ),
                       //

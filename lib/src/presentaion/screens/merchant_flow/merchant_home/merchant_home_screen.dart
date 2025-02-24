@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:oraaq/src/core/enum/merchant_jobs_filter.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_home/merchant_home_screen_cubit.dart';
@@ -47,6 +46,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       await _cubit.fetchAllServiceRequests();
       await _cubit.fetchAppliedJobs();
       await _cubit.fetchServiceRequests();
+      // log("Merchant Id : ${user.id}");
 
       cron.schedule(
         Schedule(seconds: 2),
@@ -166,7 +166,6 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             }
             if (state is WorkInProgressOrdersLoaded) {
               DialogComponent.hideLoading(context);
-
               workInProgressOrdersNotifier.value = state.workInProgressOrders;
             }
 
@@ -175,27 +174,34 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
 
               serviceRequestsNotifier.value = state.serviceRequests;
             }
+
             if (state is ServiceRequestsLoaded) {
               DialogComponent.hideLoading(context);
-
               allServiceRequestsNotifier.value = state.serviceRequests;
             }
+
             if (state is WorkInProgressOrdersCronLoaded) {
               log('cron loaded');
               workInProgressOrdersNotifier.value = state.workInProgressOrders;
             }
+
             if (state is AllServiceRequestsCronLoaded) {
               serviceRequestsNotifier.value = state.serviceRequests;
             }
+
             if (state is AppliedJobsLoaded) {
               DialogComponent.hideLoading(context);
               appliedJobsNotifier.value = state.appliedJobs;
             }
+
             if (state is CancelMerchantOrderState) {
               DialogComponent.hideLoading(context);
-              _cubit.fetchAppliedJobs();
+              if (selectedFilter == MerchantJobsFilter.allRequests) {
+                _cubit.fetchServiceRequests();
+              } else if (selectedFilter == MerchantJobsFilter.alreadyQuoted) {
+                _cubit.fetchAppliedJobs();
+              }
               _cubit.fetchWorkInProgressOrders();
-
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.success,
@@ -205,6 +211,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             if (state is CompleteMerchantOrderState) {
               DialogComponent.hideLoading(context);
               _cubit.fetchWorkInProgressOrders();
+              // _cubit.fetchAppliedJobs();
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.success,
@@ -213,8 +220,11 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             }
             if (state is BidPostedSuccessState) {
               DialogComponent.hideLoading(context);
-
-              _cubit.fetchAllServiceRequests();
+              if (selectedFilter == MerchantJobsFilter.allRequests) {
+                _cubit.fetchServiceRequests();
+              } else {
+                _cubit.fetchAllServiceRequests();
+              }
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.success,
@@ -396,6 +406,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       itemBuilder: (BuildContext context, int index) {
         final order = workInProgressOrders[index];
 
+        // log("Order ID : ${order.bidId}");
+
         return GestureDetector(
           onTap: () {
             SheetComponenet.show(context,
@@ -448,6 +460,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       separatorBuilder: (context, index) => 12.verticalSpace,
       itemBuilder: (BuildContext context, int index) {
         final job = serviceRequests[index];
+        // log(job.customerName);
+        // log(job.distance.toString());
         return GestureDetector(
           onTap: () => SheetComponenet.show(context,
               isScrollControlled: true,
@@ -489,6 +503,8 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
       separatorBuilder: (context, index) => 12.verticalSpace,
       itemBuilder: (BuildContext context, int index) {
         final job = serviceRequests[index];
+        // log(job.toString());
+
         return GestureDetector(
           onTap: () => SheetComponenet.show(context,
               isScrollControlled: true,
