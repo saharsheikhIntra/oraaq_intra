@@ -49,6 +49,13 @@ class _OtpScreenState extends State<OtpScreen> {
               title: state.error.message,
             );
           }
+          if (state is ForgetPasswordScreenLogoutSuccess) {
+            DialogComponent.showLoading(context);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              RouteConstants.welcomeRoute,
+              (Route<dynamic> route) => false,
+            );
+          }
           if (state is ForgetPasswordLoadingState) {
             DialogComponent.showLoading(context);
           }
@@ -69,14 +76,31 @@ class _OtpScreenState extends State<OtpScreen> {
             // user.isOtpVerified = 'Y';
 
             // log(user.toString());
+
             if (widget.arguement.routeName == 'register') {
               final user = getIt<UserEntity>();
               user.isOtpVerified = 'Y';
+
               if (widget.arguement.selectedUserType == UserType.customer) {
-                context.pushNamed(RouteConstants.customerEditProfileRoute);
+                context.pushReplacementNamed(
+                    RouteConstants.customerEditProfileRoute);
               } else {
-                context.pushNamed(RouteConstants.merchantEditProfileRoute);
+                context.pushReplacementNamed(
+                    RouteConstants.merchantEditProfileRoute);
               }
+            } else if (widget.arguement.routeName == 'login') {
+              final user = getIt<UserEntity>();
+              user.isOtpVerified == 'N'
+                  ? widget.arguement.selectedUserType == UserType.customer
+                      ? context.pushReplacementNamed(
+                          RouteConstants.customerEditProfileRoute)
+                      : context.pushReplacementNamed(
+                          RouteConstants.merchantEditProfileRoute)
+                  : widget.arguement.selectedUserType == UserType.customer
+                      ? context.pushReplacementNamed(
+                          RouteConstants.customerHomeScreenRoute)
+                      : context.pushReplacementNamed(
+                          RouteConstants.merchantHomeScreenRoute);
             } else {
               context.pushNamed(RouteConstants.newPasswordRoute,
                   arguments: NewPasswordArgs(widget.arguement.selectedUserType,
@@ -163,12 +187,6 @@ class _OtpScreenState extends State<OtpScreen> {
                                     .titleSmall //labelLarge not showing bold
                                     .copyWith(color: ColorTheme.onPrimary),
                               ),
-                              Text(
-                                StringConstants.samplePhoneNumber,
-                                textAlign: TextAlign.center,
-                                style: TextStyleTheme.titleSmall
-                                    .copyWith(color: ColorTheme.onPrimary),
-                              ),
                               const Spacer(
                                 flex: 2,
                               ),
@@ -216,6 +234,21 @@ class _OtpScreenState extends State<OtpScreen> {
                                           widget.arguement.email),
                                     ),
                                   ]),
+                              16.verticalSpace,
+                              TextButton.icon(
+                                onPressed: () => _cubit.logout(),
+                                icon: Icon(
+                                  Symbols.logout_rounded,
+                                  size: 24.sp,
+                                  color: ColorTheme.black,
+                                ),
+                                label: Text(
+                                  StringConstants.logout,
+                                  style: TextStyleTheme.bodyMedium
+                                      .copyWith(color: ColorTheme.black),
+                                ),
+                              ),
+                              8.verticalSpace,
                             ],
                           )))));
         },

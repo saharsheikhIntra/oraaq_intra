@@ -54,6 +54,7 @@ void initializeInjectedDependencies() {
 
 injectDatasources() {
   getIt.registerSingleton(LocalDatasource());
+  // getIt.re
 
   Dio dio = Dio(BaseOptions(
     baseUrl: ApiConstants.baseUrl,
@@ -155,12 +156,11 @@ injectCubits() {
 
   getIt.registerFactory(() => PickLocationCubit(getIt()));
   getIt.registerFactory(() => QuestionnaireCubit(getIt()));
-  getIt.registerFactory(() => CustomerHomeCubit(getIt(), getIt()));
+  getIt.registerFactory(() => CustomerHomeCubit(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => ChangePasswordCubit(getIt()));
 
   getIt.registerFactory(() => CustomerEditProfileCubit(getIt()));
-  getIt.registerFactory(() => RequestHistoryCubit(getIt(),getIt()));
-
+  getIt.registerFactory(() => RequestHistoryCubit(getIt(), getIt()));
 
   getIt.registerFactory(() => OffersRecievedCubit(getIt()));
   getIt.registerFactory(() => CustomerProfileCubit(getIt()));

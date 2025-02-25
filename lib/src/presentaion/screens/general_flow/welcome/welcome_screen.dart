@@ -9,6 +9,11 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   final ValueNotifier<UserType?> _selectedType = ValueNotifier(null);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +49,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               child: Image.asset(
                                 height: 80,
                                 fit: BoxFit.cover,
-                                AssetConstants.logo,
+                                AssetConstants.logoIconWhite,
                               )),
                           const Spacer(flex: 2),
                           Text(
@@ -53,6 +58,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             style: TextStyleTheme.headlineSmall
                                 .copyWith(color: ColorTheme.primaryText),
                           ),
+
                           16.verticalSpace,
                           Text(
                             StringConstants.welcomeMessage,
@@ -83,7 +89,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               onPressed: _selectedType.value == null
                                   ? null
                                   : () {
-                                      print(_selectedType.value);
+                                      debugPrint(
+                                          _selectedType.value.toString());
+                                      // if (getIt.isRegistered<UserType>()) getIt.unregister<UserType>();
                                       // getIt.registerSingleton<UserType>(
                                       //     _selectedType.value!);
                                       context.pushNamed(

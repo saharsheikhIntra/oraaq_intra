@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/social_login_dto.dart';
 import 'package:oraaq/src/injection_container.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_state.dart';
 
@@ -33,10 +36,27 @@ class LoginCubit extends Cubit<LoginState> {
   socialSignIn(SocialSignInEnum signinProvidor, UserType userType) async {
     var result =
         await _authenticationServices.socialSignIn(signinProvidor, userType);
-
+    // debugPrint(result);
     result.fold(
       (l) => Logger().e(l),
-      (r) => Logger().i(r),
+      (r) async {
+        emit(LoginStateLoading());
+        Logger().e(r.displayName);
+        // var result =
+        var socialApiRes = await _authenticationServices.loginViaSocial(
+            SocialLoginRequestDto(
+                userName: r.displayName ?? "",
+                role: userType.id,
+                email: r.email!,
+                phone: r.phoneNumber ?? "",
+                provider: signinProvidor.name,
+                socialId: r.uid));
+        log(socialApiRes.toString());
+        socialApiRes.fold(
+          (l) => emit(LoginStateError(l)),
+          (res) => emit(LoginStateLoaded(res)),
+        );
+      },
     );
   }
 }

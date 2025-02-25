@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 import '../../domain/entities/failure.dart';
@@ -29,7 +30,7 @@ class LocalAuthRepository {
         LocalConstants.token,
         token,
       );
-      print("Token saved: $token");
+      debugPrint("Token saved: $token");
       return const Right(null);
     } on Exception catch (e) {
       Logger().e(e);

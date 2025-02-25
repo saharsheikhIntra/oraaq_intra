@@ -35,8 +35,6 @@ export 'package:oraaq/src/core/utils/validation_utils.dart';
 
 // MARK: REGISTER SCREEN
 
-export 'package:oraaq/src/core/extensions/num_extension.dart';
-
 // MARK: OTP SCREEN
 
 export 'package:oraaq/src/presentaion/widgets/opt_widget.dart';
@@ -44,15 +42,9 @@ export 'package:oraaq/src/presentaion/widgets/resend_otp.dart';
 
 // MARK: NEW PASSWORD
 
-export 'package:oraaq/src/core/constants/asset_constants.dart';
-
 // MARK: FORGOT PASSWORD
 
-export 'package:oraaq/src/core/extensions/num_extension.dart';
-
 // MARK: CHNAGE PASSWORD
-
-export 'package:material_symbols_icons/symbols.dart';
 
 // MARK: MERCHANT FLOW
 

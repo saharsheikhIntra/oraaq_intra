@@ -1,18 +1,5 @@
-import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:material_symbols_icons/symbols.dart';
-import 'package:oraaq/src/core/extensions/num_extension.dart';
-import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_profile/customer_profile_cubit.dart';
-import 'package:oraaq/src/presentaion/screens/general_flow/welcome/welcome_screen.dart';
-
-import '../../../../config/themes/color_theme.dart';
-import '../../../../config/themes/text_style_theme.dart';
-import '../../../../core/constants/route_constants.dart';
-import '../../../../core/constants/string_constants.dart';
-import '../../../widgets/setting_tile.dart';
 
 class CustomerProfileScreen extends StatefulWidget {
   const CustomerProfileScreen({super.key});

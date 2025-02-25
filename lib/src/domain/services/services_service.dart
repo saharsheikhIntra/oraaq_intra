@@ -4,6 +4,7 @@ import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/create_order_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/get_merchant_radius.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/combine_requests_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/fetch_offers_for_requests.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/get_all_bids.dart';
@@ -87,6 +88,23 @@ class ServicesService {
   Future<Either<Failure, List<AcceptedRequestsResponseDto>>>
       getAcceptedRequests(int customerId) async {
     var result = await _servicesRepository.getAcceptedRequests(customerId);
+    return result.fold(
+      (l) => Left(l),
+      (r) async {
+        return Right(r);
+      },
+    );
+  }
+
+  //
+  //
+  // MARK: GET COMBINE REQUESTS
+  //
+  //
+  Future<Either<Failure, List<CombineRequestsResponseDto>>> getCombineRequests(
+      int customerId) async {
+    var result =
+        await _servicesRepository.getCustomerCombineRequests(customerId);
     return result.fold(
       (l) => Left(l),
       (r) async {
@@ -192,18 +210,19 @@ class ServicesService {
     return result.fold(
       (l) => Left(l),
       (r) async {
-        var requests = r
-            .map((e) => CustomerNewRequestDto(
-                requestId: e.requestId,
-                amount: e.amount,
-                category: e.category,
-                date: e.date,
-                offersReceived: e.offersReceived,
-                services: e.services,
-                radius: e.radius,
-                duration: e.duration))
-            .toList();
-        return Right(requests);
+        // var requests = r
+        //     .map((e) => CustomerNewRequestDto(
+        //         requestId: e.requestId,
+        //         amount: e.amount,
+        //         category: e.category,
+        //         date: e.date,
+        //         offersReceived: e.offersReceived,
+        //         services: e.services,
+        //         radius: e.radius,
+        //         duration: e.duration))
+        //     .toList();
+        // return Right(requests);
+        return Right(r);
       },
     );
   }
@@ -351,7 +370,6 @@ class ServicesService {
     );
   }
 
-
   //
   //
   // MARK: CANCEL CONFIRMED WORK ORDER
@@ -365,5 +383,4 @@ class ServicesService {
       (r) => Right(r),
     );
   }
-
 }

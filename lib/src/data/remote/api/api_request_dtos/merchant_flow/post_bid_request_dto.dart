@@ -1,7 +1,7 @@
 class PostBidRequestDto {
   final int orderId;
   final int merchantId;
-  final double bidAmount;
+  final int bidAmount;
   final int createdBy;
 
   PostBidRequestDto({

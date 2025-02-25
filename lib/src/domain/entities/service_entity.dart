@@ -10,6 +10,7 @@ class ServiceEntity {
   final bool isLastLeaf;
   final bool isRadio;
   final List<ServiceEntity> services;
+
   ServiceEntity({
     required this.serviceId,
     required this.shortTitle,

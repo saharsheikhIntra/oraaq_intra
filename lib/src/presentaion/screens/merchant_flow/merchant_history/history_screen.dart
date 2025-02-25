@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_history/history_screen_cubit.dart';
 import 'package:oraaq/src/imports.dart';
 
+import '../../../../core/constants/string_constants.dart';
+import '../../../widgets/no_data_found.dart';
+
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
 
@@ -94,7 +97,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     .customerName, //"AC REPAIRING",
                                 date: state.completedOrders[index].requestDate
                                     .formattedDate(), //"4th March",
-                                ratings: state.completedOrders[index].ratingCustomer
+                                ratings: state
+                                    .completedOrders[index].ratingCustomer
                                     .toString(),
                                 // "4 / 5",
                                 price: state.completedOrders[index].bidAmount
@@ -102,8 +106,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 servicesList: state.completedOrders[index]
                                     .serviceNames, //const [],
                                 duration: '4 hr 40 mints',
-                                rating:
-                                    state.completedOrders[index].ratingMerchant??0,
+                                rating: state.completedOrders[index]
+                                        .ratingMerchant ??
+                                    0,
                                 variant: CompletedRequestCardVariant.customer,
                                 onTap: () async {
                                   final rating = await SheetComponenet.show(
@@ -118,15 +123,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         email: state.completedOrders[index]
                                             .customerEmail,
                                         date: state
-                                            .completedOrders[index].bidDate
+                                            .completedOrders[index].requestDate
                                             .formattedDate(),
                                         time: state.completedOrders[index]
-                                            .bidDate.to12HourFormat,
+                                            .requestDate.to12HourFormat,
                                         servicesList: state
                                             .completedOrders[index]
                                             .serviceNames,
                                         totalAmount: state
                                             .completedOrders[index].bidAmount
+                                            .toString(),
+                                        ratingByMerchant: state
+                                            .completedOrders[index]
+                                            .ratingCustomer
                                             .toString(),
                                         rating: state.completedOrders[index]
                                                 .ratingMerchant ??
@@ -145,7 +154,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 },
                               ),
                             )
-                          : const Center(child: Text('No Data')),
+                          : const NoDataFound(
+                              text: StringConstants.noDataFound,
+                              fontSize: 14,
+                            ),
+
+                      // const Center(child: Text('No Data')),
                       state.cancelledOrders.isNotEmpty
                           ? ListView.separated(
                               shrinkWrap: true,
@@ -171,11 +185,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 onTap: () {},
                               ),
                             )
-                          : const Center(child: Text('No Data')),
+                          : const NoDataFound(
+                              text: StringConstants.noDataFound,
+                              fontSize: 14,
+                            ),
+                      // const Center(child: Text('No Data')),
                     ],
                   );
                 } else {
-                  return const Center(child: Text('No Data'));
+                  return const NoDataFound(
+                    text: StringConstants.noDataFound,
+                    fontSize: 14,
+                  );
+                  //  const Center(child: Text('No Data'));
                 }
               },
             )),

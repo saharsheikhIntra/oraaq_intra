@@ -9,6 +9,7 @@ part 'otp_state.dart';
 
 class OtpCubit extends Cubit<OtpState> {
   final AuthenticationServices _authServices;
+
   OtpCubit(this._authServices) : super(OtpInitial());
   // final user = getIt.get<UserEntity>();
   Future<void> generateOtp() async {
@@ -37,5 +38,11 @@ class OtpCubit extends Cubit<OtpState> {
       (l) => emit(ForgetPasswordErrorState(l)),
       (r) => emit(ForgetPasswordSuccessState(r)),
     );
+  }
+
+  logout() async {
+    emit(ForgetPasswordLoadingState());
+    await _authServices.logout();
+    emit(ForgetPasswordScreenLogoutSuccess());
   }
 }

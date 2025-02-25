@@ -1,28 +1,15 @@
 import 'dart:developer';
 
-import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
-import 'package:oraaq/src/core/constants/route_constants.dart';
-import 'package:oraaq/src/core/constants/string_constants.dart';
-import 'package:oraaq/src/core/extensions/num_extension.dart';
-import 'package:oraaq/src/core/extensions/widget_extension.dart';
-import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
-import 'package:oraaq/src/injection_container.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/pick_location/pick_location_arguement.dart';
+import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_states.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/make_offer_page.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/questions_page.dart';
-import 'package:oraaq/src/presentaion/widgets/loading_indicator.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/sub_services_args.dart';
+import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/widgets/single_question_tile.dart';
 import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
-import 'package:oraaq/src/presentaion/widgets/toast.dart';
 
 import '../../../../domain/entities/service_entity.dart';
-import '../../../widgets/dialog_component.dart';
 
 class QuestionnaireScreen extends StatefulWidget {
   final QuestionnaireArgument args;
@@ -40,8 +27,11 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
   final PageController _pageController = PageController(viewportFraction: 0.9);
   final _currentPage = ValueNotifier<int>(1);
 
-  final List<ServiceEntity> _selectedOptions = [];
   final List<ServiceEntity> _services = [];
+  final List<ServiceEntity> _selectedMainServices =
+      []; // Track selected services
+
+  final List<ServiceEntity> _selectedOptions = []; // Track options
 
   @override
   void initState() {
@@ -50,6 +40,89 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
       _cubit.fetchServices(widget.args.category.id);
     });
     super.initState();
+  }
+
+  void _showHairLengthBottomSheet(ServiceEntity hairService) {
+    // Display the bottom sheet
+    // showModalBottomSheet(
+    //   context: context,
+    //   shape: RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    //   ),
+    //   builder: (context) {
+    //     return Padding(
+    //       padding: const EdgeInsets.all(16.0),
+    //       child: Column(
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           Text(
+    //             "Select Hair Length",
+    //             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    //           ),
+    //           16.verticalSpace,
+    //           ListView.builder(
+    //             shrinkWrap: true,
+    //             itemCount: hairService.services.length,
+    //             itemBuilder: (context, index) {
+    //               final subService = hairService.services[index];
+    //               return ListTile(
+    //                 title: Text(subService.shortTitle),
+    //                 onTap: () {
+    //                   // Add the selected sub-service to _selectedMainServices
+    //                   setState(() {
+    //                     _selectedMainServices.remove(hairService);
+    //                     _selectedMainServices.add(subService);
+    //                   });
+    //                   Navigator.pop(context); // Close the bottom sheet
+    //                 },
+    //               );
+    //             },
+    //           ),
+    //         ],
+    //       ),
+    //     );
+    //   },
+    // );
+    SheetComponenet.showSelectionSheet(
+      context,
+      title: "Select Hair Length",
+      options:
+          hairService.services.map((service) => service.shortTitle).toList(),
+      selected: null, // No pre-selection by default
+    ).then((selected) {
+      if (selected != null) {
+        // Find the selected service by title
+        final selectedSubService = hairService.services.firstWhere(
+          (service) => service.shortTitle == selected,
+        );
+
+        // Update the selected main services list
+        setState(() {
+          _selectedMainServices.remove(hairService);
+          _selectedMainServices
+              .removeWhere((service) => hairService.services.contains(service));
+
+          _selectedMainServices.add(selectedSubService);
+        });
+      }
+    });
+  }
+
+  void _navigateToSubServicesScreen() {
+    if (_selectedMainServices.isEmpty) {
+      Toast.show(
+        context: context,
+        variant: SnackbarVariantEnum.warning,
+        title: "Please select at least one service",
+      );
+      return;
+    }
+
+    Navigator.pushNamed(
+      context,
+      RouteConstants.subServiceRoute,
+      arguments: SubServicesArgs(_selectedMainServices, widget.args.category),
+    );
   }
 
   @override
@@ -83,103 +156,109 @@ class QuestionnaireStateScreen extends State<QuestionnaireScreen> {
         }, builder: (context, state) {
           return Scaffold(
               appBar: AppBar(
+                automaticallyImplyLeading: false,
                 title: Text(widget.args.category.name),
-                actions: [
-                  if (_services.isNotEmpty)
-                    ValueListenableBuilder(
-                        valueListenable: _currentPage,
-                        builder: (context, value, child) => Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                LoadingIndicator(
-                                  value: value / (_services.length + 1),
-                                  size: 24,
-                                ),
-                                Text("$value",
-                                    style: const TextStyle(
-                                      height: 0,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w900,
-                                    )).wrapInPadding(1.bottomPadding),
-                              ],
-                            ).wrapInPadding(12.horizontalPadding))
-                ],
+                // actions: [
+                //   if (_services.isNotEmpty)
+                //     ValueListenableBuilder(
+                //         valueListenable: _currentPage,
+                //         builder: (context, value, child) => Stack(
+                //               alignment: Alignment.center,
+                //               children: [
+                //                 LoadingIndicator(
+                //                   value: value / (_services.length + 1),
+                //                   size: 24,
+                //                 ),
+                //                 Text("$value",
+                //                     style: const TextStyle(
+                //                       height: 0,
+                //                       fontSize: 12,
+                //                       fontWeight: FontWeight.w900,
+                //                     )).wrapInPadding(1.bottomPadding),
+                //               ],
+                //             ).wrapInPadding(12.horizontalPadding))
+                // ],
               ),
               body: SafeArea(
-                  child: _services.isEmpty
-                      ? const NoDataFound(
-                          text: StringConstants.failedToFetchServices)
-                      : Column(children: [
-                          const Text(StringConstants
-                              .getTheBestSalonServicesAtYourFingerTips),
+                child: _services.isEmpty
+                    ? const NoDataFound(
+                        text: StringConstants.failedToFetchServices)
+                    : Column(
+                        children: [
                           Expanded(
-                              child: PageView.builder(
-                            controller: _pageController,
-                            itemCount: _services.length + 1,
-                            itemBuilder: (context, index){
-                              List<QuestionModel> newList = _selectedOptions
-                                            .map((e) => QuestionModel(
-                                                id: e.serviceId,
-                                                name: e.shortTitle,
-                                                prompt: '',
-                                                level: -1,
-                                                isSelected: true,
-                                                questions: [],
-                                                fee: e.price.toInt()))
-                                            .toList();
-                              return index < _services.length
-                                    ? QuestionsPage(
-                                        service: _services[index],
-                                        onSelect: (selected) {
-                                          for (var e in selected) {
-                                            _selectedOptions.contains(e)
-                                                ? _selectedOptions.remove(e)
-                                                : _selectedOptions.add(e);
+                            child: ListView.builder(
+                                itemCount: _services.length,
+                                itemBuilder: (context, index) {
+                                  final service = _services[index];
+                                  return SingleQuestionTile(
+                                      title: service.shortTitle,
+                                      subtitle: service.description,
+                                      onChanged: (val) {
+                                        if (val) {
+                                          if (!_selectedMainServices
+                                              .contains(service)) {
+                                            _selectedMainServices.add(service);
+                                            if (service.shortTitle ==
+                                                "Hair Services") {
+                                              _showHairLengthBottomSheet(
+                                                  service);
+                                            }
+                                            log(_selectedMainServices
+                                                .toString());
                                           }
-                                        },
-                                        onNext: () {
-                                          _currentPage.value = index + 2;
-                                          _pageController.nextPage(
-                                            duration: 600.milliseconds,
-                                            curve: Curves.easeInOutCubic,
-                                          );
-                                        },
-                                        onPrevious: () {
-                                          if (index != 0) {
-                                            _currentPage.value = index;
-                                          }
-                                          _pageController.previousPage(
-                                            duration: 600.milliseconds,
-                                            curve: Curves.easeInOutCubic,
-                                          );
-                                        },
-                                      )
-                                    : MakeOfferPage(
-                                        onChanged: (offer) => Logger().i(offer),
-                                        selectedServices: newList,
-                                        // selectedServices: const [],
-                                        onContinue: (String datetimeSelected,int amount, int userOfferAmount){
-                                          log('amount: $amount userOfferAmount: $userOfferAmount');
-                                          context.pushNamed(
-                                            arguments: PickLocationScreenArgument(widget.args.category.id, newList,datetimeSelected,amount,userOfferAmount),
-                                            RouteConstants.pickLocationRoute);
-                                        },
-                                        onPrevious: () {
-                                          if (index != 0) {
-                                            _currentPage.value = index;
-                                          }
-                                          _pageController.previousPage(
-                                            duration: 600.milliseconds,
-                                            curve: Curves.easeInOutCubic,
-                                          );
-                                        });
-                            }
-
-                          )),
-                        ])));
+                                        } else {
+                                          _selectedMainServices.remove(service);
+                                          log(_selectedMainServices.toString());
+                                        }
+                                      });
+                                }),
+                          ),
+                          // CustomButton(
+                          //   text: StringConstants.next,
+                          //   onPressed: () {
+                          //     if (_selectedMainServices.isEmpty) {
+                          //       Toast.show(
+                          //         context: context,
+                          //         variant: SnackbarVariantEnum.warning,
+                          //         title: "Please select at least one service",
+                          //       );
+                          //       return;
+                          //     }
+                          //     Navigator.pushNamed(
+                          //         context, RouteConstants.subServiceRoute, arguments: SubServicesArgs(_selectedMainServices));
+                          //   },
+                          // )
+                          Padding(
+                            padding: 32.leftPadding +
+                                36.rightPadding +
+                                16.bottomPadding,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomButton(
+                                  icon: Symbols.arrow_back_rounded,
+                                  type: CustomButtonType.tertiary,
+                                  size: CustomButtonSize.small,
+                                  onPressed: () {
+                                    context.pushNamed(
+                                        RouteConstants.customerHomeScreenRoute);
+                                  },
+                                ),
+                                16.horizontalSpace,
+                                CustomButton(
+                                  size: CustomButtonSize.small,
+                                  text: StringConstants.next,
+                                  iconPosition:
+                                      CustomButtonIconPosition.trailing,
+                                  icon: Symbols.arrow_forward_rounded,
+                                  onPressed: _navigateToSubServicesScreen,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+              ));
         }));
   }
 }
-
-
-

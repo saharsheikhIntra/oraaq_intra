@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_customer_request.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/combine_requests_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
 import 'package:oraaq/src/domain/services/job_management_service.dart';
@@ -15,29 +18,26 @@ part 'request_history_state.dart';
 class RequestHistoryCubit extends Cubit<RequestHistoryState> {
   final ServicesService _servicesRepository;
   final JobManagementService _jobManagementService;
-  
-  RequestHistoryCubit(this._servicesRepository,this._jobManagementService)
+
+  RequestHistoryCubit(this._servicesRepository, this._jobManagementService)
       : super(RequestHistoryInitial());
 
   UserEntity user = getIt.get<UserEntity>();
 
-   Future<List<CustomerNewRequestDto>> fetchOnlyNewRequests() async { 
+  Future<List<CustomerNewRequestDto>> fetchOnlyNewRequests() async {
     final newRequestResult =
         await _servicesRepository.getCustomerNewRequests(user.id);
-    if (
-        newRequestResult.isLeft()) {
-      final failure =
-          newRequestResult.fold((l) => l, (r) => null);
+    if (newRequestResult.isLeft()) {
+      final failure = newRequestResult.fold((l) => l, (r) => null);
       emit(RequestHistoryScreenError(failure!));
       throw failure;
     } else {
       final newOrders = newRequestResult.getOrElse(() => []);
       return newOrders;
-
     }
   }
 
-    //
+  //
 // MARK: Fetch only new requests
 //
   Future<void> fetchNewRequests() async {
@@ -104,6 +104,24 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
     );
   }
 
+  //
+// MARK: COMBINE REQUESTS
+//
+  Future<void> fetchCombineRequest() async {
+    // emit(RequestHistoryScreenLoading());
+
+    final result = await _servicesRepository.getCombineRequests(user.id);
+
+    result.fold(
+      (l) {
+        emit(RequestHistoryScreenError(l));
+      },
+      (r) {
+        emit(CustomerHomeStateCombineJobs(r));
+      },
+    );
+  }
+
   // MARK: CANCEL CUSTOMER CREATED REQUEST
   Future cancelCustomerCreatedRequest(int requestId) async {
     emit(RequestHistoryScreenLoading());
@@ -119,7 +137,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
   //
   //
 
-  Future<void> submitRating(int orderId, int merchantId,int rating) async {
+  Future<void> submitRating(int orderId, int merchantId, int rating) async {
     final user = getIt.get<UserEntity>();
     final addRating = AddRatingRequestDto(
         orderId: orderId,
@@ -146,8 +164,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
 
   Future<void> cancelWorkOrder(int orderId) async {
     emit(RequestHistoryScreenLoading());
-    final result =
-        await _servicesRepository.cancelWorkOrder(orderId, user.id);
+    final result = await _servicesRepository.cancelWorkOrder(orderId, user.id);
     result.fold(
       (l) {
         emit(RequestHistoryScreenError(l));
@@ -157,6 +174,4 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
       },
     );
   }
-
-
 }

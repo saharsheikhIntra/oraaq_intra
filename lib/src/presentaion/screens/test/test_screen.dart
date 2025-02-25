@@ -527,12 +527,13 @@ class _TestScreenState extends State<TestScreen> {
                 context,
                 isScrollControlled: true,
                 child: RequestConfirmationSheet(
+                  standardAmount: '',
                   onConfirm: () {},
                   address: '',
                   datetime: '',
                   serviceType: '',
                   offeredAmount: '',
-                  services: [],
+                  services: const [],
                 ),
               )),
       OutlinedButton(

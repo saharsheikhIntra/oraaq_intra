@@ -1,15 +1,19 @@
 import 'dart:developer';
 
-import 'package:oraaq/src/core/extensions/widget_extension.dart';
+import 'package:oraaq/src/core/enum/customer_jobs_filters.dart';
+
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/combine_requests_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/offer_recieved/offer_recieved_arguments.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/reuqest_history/request_history_cubit.dart';
+import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
 
 import '../../../widgets/ongoing_request_card.dart';
 
 import '../../../widgets/sheets/request_sheet.dart';
+import 'package:badges/badges.dart' as badges;
 
 class RequestHistoryScreen extends StatefulWidget {
   const RequestHistoryScreen({super.key});
@@ -29,6 +33,30 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
       newRequestCustomerWorkOrderNotifier = ValueNotifier([]);
   final ValueNotifier<List<AcceptedRequestsResponseDto>> acceptedJobs =
       ValueNotifier([]);
+  final ValueNotifier<List<CombineRequestsResponseDto>> combineJobs =
+      ValueNotifier([]);
+  CustomerJobsFilter selectedFilter = CustomerJobsFilter.allRequests;
+  void filterRequests(String filter) {
+    if (filter == "All Requests") {
+      // _cubit.fetchAllServiceRequests();
+    } else if (filter == "Accepted Requests") {
+      // _cubit.fetchAcceptedRequest();
+    } else if (filter == "Pending Requests") {
+      // _cubit.fetchServiceRequests();
+    }
+  }
+
+  String getSelectedServiceName() {
+    if (selectedFilter == CustomerJobsFilter.pendingRequests) {
+      return StringConstants.pendingRequests;
+    } else if (selectedFilter == CustomerJobsFilter.acceptedRequest) {
+      return StringConstants.acceptedRequest;
+    } else if (selectedFilter == CustomerJobsFilter.allRequests) {
+      return StringConstants.allRequests;
+    } else {
+      return '';
+    }
+  }
 
   final cron = Cron();
   @override
@@ -36,16 +64,25 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _cubit.fetchWorkOrders();
+      _cubit.fetchCombineRequest();
       _cubit.fetchAcceptedRequest();
-      cron.schedule(
-        Schedule(minutes: 1),
-        () {
-            log('run cron');
-           _cubit.fetchNewRequests();
-        },
-      );
+      _cubit.fetchNewRequests();
+      // cron.schedule(
+      //   Schedule(seconds: 10),
+      //   () {
+      //     log('run cron');
+
+      //     _cubit.fetchNewRequests();
+      //   },
+      // );
     });
   }
+
+  // @override
+  // void dispose() {
+  //   cron.close();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +98,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                   splashBorderRadius: 12.topBorderRadius,
                   tabs: const [
                     Tab(
-                        text: "On Going",
+                        text: "All requests",
                         icon: Icon(Symbols.award_star_rounded)),
                     Tab(
                         text: "Completed",
@@ -74,6 +111,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
             body: BlocConsumer<RequestHistoryCubit, RequestHistoryState>(
               listener: (context, state) {
                 // TODO: implement listener
+                log("Current state: ${state.runtimeType}");
                 if (state is RequestHistoryScreenLoading) {
                   DialogComponent.showLoading(context);
                 }
@@ -98,11 +136,15 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                 if (state is CustomerHomeStateAcceptedJobs) {
                   // DialogComponent.hideLoading(context);
                   acceptedJobs.value = state.acceptedJobs;
-
                 }
-                if(state is NewRequestWorkOrdersLoaded){
+                if (state is CustomerHomeStateCombineJobs) {
+                  // DialogComponent.hideLoading(context);
+                  combineJobs.value = state.combineJobs;
+                }
+                if (state is NewRequestWorkOrdersLoaded) {
                   DialogComponent.hideLoading(context);
-                  newRequestCustomerWorkOrderNotifier.value = state.newRequestWorkOrdersLoaded;
+                  newRequestCustomerWorkOrderNotifier.value =
+                      state.newRequestWorkOrdersLoaded;
                 }
                 if (state is CancelCustomerRequestSuccessState) {
                   DialogComponent.hideLoading(context);
@@ -139,7 +181,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                     variant: SnackbarVariantEnum.success,
                     title: state.message,
                   );
-            }
+                }
               },
               builder: (context, state) {
                 if (state is RequestHistoryScreenLoaded) {
@@ -151,174 +193,103 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                       // MARK: On-going orders tab
                       //
                       //
+
                       ListView(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         children: [
-                          Text(
-                            StringConstants.acceptedRequests,
-                            style: TextStyleTheme.titleSmall
-                                .copyWith(color: ColorTheme.secondaryText),
-                          ).wrapInPadding(16.horizontalPadding),
+                          Padding(
+                            padding: 16.horizontalPadding,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    getSelectedServiceName(),
+                                    style: TextStyleTheme.titleMedium.copyWith(
+                                      color: ColorTheme.secondaryText,
+                                    ),
+                                  ),
+                                ),
+                                CustomButton(
+                                  text: 'Filter',
+                                  size: CustomButtonSize.small,
+                                  type: CustomButtonType.tertiary,
+                                  icon: Symbols.filter_list_rounded,
+                                  onPressed: () {
+                                    SheetComponenet.showSelectionSheet(
+                                      context,
+                                      title: "Filter Requests by",
+                                      selected: selectedFilter.value,
+                                      options: CustomerJobsFilter.values
+                                          .map((e) => e.value)
+                                          .toList(),
+                                    ).then((value) {
+                                      if (value != null) {
+                                        var temp = CustomerJobsFilter.values
+                                            .firstWhere(
+                                          (e) => e.value == value,
+                                          orElse: () => CustomerJobsFilter
+                                              .pendingRequests,
+                                        );
+                                        if (temp != selectedFilter) {
+                                          setState(() {
+                                            selectedFilter = temp;
+                                          });
+                                          filterRequests(value);
+                                        }
+                                      }
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+
                           12.verticalSpace,
-                          SizedBox(
-                            height: 120,
-                            child: ValueListenableBuilder(
+                          if (selectedFilter ==
+                              CustomerJobsFilter.acceptedRequest)
+                            ValueListenableBuilder(
                               valueListenable: acceptedJobs,
                               builder: (context, value, child) {
                                 return value.isNotEmpty
-                                    ? ListView.builder(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: acceptedJobs.value.length,
-                                        padding: 16.horizontalPadding,
-                                        itemBuilder:
-                                            (BuildContext context, int index) =>
-                                                Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 12.0),
-                                          child: GestureDetector(
-                                            onTap: () => SheetComponenet.show(
-                                              context,
-                                              isScrollControlled: true,
-                                              child: RequestSheet(
-                                                onCancel: () {
-                                                  // context.pop();
-                                                  // _cubit.cancelWorkOrder(acceptedJobs
-                                                  //   .value[index].orderId);
-                                                },  
-                                              ),
-                                            ),
-                                            child: SizedBox(
-                                              height: 96,
-                                              width: 245,
-                                              child: OnGoingRequestCard(
-                                                userName: acceptedJobs
-                                                    .value[index].serviceName,
-                                                duration: "9hr 30 mints",
-                                                date: DateTime.tryParse(
-                                                        acceptedJobs
-                                                            .value[index].date)!
-                                                    .formattedDate(), //"21st May",
-                                                time: DateTime.tryParse(
-                                                        acceptedJobs
-                                                            .value[index].date)!
-                                                    .to12HourFormat, //"6:00 am",
-                                                profileName: acceptedJobs
-                                                    .value[index]
-                                                    .merchantName, //"Zain Hashim",
-                                                price: acceptedJobs.value[index]
-                                                    .amount, //"10,000",
-                                                servicesList: const [],
-                                                variant:
-                                                    OngoingRequestCardVariant
-                                                        .offerReceived,
-                                                onTap: () =>
-                                                    SheetComponenet.show(
-                                                  context,
-                                                  isScrollControlled: true,
-                                                  child: RequestSheet(
-                                                    onCancel:(){
-                                                      context.pop();
-                                                      _cubit.cancelWorkOrder(acceptedJobs
-                                                        .value[index].orderId);
-                                                    },
-                                                    name: acceptedJobs
-                                                        .value[index]
-                                                        .merchantName,
-                                                    email: acceptedJobs
-                                                        .value[index]
-                                                        .merchantEmail,
-                                                    phoneNumber: acceptedJobs
-                                                        .value[index]
-                                                        .merchantPhone,
-                                                    amount: acceptedJobs
-                                                        .value[index].amount,
-                                                    date: DateTime.tryParse(
-                                                            acceptedJobs
-                                                                .value[index]
-                                                                .date)!
-                                                        .formattedDate(),
-                                                    time: DateTime.tryParse(
-                                                            acceptedJobs
-                                                                .value[index]
-                                                                .date)!
-                                                        .to12HourFormat,
-                                                    distance: acceptedJobs
-                                                        .value[index].distance,
-                                                    serviceName: acceptedJobs
-                                                        .value[index]
-                                                        .serviceName,
-                                                    servicesList: acceptedJobs
-                                                        .value[index].services,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : const Center(
-                                        child: Text('No Data'),
+                                    ? _acceptedRequestsView(value)
+                                    : const NoDataFound(
+                                        text: StringConstants.firstOrder,
+                                        fontSize: 12,
                                       );
                               },
                             ),
-                          ),
-                          24.verticalSpace,
-                          Text(
-                            StringConstants.requests,
-                            style: TextStyleTheme.titleSmall
-                                .copyWith(color: ColorTheme.secondaryText),
-                          ).wrapInPadding(16.horizontalPadding),
-                          12.verticalSpace,
-                          ValueListenableBuilder(
-                            valueListenable: newRequestCustomerWorkOrderNotifier,
-                            builder: (context,value,child) {
-                              return value.isNotEmpty? ListView.separated(
-                                      shrinkWrap: true,
-                                      itemCount: value.length,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      padding: 16.horizontalPadding,
-                                      separatorBuilder: (context, index) =>
-                                          12.verticalSpace,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        // CustomerNewRequestDto currentRequest =
-                                        //     value[index];
-                                        ValueNotifier<CustomerNewRequestDto> currentRequest =
-                                            ValueNotifier(value[index]);
-                                        return Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 12.0),
-                                          child: OnGoingRequestCard(
-                                            userName: currentRequest.value.category,
-                                            duration: currentRequest.value.duration,
-                                            date: DateTime.tryParse(
-                                                    currentRequest.value.date)!
-                                                .formattedDate(),
-                                            time: DateTime.tryParse(
-                                                    currentRequest.value.date)!
-                                                .to12HourFormat,
-                                            profileName: "Zain Hashim",
-                                            price: currentRequest.value.amount.toString(),
-                                            servicesList: currentRequest.value.services,
-                                            variant:
-                                                OngoingRequestCardVariant.waiting,
-                                            onTap: () {
-                                              log("services list: ${currentRequest.value.services.toString()}");
-                                              context.pushNamed(
-                                              RouteConstants
-                                                  .offeredReceivedScreenRoute,
-                                                  arguments: OfferRecievedArguments(currentRequest),
-                                            );
-                                            },
-                                          ),
+
+                          //
+                          //
+                          // MARK: pending requests
+                          //
+                          //
+
+                          if (selectedFilter ==
+                              CustomerJobsFilter.pendingRequests)
+                            ValueListenableBuilder(
+                                valueListenable:
+                                    newRequestCustomerWorkOrderNotifier,
+                                builder: (context, value, child) {
+                                  return value.isNotEmpty
+                                      ? _pendingRequestsView(value)
+                                      : const NoDataFound(
+                                          text: StringConstants.firstOrder,
+                                          fontSize: 14,
                                         );
-                                      }): const Center(
-                                child: Center(child: Text('No Data')),
-                              );
-                            }
-                          )
-                             
+                                }),
+
+                          if (selectedFilter == CustomerJobsFilter.allRequests)
+                            ValueListenableBuilder(
+                                valueListenable: combineJobs,
+                                builder: (context, value, child) {
+                                  return value.isNotEmpty
+                                      ? _combineRequestsView(value)
+                                      : const NoDataFound(
+                                          text: StringConstants.firstOrder,
+                                          fontSize: 14,
+                                        );
+                                })
                         ],
                       ),
                       //
@@ -350,46 +321,66 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                             '${currentRequest.ratingMerchant ?? 0}',
                                         price:
                                             currentRequest.bidAmount.toString(),
-                                        
                                         servicesList:
                                             currentRequest.serviceNames,
                                         duration: '4 hr 40 mints',
-                                        rating: currentRequest.ratingCustomer ?? 0,
+                                        rating:
+                                            currentRequest.ratingCustomer ?? 0,
                                         variant: CompletedRequestCardVariant
                                             .merchant,
-                                        onTap: () async{
-
-                                          final rating = await SheetComponenet.show(
+                                        onTap: () async {
+                                          final rating =
+                                              await SheetComponenet.show(
                                             context,
                                             isScrollControlled: true,
-                                            child:  CompletedJobSheet(
-                                                rating: currentRequest.ratingCustomer ?? 0,
-                                                userName: currentRequest.customerName,
-                                                email: currentRequest.customerEmail,
-                                                serviceType: currentRequest.serviceType,
-                                                phoneNumber: currentRequest.customerContactNumber,
-                                                servicesList: currentRequest.serviceNames,
-                                                date: currentRequest.requestDate.formattedDate(),
-                                                time: currentRequest.requestDate.to12HourFormat,
+                                            child: CompletedJobSheet(
+                                                totalAmount: currentRequest
+                                                    .bidAmount
+                                                    .toString(),
+                                                rating: currentRequest
+                                                        .ratingCustomer ??
+                                                    0,
+                                                userName:
+                                                    currentRequest.customerName,
+                                                email: currentRequest
+                                                    .customerEmail,
+                                                serviceType:
+                                                    currentRequest.serviceType,
+                                                phoneNumber: currentRequest
+                                                    .customerContactNumber,
+                                                servicesList:
+                                                    currentRequest.serviceNames,
+                                                date: currentRequest.requestDate
+                                                    .formattedDate(),
+                                                time: currentRequest
+                                                    .requestDate.to12HourFormat,
+                                                ratingByMerchant: currentRequest
+                                                    .ratingMerchant
+                                                    .toString(),
                                                 variant:
                                                     CompletedJobSheetVariant
                                                         .customer),
                                           );
                                           log('rating selected: $rating');
-                                       
+
                                           if (rating != null && rating > 0) {
                                             _cubit.submitRating(
-                                                state
-                                                    .completedOrders[index].workOrderId,
-                                                state.completedOrders[index].customerId,
+                                                state.completedOrders[index]
+                                                    .workOrderId,
+                                                state.completedOrders[index]
+                                                    .customerId,
                                                 rating);
                                           }
                                         },
                                       );
                                     })
-                                : const Center(
-                                    child: Text('No Data'),
+                                : const NoDataFound(
+                                    text: StringConstants.firstOrder,
+                                    fontSize: 14,
                                   );
+                            // const Center(
+                            //     child: Text('No Data'),
+                            //   );
                           }),
                       //
                       //
@@ -416,25 +407,254 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                         duration: "4hr 30 mints",
                                         date: currentRequest.requestDate
                                             .formattedDate(),
-                                        time: currentRequest.requestDate
-                                            .to12HourFormat,
-                                        price: currentRequest.bidAmount.toString(),
-                                        servicesList: currentRequest.serviceNames,
+                                        time: currentRequest
+                                            .requestDate.to12HourFormat,
+                                        price:
+                                            currentRequest.bidAmount.toString(),
+                                        servicesList:
+                                            currentRequest.serviceNames,
                                         onTap: () {},
                                       );
                                     })
-                                : const Center(
-                                    child: Text('No Data'),
+                                : const NoDataFound(
+                                    text: StringConstants.firstCancelOrder,
+                                    fontSize: 14,
                                   );
+                            // const Center(
+                            //     child: Text('No Data'),
+                            //   );
                           }),
                     ],
                   );
                 } else {
-                  return const Text('No data');
+                  return const NoDataFound(
+                    text: StringConstants.firstOrder,
+                    fontSize: 14,
+                  );
+                  // const Text('No data');
                 }
               },
             )),
       ),
     );
+  }
+
+  Widget _acceptedRequestsView(List<AcceptedRequestsResponseDto> acceptedJobs) {
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemCount: acceptedJobs.length,
+      padding: 16.horizontalPadding,
+      itemBuilder: (BuildContext context, int index) => Padding(
+        padding: const EdgeInsets.only(right: 12.0),
+        child: GestureDetector(
+          onTap: () => SheetComponenet.show(
+            context,
+            isScrollControlled: true,
+            child: RequestSheet(
+              onCancel: () {
+                // context.pop();
+                // _cubit.cancelWorkOrder(acceptedJobs
+                //   .value[index].orderId);
+              },
+            ),
+          ),
+          child: SizedBox(
+            height: 120,
+            width: 245,
+            child: OnGoingRequestCard(
+              userName: acceptedJobs[index].serviceName,
+              duration: "9hr 30 mints",
+              date: DateTime.tryParse(acceptedJobs[index].date)!
+                  .formattedDate(), //"21st May",
+              time: DateTime.tryParse(acceptedJobs[index].date)!
+                  .to12HourFormat, //"6:00 am",
+              profileName: acceptedJobs[index].merchantName, //"Zain Hashim",
+              price: acceptedJobs[index].amount, //"10,000",
+              servicesList: const [],
+              variant: OngoingRequestCardVariant.offerReceived,
+              onTap: () => SheetComponenet.show(
+                context,
+                isScrollControlled: true,
+                child: RequestSheet(
+                  onCancel: () {
+                    // context.pop();
+                    _cubit.cancelWorkOrder(acceptedJobs[index].orderId);
+                  },
+                  name: acceptedJobs[index].merchantName,
+                  email: acceptedJobs[index].merchantEmail,
+                  phoneNumber: acceptedJobs[index].merchantPhone,
+                  amount: acceptedJobs[index].amount,
+                  date: DateTime.tryParse(acceptedJobs[index].date)!
+                      .formattedDate(),
+                  time: DateTime.tryParse(acceptedJobs[index].date)!
+                      .to12HourFormat,
+                  distance: acceptedJobs[index].distance,
+                  serviceName: acceptedJobs[index].serviceName,
+                  servicesList: acceptedJobs[index].services,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _pendingRequestsView(List<CustomerNewRequestDto> value) {
+    return ListView.separated(
+        shrinkWrap: true,
+        itemCount: value.length,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: 16.horizontalPadding,
+        separatorBuilder: (context, index) => 12.verticalSpace,
+        itemBuilder: (BuildContext context, int index) {
+          ValueNotifier<CustomerNewRequestDto> currentRequest =
+              ValueNotifier(value[index]);
+          return Padding(
+            padding: const EdgeInsets.only(right: 12.0),
+            child: currentRequest.value.offersReceived != 0
+                ? badges.Badge(
+                    badgeStyle: const badges.BadgeStyle(
+                        badgeColor: ColorTheme.secondary),
+                    position: badges.BadgePosition.topEnd(top: -15, end: 1),
+                    badgeContent: Text(
+                      currentRequest.value.offersReceived.toString(),
+                    ),
+                    child: OnGoingRequestCard(
+                      userName: currentRequest.value.category,
+                      duration: currentRequest.value.duration,
+                      date: DateTime.tryParse(currentRequest.value.date)!
+                          .formattedDate(),
+                      time: DateTime.tryParse(currentRequest.value.date)!
+                          .to12HourFormat,
+                      profileName: "Zain Hashim",
+                      price: currentRequest.value.amount.toString(),
+                      servicesList: currentRequest.value.services,
+                      variant: OngoingRequestCardVariant.waiting,
+                      onTap: () {
+                        log("services list: ${currentRequest.value.services.toString()}");
+                        context.pushNamed(
+                          RouteConstants.offeredReceivedScreenRoute,
+                          arguments: OfferRecievedArguments(currentRequest),
+                        );
+                      },
+                    ))
+                : OnGoingRequestCard(
+                    userName: currentRequest.value.category,
+                    duration: currentRequest.value.duration,
+                    date: DateTime.tryParse(currentRequest.value.date)!
+                        .formattedDate(),
+                    time: DateTime.tryParse(currentRequest.value.date)!
+                        .to12HourFormat,
+                    profileName: "Zain Hashim",
+                    price: currentRequest.value.amount.toString(),
+                    servicesList: currentRequest.value.services,
+                    variant: OngoingRequestCardVariant.waiting,
+                    onTap: () {
+                      log("services list: ${currentRequest.value.services.toString()}");
+                      context.pushNamed(
+                        RouteConstants.offeredReceivedScreenRoute,
+                        arguments: OfferRecievedArguments(currentRequest),
+                      );
+                    },
+                  ),
+          );
+        });
+  }
+
+  Widget _combineRequestsView(List<CombineRequestsResponseDto> value) {
+    print('_combineRequestsView $value');
+    return ListView.separated(
+        shrinkWrap: true,
+        itemCount: value.length,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: 16.horizontalPadding,
+        separatorBuilder: (context, index) => 12.verticalSpace,
+        itemBuilder: (BuildContext context, int index) {
+          ValueNotifier<CombineRequestsResponseDto> currentRequest =
+              ValueNotifier(value[index]);
+
+          return Padding(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: currentRequest.value.offersReceived != 0
+                  ? badges.Badge(
+                      badgeStyle: const badges.BadgeStyle(
+                          badgeColor: ColorTheme.secondary),
+                      position: badges.BadgePosition.topEnd(top: -15, end: 1),
+                      badgeContent: Text(
+                        currentRequest.value.offersReceived.toString(),
+                      ),
+                      child: OnGoingRequestCard(
+                        userName: currentRequest.value.category,
+                        duration: currentRequest.value.duration,
+                        date: DateTime.tryParse(currentRequest.value.date)!
+                            .formattedDate(),
+                        time: DateTime.tryParse(currentRequest.value.date)!
+                            .to12HourFormat,
+                        profileName: "Zain Hashim",
+                        price: currentRequest.value.amount.toString(),
+                        servicesList: currentRequest.value.services,
+                        variant: OngoingRequestCardVariant.waiting,
+                        onTap: () {
+                          log("services list: ${currentRequest.value.services.toString()}");
+                          context.pushNamed(
+                            RouteConstants.offeredReceivedScreenRoute,
+                            arguments: OfferRecievedArguments(currentRequest),
+                          );
+                        },
+                      ))
+                  : OnGoingRequestCard(
+                      userName: currentRequest.value.request_status == 'pending'
+                          ? currentRequest.value.category
+                          : currentRequest.value.serviceName,
+                      duration: currentRequest.value.request_status == 'pending'
+                          ? currentRequest.value.duration
+                          : currentRequest.value.merchantName,
+                      date: DateTime.tryParse(currentRequest.value.date)!
+                          .formattedDate(),
+                      time: DateTime.tryParse(currentRequest.value.date)!
+                          .to12HourFormat,
+                      profileName: "Zain Hashim",
+                      price: currentRequest.value.amount.toString(),
+                      servicesList: currentRequest.value.services,
+                      variant: OngoingRequestCardVariant.waiting,
+                      onTap: () {
+                        currentRequest.value.request_status == 'pending'
+                            ?
+                            // log("services list: ${currentRequest.value.services.toString()}");
+                            context.pushNamed(
+                                RouteConstants.offeredReceivedScreenRoute,
+                                arguments:
+                                    OfferRecievedArguments(currentRequest),
+                              )
+                            : SheetComponenet.show(
+                                context,
+                                isScrollControlled: true,
+                                child: RequestSheet(
+                                  onCancel: () {
+                                    // context.pop();
+                                    _cubit.cancelWorkOrder(
+                                        currentRequest.value.orderId);
+                                  },
+                                  name: currentRequest.value.merchantName,
+                                  email: currentRequest.value.merchantEmail,
+                                  phoneNumber:
+                                      currentRequest.value.merchantPhone,
+                                  amount: currentRequest.value.amount,
+                                  date: DateTime.tryParse(
+                                          currentRequest.value.date)!
+                                      .formattedDate(),
+                                  time: DateTime.tryParse(
+                                          currentRequest.value.date)!
+                                      .to12HourFormat,
+                                  distance: currentRequest.value.distance,
+                                  serviceName: currentRequest.value.serviceName,
+                                  servicesList: currentRequest.value.services,
+                                ),
+                              );
+                      },
+                    ));
+        });
   }
 }

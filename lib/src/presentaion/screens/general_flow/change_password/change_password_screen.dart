@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:oraaq/src/core/extensions/context_extensions.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/change_password/change_password_cubit.dart';
 
@@ -50,7 +47,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       child: BlocListener<ChangePasswordCubit, ChangePasswordState>(
         listener: (context, state) {
           if (state is ChangePasswordStateLoaded) {
-            print(state.message);
+            debugPrint(state.message);
             DialogComponent.hideLoading(context);
             Toast.show(
               context: context,

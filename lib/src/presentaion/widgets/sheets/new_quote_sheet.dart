@@ -16,12 +16,12 @@ class NewQuoteSheet extends StatefulWidget {
   final List<String>? servicesList;
   final String? date;
   final String? time;
-  final double defaultValue;
+  final int defaultValue;
   final NewQuoteSheetSheetVariant variant;
   final int? workOrderId;
   //final MerchantHomeScreenCubit? cubit;
   final VoidCallback onCancel;
-  final Function(double) onSubmit;
+  final Function(int) onSubmit;
 
   const NewQuoteSheet({
     super.key,
@@ -45,7 +45,7 @@ class NewQuoteSheet extends StatefulWidget {
 }
 
 class _NewQuoteSheetState extends State<NewQuoteSheet> {
-  double _defaultValue = 0;
+  int _defaultValue = 0;
   late TextEditingController _amountController;
   final int minAmount = 100;
   final int maxAmount = 1000; //might be needed from backend
@@ -172,7 +172,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                         onChanged: (value) {
                           setState(() {
                             _defaultValue =
-                                double.tryParse(value) ?? _defaultValue;
+                                int.tryParse(value) ?? _defaultValue;
                             _errorMessage = null;
                           });
                         },
@@ -231,37 +231,47 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                   width: double.infinity,
                   type: widget.variant == NewQuoteSheetSheetVariant.newQuote
                       ? CustomButtonType.primary
-                      : CustomButtonType.danger,
-                  text: widget.sheetName != ""? "Action" : widget.variant == NewQuoteSheetSheetVariant.newQuote
-                      ? StringConstants.sendQuote
-                      : StringConstants.cancel,
+                      : CustomButtonType.primary,
+                  text: widget.sheetName != ""
+                      ? "Action"
+                      : widget.variant == NewQuoteSheetSheetVariant.newQuote
+                          ? StringConstants.sendQuote
+                          : StringConstants.cancel,
                   onPressed: () {
                     if (widget.variant ==
                         NewQuoteSheetSheetVariant.alreadyQuoted) {
-                      SheetComponenet.showWarningSheet(context,
-                          title: StringConstants.cancelJobTitle,
-                          message: StringConstants.cancelJobMessage,
-                          ctaText: "Cancel Job",
-                          cancelText: "${widget.sheetName == ""?"Keep":"Complete"} Job",
-                          onCtaTap: () {
-                            // widget.cubit!.cancelWorkOrder(widget.workOrderId ?? -1, getIt<UserEntity>().id);
+                      SheetComponenet.showWarningSheet(
+                        context,
+                        title: StringConstants.cancelJobTitle,
+                        message: widget.sheetName == "Action"
+                            ? StringConstants.cancelJobMessage
+                            : StringConstants.cancelbidMessage,
+                        ctaText: "Cancel Job",
+                        cancelText:
+                            "${widget.sheetName == "" ? "Keep" : "Complete"} Job",
+                        onCtaTap: () {
+                          // widget.cubit!.cancelWorkOrder(widget.workOrderId ?? -1, getIt<UserEntity>().id);
 
-                            widget.onCancel();
+                          widget.onCancel();
+                          context.pop();
+
+                          //context.popUntil(RouteConstants.merchantHomeScreenRoute);
+                        },
+                        onCancelTap: () {
+                          // widget.cubit!.cancelWorkOrder(widget.workOrderId ?? -1, getIt<UserEntity>().id);
+
+                          if (widget.sheetName == "Action") {
+                            widget.onSubmit(0);
                             context.pop();
-
-                            //context.popUntil(RouteConstants.merchantHomeScreenRoute);
-                          },
-                          onCancelTap: () {
-                            // widget.cubit!.cancelWorkOrder(widget.workOrderId ?? -1, getIt<UserEntity>().id);
-
-                            widget.onSubmit(0.0);
+                          } else {
                             context.pop();
+                          }
 
-                            //context.popUntil(RouteConstants.merchantHomeScreenRoute);
-                          },
-                          // context
-                          //     .popUntil(RouteConstants.merchantHomeScreenRoute),
-                          );
+                          //context.popUntil(RouteConstants.merchantHomeScreenRoute);
+                        },
+                        // context
+                        //     .popUntil(RouteConstants.merchantHomeScreenRoute),
+                      );
                     } else {
                       if (_defaultValue < minAmount ||
                           _defaultValue > maxAmount) {
@@ -278,8 +288,8 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
                         //       'Please enter an amount between $minAmount and $maxAmount',
                         // );
                       } else {
-                        widget.onSubmit!(_defaultValue);
-                        print("default value sent in api $_defaultValue");
+                        widget.onSubmit(_defaultValue);
+                        debugPrint("default value sent in api $_defaultValue");
                         //context.pop();
                       }
                     }
@@ -330,7 +340,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
   void _increment() {
     if (_defaultValue < maxAmount) {
       setState(() {
-        _defaultValue += 100;
+        _defaultValue += 25;
         _amountController.text = _defaultValue.toString();
         _errorMessage = null;
       });
@@ -344,7 +354,7 @@ class _NewQuoteSheetState extends State<NewQuoteSheet> {
   void _decrement() {
     if (_defaultValue >= minAmount) {
       setState(() {
-        _defaultValue -= 100;
+        _defaultValue -= 25;
         _amountController.text = _defaultValue.toString();
         _errorMessage = null;
       });

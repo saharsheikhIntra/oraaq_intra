@@ -1,26 +1,16 @@
-import 'dart:math';
 import 'dart:developer' as developer;
 
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:oraaq/src/config/themes/color_theme.dart';
-import 'package:oraaq/src/config/themes/text_style_theme.dart';
-import 'package:oraaq/src/core/constants/string_constants.dart';
-import 'package:oraaq/src/core/extensions/datetime_extensions.dart';
-import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/data/local/questionnaire/question_model.dart';
-import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
+import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/widgets/sub_services_wrap_view.dart';
-import 'package:oraaq/src/presentaion/widgets/toast.dart';
 
-class MakeOfferPage2 extends StatefulWidget {
+class MakeOfferPage extends StatefulWidget {
   final Function(int selectedOffer) onChanged;
   final List<QuestionModel> selectedServices;
   final dynamic onContinue;
   final VoidCallback onPrevious;
-  const MakeOfferPage2({
+  const MakeOfferPage({
     super.key,
     required this.onChanged,
     required this.onContinue,
@@ -29,15 +19,20 @@ class MakeOfferPage2 extends StatefulWidget {
   });
 
   @override
-  State<MakeOfferPage2> createState() => _MakeOfferPage2State();
+  State<MakeOfferPage> createState() => _MakeOfferPageState();
 }
 
-class _MakeOfferPage2State extends State<MakeOfferPage2> {
+class _MakeOfferPageState extends State<MakeOfferPage> {
   final ValueNotifier<int> _selectedOffer = ValueNotifier(0);
   int _standardCharges = 0;
   final TextEditingController _dateTimeController = TextEditingController();
   DateTime? selectedDateTime;
   var tempVal = '';
+
+  int get25P(int amount) {
+    var newVal = amount != 0 ? amount / 4 : 0;
+    return newVal.toInt();
+  }
 
   @override
   void initState() {
@@ -45,9 +40,6 @@ class _MakeOfferPage2State extends State<MakeOfferPage2> {
         .map(
           (e) => e.fee,
         )
-        // .reduce(
-        //   (a, b) => a + b,
-        // )
         .fold(0, (a, b) => a + b)
         .floor();
     _standardCharges = _selectedOffer.value;
@@ -143,8 +135,8 @@ class _MakeOfferPage2State extends State<MakeOfferPage2> {
                                   children: [
                                     CustomButton(
                                       onPressed: () {
-                                        if (_selectedOffer.value > 50) {
-                                          _selectedOffer.value -= 50;
+                                        if (_selectedOffer.value > 25) {
+                                          _selectedOffer.value -= 25;
                                         }
                                         widget.onChanged(_selectedOffer.value);
                                       },
@@ -215,7 +207,8 @@ class _MakeOfferPage2State extends State<MakeOfferPage2> {
                                     24.horizontalSpace,
                                     CustomButton(
                                       onPressed: () {
-                                        _selectedOffer.value += 50;
+                                        _selectedOffer.value +=
+                                            get25P(_selectedOffer.value);
                                         widget.onChanged(_selectedOffer.value);
                                       },
                                       type: CustomButtonType.tertiary,
@@ -314,14 +307,18 @@ class _MakeOfferPage2State extends State<MakeOfferPage2> {
         Padding(
             padding: 20.horizontalPadding,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomButton(
+                  text: 'Back',
                   size: CustomButtonSize.small,
                   icon: Symbols.arrow_back_rounded,
                   type: CustomButtonType.tertiary,
-                  onPressed: widget.onPrevious,
+                  onPressed: () {
+                    context.pop();
+                  },
                 ),
+                16.horizontalSpace,
                 selectedDateTime == null
                     ? CustomButton(
                         type: CustomButtonType.tertiary,
@@ -337,7 +334,8 @@ class _MakeOfferPage2State extends State<MakeOfferPage2> {
                         iconPosition: CustomButtonIconPosition.trailing,
                         icon: Symbols.arrow_forward_rounded,
                         onPressed: () {
-                          developer.log('make offer page userOfferAmount: ${_selectedOffer.value}');
+                          developer.log(
+                              'make offer page userOfferAmount: ${_selectedOffer.value}');
                           widget.onContinue(
                               tempVal, _standardCharges, _selectedOffer.value);
                         },

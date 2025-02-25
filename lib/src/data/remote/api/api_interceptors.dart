@@ -30,8 +30,8 @@ class RequestInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     // TODO: implement onResponse
-    print("Response data: ${response.data}");
-    print("Response headers: ${response.headers}");
+    debugPrint("Response data: ${response.data}");
+    debugPrint("Response headers: ${response.headers}");
     super.onResponse(response, handler);
   }
 
@@ -60,14 +60,14 @@ class RequestInterceptor extends Interceptor {
 
   Future<String> _refreshTokenMethod() async {
     try {
-      print(
+      debugPrint(
           "Attempting to fetch new token from: ${ApiConstants.baseUrl + ApiConstants.getToken}");
       final response = await Dio().post(
         ApiConstants.baseUrl + ApiConstants.getToken,
       );
 
-      print("Status code: ${response.statusCode}");
-      print("Response data: ${response.data}");
+      debugPrint("Status code: ${response.statusCode}");
+      debugPrint("Response data: ${response.data}");
 
       // final response = await Dio().post(
       // ApiConstants.baseUrl + ApiConstants.getToken,
@@ -80,14 +80,14 @@ class RequestInterceptor extends Interceptor {
           response.data != null &&
           response.data['access'] != null) {
         var token = response.data['access'];
-        print("New token fetched: $token");
+        debugPrint("New token fetched: $token");
         return token;
       } else {
-        print("Unexpected response structure: ${response.data}");
+        debugPrint("Unexpected response structure: ${response.data}");
         throw Exception('Failed to refresh token');
       }
     } catch (e) {
-      print("Error while refreshing token: $e");
+      debugPrint("Error while refreshing token: $e");
       throw Exception('Failed to refresh token');
     }
   }

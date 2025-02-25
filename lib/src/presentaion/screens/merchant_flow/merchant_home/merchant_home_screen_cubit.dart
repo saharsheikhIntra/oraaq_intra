@@ -4,7 +4,6 @@ import 'package:oraaq/src/data/remote/api/api_request_dtos/merchant_flow/post_bi
 import 'package:oraaq/src/domain/entities/user_entity.dart';
 import 'package:oraaq/src/domain/services/job_management_service.dart';
 
-import '../../../../data/remote/api/api_response_dtos/merchant_flow/applied_jobs_response_dto.dart';
 import '../../../../data/remote/api/api_response_dtos/merchant_flow/get_all_new_response_dto.dart';
 import '../../../../domain/entities/failure.dart';
 import '../../../../domain/entities/request_entity.dart';
@@ -50,6 +49,19 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
   }
 
 //
+// MARK: ALL SERVICE REQUESTS
+//
+
+  Future<void> fetchServiceRequests() async {
+    emit(MerchantHomeLoading());
+    final result = await _jobManagementService.getServiceRequests(user.id);
+    result.fold(
+      (l) => emit(MerchantHomeError(l)),
+      (r) => emit(ServiceRequestsLoaded(r)),
+    );
+  }
+
+//
 // MARK: NEW SERVICE REQUESTS CRON
 //
   Future<void> fetchAllServiceRequestsCron() async {
@@ -82,7 +94,8 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
 //
   Future<void> fetchAppliedJobs() async {
     emit(MerchantHomeLoading());
-    final result = await _jobManagementService.getAppliedJobsForMerchant(user.id);
+    final result =
+        await _jobManagementService.getAppliedJobsForMerchant(user.id);
     result.fold(
       (l) => emit(MerchantHomeError(l)),
       (r) => emit(AppliedJobsLoaded(r)),
@@ -128,8 +141,8 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
 //
   Future<void> cancelWorkOrderFromMerchantAppliedRequests(int biddingId) async {
     emit(MerchantHomeLoading());
-    final result =
-        await _jobManagementService.cancelWorkOrderFromMerchantAppliedRequests(biddingId, user.id);
+    final result = await _jobManagementService
+        .cancelWorkOrderFromMerchantAppliedRequests(biddingId, user.id);
     result.fold(
       (l) {
         emit(MerchantHomeError(l));
@@ -143,7 +156,7 @@ class MerchantHomeScreenCubit extends Cubit<MerchantHomeScreenState> {
 //
 // MARK: POST BID
 //
-  Future<void> postBid(int orderId, double bidAmount) async {
+  Future<void> postBid(int orderId, int bidAmount) async {
     // emit(MerchantHomeLoading());
 
     final bidRequest = PostBidRequestDto(

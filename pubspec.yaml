@@ -3,7 +3,7 @@ description: "Oraaq App"
 
 publish_to: "none"
 
-version: 1.0.0+1
+version: 1.0.3+3
 
 environment:
   sdk: ">=3.2.6 <4.0.0"
@@ -11,6 +11,7 @@ environment:
 dependencies:
   animated_splash_screen: ^1.3.0
   awesome_extensions: ^2.0.14
+  badges: ^3.1.2
   bloc: ^8.1.4
   cached_network_image: ^3.3.1
   carousel_slider: ^4.2.1
@@ -31,6 +32,7 @@ dependencies:
   flutter_bloc: ^8.1.5
   flutter_datetime_picker: ^1.5.1
   flutter_facebook_auth: ^7.0.0
+  flutter_local_notifications: ^18.0.1
   flutter_screenutil: ^5.9.1
   flutter_secure_storage: ^9.2.1
   flutter_svg: ^2.0.10+1
@@ -41,7 +43,9 @@ dependencies:
   google_fonts: ^6.2.1
   google_maps_flutter: ^2.6.1
   google_sign_in: ^6.2.1
+  googleapis_auth: ^1.6.0
   gradient_borders: ^1.0.0
+  http: ^1.2.2
   image_picker: ^1.1.1
   intl: ^0.19.0
   intl_phone_field: ^3.2.0

@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'package:oraaq/src/core/enum/user_type.dart';
-import 'package:oraaq/src/domain/entities/user_entity.dart';
+import 'dart:developer';
+
 import 'package:oraaq/src/imports.dart';
 
 class LoginResponseDto {
@@ -15,6 +15,7 @@ class LoginResponseDto {
   // UserType currentType = getIt.get<UserType>();
 
   factory LoginResponseDto.fromMap(Map<String, dynamic> map) {
+    log('is otp lrd: ${map['user']['is_otp_verified']}');
     return LoginResponseDto(
       user: getIt.get<UserType>() != UserType.merchant
           ? map['user'] != null
@@ -49,7 +50,9 @@ class LoginResponseUserDto {
   final String openingTime;
   final String closingTime;
   final int? serviceType;
+  final String? bussinessName;
   final String isOtpVerified;
+  final String isSocial;
 
   LoginResponseUserDto({
     this.merchantId = -1,
@@ -68,14 +71,17 @@ class LoginResponseUserDto {
     this.openingTime = "",
     this.closingTime = "",
     this.serviceType = -1,
+    this.bussinessName = "",
     this.isOtpVerified = "N",
+    this.isSocial = "N",
   });
 
   factory LoginResponseUserDto.fromMap(Map<String, dynamic> map) {
     return LoginResponseUserDto(
       merchantId: map['merchant_id'] != null ? map['merchant_id'] as int : -1,
-      merchantUserId:
-          map['merchant_user_id'] != null ? map['merchant_user_id'] as int : -1,
+      merchantUserId: map['merchant_user_id'] is int
+          ? map['merchant_user_id'] as int
+          : int.parse(map['merchant_user_id']),
       merchantName:
           map['merchant_name'] != null ? map['merchant_name'] as String : "",
       email: map['email'] != null ? map['email'] as String : "",
@@ -94,9 +100,12 @@ class LoginResponseUserDto {
           map['closing_time'] != null ? map['closing_time'] as String : "",
       serviceType:
           map['service_type'] != null ? map['service_type'] as int : -1,
+      bussinessName:
+          map['business_name'] != null ? map['business_name'] as String : "",
       isOtpVerified: map['is_otp_verified'] != null
           ? map['is_otp_verified'] as String
           : "",
+      isSocial: map['is_social'] != null ? map['is_social'] as String : "",
 
       // id: map['id'] != null ? map['id'] as int : -1,
       // name: map['name'] != null ? map['name'] as String : "",
@@ -115,11 +124,11 @@ class LoginResponseUserDto {
 
   @override
   String toString() {
-    return 'LoginResponseUserDto(merchantId: $merchantId, merchantUserId: $merchantUserId, merchantName: $merchantName, email: $email, merchantNumber: $merchantNumber, isActive: $isActive, cnic: $cnic, phone: $phone, latitude: $latitude, longitude: $longitude, offDays: $offDays, openingTime: $openingTime, closingTime: $closingTime, serviceType: $serviceType, isOtpVerified: $isOtpVerified)';
+    return 'LoginResponseUserDto(merchantId: $merchantId, merchantUserId: $merchantUserId, merchantName: $merchantName, email: $email, merchantNumber: $merchantNumber, isActive: $isActive, cnic: $cnic, phone: $phone, latitude: $latitude, longitude: $longitude, offDays: $offDays, openingTime: $openingTime, closingTime: $closingTime, serviceType: $serviceType, bussinessName: $bussinessName ,isOtpVerified: $isOtpVerified, isSocial: $isSocial)';
   }
 
   UserEntity get toUserEntity {
-    //print(this);
+    //debugPrint(this);
     return UserEntity(
       id: merchantId,
       userId: merchantUserId,
@@ -131,6 +140,7 @@ class LoginResponseUserDto {
         orElse: () => UserType.customer,
       ),
       serviceType: serviceType ?? -1,
+      bussinessName: bussinessName ?? "",
       cnicNtn: cnic ?? "",
       openingTime: openingTime,
       closingTime: closingTime,
@@ -138,6 +148,7 @@ class LoginResponseUserDto {
       latitude: latitude.toString(),
       longitude: longitude.toString(),
       isOtpVerified: isOtpVerified,
+      isSocial: isSocial,
       token: "",
     );
   }
@@ -155,23 +166,26 @@ class LoginResponseConsumerDto {
   final String? latitude;
   final String? longitude;
   final String? isOtpVerified;
-  LoginResponseConsumerDto({
-    this.customerId,
-    this.customerUserId,
-    this.name,
-    this.source,
-    this.phoneNumber,
-    this.email,
-    this.isActive,
-    this.emergencyNo,
-    this.latitude,
-    this.longitude,
-    this.isOtpVerified,
-  });
+  final String? isSocial;
+  LoginResponseConsumerDto(
+      {this.customerId,
+      this.customerUserId,
+      this.name,
+      this.source,
+      this.phoneNumber,
+      this.email,
+      this.isActive,
+      this.emergencyNo,
+      this.latitude,
+      this.longitude,
+      this.isOtpVerified = 'N',
+      this.isSocial});
 
   factory LoginResponseConsumerDto.fromMap(Map<String, dynamic> map) {
     return LoginResponseConsumerDto(
-      customerUserId: map['customer_user_id'] as int,
+      customerUserId: map['customer_user_id'] is int
+          ? map['customer_user_id'] as int
+          : int.parse(map['customer_user_id']),
       customerId: map['customer_id'] as int,
       name:
           map['customer_name'] != null ? map['customer_name'] as String : null,
@@ -186,6 +200,7 @@ class LoginResponseConsumerDto {
       isOtpVerified: map['is_otp_verified'] != null
           ? map['is_otp_verified'] as String
           : "",
+      isSocial: map['is_social'] != null ? map['is_social'] as String : "",
     );
   }
 
@@ -198,6 +213,7 @@ class LoginResponseConsumerDto {
       phone: phoneNumber ?? "",
       role: UserType.customer,
       serviceType: -1,
+      bussinessName: "",
       cnicNtn: "",
       token: "",
       openingTime: "",
@@ -206,6 +222,7 @@ class LoginResponseConsumerDto {
       latitude: latitude ?? "",
       longitude: longitude ?? "",
       isOtpVerified: isOtpVerified ?? "",
+      isSocial: isSocial ?? "",
     );
   }
 }

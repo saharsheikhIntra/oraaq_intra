@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:oraaq/src/config/themes/color_theme.dart';
-import 'package:oraaq/src/core/constants/route_constants.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
 import 'package:oraaq/src/presentaion/widgets/sheets/sheet_component.dart';
@@ -61,10 +60,10 @@ class _RequestSheetState extends State<RequestSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 23.0),
             child: Column(
               children: [
-                _buildTime(Symbols.phone_rounded, widget.phoneNumber ?? "N/A"),
-                12.verticalSpace,
-                _buildTime(Symbols.mail_rounded, widget.email ?? "N/A"),
-                12.verticalSpace,
+                // _buildTime(Symbols.phone_rounded, widget.phoneNumber ?? "N/A"),
+                // 12.verticalSpace,
+                // _buildTime(Symbols.mail_rounded, widget.email ?? "N/A"),
+                // 12.verticalSpace,
                 _buildTime(
                     Symbols.my_location_rounded, widget.distance ?? "N/A"),
               ],
@@ -117,28 +116,29 @@ class _RequestSheetState extends State<RequestSheet> {
           padding: 24.horizontalPadding,
           child: CustomButton(
             width: double.infinity,
-            type: CustomButtonType.danger,
-            text: "Cancel",
+            type: CustomButtonType.primary,
+            text: "Action",
             onPressed: () {
               SheetComponenet.showWarningSheet(context,
-                  title: "Are you sure you want to cancel this job?",
+                  title: "What would you like to do?",
                   message:
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                  ctaText: "Cancel Job",
-                  cancelText: "Keep Job",
-                  onCtaTap: () {
-                    widget.onCancel();
-                    context.pop();
+                      "You can either cancel the order or keep it continue. Select an option below.",
+                  ctaText: "Cancel Order",
+                  cancelText: "Keep Order", onCtaTap: () {
+                widget.onCancel();
+                context.pop();
+                context.pop();
 
-                    // context.popUntil(RouteConstants.customerHomeScreenRoute);
-                  },
+                // context.popUntil(RouteConstants.customerHomeScreenRoute);
+              },
                   // context.popUntil(RouteConstants.customerHomeScreenRoute),
                   onCancelTap: () {
-                    widget.onCancel();
-                    context.pop();
+                // widget.onCancel();
+                context.pop();
+                context.pop();
 
-                    // context.popUntil(RouteConstants.customerHomeScreenRoute);
-                  }
+                // context.popUntil(RouteConstants.customerHomeScreenRoute);
+              }
                   // context.popUntil(RouteConstants.customerHomeScreenRoute),
                   );
             },

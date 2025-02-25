@@ -1,11 +1,9 @@
 import 'package:oraaq/src/core/extensions/widget_extension.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
-import 'package:oraaq/src/domain/entities/service_entity.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/customer_home_state.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/customer_home/widgets/service_card.dart';
-import 'package:oraaq/src/presentaion/screens/customer_flow/new_questionaire/NewQuestionnaireArgument.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_argument.dart';
 import 'package:oraaq/src/presentaion/widgets/no_data_found.dart';
 import 'package:oraaq/src/presentaion/widgets/ongoing_request_card.dart';
@@ -29,9 +27,11 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await _cubit.fetchCategories();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.fetchAcceptedRequest();
+      await _cubit.fetchCategories();
+
+      print(acceptedJobs);
     });
   }
 
@@ -53,13 +53,13 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
               );
             }
             if (state is CustomerHomeStateCategories) {
-              DialogComponent.hideLoading(context);
               _categories = state.categories;
+              DialogComponent.hideLoading(context);
             }
             if (state is CustomerHomeStateAcceptedJobs) {
               DialogComponent.hideLoading(context);
               acceptedJobs.value = state.acceptedJobs;
-              // print(acceptedJobs.value);
+              // debugPrint(acceptedJobs.value);
             }
             if (state is CancelCustomerRequestSuccessState) {
               DialogComponent.hideLoading(context);
@@ -104,7 +104,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                             DateTime.now().hour <= 12
                                         ? StringConstants.goodMorning
                                         : DateTime.now().hour > 12 &&
-                                                DateTime.now().hour <= 17
+                                                DateTime.now().hour <= 16
                                             ? StringConstants.goodAfterNoon
                                             : StringConstants.goodEvening,
                                     style: TextStyleTheme.titleSmall
@@ -112,9 +112,10 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                   ),
                                   Text(
                                     currentUser.name,
-                                    style: TextStyleTheme.displaySmall.copyWith(
-                                        color: ColorTheme.neutral3,
-                                        fontSize: 26),
+                                    style: TextStyleTheme.headlineSmall
+                                        .copyWith(
+                                            color: ColorTheme.neutral3,
+                                            fontSize: 18),
                                   ),
                                 ],
                               )),
@@ -196,7 +197,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                         .cancelCustomerCreatedRequest(
                                                             acceptedJobs
                                                                 .value[index]
-                                                                .requestId),
+                                                                .orderId),
                                                     name: acceptedJobs
                                                         .value[index]
                                                         .merchantName,
@@ -228,9 +229,14 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                   ),
                                                 ),
                                               ))))
-                              : const Center(
-                                  child: Text('No Data'),
+                              : const NoDataFound(
+                                  tempText: StringConstants.selectService,
+                                  text: StringConstants.firstOrder,
+                                  fontSize: 10,
                                 );
+                          // const Center(
+                          //     child: Text('No Data'),
+                          //   );
                         },
                         // child: ListView.separated(
                         //     shrinkWrap: true,
@@ -281,9 +287,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                           itemBuilder: (c, i) => ServiceCard(
                               category: _categories[i],
                               onTap: () => context.pushNamed(
-                                    RouteConstants.questionnaireRoute2,
+                                    RouteConstants.questionnaireRoute,
                                     arguments:
-                                        NewQuestionnaireArgument(_categories[i],<ServiceEntity>[],<ServiceEntity>[],false),
+                                        QuestionnaireArgument(_categories[i]),
                                   ))),
                 ]));
           },

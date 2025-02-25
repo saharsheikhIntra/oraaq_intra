@@ -3,10 +3,14 @@ import 'package:oraaq/src/core/constants/string_constants.dart';
 class ValidationUtils {
   static final RegExp _emailPattern =
       RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+  // static final RegExp _strongPasswordPattern = RegExp(
+  //     r"^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$");
   static final RegExp _strongPasswordPattern = RegExp(
-      r"^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$");
+      r'^(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&*()_+\-=\[\]{};:"|,.<>\/?])[A-Za-z\d!@#\$%\^&*()_+\-=\[\]{};:"|,.<>\/?]{8,}$');
+
   static final RegExp _numberPattern = RegExp(r'^[0-9]+$');
   static final RegExp _phoneNumberPattern = RegExp(r'^03\d{9}$');
+  static final RegExp _cnicPattern = RegExp(r'^\d{5}-\d{7}-\d{1}$');
 
   static String? checkEmptyField(String? value) {
     return value != null && value.trim().isNotEmpty
@@ -64,6 +68,12 @@ class ValidationUtils {
     return _numberPattern.hasMatch(value ?? '')
         ? null
         : "This field requires numeric input";
+  }
+
+  static String? checkCnic(String? value) {
+    return _cnicPattern.hasMatch(value ?? '')
+        ? null
+        : "Invalid CNIC format. Please enter as XXXXX-XXXXXXX-X";
   }
 
   static bool isValidEmail(String email) {

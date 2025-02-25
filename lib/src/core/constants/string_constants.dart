@@ -31,8 +31,9 @@ class StringConstants {
 
   static const String registerButton = "Register";
   static const String alreadyHaveAccount = "Already have an account?";
-  static const String acceptall = "I accept all the";
+  static const String acceptall = "I accept all ";
   static const String termsAndConditions = "Terms and Conditions";
+  static const String privacyPolicy = "Privacy Policy";
 
   //MARK: - otp
   static const String otpText = "OTP Verification";
@@ -69,7 +70,7 @@ class StringConstants {
   static const String preferredLocation = "Preferred Location";
   static const String continu = "Continue";
 
-  static const String searchingSaloons = "Searching Salons";
+  static const String searchingSaloons = "Searching";
   static const String km = "Km";
   static const String yourLocation = "Your location";
   static const String searchingRadius = "Searching Radius";
@@ -92,9 +93,10 @@ class StringConstants {
   static const String sendQuote = "Send Quote";
   static const String johnDoe = "John Doe";
   static const String secondUser = "Amber Doe";
-  static const String email = "john.doe@mail.com";
+  static const String sampleemail = "john.doe@mail.com";
+  static const String email = "email";
 
-  static const String userName = "User Name";
+  static const String userName = "Full Name";
   static const String changePassword = "Change Password";
   static const String oldPassword = "Old Password";
   static const String newPassword = "New Password";
@@ -104,6 +106,7 @@ class StringConstants {
   static const String phone = "Phone";
   static const String yourName = "Your Name";
   static const String cnicNtn = "CNIC / NTN";
+  static const String businessName = "Business Name";
   static const String serviceType = "Service Type";
   static const String selectServiceType = "Select Service Type";
   static const String selectServiceLocation = "Select Your Location";
@@ -130,7 +133,8 @@ class StringConstants {
   static const String previous = "Previous";
   static const String pleaseEnterYourDesiredOfferAmount =
       "Please enter your desired offer amount. Merchants will respond with bids based on your offer.";
-  static const String makeYourOffer = "Make Your Offer";
+  static const String makeYourOffer = "Your Budget";
+  static const String preferredSlot = "Please select your Slot";
   static const String upcomingJobs = "Upcoming Jobs";
   static const String rs = "Rs ";
   static const String standardRates = "Standard Rates";
@@ -149,8 +153,12 @@ class StringConstants {
   static const String requests = "Requests";
   static const String latestServiceRequests = "Latest Service Requests";
   static const String alreadyQuoted = "Already Quoted";
+  static const String acceptedRequest = "Accepted Requests";
+  static const String allServiceRequests = "All Service Requests";
+  static const String allRequests = "All Requests";
+  static const String pendingRequests = "Pending Requests";
   static const String saloon = "Saloon";
-  static const String approvedJobs = "Approved Jobs";
+  static const String approvedJobs = "Ongoing Jobs";
   static const String offersReceived = "Offers Received";
 
   static const String waitingMerchant = "Waiting for merchant offers.";
@@ -173,16 +181,24 @@ class StringConstants {
   static const String saveChanges = "Save Changes";
   static const String saveAndContinue = "Save & Continue";
   static const String pickLocation = "Pick Location";
-  static const String cancelJobTitle =
-      "Are you sure you want to cancel this job?";
+  static const String cancelJobTitle = "What would you like to do?";
   static const String cancelJobMessage =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+      "You can either complete the order or cancel it. Select an option below.";
+  static const String cancelbidMessage =
+      "You can either Cancel the bid or Keep it. Select an option below.";
   static const String noDataFound = "No Data Found";
   static const String noCategoriesFound = "No Categories Found";
   static const String failedToFetchServices = "Failed to fetch services";
+  static const String selectService = "Select the service below";
+  static const String firstOrder = "& initiate your first order";
+  static const String firstCancelOrder = "No cancel order found";
+  static const String firstMerchantOrder = "Bid to get first order";
+  static const String noRequestFound = "No request Found!";
   static const String preferredDateTime = "Preferred Date & Time";
 
   static const String selectDateTime = "Select a date and time";
   static const String failedToFetchMerchants = "Failed To Fetch Merchants";
   static const String fillAllFields = "Fill all fields";
+  static const String genericErrorMessage = 'Something went wrong';
+  static const String logout = 'Log out';
 }

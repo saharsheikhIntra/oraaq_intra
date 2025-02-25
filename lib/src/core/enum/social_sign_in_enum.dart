@@ -7,16 +7,16 @@ enum SocialSignInEnum {
     "google",
     LineIcons.googlePlus,
   ),
-  apple(
-    "apple.com",
-    "apple",
-    LineIcons.apple,
-  ),
   facebook(
     "facebook.com",
     "facebook",
     LineIcons.facebook,
   );
+  // apple(
+  //   "apple.com",
+  //   "apple",
+  //   LineIcons.apple,
+  // );
 
   final String id;
   final String name;

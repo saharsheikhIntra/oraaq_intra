@@ -1,14 +1,4 @@
-import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:material_symbols_icons/symbols.dart';
-import 'package:oraaq/src/config/themes/color_theme.dart';
-import 'package:oraaq/src/core/constants/route_constants.dart';
-import 'package:oraaq/src/core/extensions/datetime_extensions.dart';
-import 'package:oraaq/src/core/extensions/num_extension.dart';
 import 'package:oraaq/src/imports.dart';
-import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
-import '../../../config/themes/text_style_theme.dart';
 import '../sub_services_wrap_view.dart';
 
 class RequestConfirmationSheet extends StatefulWidget {
@@ -16,9 +6,10 @@ class RequestConfirmationSheet extends StatefulWidget {
   final String address;
   final String serviceType;
   final String offeredAmount;
+  final String standardAmount;
   final String datetime;
   final List<String> services;
-  RequestConfirmationSheet({
+  const RequestConfirmationSheet({
     super.key,
     required this.onConfirm,
     required this.address,
@@ -26,6 +17,7 @@ class RequestConfirmationSheet extends StatefulWidget {
     required this.offeredAmount,
     required this.datetime,
     required this.services,
+    required this.standardAmount,
   });
 
   @override
@@ -82,7 +74,12 @@ class _RequestConfirmationSheetState extends State<RequestConfirmationSheet> {
           ),
           _buildDetails(
             Symbols.payments_rounded,
-            "Offered Amount",
+            "Average Market Price ",
+            widget.standardAmount,
+          ),
+          _buildDetails(
+            Symbols.payments_rounded,
+            "My Budget",
             widget.offeredAmount,
           ),
           _buildDetails(

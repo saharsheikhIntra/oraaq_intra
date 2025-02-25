@@ -6,6 +6,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:oraaq/src/config/themes/color_theme.dart';
 import 'package:oraaq/src/core/constants/string_constants.dart';
 import 'package:oraaq/src/core/extensions/num_extension.dart';
+import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/widgets/custom_button.dart';
 
 import '../../../config/themes/text_style_theme.dart';
@@ -26,6 +27,7 @@ class CompletedJobSheet extends StatefulWidget {
   final String? totalAmount;
   final String? serviceType;
   final int rating;
+  final String? ratingByMerchant;
   final CompletedJobSheetVariant variant;
   const CompletedJobSheet({
     super.key,
@@ -39,6 +41,7 @@ class CompletedJobSheet extends StatefulWidget {
     this.serviceType = '',
     required this.rating,
     required this.variant,
+    this.ratingByMerchant,
   });
 
   @override
@@ -46,6 +49,7 @@ class CompletedJobSheet extends StatefulWidget {
 }
 
 class _CompletedJobSheetSheetState extends State<CompletedJobSheet> {
+  UserEntity user = getIt<UserEntity>();
   int rating = 0;
 
   @override
@@ -67,18 +71,18 @@ class _CompletedJobSheetSheetState extends State<CompletedJobSheet> {
               style: TextStyleTheme.displaySmall
                   .copyWith(fontSize: 36, fontWeight: FontWeight.w600),
             )),
-        8.verticalSpace,
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 23.0),
-            child: Row(
-              children: [
-                _buildTime(Symbols.phone_rounded,
-                    widget.phoneNumber ?? "031234563451"),
-                16.horizontalSpace,
-                _buildTime(
-                    Symbols.mail_rounded, widget.email ?? "amber.doe@mail,com"),
-              ],
-            )),
+        // 8.verticalSpace,
+        // Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 23.0),
+        //     child: Row(
+        //       children: [
+        //         _buildTime(Symbols.phone_rounded,
+        //             widget.phoneNumber ?? "031234563451"),
+        //         16.horizontalSpace,
+        //         _buildTime(
+        //             Symbols.mail_rounded, widget.email ?? "amber.doe@mail,com"),
+        //       ],
+        //     )),
         25.verticalSpace,
         Container(
             width: double.infinity,
@@ -120,13 +124,15 @@ class _CompletedJobSheetSheetState extends State<CompletedJobSheet> {
             ),
             _buildDetails(
               Symbols.star_half_rounded,
-              "Rated by Merchant",
-              "4 / 5",
+              user.role == UserType.customer
+                  ? "Rated by Merchant"
+                  : "Rated by Customer",
+              widget.ratingByMerchant ?? "4 / 5",
             ),
             _buildDetails(
               Symbols.payments_rounded,
               "Service Charges",
-              widget.totalAmount ?? "Rs 15000",
+              widget.totalAmount ?? "Rs 0",
             ),
           ]),
         ),

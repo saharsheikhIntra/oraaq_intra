@@ -88,7 +88,11 @@ class CompletedRequestCard extends StatelessWidget {
                   children: [
                     _buildTime(Symbols.calendar_month_rounded, date),
                     6.verticalSpace,
-                    _buildTime(Symbols.star_half_rounded, ratings),
+                    ratings == '0'
+                        ? _buildTime(Symbols.star_rounded, ratings)
+                        : ratings == '5'
+                            ? _buildTime(Icons.star_rounded, ratings)
+                            : _buildTime(Symbols.star_half_rounded, ratings)
                   ],
                 ),
                 const Spacer(),
@@ -140,7 +144,7 @@ class CompletedRequestCard extends StatelessWidget {
           size: 18.0,
         ),
         8.horizontalSpace,
-        Text(text,
+        Text(text == '0' ? 'Not yet rated' : text,
             style: TextStyleTheme.bodySmall.copyWith(
               color: ColorTheme.secondaryText,
             )),

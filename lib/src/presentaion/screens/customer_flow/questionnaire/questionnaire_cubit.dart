@@ -1,9 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oraaq/src/domain/entities/service_entity.dart';
 import 'package:oraaq/src/domain/services/services_service.dart';
 import 'package:oraaq/src/presentaion/screens/customer_flow/questionnaire/questionnaire_states.dart';
 
 class QuestionnaireCubit extends Cubit<QuestionnaireState> {
   final ServicesService _service;
+  final List<ServiceEntity> _selectedCategories = [];
+
   QuestionnaireCubit(this._service) : super(QuestionnaireStateInitial());
 
   Future<void> fetchServices(int id) async {

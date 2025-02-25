@@ -5,10 +5,15 @@ import 'package:oraaq/src/core/constants/string_constants.dart';
 import '../../config/themes/color_theme.dart';
 
 class NoDataFound extends StatelessWidget {
+  final String? tempText;
   final String? text;
+
+  final double? fontSize;
   const NoDataFound({
+    this.tempText,
     this.text,
     super.key,
+    this.fontSize,
   });
 
   @override
@@ -21,11 +26,21 @@ class NoDataFound extends StatelessWidget {
             color: ColorTheme.scaffold,
             colorBlendMode: BlendMode.multiply,
           ),
+          tempText != null
+              ? Positioned(
+                  bottom: 24,
+                  child: Text(tempText ?? StringConstants.noDataFound,
+                      style: TextStyle(
+                        fontSize: fontSize ?? 24,
+                        fontWeight: FontWeight.w600,
+                        color: ColorTheme.secondaryText,
+                      )))
+              : const SizedBox.shrink(),
           Positioned(
-              bottom: 24,
+              bottom: tempText == null ? 24 : 10,
               child: Text(text ?? StringConstants.noDataFound,
-                  style: const TextStyle(
-                    fontSize: 24,
+                  style: TextStyle(
+                    fontSize: fontSize ?? 24,
                     fontWeight: FontWeight.w600,
                     color: ColorTheme.secondaryText,
                   ))),

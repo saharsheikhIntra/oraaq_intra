@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:oraaq/src/core/extensions/context_extensions.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/forgot_password/forget_password_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_cubit.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/login/login_state.dart';
+import 'package:oraaq/src/presentaion/screens/general_flow/otp/otp_arguement.dart';
 import 'package:oraaq/src/presentaion/screens/general_flow/splash/splash_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -41,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('FormKey created for ${loginFormKey.hashCode}');
+    debugPrint('FormKey created for ${loginFormKey.hashCode}');
     return BlocProvider(
       create: (context) => _cubit,
       child: BlocListener<LoginCubit, LoginState>(
@@ -49,35 +52,55 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is LoginStateLoaded) {
             var type = getIt.get<UserType>();
             if (type == UserType.merchant) {
+              if (state.user.isOtpVerified == 'N') {
+                context.pushNamed(RouteConstants.otpRoute,
+                    arguments: OtpArguement(widget.arguments.selectedUserType,
+                        state.user.email, 'login'));
+                return;
+              }
               if (state.user.name.isEmpty ||
                   state.user.cnicNtn.isEmpty ||
                   state.user.serviceType == -1 ||
+                  state.user.bussinessName.isEmpty ||
                   state.user.latitude.isEmpty ||
                   state.user.longitude.isEmpty ||
                   state.user.openingTime.isEmpty ||
                   state.user.closingTime.isEmpty) {
                 // context.pushNamed(RouteConstants.merchantEditProfileRoute);
-                context.popAllNamed(
-                    RouteConstants.merchantEditProfileRoute);
+                context.popAllNamed(RouteConstants.merchantEditProfileRoute);
               } else {
-                context.popAllNamed(
-                    RouteConstants.merchantHomeScreenRoute);
+                context.popAllNamed(RouteConstants.merchantHomeScreenRoute);
               }
             } else if (type == UserType.customer) {
+              log('customer runn $type ${state.user.isOtpVerified}');
+              if (state.user.isOtpVerified == 'N') {
+                context.pushReplacementNamed(RouteConstants.otpRoute,
+                    arguments: OtpArguement(widget.arguments.selectedUserType,
+                        state.user.email, 'login'));
+                return;
+              }
               if (state.user.latitude.isEmpty ||
                   state.user.longitude.isEmpty ||
                   state.user.latitude == "null" ||
-                  state.user.longitude == "null") {
-                context.popAllNamed(
-                    RouteConstants.customerEditProfileRoute);
+                  state.user.longitude == "null" ||
+                  state.user.latitude == "" ||
+                  state.user.longitude == "" ||
+                  state.user.name == " " ||
+                  state.user.name == "") {
+                context.popAllNamed(RouteConstants.customerEditProfileRoute);
               } else {
-                context.popAllNamed(
-                    RouteConstants.customerHomeScreenRoute);
+                context.popAllNamed(RouteConstants.customerHomeScreenRoute);
               }
             }
           }
           if (state is LoginStateError) {
             DialogComponent.hideLoading(context);
+            FocusScope.of(context).unfocus();
+
+            if (getIt.isRegistered<UserEntity>()) {
+              getIt.unregister<UserEntity>();
+            }
+
             Toast.show(
               context: context,
               variant: SnackbarVariantEnum.warning,
@@ -120,10 +143,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         key: loginFormKey,
                         child: Column(
                           children: [
-                            const Spacer(),
+                            const Spacer(
+                              flex: 2,
+                            ),
                             Image.asset(
-                              AssetConstants.logoIcon,
-                              height: 80,
+                              AssetConstants.logoIconWhite,
+                              height: 70,
                             ),
                             const Spacer(),
                             Text(
@@ -142,13 +167,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             const Spacer(),
                             TextFormField(
                                 controller: emailTextController,
-                                focusNode: emailFocusNode,
+                                // focusNode: emailFocusNode,
                                 keyboardType: TextInputType.emailAddress,
                                 validator: (value) =>
                                     ValidationUtils.checkEmail(value),
                                 onChanged: (value) => _validate(),
-                                onEditingComplete: () => FocusScope.of(context)
-                                    .requestFocus(passwordFocusNode),
+                                // onEditingComplete: () => FocusScope.of(context)
+                                //     .requestFocus(passwordFocusNode),
                                 decoration: InputDecoration(
                                   labelText: StringConstants.emailAddress,
                                   labelStyle: TextStyleTheme.bodyLarge
@@ -160,7 +185,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 builder: (context, value, child) {
                                   return TextFormField(
                                       controller: passwordTextController,
-                                      focusNode: passwordFocusNode,
+                                      // focusNode: passwordFocusNode,
+                                      // onEditingComplete: FocusScope.of(context)
+                                      //     .unfocus,
                                       keyboardType:
                                           TextInputType.visiblePassword,
                                       validator: (value) => null,
@@ -205,8 +232,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 .isRegistered<UserType>()) {
                                               getIt.unregister<UserType>();
                                             }
-                                            print(widget
-                                                .arguments.selectedUserType);
+                                            debugPrint(widget
+                                                .arguments.selectedUserType
+                                                .toString());
                                             getIt.registerSingleton<UserType>(
                                                 widget.arguments
                                                     .selectedUserType);
@@ -235,10 +263,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                         child: CustomButton(
                                           icon: e.icon,
                                           type: CustomButtonType.tertiary,
-                                          onPressed: () => _cubit.socialSignIn(
-                                            e,
-                                            widget.arguments.selectedUserType,
-                                          ),
+                                          onPressed: () {
+                                            if (getIt
+                                                .isRegistered<UserType>()) {
+                                              getIt.unregister<UserType>();
+                                            }
+                                            debugPrint(widget
+                                                .arguments.selectedUserType
+                                                .toString());
+                                            getIt.registerSingleton<UserType>(
+                                                widget.arguments
+                                                    .selectedUserType);
+                                            _cubit.socialSignIn(
+                                              e,
+                                              widget.arguments.selectedUserType,
+                                            );
+                                          },
                                         )))
                                     .toList()),
                             20.verticalSpace,
@@ -256,17 +296,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                   CustomButton(
                                       size: CustomButtonSize.small,
                                       text: StringConstants.registerNow,
-                                      type: CustomButtonType.tertiary,
+                                      type: CustomButtonType.primary,
                                       onPressed: () {
                                         if (getIt.isRegistered<UserType>()) {
                                           getIt.unregister<UserType>();
                                         }
-                                        print(
-                                            widget.arguments.selectedUserType);
+                                        debugPrint(widget
+                                            .arguments.selectedUserType
+                                            .toString());
                                         getIt.registerSingleton<UserType>(
                                             widget.arguments.selectedUserType);
-                                        print(
-                                            widget.arguments.selectedUserType);
+                                        debugPrint(widget
+                                            .arguments.selectedUserType
+                                            .toString());
                                         context.pushNamed(
                                           RouteConstants.signupRoute,
                                         );
