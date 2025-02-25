@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/utils/error_util.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/new_category_dto.dart';
 
 import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_response_dto.dart';
 
@@ -54,6 +55,32 @@ class JobManagementRepository {
                 //         : null).data ??
                 // [],
               ));
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
+  }
+
+  //
+  //
+  // MARK: NEW CATEGORY API
+  //
+  //
+
+  Future<Either<Failure, List<NewCategoryResponseDto>>>
+      getNewCategories() async {
+    try {
+      final res = await _datasource.get(ApiConstants.newAllCategories);
+      return res.fold((l) => Left(l), (r) {
+        if (r.data is Map<String, dynamic> && r.data['items'] is List) {
+          final categories = (r.data['items'] as List)
+              .map((e) => NewCategoryResponseDto.fromMap(e))
+              .toList();
+          return Right(categories);
+        } else {
+          return Right([]);
+        }
+      });
     } catch (e) {
       log("Error: $e");
       return Left(handleError(e));

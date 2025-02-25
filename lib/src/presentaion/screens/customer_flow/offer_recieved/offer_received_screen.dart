@@ -41,8 +41,7 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ValueNotifier<CustomerNewRequestDto> currentRequest =
-        widget.args.customerNewRequest;
+    ValueNotifier currentRequest = widget.args.customerNewRequest;
     // log('offer recieved screen: ${currentRequest!.services}');
     log('offer recieved screen: ${currentRequest.value.services}');
 

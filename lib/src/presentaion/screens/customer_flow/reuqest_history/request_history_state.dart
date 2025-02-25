@@ -43,6 +43,11 @@ final class CustomerHomeStateAcceptedJobs extends RequestHistoryState {
   CustomerHomeStateAcceptedJobs(this.acceptedJobs);
 }
 
+final class CustomerHomeStateCombineJobs extends RequestHistoryState {
+  final List<CombineRequestsResponseDto> combineJobs;
+  CustomerHomeStateCombineJobs(this.combineJobs);
+}
+
 final class CancelCustomerRequestSuccessState extends RequestHistoryState {
   final String message;
   CancelCustomerRequestSuccessState(this.message);
@@ -59,6 +64,7 @@ class RatingErrorState extends RequestHistoryState {
 
   RatingErrorState(this.failure);
 }
+
 class CancelCustomerOrderState extends RequestHistoryState {
   final String message;
   CancelCustomerOrderState(this.message);

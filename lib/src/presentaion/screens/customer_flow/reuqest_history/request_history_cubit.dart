@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/cancel_customer_request.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/combine_requests_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/domain/entities/failure.dart';
 import 'package:oraaq/src/domain/services/job_management_service.dart';
@@ -99,6 +100,24 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
       },
       (r) {
         emit(CustomerHomeStateAcceptedJobs(r));
+      },
+    );
+  }
+
+  //
+// MARK: COMBINE REQUESTS
+//
+  Future<void> fetchCombineRequest() async {
+    // emit(RequestHistoryScreenLoading());
+
+    final result = await _servicesRepository.getCombineRequests(user.id);
+
+    result.fold(
+      (l) {
+        emit(RequestHistoryScreenError(l));
+      },
+      (r) {
+        emit(CustomerHomeStateCombineJobs(r));
       },
     );
   }

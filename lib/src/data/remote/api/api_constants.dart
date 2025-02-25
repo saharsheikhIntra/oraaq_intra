@@ -53,6 +53,7 @@ class ApiConstants {
   static const String getMerchantById = "/api/get_merchant_by_id/";
 
   static const String getAllCategories = "/ords/oraaq/api/getCategories";
+  static const String newAllCategories = "/ords/oraaq/api/Get_Categories";
   static const String fetchAcceptedRequests =
       '/ords/oraaq/api/fetchAcceptedRequest?';
 
@@ -71,6 +72,9 @@ class ApiConstants {
       "/ords/oraaq/api/customerWorkOrders?";
   static const String fetchServiceRequests =
       "/ords/oraaq/api/fetchServiceRequests?customer_id=";
+  static const String fetchCombineRequests =
+      "/ords/oraaq/api/fetch_combined_requests?customer_id=";
+
   static const String fetchOffersForRequest =
       "/ords/oraaq/api/fetch_offers_for_request?request_id=";
   static const String updateOfferAmount = '/ords/oraaq/api/update_offer_amount';

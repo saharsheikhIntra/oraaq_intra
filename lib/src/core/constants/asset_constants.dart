@@ -10,7 +10,7 @@ class AssetConstants {
   static const String homeAppbarBackground =
       'assets/images/home_appbar_background.jpg';
   static const String locationMarker = 'assets/images/location_marker.png';
-  static const String services1 = 'assets/images/service_img.jpeg';
+  static const String services1 = 'assets/images/placeholder_image.jpeg';
   static const String serviceImage1 = 'assets/images/saloon_1.png';
   static const String serviceImage2 = 'assets/images/catering_2.png';
   static const String serviceImage3 = 'assets/images/ac_repair_3.png';
