@@ -44,7 +44,6 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
       _cubit.fetchWorkOrders();
       _cubit.fetchAcceptedRequest();
       _cubit.fetchNewRequests();
- 
     });
   }
 
@@ -177,7 +176,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                       //
                       // MARK: On-going orders tab
                       //
-                      // 
+                      //
                       ListView(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         children: [
@@ -466,6 +465,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
             ),
           ),
           child: SizedBox(
+          
             height: 120,
             width: 245,
             child: OnGoingRequestCard(

@@ -40,13 +40,18 @@ class OnGoingRequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      
       onTap: onTap,
       borderRadius: 12.borderRadius,
       child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+          
           decoration: BoxDecoration(
             color: ColorTheme.white,
-            border: Border.all(color: variant == OngoingRequestCardVariant.offerAccepted ? ColorTheme.neutral2 : ColorTheme.white),
+            border: Border.all(
+                color: variant == OngoingRequestCardVariant.offerAccepted
+                    ? ColorTheme.neutral2
+                    : ColorTheme.white),
             borderRadius: 12.borderRadius,
           ),
           child: Column(

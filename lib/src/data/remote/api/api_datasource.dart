@@ -32,7 +32,7 @@ class ApiDatasource {
           options: options,
           queryParameters: queryParameters,
         );
-      log(res.toString());
+    
       return Right(res);
 
       // return Right(
@@ -83,7 +83,7 @@ class ApiDatasource {
         onReceiveProgress: onReceiveProgress,
         onSendProgress: onSendProgress,
       );
-      // Logger().i(response.data);
+      
       return Right(response);
     } on DioException catch (e) {
       log(e.toString());
@@ -126,7 +126,7 @@ class ApiDatasource {
         onReceiveProgress: onReceiveProgress,
         onSendProgress: onSendProgress,
       );
-      // Logger().i(response.data);
+    
       return Right(response);
     } on DioException catch (e) {
       log(e.toString());

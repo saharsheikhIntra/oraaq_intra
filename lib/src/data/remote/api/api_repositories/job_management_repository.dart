@@ -30,7 +30,7 @@ class JobManagementRepository {
   Future<Either<Failure, List<CategoryResponseDto>>> getCategories() async {
     try {
       final result = await _datasource.get(ApiConstants.getAllCategories);
-      log("GET CATEGORY RESULT: $result");
+      // log("GET CATEGORY RESULT: $result");
       return result.fold(
         (failure) => Left(failure),
         (response) {
@@ -228,7 +228,7 @@ class JobManagementRepository {
                       .map((e) => NewServiceRequestResponseDto.fromMap(e))
                       .toList()
                   : <NewServiceRequestResponseDto>[]).data;
-          log('3 $responseDto');
+          // log('3 $responseDto');
           return Right(responseDto!);
         },
       );
@@ -358,11 +358,11 @@ class JobManagementRepository {
     try {
       final result = await _datasource
           .get("${ApiConstants.getAllServiceRequests}$merchantId");
-      log('1 $result');
+      // log('1 $result');
       return result.fold(
         (l) => Left(l),
         (r) {
-          log('2 $r');
+          // log('2 $r');
           var responseDto = BaseResponseDto.fromJson(
               r.data,
               (data) => data is List

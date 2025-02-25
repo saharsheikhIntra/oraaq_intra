@@ -114,7 +114,7 @@ class ServicesRepository {
     try {
       final result = await _datasource
           .get("${ApiConstants.fetchAcceptedRequests}customer_id=$customerId");
-      log(result.toString());
+      // log(result.toString());
       return result.fold(
         (l) => Left(l),
         (r) {
@@ -302,7 +302,7 @@ class ServicesRepository {
         (r) {
           var responseDto =
               BaseResponseDto.fromJson(r.data, (data) => data).message;
-          log(responseDto.toString());
+          // log(responseDto.toString());
           return Right(responseDto);
         },
       );
@@ -328,7 +328,7 @@ class ServicesRepository {
         (r) {
           var responseDto =
               BaseResponseDto.fromJson(r.data, (data) => data).message;
-          log(responseDto.toString());
+          // log(responseDto.toString());
           return Right(responseDto);
         },
       );
@@ -354,7 +354,7 @@ class ServicesRepository {
         (r) {
           var responseDto =
               BaseResponseDto.fromJson(r.data, (data) => data).message;
-          log(responseDto.toString());
+          // log(responseDto.toString());
           return Right(responseDto);
         },
       );
@@ -402,8 +402,8 @@ class ServicesRepository {
   Future<Either<Failure, String>> generateOrder(
       GenerateOrderRequestDto dto) async {
     try {
-      log('in map dto: ${dto.toMap()}');
-      log('${jsonEncode(dto.toMap())}');
+      // log('in map dto: ${dto.toMap()}');
+      // log('${jsonEncode(dto.toMap())}');
       final result = await _datasource.post2(ApiConstants.generateOrder,
           data: jsonEncode(dto.toMap())
           // data: dto.toMap(),

@@ -15,7 +15,7 @@ class LoginResponseDto {
   // UserType currentType = getIt.get<UserType>();
 
   factory LoginResponseDto.fromMap(Map<String, dynamic> map) {
-    log('is otp lrd: ${map['user']['is_otp_verified']}');
+    // log('is otp lrd: ${map['user']['is_otp_verified']}');
     return LoginResponseDto(
       user: getIt.get<UserType>() != UserType.merchant
           ? map['user'] != null

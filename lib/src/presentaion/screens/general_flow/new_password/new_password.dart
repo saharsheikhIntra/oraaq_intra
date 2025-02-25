@@ -41,7 +41,7 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen> {
         listener: (context, state) {
           // TODO: implement listener
           if (state is NewPasswordStateSuccess) {
-            debugPrint(state.response);
+            // debugPrint(state.response);
             DialogComponent.hideLoading(context);
             Toast.show(
               context: context,

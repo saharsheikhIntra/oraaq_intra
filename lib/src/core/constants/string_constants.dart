@@ -93,7 +93,7 @@ class StringConstants {
   static const String sendQuote = "Send Quote";
   static const String johnDoe = "John Doe";
   static const String secondUser = "Amber Doe";
-  static const String email = "john.doe@mail.com";
+  static const String email = "Email Address";
 
   static const String userName = "Full Name";
   static const String changePassword = "Change Password";

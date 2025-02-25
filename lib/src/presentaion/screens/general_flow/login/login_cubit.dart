@@ -41,7 +41,7 @@ class LoginCubit extends Cubit<LoginState> {
       (l) => Logger().e(l),
       (r) async {
         emit(LoginStateLoading());
-        Logger().e(r.displayName);
+        // Logger().e(r.displayName);
         // var result =
         var socialApiRes = await _authenticationServices.loginViaSocial(
             SocialLoginRequestDto(

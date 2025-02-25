@@ -21,7 +21,7 @@ class JobManagementService {
 
   Future<Either<Failure, List<CategoryEntity>>> getCategories() async {
     var result = await _jobsRepository.getCategories();
-    log("fetchCategoriesService: $result");
+    // log("fetchCategoriesService: $result");
     return result.fold(
       (l) => Left(l),
       (r) => Right(r.map((e) => e.toCategoryEntity).toList()),

@@ -104,7 +104,9 @@ class _SubServicesScreenState extends State<SubServicesScreen> {
             );
           } else {
             return MakeOfferPage(
-                onChanged: (offer) => Logger().i(offer),
+                onChanged: (offer) {
+                  // Logger().i(offer);
+                },
                 onContinue:
                     (String datetimeSelected, int amount, int userOfferAmount) {
                   log('amount: $amount userOfferAmount: $userOfferAmount');

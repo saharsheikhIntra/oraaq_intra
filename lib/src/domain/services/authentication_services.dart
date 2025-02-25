@@ -63,12 +63,12 @@ class AuthenticationServices {
       (l) => Left(l),
       (r) async {
         UserEntity user = r.user.toUserEntity.copyWith(token: r.token);
-        log('otp verified: ${user.isOtpVerified.toString()}');
+        // log('otp verified: ${user.isOtpVerified.toString()}');
         await _localAuthRepository.setUser(user);
         await _localAuthRepository.setToken(r.token);
         if (getIt.isRegistered<UserEntity>()) getIt.unregister<UserEntity>();
         getIt.registerSingleton<UserEntity>(user);
-        log('${user.role}');
+        // log('${user.role}');
         return Right(user);
       },
     );
@@ -220,7 +220,7 @@ class AuthenticationServices {
       SocialSignInEnum.facebook =>
         await _socialAuthRepository.signInWithFacebook(),
     };
-    log(result.toString());
+    // log(result.toString());
 
     return result.fold(
       (l) => Left(l),
@@ -280,7 +280,7 @@ class AuthenticationServices {
         await _localAuthRepository.setToken(r.token);
         if (getIt.isRegistered<UserEntity>()) getIt.unregister<UserEntity>();
         getIt.registerSingleton<UserEntity>(user);
-        log('${user.role}');
+        // log('${user.role}');
         return Right(user);
       },
     );

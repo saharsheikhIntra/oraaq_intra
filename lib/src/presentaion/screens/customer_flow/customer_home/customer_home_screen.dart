@@ -20,6 +20,7 @@ class CustomerHomeScreen extends StatefulWidget {
 }
 
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
+  CustomerHomeState? _previousState;
   final _cubit = getIt.get<CustomerHomeCubit>();
   List<CategoryEntity> _categories = [];
   final ValueNotifier<List<AcceptedRequestsResponseDto>> acceptedJobs =
@@ -33,7 +34,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       await _cubit.fetchCategories();
       await _cubit.fetchAcceptedRequest();
 
-      print(acceptedJobs);
+      // print(acceptedJobs);
     });
   }
 
@@ -43,36 +44,46 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
         create: (context) => _cubit,
         child: BlocConsumer<CustomerHomeCubit, CustomerHomeState>(
           listener: (context, state) {
-            if (state is CustomerHomeStateLoading) {
+            // Track transitions to/from Loading state
+            if (_previousState is! CustomerHomeStateLoading &&
+                state is CustomerHomeStateLoading) {
               DialogComponent.showLoading(context);
-            }
-            if (state is CustomerHomeStateError) {
+            } else if (_previousState is CustomerHomeStateLoading &&
+                state is! CustomerHomeStateLoading) {
               DialogComponent.hideLoading(context);
+            }
+
+            // Handle Error state
+            if (state is CustomerHomeStateError) {
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.warning,
                 title: state.error.message,
               );
             }
+
+            // Update categories
             if (state is CustomerHomeStateCategories) {
-              DialogComponent.hideLoading(context);
               _categories = state.categories;
             }
-            if (state is CustomerHomeStateAcceptedJobs) {
-              DialogComponent.hideLoading(context);
-              acceptedJobs.value = state.acceptedJobs;
-              // debugPrint(acceptedJobs.value);
-            }
-            if (state is CancelCustomerRequestSuccessState) {
-              DialogComponent.hideLoading(context);
-              _cubit.fetchAcceptedRequest();
 
+            // Update accepted jobs
+            if (state is CustomerHomeStateAcceptedJobs) {
+              acceptedJobs.value = state.acceptedJobs;
+            }
+
+            // Handle request cancellation success
+            if (state is CancelCustomerRequestSuccessState) {
+              _cubit.fetchAcceptedRequest(); // This will trigger a new load
               Toast.show(
                 context: context,
                 variant: SnackbarVariantEnum.success,
                 title: state.message,
               );
             }
+
+            // Update previous state tracker
+            _previousState = state;
           },
           builder: (context, state) {
             return Scaffold(
@@ -155,7 +166,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                       child: ValueListenableBuilder(
                         valueListenable: acceptedJobs,
                         builder: (context, value, child) {
-                          log("Accepted Jobs: $value");
+                          // log("Accepted Jobs: $value");
                           return value.isNotEmpty
                               ? ListView.separated(
                                   shrinkWrap: true,
