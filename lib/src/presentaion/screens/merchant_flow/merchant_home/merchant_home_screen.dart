@@ -203,7 +203,6 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                 _cubit.fetchServiceRequests();
               } else if (selectedFilter == MerchantJobsFilter.alreadyQuoted) {
                 _cubit.fetchAppliedJobs();
-                log("${state.message} applied jobs");
               }
               _cubit.fetchWorkInProgressOrders();
               Toast.show(
@@ -224,7 +223,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             }
             if (state is BidPostedSuccessState) {
               DialogComponent.hideLoading(context);
-              if (selectedFilter == MerchantJobsFilter.allRequests) { 
+              if (selectedFilter == MerchantJobsFilter.allRequests) {
                 _cubit.fetchServiceRequests();
               } else {
                 _cubit.fetchAllServiceRequests();

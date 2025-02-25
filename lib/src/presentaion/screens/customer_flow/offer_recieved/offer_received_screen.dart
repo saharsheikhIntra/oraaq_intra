@@ -113,7 +113,9 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                   }
                   if (state is OfferAccepted) {
                     log('updated: ${state.message}');
-                    context.pushAndRemoveUntil(const CustomerHomeScreen());
+                    context.pushReplacementNamed(
+                        RouteConstants.requestHistoryScreenRoute);
+                    // context.pushAndRemoveUntil(const CustomerHomeScreen());
                     Toast.show(
                         context: context,
                         variant: SnackbarVariantEnum.success,
@@ -121,7 +123,9 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                   }
                   if (state is OfferRejected) {
                     log('updated: ${state.failure.message}');
-                    context.pushAndRemoveUntil(const CustomerHomeScreen());
+                    context.pushReplacementNamed(
+                        RouteConstants.requestHistoryScreenRoute);
+                    // context.pushAndRemoveUntil(const CustomerHomeScreen());
                     Toast.show(
                         context: context,
                         variant: SnackbarVariantEnum.warning,
