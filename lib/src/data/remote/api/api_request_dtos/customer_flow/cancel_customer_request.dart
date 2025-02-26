@@ -1,21 +1,18 @@
-class cancelCustomerConfirmedRequestsDto {
-  final int orderId;
-  final int customerId;
+class cancelCustomerCreatedRequestsDto {
+  final int requestId;
 
-  cancelCustomerConfirmedRequestsDto({
-    this.orderId = -1,
-    this.customerId = -1,
+  cancelCustomerCreatedRequestsDto({
+    this.requestId = -1,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'order_id': orderId,
-      'customer_id': customerId,
+      'request_id': requestId,
     };
   }
 
   @override
   String toString() {
-    return 'cancelCustomerCreatedRequestsDto(orderId: $orderId, customerId: $customerId)';
+    return 'cancelCustomerCreatedRequestsDto(requestId: $requestId)';
   }
 }

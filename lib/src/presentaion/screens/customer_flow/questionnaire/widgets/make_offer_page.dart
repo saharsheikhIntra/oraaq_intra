@@ -72,6 +72,7 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
       children: [
         Expanded(
           child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Padding(
               padding: 16.allPadding,
               child: Column(

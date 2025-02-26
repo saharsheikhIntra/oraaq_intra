@@ -234,7 +234,7 @@ class ServicesRepository {
   //
   //
   Future<Either<Failure, String>> cancelCustomerCreateRequests(
-      cancelCustomerConfirmedRequestsDto cancelRequest) async {
+      cancelCustomerCreatedRequestsDto cancelRequest) async {
     try {
       final result = await _datasource.put(
         ApiConstants.cancelCustomerConfirmedRequest,

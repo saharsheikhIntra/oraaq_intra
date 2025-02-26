@@ -214,7 +214,7 @@ class ServicesService {
   //
 
   Future<Either<Failure, String>> cancelCustomerCreatedRequest(
-      cancelCustomerConfirmedRequestsDto cancelRequest) async {
+      cancelCustomerCreatedRequestsDto cancelRequest) async {
     return await _servicesRepository
         .cancelCustomerCreateRequests(cancelRequest);
   }
