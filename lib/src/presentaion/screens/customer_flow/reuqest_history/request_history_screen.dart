@@ -116,7 +116,13 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                   DialogComponent.showLoading(context);
                 }
                 if (state is RequestHistoryScreenError) {
+                  _cubit.fetchWorkOrders();
+                  _cubit.fetchCombineRequest();
+                  _cubit.fetchAcceptedRequest();
+                  _cubit.fetchNewRequests();
+
                   DialogComponent.hideLoading(context);
+
                   Toast.show(
                     context: context,
                     variant: SnackbarVariantEnum.warning,
@@ -586,6 +592,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                         currentRequest.value.offersReceived.toString(),
                       ),
                       child: OnGoingRequestCard(
+                        buttonText: currentRequest.value.request_status,
                         userName: currentRequest.value.category,
                         duration: currentRequest.value.duration,
                         date: DateTime.tryParse(currentRequest.value.date)!
@@ -605,6 +612,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                         },
                       ))
                   : OnGoingRequestCard(
+                      buttonText: currentRequest.value.request_status,
                       userName: currentRequest.value.request_status == 'pending'
                           ? currentRequest.value.category
                           : currentRequest.value.serviceName,

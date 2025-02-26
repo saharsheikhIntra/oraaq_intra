@@ -23,6 +23,7 @@ class OnGoingRequestCard extends StatelessWidget {
   final String date;
   final String time;
   final String price;
+  final String? buttonText;
   final VoidCallback onTap;
   const OnGoingRequestCard({
     super.key,
@@ -34,6 +35,7 @@ class OnGoingRequestCard extends StatelessWidget {
     required this.servicesList,
     required this.variant,
     this.profileName,
+    this.buttonText,
     required this.onTap,
   });
 
@@ -46,7 +48,10 @@ class OnGoingRequestCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
           decoration: BoxDecoration(
             color: ColorTheme.white,
-            border: Border.all(color: variant == OngoingRequestCardVariant.offerAccepted ? ColorTheme.neutral2 : ColorTheme.white),
+            border: Border.all(
+                color: variant == OngoingRequestCardVariant.offerAccepted
+                    ? ColorTheme.neutral2
+                    : ColorTheme.white),
             borderRadius: 12.borderRadius,
           ),
           child: Column(
@@ -79,9 +84,25 @@ class OnGoingRequestCard extends StatelessWidget {
                 ],
               ),
               8.verticalSpace,
-              SubServicesChipWrapView(
-                servicesList: servicesList,
-                variant: SubServicesChipWrapViewVariant.forRequestCard,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SubServicesChipWrapView(
+                    servicesList: servicesList,
+                    variant: SubServicesChipWrapViewVariant.forRequestCard,
+                  ),
+                  if (buttonText != null)
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: RequestStatusChip(
+                        buttonText: buttonText ?? "",
+                        size: RequestStatusChipSize.small,
+                        color: buttonText == 'pending'
+                            ? RequestStatusChipColor.red
+                            : RequestStatusChipColor.green,
+                      ),
+                    ),
+                ],
               ),
               20.verticalSpace,
               Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
