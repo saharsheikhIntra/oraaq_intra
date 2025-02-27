@@ -10,9 +10,7 @@ final class ChangePasswordStateLoading extends ChangePasswordState {}
 
 final class ChangePasswordStateSuccess extends ChangePasswordState {
   final ChangePasswordResponseDto response;
-  ChangePasswordStateSuccess(
-    this.response
-  );
+  ChangePasswordStateSuccess(this.response);
 }
 
 final class ChangePasswordStateError extends ChangePasswordState {

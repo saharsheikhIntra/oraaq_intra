@@ -21,8 +21,7 @@ class CustomerHomeCubit extends Cubit<CustomerHomeState> {
 
   Future<void> fetchCategories() async {
     emit(CustomerHomeStateLoading());
-    final result = await _jobManagementService.getCategories();
-    // log("fetchCategories: $result");
+    final result = await _jobManagementService.newCategories();
     result.fold(
       (l) => emit(CustomerHomeStateError(l)),
       (r) => emit(CustomerHomeStateCategories(r)),

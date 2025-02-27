@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:oraaq/src/core/utils/error_util.dart';
 import 'package:oraaq/src/data/remote/api/api_request_dtos/general_flow/add_rating.dart';
-import 'package:oraaq/src/data/remote/api/api_response_dtos/general_flow/base_response_dto2.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/new_category_dto.dart';
 
 import 'package:oraaq/src/data/remote/api/api_response_dtos/merchant_flow/get_all_new_response_dto.dart';
 
@@ -32,24 +32,57 @@ class JobManagementRepository {
       final result = await _datasource.get(ApiConstants.getAllCategories);
       // log("GET CATEGORY RESULT: $result");
       return result.fold(
-        (failure) => Left(failure),
-        (response) {
-          final baseResponse = BaseResponseDto2.fromJson(
-            response.data,
-            (data) {
-              // Since data is already the 'items' list, treat it as List directly.
-              if (data is List) {
-                return data.map((e) => CategoryResponseDto.fromMap(e)).toList();
-              }
-              return <CategoryResponseDto>[]; // Return empty list if data is not a list.
-            },
-          );
+          (l) => Left(l),
+          (r) => Right(
+                BaseResponseDto.fromJson(
+                      r.data,
+                      (data) => data['categories'] is List
+                          ? (data['categories'] as List)
+                              .map((e) => CategoryResponseDto.fromMap(e))
+                              .toList()
+                          : null,
+                    ).data ??
+                    [],
 
-          return Right(baseResponse.data ?? []);
-        },
-      );
-    } catch (e, stackTrace) {
-      log("GET CATEGORY ERROR: $e", stackTrace: stackTrace);
+                //     r.data,
+                //     (data) =>
+                //     data is List
+                //         ? data
+                //             .map(
+                //               (e) => CategoryResponseDto.fromMap(e),
+                //             )
+                //             .toList()
+                //         : null).data ??
+                // [],
+              ));
+    } catch (e) {
+      log("Error: $e");
+      return Left(handleError(e));
+    }
+  }
+
+  //
+  //
+  // MARK: NEW CATEGORY API
+  //
+  //
+
+  Future<Either<Failure, List<NewCategoryResponseDto>>>
+      getNewCategories() async {
+    try {
+      final res = await _datasource.get(ApiConstants.newAllCategories);
+      return res.fold((l) => Left(l), (r) {
+        if (r.data is Map<String, dynamic> && r.data['items'] is List) {
+          final categories = (r.data['items'] as List)
+              .map((e) => NewCategoryResponseDto.fromMap(e))
+              .toList();
+          return Right(categories);
+        } else {
+          return Right([]);
+        }
+      });
+    } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }

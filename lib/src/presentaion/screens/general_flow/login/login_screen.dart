@@ -229,6 +229,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     text: StringConstants.signIn,
                                     onPressed: value
                                         ? () {
+                                            FocusScope.of(context)
+                                                .requestFocus(FocusNode());
                                             if (getIt
                                                 .isRegistered<UserType>()) {
                                               getIt.unregister<UserType>();

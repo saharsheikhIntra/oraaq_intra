@@ -9,6 +9,7 @@ import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/create_
 import 'package:oraaq/src/data/remote/api/api_request_dtos/customer_flow/get_merchant_radius.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/accpted_request_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/cancel_work_order_dto.dart';
+import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/combine_requests_response_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/complete_work_order_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/customer_new_request_dto.dart';
 import 'package:oraaq/src/data/remote/api/api_response_dtos/customer_flow/fetch_offers_for_requests.dart';
@@ -224,6 +225,37 @@ class ServicesRepository {
       );
     } catch (e) {
       log("CUSTOMER NEW REQUEST Error: $e");
+      return Left(handleError(e));
+    }
+  }
+
+  //
+  //
+  // MARK: CUSTOMER COMBINE REQUEST
+  //
+  //
+
+  Future<Either<Failure, List<CombineRequestsResponseDto>>>
+      getCustomerCombineRequests(int customerId) async {
+    try {
+      final result = await _datasource
+          .get("${ApiConstants.fetchCombineRequests}$customerId");
+      return result.fold(
+        (l) => Left(l),
+        (r) {
+          var responseDto = BaseResponseDto.fromJson(
+            r.data,
+            (data) => data is List
+                ? data
+                    .map((e) => CombineRequestsResponseDto.fromMap(e))
+                    .toList()
+                : <CombineRequestsResponseDto>[],
+          ).data;
+          return Right(responseDto!);
+        },
+      );
+    } catch (e) {
+      log("Error: $e");
       return Left(handleError(e));
     }
   }

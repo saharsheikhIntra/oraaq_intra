@@ -206,6 +206,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               text: StringConstants.setPassword,
                               onPressed: value
                                   ? () {
+                                      FocusScope.of(context)
+                                          .requestFocus(FocusNode());
                                       _cubit.ChangePassword(
                                           oldPasswordController.text,
                                           newPasswordController.text);

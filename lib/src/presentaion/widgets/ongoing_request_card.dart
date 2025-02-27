@@ -23,6 +23,7 @@ class OnGoingRequestCard extends StatelessWidget {
   final String date;
   final String time;
   final String price;
+  final String? buttonText;
   final VoidCallback onTap;
   const OnGoingRequestCard({
     super.key,
@@ -34,6 +35,7 @@ class OnGoingRequestCard extends StatelessWidget {
     required this.servicesList,
     required this.variant,
     this.profileName,
+    this.buttonText,
     required this.onTap,
   });
 
@@ -84,9 +86,25 @@ class OnGoingRequestCard extends StatelessWidget {
                 ],
               ),
               8.verticalSpace,
-              SubServicesChipWrapView(
-                servicesList: servicesList,
-                variant: SubServicesChipWrapViewVariant.forRequestCard,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SubServicesChipWrapView(
+                    servicesList: servicesList,
+                    variant: SubServicesChipWrapViewVariant.forRequestCard,
+                  ),
+                  if (buttonText != null)
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: RequestStatusChip(
+                        buttonText: buttonText ?? "",
+                        size: RequestStatusChipSize.small,
+                        color: buttonText == 'pending'
+                            ? RequestStatusChipColor.red
+                            : RequestStatusChipColor.green,
+                      ),
+                    ),
+                ],
               ),
               20.verticalSpace,
               Row(crossAxisAlignment: CrossAxisAlignment.end, children: [

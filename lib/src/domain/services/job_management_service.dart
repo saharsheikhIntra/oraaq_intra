@@ -29,6 +29,18 @@ class JobManagementService {
   }
 
   //
+  // MARK: GET NEW CATEGORY
+  //
+
+  Future<Either<Failure, List<CategoryEntity>>> newCategories() async {
+    var result = await _jobsRepository.getNewCategories();
+    return result.fold(
+      (l) => Left(l),
+      (r) => Right(r.map((e) => e.toCategoryEntity).toList()),
+    );
+  }
+
+  //
   //
   // MARK: GET COMPLETED ORDERS
   //

@@ -186,6 +186,8 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen> {
                                 width: ScreenUtil().screenWidth,
                                 text: StringConstants.setPassword,
                                 onPressed: () {
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
                                   if (newPasswordFormKey.currentState!
                                       .validate()) {
                                     _cubit.setNewPassword(

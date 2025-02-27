@@ -110,6 +110,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               width: ScreenUtil().screenWidth,
                               text: StringConstants.sendCode,
                               onPressed: () {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
                                 if (forgetPasswordFormKey.currentState!
                                     .validate()) {
                                   context.pushNamed(RouteConstants.otpRoute,

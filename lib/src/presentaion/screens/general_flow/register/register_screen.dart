@@ -341,6 +341,8 @@ class _ResgisterScreenState extends State<ResgisterScreen> {
                                   text: StringConstants.registerButton,
                                   onPressed: value
                                       ? () {
+                                          FocusScope.of(context)
+                                              .requestFocus(FocusNode());
                                           if (registerFormKey.currentState!
                                               .validate()) {
                                             // context.pushNamed(RouteConstants.otpRoute);
