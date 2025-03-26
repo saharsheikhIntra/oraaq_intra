@@ -54,10 +54,9 @@ void initializeInjectedDependencies() {
 
 injectDatasources() {
   getIt.registerSingleton(LocalDatasource());
-  // getIt.re
 
   Dio dio = Dio(BaseOptions(
-    baseUrl: ApiConstants.baseUrl,
+    baseUrl: ApiConstants.baseUrl2,
     connectTimeout: 30000.milliseconds,
     receiveTimeout: 30000.milliseconds,
     sendTimeout: 30000.milliseconds,

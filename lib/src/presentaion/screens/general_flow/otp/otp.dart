@@ -40,6 +40,7 @@ class _OtpScreenState extends State<OtpScreen> {
           if (state is ForgetPasswordSuccessState) {
             DialogComponent.hideLoading(context);
             generatedOtp = state.response.otp.toString();
+            log("generated OTP $generatedOtp");
           }
           if (state is ForgetPasswordErrorState) {
             DialogComponent.hideLoading(context);

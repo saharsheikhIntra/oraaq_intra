@@ -1,5 +1,7 @@
 class ApiConstants {
-  static const String baseUrl = "http://portal.intraerp.com:8080";
+  // static const String baseUrl = "http://portal.intraerp.com:8080";
+  static const String baseUrl2 = "http://182.184.51.177:8081";
+
   static const String tokenKey = "Authorization";
   static const String sendFcmNotification =
       "https://fcm.googleapis.com/fcm/send";
@@ -9,19 +11,20 @@ class ApiConstants {
   //
 //
 //GENERAL FLOW
-  static const String getToken = "/ords/oraaq/api/token";
-  static const String login = "/ords/oraaq/api/splogin";
-  static const String register = "/ords/oraaq/api/register";
+  static const String getToken = "/api/token"; // "/ords/oraaq/api/token";
+  static const String login = "/api/splogin"; //  "/ords/oraaq/api/splogin";
+  static const String register = "/api/register"; //"/ords/oraaq/api/register";
   static const String generateOtp = "/ords/oraaq/api/GenerateOtp";
   static const String verifyOtp = "/ords/oraaq/api/verifyOTP";
   static const String changePassword = "/ords/oraaq/api/changePassword";
-  static const String forgetPassword = "/ords/oraaq/api/forgetPassword";
+  static const String forgetPassword =
+      "/api/forget-password"; //"/ords/oraaq/api/forgetPassword";
   static const String setNewPassword = "/ords/oraaq/api/setNewPassword";
   static const String loginViaSocial = "/ords/oraaq/api/SocialRegisterLogin";
   //
   //MERCHANT FLOW
-  static const String updateMerchantProfile =
-      "/ords/oraaq/api/UpdateMerchantProfile";
+  static const String updateMerchantProfile = "/api/UpdateMerchantProfile";
+  // "/ords/oraaq/api/UpdateMerchantProfile";
   static const String getCanceledWorkOrdersForMerchant =
       "/ords/oraaq/api/merchantWorkorders?";
   static const String getCompletedWorkOrderMerchant =
@@ -52,7 +55,9 @@ class ApiConstants {
 
   static const String getMerchantById = "/api/get_merchant_by_id/";
 
-  static const String getAllCategories = "/ords/oraaq/api/getCategories";
+  static const String getAllCategories = "/api/getCategories";
+
+  ///ords/oraaq/api/getCategories";
   static const String newAllCategories = "/ords/oraaq/api/Get_Categories";
   static const String fetchAcceptedRequests =
       '/ords/oraaq/api/fetchAcceptedRequest?';

@@ -12,14 +12,14 @@ class OtpCubit extends Cubit<OtpState> {
 
   OtpCubit(this._authServices) : super(OtpInitial());
   // final user = getIt.get<UserEntity>();
-  Future<void> generateOtp() async {
-    emit(OtpLoading());
-    final result = await _authServices.generateOtp(54);
-    result.fold(
-      (l) => emit(OtpError(l)),
-      (r) => emit(OtpGenerated(r)),
-    );
-  }
+  // Future<void> generateOtp() async {
+  //   emit(OtpLoading());
+  //   final result = await _authServices.generateOtp(54);
+  //   result.fold(
+  //     (l) => emit(OtpError(l)),
+  //     (r) => emit(OtpGenerated(r)),
+  //   );
+  // }
 
   Future<void> verifiedOtp() async {
     emit(OtpVerified());

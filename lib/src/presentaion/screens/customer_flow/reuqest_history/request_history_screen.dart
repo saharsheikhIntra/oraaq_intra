@@ -182,6 +182,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                   DialogComponent.hideLoading(context);
                   _cubit.fetchWorkOrders();
                   _cubit.fetchAcceptedRequest();
+                  _cubit.fetchCombineRequest();
                   Toast.show(
                     context: context,
                     variant: SnackbarVariantEnum.success,
