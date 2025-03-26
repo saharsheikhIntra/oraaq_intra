@@ -27,6 +27,7 @@ class LoginCubit extends Cubit<LoginState> {
         role: getIt.get<UserType>().id,
       ),
     );
+    log("Login result: $result");
     result.fold(
       (l) => emit(LoginStateError(l)),
       (r) => emit(LoginStateLoaded(r)),

@@ -417,18 +417,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
         Placemark first = placemarks.first;
         Set<String> tempAddress = {};
 
-        // if (first.name != null && first.name!.isNotEmpty) {
-        //   tempAddress.add(first.name!.trim());
-        // }
-        // if (first.street != null && first.street!.isNotEmpty) {
-        //   tempAddress.add(first.street!.trim());
-        // }
-        // if (first.subThoroughfare != null &&
-        //     first.subThoroughfare!.isNotEmpty) {
-        //   tempAddress.add(first.subThoroughfare!.trim());
-        // }
-        // if (first.thoroughfare != null && first.thoroughfare!.isNotEmpty) {
-        //   tempAddress.add(first.thoroughfare!.trim());
+  
         // }
         if (first.subLocality != null && first.subLocality!.isNotEmpty) {
           tempAddress.add(first.subLocality!.trim());

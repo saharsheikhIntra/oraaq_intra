@@ -335,10 +335,13 @@ class ApiAuthRepository {
   Future<Either<Failure, ForgetPasswordResponseDto>> forgetPassword(
       ForgetPasswordRequestDto dto) async {
     try {
-      final result =
-          await _datasource.put(ApiConstants.forgetPassword, data: dto.toMap());
+      final result = await _datasource.post(ApiConstants.forgetPassword,
+          data: dto.toMap());
+      log("Forget Password Result: $result");
       return result.fold((l) => left(l), (r) {
+        log("Raw API response data: ${r.data}");
         var responseDto = ForgetPasswordResponseDto.fromMap(r.data);
+        log("Forget Password response: ${responseDto}");
         return right(responseDto);
       });
     } catch (e) {

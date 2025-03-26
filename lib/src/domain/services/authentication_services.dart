@@ -109,10 +109,10 @@ class AuthenticationServices {
   // MARK: VERIFY_OTP
   //
   //
-  Future<Either<Failure, VerifyOtpResponseDto>> verifyOtp(
-      int userId, int otp) async {
-    return await _apiAuthRepository.verifyOtp(userId, otp);
-  }
+  // Future<Either<Failure, VerifyOtpResponseDto>> verifyOtp(
+  //     int userId, int otp) async {
+  //   return await _apiAuthRepository.verifyOtp(userId, otp);
+  // }
 
   //
   //

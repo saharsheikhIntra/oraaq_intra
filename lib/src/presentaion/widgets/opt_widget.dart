@@ -62,13 +62,13 @@ class _OtpWidgetState extends State<OtpWidget> {
     );
   }
 
-  Future<bool> verifyOtp(String pin) async {
-    bool isValid = pin == "12345";
-    setState(() {
-      _hasError = !isValid;
-    });
-    return isValid;
-  }
+  // Future<bool> verifyOtp(String pin) async {
+  //   bool isValid = pin == "12345";
+  //   setState(() {
+  //     _hasError = !isValid;
+  //   });
+  //   return isValid;
+  // }
 
   PinTheme pinTheme({bool isFocused = false}) {
     return PinTheme(

@@ -155,7 +155,8 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                 if (state is CancelCustomerRequestSuccessState) {
                   DialogComponent.hideLoading(context);
                   _cubit.fetchAcceptedRequest();
-
+                  _cubit.fetchCombineRequest();
+                  _cubit.fetchWorkOrders();
                   Toast.show(
                     context: context,
                     variant: SnackbarVariantEnum.success,
@@ -570,7 +571,6 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
   }
 
   Widget _combineRequestsView(List<CombineRequestsResponseDto> value) {
-    print('_combineRequestsView $value');
     return ListView.separated(
         shrinkWrap: true,
         itemCount: value.length,

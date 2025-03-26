@@ -24,8 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final loginFormKey = GlobalKey<FormState>();
   TextEditingController emailTextController =
-          TextEditingController(text: "shaffayqazi641@gmail.com"),
-      passwordTextController = TextEditingController(text: "Qazi_112233");
+          TextEditingController(),
+      passwordTextController = TextEditingController();
   FocusNode emailFocusNode = FocusNode(), passwordFocusNode = FocusNode();
 
   final ValueNotifier<bool> _isObscure = ValueNotifier<bool>(true);

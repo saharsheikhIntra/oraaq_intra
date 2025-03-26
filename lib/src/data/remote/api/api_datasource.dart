@@ -12,7 +12,6 @@ class ApiDatasource {
   final Dio dio;
   const ApiDatasource(this.dio);
 
-
   //
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<---------GET--------->>>>>>>>>>>>>>>>>>>>>>>>>>>
   //
@@ -26,13 +25,13 @@ class ApiDatasource {
   }) async {
     try {
       dynamic res = await dio.get(
-          dio.options.baseUrl + endpoint,
-          onReceiveProgress: onReceiveProgress,
-          cancelToken: cancelToken,
-          options: options,
-          queryParameters: queryParameters,
-        );
-    
+        dio.options.baseUrl + endpoint,
+        onReceiveProgress: onReceiveProgress,
+        cancelToken: cancelToken,
+        options: options,
+        queryParameters: queryParameters,
+      );
+
       return Right(res);
 
       // return Right(
@@ -63,6 +62,45 @@ class ApiDatasource {
   //<<<<<<<<<<<<<<<<<<<<<<<<<<---------POST--------->>>>>>>>>>>>>>>>>>>>>>>>>>>
   //
 
+  // Future<Either<Failure, Response>> post(
+  //   String endpoint, {
+  //   dynamic data,
+  //   dynamic listData,
+  //   Map<String, dynamic>? queryParameters,
+  //   Options? options,
+  //   CancelToken? cancelToken,
+  //   void Function(int, int)? onSendProgress,
+  //   void Function(int, int)? onReceiveProgress,
+  // }) async {
+  //   try {
+  //     Response response = await dio.post(
+  //       dio.options.baseUrl + endpoint,
+  //       data: listData ?? (data == null ? null : FormData.fromMap(data)),
+  //       queryParameters: queryParameters,
+  //       options: options,
+  //       cancelToken: cancelToken,
+  //       onReceiveProgress: onReceiveProgress,
+  //       onSendProgress: onSendProgress,
+  //     );
+
+  //     return Right(response);
+  //   } on DioException catch (e) {
+  //     log(e.toString());
+  //     return Left(handleDioError(e));
+  //     // return Left(
+  //     //   Failure(
+  //     //     e.response?.data["message"] ?? e.toString(),
+  //     //     code: e.response?.statusCode.toString() ?? '-1',
+  //     //   ),
+  //     // );
+  //   } catch (e) {
+  //     log(e.toString());
+  //     return Left(handleError(e));
+  //     // return Left(
+  //     //   Failure(e.toString()),
+  //     // );
+  //   }
+  // }
   Future<Either<Failure, Response>> post(
     String endpoint, {
     dynamic data,
@@ -76,30 +114,21 @@ class ApiDatasource {
     try {
       Response response = await dio.post(
         dio.options.baseUrl + endpoint,
-        data: listData ?? (data == null ? null : FormData.fromMap(data)),
+        data: data,
         queryParameters: queryParameters,
         options: options,
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
         onSendProgress: onSendProgress,
       );
-      
+
       return Right(response);
     } on DioException catch (e) {
       log(e.toString());
       return Left(handleDioError(e));
-      // return Left(
-      //   Failure(
-      //     e.response?.data["message"] ?? e.toString(),
-      //     code: e.response?.statusCode.toString() ?? '-1',
-      //   ),
-      // );
     } catch (e) {
       log(e.toString());
       return Left(handleError(e));
-      // return Left(
-      //   Failure(e.toString()),
-      // );
     }
   }
 
@@ -126,7 +155,7 @@ class ApiDatasource {
         onReceiveProgress: onReceiveProgress,
         onSendProgress: onSendProgress,
       );
-    
+
       return Right(response);
     } on DioException catch (e) {
       log(e.toString());

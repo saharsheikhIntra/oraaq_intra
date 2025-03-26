@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "204429620300-m5iqvk03t4ci9s5e8mp40844lm98ahfo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.oraaq",
+            "certificate_hash": "69a8e6ac34b62519acc4a573cb923b6eb9ba256a"
+          }
+        },
+        {
           "client_id": "204429620300-9ks3ejv9009cpu7m5ngvms1hat4bbt1o.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -39,10 +47,10 @@
               "client_type": 3
             },
             {
-              "client_id": "204429620300-a5018o7hlof3r0cqthg7vm94ovg1459s.apps.googleusercontent.com",
+              "client_id": "204429620300-6htdohal1uop8ntpqf1ajrovk6a34e1l.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.oraaq"
+                "bundle_id": "com.intra.oraaqintra"
               }
             }
           ]
@@ -57,6 +65,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "204429620300-8mborl1ib4q7pb40lmv5se3k6bep9lon.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.intra.oraaqintra",
+            "certificate_hash": "69a8e6ac34b62519acc4a573cb923b6eb9ba256a"
+          }
+        },
+        {
+          "client_id": "204429620300-g646jmvnc2usts20pe9isiab12sqnln7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.intra.oraaqintra",
+            "certificate_hash": "fab927ff50abab25ad05eb52ea2f05bee8a91f66"
+          }
+        },
         {
           "client_id": "204429620300-n1et8a7icvrh6peqtdqomjddg1v2k23g.apps.googleusercontent.com",
           "client_type": 1,
@@ -83,10 +107,10 @@
               "client_type": 3
             },
             {
-              "client_id": "204429620300-a5018o7hlof3r0cqthg7vm94ovg1459s.apps.googleusercontent.com",
+              "client_id": "204429620300-6htdohal1uop8ntpqf1ajrovk6a34e1l.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.oraaq"
+                "bundle_id": "com.intra.oraaqintra"
               }
             }
           ]

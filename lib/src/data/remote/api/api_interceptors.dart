@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:oraaq/src/data/local/local_auth_repository.dart';
 import 'package:oraaq/src/imports.dart';
@@ -21,6 +23,7 @@ class RequestInterceptor extends Interceptor {
       // If token is empty, you might want to fetch a new one immediately
       token = await _refreshTokenMethod();
       await getIt.get<LocalAuthRepository>().setToken(token);
+      log("Token: $token");
     }
     options.headers[ApiConstants.tokenKey] = 'Bearer $token';
     // options.headers = {ApiConstants.tokenKey: 'Bearer $token'};

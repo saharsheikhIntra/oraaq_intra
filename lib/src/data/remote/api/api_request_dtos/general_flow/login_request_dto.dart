@@ -12,9 +12,9 @@ class LoginRequestDto {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'email': email,
-      'password': password,
-      'role': role,
+      "email": email,
+      "password": password,
+      "role": role,
     };
   }
 }
