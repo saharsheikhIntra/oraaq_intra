@@ -16,7 +16,7 @@ class CustomerHomeCubit extends Cubit<CustomerHomeState> {
     this._servicesRepository,
   ) : super(CustomerHomeStateInitial());
   final user = getIt.get<UserEntity>();
-
+// MARK: chnged
   Future<void> fetchCategories() async {
     emit(CustomerHomeStateLoading());
     final result = await _jobManagementService.newCategories();
@@ -26,6 +26,7 @@ class CustomerHomeCubit extends Cubit<CustomerHomeState> {
     );
   }
 
+// MARK: chnged
   //
 // MARK: ACCEPTED REQUESTS
 //
@@ -43,6 +44,7 @@ class CustomerHomeCubit extends Cubit<CustomerHomeState> {
       },
     );
   }
+  // MARK: chnged
 
   // MARK: CANCEL CUSTOMER CREATED REQUEST
   Future cancelCustomerCreatedRequest(int requestId) async {

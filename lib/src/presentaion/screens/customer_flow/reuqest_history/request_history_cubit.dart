@@ -23,7 +23,8 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
       : super(RequestHistoryInitial());
 
   UserEntity user = getIt.get<UserEntity>();
-
+  //MARK: changed
+//MARK: Fetch only new requests
   Future<List<CustomerNewRequestDto>> fetchOnlyNewRequests() async {
     final newRequestResult =
         await _servicesRepository.getCustomerNewRequests(user.id);
@@ -110,7 +111,7 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
   Future<void> fetchCombineRequest() async {
     // emit(RequestHistoryScreenLoading());
 
-    final result = await _servicesRepository.getCombineRequests(user.id);
+    final result = await _servicesRepository.getCombineRequests(1); //user.id);
 
     result.fold(
       (l) {

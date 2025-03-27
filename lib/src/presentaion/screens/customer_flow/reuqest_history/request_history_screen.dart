@@ -657,8 +657,8 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                                   time: DateTime.tryParse(
                                           currentRequest.value.date)!
                                       .to12HourFormat,
-                                  distance: currentRequest.value.distance,
-                                  serviceName: currentRequest.value.serviceName,
+                                  distance: currentRequest.value.radius,
+                                  serviceName: currentRequest.value.category,
                                   servicesList: currentRequest.value.services,
                                 ),
                               );

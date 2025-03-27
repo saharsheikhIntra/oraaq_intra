@@ -149,7 +149,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                       ])),
                   12.verticalSpace,
                   SizedBox(
-                      height: 120,
+                      height: 150,
                       child: ValueListenableBuilder(
                         valueListenable: acceptedJobs,
                         builder: (context, value, child) {

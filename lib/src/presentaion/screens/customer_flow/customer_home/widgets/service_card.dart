@@ -43,11 +43,12 @@ class ServiceCard extends StatelessWidget {
             Container(
               height: 180,
               width: double.infinity,
+              // padding: 24.allPadding,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
                   image: _getImageFromBlob(category.imageUrl), // Using BLOB
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                 ),
               ),
             ),

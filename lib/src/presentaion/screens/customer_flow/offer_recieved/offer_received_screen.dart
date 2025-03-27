@@ -184,14 +184,16 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                               onTap: (int val) async {
                                 log(val.toString());
                                 log('update amount');
-                                value.amount = val.toString();
+//  value.amount = val.toString();
                                 Map<String, dynamic> data = {
                                   'request_id': value.requestId,
                                   'new_offer_amount': val,
                                 };
                                 String? messsage =
                                     await _cubit.updateOfferAmount(data);
-                                // log('last message: ${messsage.toString()}');
+                                log('last message: ${messsage.toString()}');
+
+                                context.pop();
                                 context.pop();
                                 setState(() {});
                               },
@@ -200,12 +202,16 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                       _buildDetails("Search Radius", value.radius, () {
                         SheetComponenet.show(context,
                             child: ChangeOfferSheet(
-                              defaultValue: int.parse(value.radius),
+                              defaultValue: int.parse(
+                                value.radius
+                                    .replaceAll(RegExp(r'[^0-9]'), '')
+                                    .trim(),
+                              ), //int.parse(value.radius),
                               variant: ChangeOfferSheetVariant.distance,
                               onTap: (int val) async {
                                 log(val.toString());
                                 log('update amount');
-                                value.amount = val.toString();
+                                // value.amount = val.toString();
                                 Map<String, dynamic> data = {
                                   'request_id': value.requestId,
                                   'new_radius': val,
@@ -213,6 +219,7 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
                                 String? messsage =
                                     await _cubit.updateOfferRadius(data);
                                 // log('last message: ${messsage.toString()}');
+                                context.pop();
                                 context.pop();
                                 setState(() {});
                               },
@@ -327,7 +334,7 @@ class _OfferReceivedScreenState extends State<OfferReceivedScreen> {
             ),
             const Spacer(),
             Text(
-              isRadius ? "$value Km" : "Rs $value",
+              isRadius ? "$value" : "Rs $value",
               style: TextStyleTheme.titleSmall,
             ),
             const SizedBox(width: 10),

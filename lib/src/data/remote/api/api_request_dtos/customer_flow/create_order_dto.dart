@@ -19,8 +19,10 @@ class OrderMasterRequestDto {
   final int customerId;
   final String orderRequiredDate;
   final int categoryId;
-  final double totalAmount;
-  final double customerAmount;
+  final int totalAmount;
+  final int customerAmount;
+  final double latitude;
+  final double longitude;
   final double radius;
 
   OrderMasterRequestDto({
@@ -29,6 +31,8 @@ class OrderMasterRequestDto {
     required this.categoryId,
     required this.totalAmount,
     required this.customerAmount,
+    required this.latitude,
+    required this.longitude,
     required this.radius,
   });
 
@@ -39,6 +43,8 @@ class OrderMasterRequestDto {
       'category_id': categoryId,
       'total_amount': totalAmount,
       'customer_amount': customerAmount,
+      'latitude': latitude,
+      'longitude': longitude,
       'radius': radius,
     };
   }
