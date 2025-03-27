@@ -17,25 +17,24 @@ class AppliedJobsResponseDto {
   final String status;
   final String distance;
 
-  AppliedJobsResponseDto({
-    this.workOrderId = -1,
-    this.requestId = -1,
-    this.bidId = -1,
-    this.bidAmount = 0.0,
-    this.bidDate = '',
-    this.serviceNames = const [],
-    this.serviceRequestId = -1,
-    this.customerId = -1,
-    this.customerName = '',
-    this.customerContactNumber = '',
-    this.customerEmail = '',
-    this.latitude = 0.0,
-    this.longitude = 0.0,
-    this.requestDate = '',
-    this.rating = 0,
-    this.status = '',
-    this.distance = ''
-  });
+  AppliedJobsResponseDto(
+      {this.workOrderId = -1,
+      this.requestId = -1,
+      this.bidId = -1,
+      this.bidAmount = 0.0,
+      this.bidDate = '',
+      this.serviceNames = const [],
+      this.serviceRequestId = -1,
+      this.customerId = -1,
+      this.customerName = '',
+      this.customerContactNumber = '',
+      this.customerEmail = '',
+      this.latitude = 0.0,
+      this.longitude = 0.0,
+      this.requestDate = '',
+      this.rating = 0,
+      this.status = '',
+      this.distance = ''});
 
   factory AppliedJobsResponseDto.fromMap(Map<String, dynamic> map) {
     return AppliedJobsResponseDto(
@@ -52,8 +51,12 @@ class AppliedJobsResponseDto {
       customerName: map['customer_name'] ?? '',
       customerContactNumber: map['customer_contact_number'] ?? '',
       customerEmail: map['customer_email'] ?? '',
-      latitude: map['latitude'] != null ? map['latitude'].toDouble() : 0.0,
-      longitude: map['longitude'] != null ? map['longitude'].toDouble() : 0.0,
+      latitude: map['latitude'] != null
+          ? double.tryParse(map['latitude'].toString()) ?? 0.0
+          : 0.0,
+      longitude: map['longitude'] != null
+          ? double.tryParse(map['longitude'].toString()) ?? 0.0
+          : 0.0,
       requestDate: map['request_date'] ?? '',
       rating: map['rating'] ?? 0,
       status: map['status'] ?? '',
