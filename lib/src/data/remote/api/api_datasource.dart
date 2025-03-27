@@ -114,7 +114,8 @@ class ApiDatasource {
     try {
       Response response = await dio.post(
         dio.options.baseUrl + endpoint,
-        data: data,
+        data:
+            data, //listData ?? (data == null ? null : FormData.fromMap(data)),
         queryParameters: queryParameters,
         options: options,
         cancelToken: cancelToken,

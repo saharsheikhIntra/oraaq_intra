@@ -1,5 +1,7 @@
-class   ApiConstants {
-  static const String baseUrl = "http://182.184.51.177:8081";
+class ApiConstants {
+  // static const String baseUrl = "http://portal.intraerp.com:8080";
+  static const String baseUrl2 = "http://182.184.51.177:8081";
+
   static const String tokenKey = "Authorization";
   static const String sendFcmNotification =
       "https://fcm.googleapis.com/fcm/send";
@@ -8,21 +10,21 @@ class   ApiConstants {
   //>>>>>>>>>>>>>>>>>>>>>---------END-POINTS---------<<<<<<<<<<<<<<<<<<<<<
   //
 //
-
-//MARK: GENERAL FLOW
-  static const String getToken = "/api/token";
-  static const String login = "/api/splogin";
-  static const String register = "/api/register";
-  static const String generateOtp = "/api/GenerateOtp";
-  static const String verifyOtp = "/api/verifyOTP";
+//GENERAL FLOW
+  static const String getToken = "/api/token"; // "/ords/oraaq/api/token";
+  static const String login = "/api/splogin"; //  "/ords/oraaq/api/splogin";
+  static const String register = "/api/register"; //"/ords/oraaq/api/register";
+  static const String generateOtp = "/ords/oraaq/api/GenerateOtp";
+  static const String verifyOtp = "/ords/oraaq/api/verifyOTP";
   static const String changePassword = "/ords/oraaq/api/changePassword";
-  static const String forgetPassword = "/api/forget-password";
-  static const String setNewPassword = "/api/setNewPassword";
-  static const String loginViaSocial = "/api/SocialRegisterLogin";
+  static const String forgetPassword =
+      "/api/forget-password"; //"/ords/oraaq/api/forgetPassword";
+  static const String setNewPassword = "/ords/oraaq/api/setNewPassword";
+  static const String loginViaSocial = "/ords/oraaq/api/SocialRegisterLogin";
   //
-  // MARK: MERCHANT FLOW
-  static const String updateMerchantProfile =
-      "/api/UpdateMerchantProfile";
+  //MERCHANT FLOW
+  static const String updateMerchantProfile = "/api/UpdateMerchantProfile";
+  // "/ords/oraaq/api/UpdateMerchantProfile";
   static const String getCanceledWorkOrdersForMerchant =
       "/api/merchantWorkorders?";
   static const String getCompletedWorkOrderMerchant =
@@ -54,7 +56,9 @@ class   ApiConstants {
   static const String getMerchantById = "/api/get_merchant_by_id/"; //NO USE
 
   static const String getAllCategories = "/api/getCategories";
-  static const String newAllCategories = "/api/Get_Categories";
+
+  ///ords/oraaq/api/getCategories";
+  static const String newAllCategories = "/ords/oraaq/api/Get_Categories";
   static const String fetchAcceptedRequests =
       '/api/fetchAcceptedRequest?';
 

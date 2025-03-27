@@ -71,10 +71,21 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
     return Column(
       children: [
         Expanded(
-          child: SingleChildScrollView(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Padding(
+            child: SingleChildScrollView(
+          child: Padding(
               padding: 16.allPadding,
+              // decoration: BoxDecoration(
+              //   color: ColorTheme.white,
+              //   borderRadius: 16.borderRadius,
+              //   border: Border.all(color: ColorTheme.neutral2.withOpacity(0.5)),
+              //   boxShadow: [
+              //     BoxShadow(
+              //       color: ColorTheme.black.withOpacity(0.03),
+              //       blurRadius: 10,
+              //       offset: const Offset(0, 4),
+              //     )
+              //   ],
+              // ),
               child: Column(
                 children: [
                   12.verticalSpace,
@@ -167,11 +178,11 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                 if (pickedDate != null) {
                                   // Show time picker after date is selected
                                   TimeOfDay? pickedTime = await showTimePicker(
+                                    initialEntryMode:
+                                        TimePickerEntryMode.inputOnly,
                                     context: context,
                                     initialTime:
                                         const TimeOfDay(hour: 12, minute: 0),
-                                    initialEntryMode:
-                                        TimePickerEntryMode.inputOnly,
                                     builder:
                                         (BuildContext context, Widget? child) {
                                       return Theme(
@@ -278,7 +289,6 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                           valueListenable: _selectedOffer,
                                           builder: (context, value, child) {
                                             return TextField(
-                                              enabled: false,
                                               controller: TextEditingController(
                                                 text: _selectedOffer
                                                     .value.currencyFormat
@@ -303,7 +313,33 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                                                       style: BorderStyle.solid),
                                                 ),
                                               ),
+                                              onChanged: (text) {
+                                                // Update _selectedOffer when the user manually changes the value
+                                                int? newOffer =
+                                                    int.tryParse(text);
+                                                if (newOffer != null) {
+                                                  _selectedOffer.value =
+                                                      newOffer;
+                                                  widget.onChanged(
+                                                      _selectedOffer.value);
+                                                }
+                                              },
                                             );
+
+                                            // return FittedBox(
+                                            //       fit: BoxFit.scaleDown,
+                                            //       child: Text(
+                                            //         _selectedOffer
+                                            //             .value.currencyFormat,
+                                            //         textAlign:
+                                            //             TextAlign.center,
+                                            //         style: TextStyleTheme
+                                            //             .titleLarge
+                                            //             .copyWith(
+                                            //                 fontSize: 32,
+                                            //                 color: ColorTheme
+                                            //                     .secondaryText),
+                                            //       ));
                                           })),
                                   24.horizontalSpace,
                                   CustomButton(
@@ -326,11 +362,93 @@ class _MakeOfferPageState extends State<MakeOfferPage> {
                               )),
                         ],
                       )),
+                  // Padding(
+                  //   padding: 24.allPadding,
+                  //   child: TextField(
+                  //     controller: _dateTimeController,
+                  //     readOnly: true,
+                  //     decoration: const InputDecoration(
+                  //       labelText: StringConstants.preferredDateTime,
+                  //       hintText: StringConstants.selectDateTime,
+                  //       suffixIcon: Icon(Icons.calendar_today),
+                  //       border: OutlineInputBorder(),
+                  //     ),
+                  //     onTap: () async {
+                  //       // Show date picker
+                  //       DateTime? pickedDate = await showDatePicker(
+                  //         context: context,
+                  //         initialDate: DateTime.now(),
+                  //         firstDate: DateTime.now(),
+                  //         lastDate: DateTime(2030),
+                  //         builder: (BuildContext context, Widget? child) {
+                  //           return Theme(
+                  //             data: ThemeData.light().copyWith(
+                  //               colorScheme: const ColorScheme.light(
+                  //                 primary: ColorTheme
+                  //                     .onPrimary, // Header background color
+                  //                 onPrimary:
+                  //                     ColorTheme.white, // Header text color
+                  //                 onSurface: ColorTheme
+                  //                     .onSecondary, // Body text color
+                  //               ),
+                  //               dialogBackgroundColor:
+                  //                   ColorTheme.white, // Background color
+                  //             ),
+                  //             child: child!,
+                  //           );
+                  //         },
+                  //       );
+
+                  //       if (pickedDate != null) {
+                  //         // Show time picker after date is selected
+                  //         TimeOfDay? pickedTime = await showTimePicker(
+                  //           context: context,
+                  //           initialTime: TimeOfDay.now(),
+                  //           builder: (BuildContext context, Widget? child) {
+                  //             return Theme(
+                  //               data: ThemeData.light().copyWith(
+                  //                 colorScheme: const ColorScheme.light(
+                  //                   primary: ColorTheme
+                  //                       .onPrimary, // Header background color
+                  //                   onPrimary:
+                  //                       ColorTheme.white, // Header text color
+                  //                   onSurface: ColorTheme
+                  //                       .onSecondary, // Body text color
+                  //                 ),
+                  //                 dialogBackgroundColor:
+                  //                     ColorTheme.white, // Background color
+                  //               ),
+                  //               child: child!,
+                  //             );
+                  //           },
+                  //         );
+
+                  //         if (pickedTime != null) {
+                  //           // Combine the picked date and time into a DateTime object
+                  //           setState(() {
+                  //             selectedDateTime = DateTime(
+                  //               pickedDate.year,
+                  //               pickedDate.month,
+                  //               pickedDate.day,
+                  //               pickedTime.hour,
+                  //               pickedTime.minute,
+                  //             );
+                  //             // Format and show the selected date and time in the TextField
+                  //             tempVal = _dateTimeController.text =
+                  //                 DateFormat('yyyy-MM-dd HH:mm')
+                  //                     .format(selectedDateTime!);
+
+                  //             _dateTimeController.text =
+                  //                 "${selectedDateTime!.formattedDate()}, ${selectedDateTime!.to12HourFormat}";
+                  //           });
+                  //         }
+                  //       }
+                  //     },
+                  //   ),
+                  // ),
                 ],
-              ),
-            ),
-          ),
-        ),
+              )),
+        )),
         Padding(
             padding: 20.horizontalPadding,
             child: Row(

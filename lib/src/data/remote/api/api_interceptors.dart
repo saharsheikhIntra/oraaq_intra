@@ -64,9 +64,9 @@ class RequestInterceptor extends Interceptor {
   Future<String> _refreshTokenMethod() async {
     try {
       debugPrint(
-          "Attempting to fetch new token from: ${ApiConstants.baseUrl + ApiConstants.getToken}");
+          "Attempting to fetch new token from: ${ApiConstants.baseUrl2 + ApiConstants.getToken}");
       final response = await Dio().post(
-        ApiConstants.baseUrl + ApiConstants.getToken,
+        ApiConstants.baseUrl2 + ApiConstants.getToken,
       );
 
       debugPrint("Status code: ${response.statusCode}");
