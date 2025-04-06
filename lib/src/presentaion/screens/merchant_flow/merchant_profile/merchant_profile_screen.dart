@@ -335,10 +335,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: TextStyleTheme.labelSmall
                   .copyWith(color: ColorTheme.neutral3),
             ),
-            Text(
-              value,
-              style: TextStyleTheme.labelSmall
-                  .copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 250),
+              child: Text(
+                value,
+                // overflow: TextOverflow.clip,
+                style: TextStyleTheme.labelSmall
+                    .copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+              ),
             ),
           ],
         )

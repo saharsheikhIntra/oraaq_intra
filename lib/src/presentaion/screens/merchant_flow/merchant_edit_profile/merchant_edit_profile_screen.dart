@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:oraaq/src/core/extensions/timeofday_extensions.dart';
 import 'package:oraaq/src/presentaion/screens/merchant_flow/merchant_edit_profile/merchant_edit_profile_cubit.dart';
 import 'package:oraaq/src/imports.dart';
@@ -63,7 +64,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     emailController.text = user.email;
     phoneNumberController.text = user.phone;
     nameController.text = user.name;
-    locationController.text = user.latitude + user.longitude;
+    locationController.text = "${user.latitude}, ${user.longitude}";
     cnicNtnController.text = user.cnicNtn;
     businessController.text = user.bussinessName;
     openingTimeController.text = OnTimeOfDay.formatTo12Hour(user.openingTime);
@@ -326,6 +327,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   cancelText: StringConstants.cancel,
                                   onCancelTap: () => context.pop(),
                                   onCtaTap: () {
+                                    Logger().d(
+                                        "Selected Position: $_selectedPosition");
                                     _cubit.updateMerchantProfile(
                                       merchantName: nameController.text,
                                       merchantNumber:

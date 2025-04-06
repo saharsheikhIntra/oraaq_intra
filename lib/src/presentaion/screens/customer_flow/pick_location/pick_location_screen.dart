@@ -326,10 +326,8 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                             _cubit.generateOrder(
                                 customerId: user.id,
                                 categoryId: widget.args.categoryid,
-                                totalAmount:
-                                    widget.args.selectedOffer.toDouble(),
-                                customerAmount:
-                                    widget.args.userOfferAmount.toDouble(),
+                                totalAmount: widget.args.selectedOffer,
+                                customerAmount: widget.args.userOfferAmount,
                                 selectedDateTime: DateTime.parse(
                                     widget.args.selectedDate.split('.').first),
                                 searchRadius: _searchRadius,

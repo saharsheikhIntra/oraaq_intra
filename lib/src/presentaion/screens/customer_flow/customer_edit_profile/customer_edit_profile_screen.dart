@@ -357,7 +357,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                             _selectedPosition = result;
                             log(result.toString());
                           });
-
+                          
                           // locationController.text =
 
                           //     // "${result.latitude.toStringAsFixed(4)}, ${result.longitude.toStringAsFixed(4)}";

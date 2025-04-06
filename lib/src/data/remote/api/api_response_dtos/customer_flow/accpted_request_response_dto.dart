@@ -34,9 +34,8 @@ class AcceptedRequestsResponseDto {
       customerId: map['customer_id'] ?? -1,
       customerName: map['customer_name'] ?? '',
       serviceName: map['service_name'] ?? '',
-      services: map['services'] != null
-          ? List<String>.from(map['services'])
-          : [],
+      services:
+          map['services'] != null ? List<String>.from(map['services']) : [],
       amount: map['amount'] ?? '',
       date: map['date'] ?? '',
       merchantName: map['merchant_name'] ?? '',

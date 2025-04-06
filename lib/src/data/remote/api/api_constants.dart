@@ -20,7 +20,9 @@ class ApiConstants {
   static const String forgetPassword =
       "/api/forget-password"; //"/ords/oraaq/api/forgetPassword";
   static const String setNewPassword = "/api/setNewPassword";
+  // "/ords/oraaq/api/setNewPassword";
   static const String loginViaSocial = "/api/SocialRegisterLogin";
+  // "/ords/oraaq/api/SocialRegisterLogin";
   //
   //MERCHANT FLOW
   static const String updateMerchantProfile = "/api/UpdateMerchantProfile";
@@ -48,37 +50,53 @@ class ApiConstants {
 
   // MARK: CUSTOMER FLOW
 
-  static const String updateCustomerProfile = '/api/updateCustomer';
+  static const String updateCustomerProfile =
+      "/api/updateCustomer"; //'/ords/oraaq/api/updateCustomer';
 
   static const String getMerchantById = "/api/get_merchant_by_id/"; //NO USE
 
-  static const String getAllCategories = "/api/getCategories";
+  static const String getAllCategories =
+      "/api/getCategories"; //"/api/getCategories";
 
   ///ords/oraaq/api/getCategories";
-  static const String newAllCategories = "/ords/oraaq/api/Get_Categories";
+  static const String newAllCategories =
+      '/api/Get_Categories'; //"/ords/oraaq/api/Get_Categories";
   static const String fetchAcceptedRequests = '/api/fetchAcceptedRequest?';
+  // '/ords/oraaq/api/fetchAcceptedRequest?';
 
-  static const String getServices = "/api/GetService?category_id=";
-  static const String getAllBids = "/api/getAllBids?order_id=";
+  static const String getServices =
+      "/api/GetService?category_id="; //"/ords/oraaq/api/GetService?category_id=";
+  static const String getAllBids = "/ords/oraaq/api/getAllBids?order_id=";
 
   static const String getAllNewRequest = '/api/getAllNewRequests?merchant_id=';
 
-  static const String cancelCustomerCreatedRequest = '/api/cancel_request';
+  static const String cancelCustomerCreatedRequest = "/api/cancel_request";
+  // '/ords/oraaq/api/cancel_request';
   static const String cancelCustomerConfirmedRequest =
-      '/api/cancel_c_order_by_customer';
+      "/api/cancel_c_order_by_customer";
+  // '/ords/oraaq/api/cancel_c_order_by_customer';
 
   static const String customerWorkOrders = "/api/customerWorkOrders?";
+  // "/ords/oraaq/api/customerWorkOrders?";
   static const String fetchServiceRequests =
       "/api/fetchServiceRequests?customer_id=";
+  // "/ords/oraaq/api/fetchServiceRequests?customer_id=";
   static const String fetchCombineRequests =
       "/api/fetch_combined_requests?customer_id=";
+  // "/ords/oraaq/api/fetch_combined_requests?customer_id=";
 
   static const String fetchOffersForRequest =
-      "/api/fetch_offers_for_request?request_id=";
+      '/api/fetch_offers_for_request?request_id=';
+  // "/ords/oraaq/api/fetch_offers_for_request?request_id=";
   static const String updateOfferAmount = '/api/update_offer_amount';
+  //  '/ords/oraaq/api/update_offer_amount';
   static const String acceptRejectOffer = '/api/accept_or_reject_offer';
+  // '/ords/oraaq/api/accept_or_reject_offer';
   static const String updateOfferRadius = '/api/updateRadius';
+  // '/ords/oraaq/api/updateRadius';
   static const String getMerchantWithinRadius2 =
       '/api/getMerchantWithinRadius2?';
-  static const String generateOrder = '/api/generateOrder2';
+  // '/ords/oraaq/api/getMerchantWithinRadius2?';
+  static const String generateOrder =
+      '/api/generateOrder2'; //'/ords/oraaq/api/generateOrder2';
 }

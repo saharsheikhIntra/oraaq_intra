@@ -62,13 +62,15 @@ class AuthenticationServices {
     return result.fold(
       (l) => Left(l),
       (r) async {
+        log("User:r");
         UserEntity user = r.user.toUserEntity.copyWith(token: r.token);
         // log('otp verified: ${user.isOtpVerified.toString()}');
         await _localAuthRepository.setUser(user);
         await _localAuthRepository.setToken(r.token);
         if (getIt.isRegistered<UserEntity>()) getIt.unregister<UserEntity>();
         getIt.registerSingleton<UserEntity>(user);
-        // log('${user.role}');
+        log('${user.role}');
+        log('Login responce user: ${getIt.get<UserEntity>()}');
         return Right(user);
       },
     );

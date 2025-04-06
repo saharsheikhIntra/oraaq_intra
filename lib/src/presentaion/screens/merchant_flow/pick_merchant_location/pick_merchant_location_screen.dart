@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:logger/logger.dart';
 import 'package:oraaq/src/imports.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -17,6 +20,7 @@ class _PickMerchantLocationScreenState
 
   bool showMap = false;
   bool enableMap = false;
+  bool _isLocationSet = false;
 
   @override
   void initState() {
@@ -83,10 +87,15 @@ class _PickMerchantLocationScreenState
                       }),
                   12.verticalSpace,
                   CustomButton(
-                    width: double.maxFinite,
-                    text: StringConstants.saveAndContinue,
-                    onPressed: () => context.pop(result: _selectedPosition),
-                  ),
+                      width: double.maxFinite,
+                      text: StringConstants.saveAndContinue,
+                      onPressed: _isLocationSet
+                          ? () {
+                              Logger()
+                                  .d("Selected Position: $_selectedPosition");
+                              context.pop(result: _selectedPosition);
+                            }
+                          : null),
                 ],
               ),
             )),
@@ -95,14 +104,22 @@ class _PickMerchantLocationScreenState
   }
 
   Future<void> onTap(latlng) async {
+    _updateMarker(latlng);
+  }
+
+  void _updateMarker(LatLng latlng) {
     _markers = {
       Marker(
         markerId: const MarkerId("value"),
         position: latlng,
       )
     };
-    _selectedPosition = latlng;
-    setState(() {});
+
+    setState(() {
+      log("Selected Position: $latlng");
+      _selectedPosition = latlng;
+      _isLocationSet = true;
+    });
     _moveCamera(latlng);
   }
 
@@ -136,6 +153,7 @@ class _PickMerchantLocationScreenState
 
   _getLocation() async {
     Position position = await Geolocator.getCurrentPosition();
-    _moveCamera(LatLng(position.latitude, position.longitude));
+    LatLng currentLocation = LatLng(position.latitude, position.longitude);
+    _updateMarker(currentLocation);
   }
 }

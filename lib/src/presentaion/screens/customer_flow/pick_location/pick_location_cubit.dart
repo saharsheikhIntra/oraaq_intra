@@ -96,11 +96,13 @@ class PickLocationCubit extends Cubit<PickLocationState> {
     emit(PickLocationStateSearchResults(results));
   }
 
+  //MARK: changed
+//MARK: GENERATE ORDER
   generateOrder({
     required int customerId,
     required int categoryId,
-    required double totalAmount,
-    required double customerAmount,
+    required int totalAmount,
+    required int customerAmount,
     required DateTime selectedDateTime,
     required double searchRadius,
     required LatLng selectedPosition,
@@ -116,6 +118,8 @@ class PickLocationCubit extends Cubit<PickLocationState> {
         totalAmount: totalAmount,
         customerAmount: customerAmount,
         radius: searchRadius,
+        latitude: selectedPosition.latitude,
+        longitude: selectedPosition.longitude,
       ),
       orderDetail: orderDetails
           .map((detail) => OrderDetailRequestDto(
