@@ -34,7 +34,7 @@ class ServiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // String assetImagePath =
     //     categoryImageMap[category.name] ?? AssetConstants.services1;
-    log('catBlob: ${category.imageUrl}');
+    // log('catBlob: ${category.imageUrl}');
     return InkWell(
         borderRadius: BorderRadius.circular(12.0),
         onTap: onTap,
@@ -80,7 +80,11 @@ class ServiceCard extends StatelessWidget {
                       // ),
                       12.horizontalSpace,
                       Text(
-                        category.name,
+                        overflow: TextOverflow.ellipsis,
+                        category.name.length > 20
+                            ? '${category.name.substring(0, 20)}...'
+                            : category.name,
+                        // category.name,
                         style: TextStyleTheme.headlineSmall,
                       ),
                     ]),

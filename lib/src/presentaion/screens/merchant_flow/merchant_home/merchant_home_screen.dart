@@ -308,7 +308,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                             color: ColorTheme.secondaryText,
                           ),
                         ),
-                      ),
+                      ), 
                       CustomButton(
                         size: CustomButtonSize.small,
                         type: CustomButtonType.tertiary,

@@ -448,9 +448,10 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
   }
 
   Widget _acceptedRequestsView(List<AcceptedRequestsResponseDto> acceptedJobs) {
-    return ListView.builder(
+    return ListView.separated(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
+      separatorBuilder: (context, index) => 12.verticalSpace,
       itemCount: acceptedJobs.length,
       padding: 16.horizontalPadding,
       itemBuilder: (BuildContext context, int index) => Padding(
@@ -581,7 +582,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
         itemBuilder: (BuildContext context, int index) {
           ValueNotifier<CombineRequestsResponseDto> currentRequest =
               ValueNotifier(value[index]);
-
+          log("current request: ${currentRequest.value.request_status}");
           return Padding(
               padding: const EdgeInsets.only(right: 12.0),
               child: currentRequest.value.offersReceived != 0
@@ -614,10 +615,11 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                       ))
                   : OnGoingRequestCard(
                       buttonText: currentRequest.value.request_status,
-                      userName: currentRequest.value.request_status == 'pending'
+                      // userName: currentRequest.value.category,
+                      userName: currentRequest.value.request_status == 'Pending'
                           ? currentRequest.value.category
                           : currentRequest.value.serviceName,
-                      duration: currentRequest.value.request_status == 'pending'
+                      duration: currentRequest.value.request_status == 'Pending'
                           ? currentRequest.value.duration
                           : currentRequest.value.merchantName,
                       date: DateTime.tryParse(currentRequest.value.date)!
@@ -629,7 +631,7 @@ class _RequestHistoryScreenState extends State<RequestHistoryScreen> {
                       servicesList: currentRequest.value.services,
                       variant: OngoingRequestCardVariant.waiting,
                       onTap: () {
-                        currentRequest.value.request_status == 'pending'
+                        currentRequest.value.request_status == 'Pending'
                             ?
                             // log("services list: ${currentRequest.value.services.toString()}");
                             context.pushNamed(

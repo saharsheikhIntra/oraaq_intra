@@ -112,7 +112,6 @@
 //   }
 // }
 
-
 // ---------------------------------------------------working with radio boxes------------------------------------------------
 
 import 'dart:developer';
@@ -141,7 +140,15 @@ class QuestionsAccordion2 extends StatefulWidget {
 class _QuestionsAccordion2State extends State<QuestionsAccordion2> {
   final List<ServiceEntity> _options = [];
   final List<ServiceEntity> _selectedServices = [];
-  ServiceEntity _selectedService = ServiceEntity(serviceId: 0, shortTitle: 'example007', description: '', price: 100, prompt: '', isServiceGroup: false, isLastLeaf: false, services: []);
+  ServiceEntity _selectedService = ServiceEntity(
+      serviceId: 0,
+      shortTitle: 'example007',
+      description: '',
+      price: 100,
+      prompt: '',
+      isServiceGroup: false,
+      isLastLeaf: false,
+      services: []);
 
   @override
   void initState() {
@@ -154,22 +161,24 @@ class _QuestionsAccordion2State extends State<QuestionsAccordion2> {
 
   void _toggleOption(ServiceEntity curr) {
     log(curr.shortTitle);
-    _selectedServices.contains(curr) ? _selectedServices.remove(curr) : _selectedServices.add(curr);
+    _selectedServices.contains(curr)
+        ? _selectedServices.remove(curr)
+        : _selectedServices.add(curr);
     widget.onChanged(curr);
     setState(() {});
   }
 
   void _selectRadio(ServiceEntity curr) {
-    if(_selectedService == curr){
+    if (_selectedService == curr) {
       return;
     }
     //  widget.onChanged(curr);
-    if(_selectedService.shortTitle == 'example007'){
+    if (_selectedService.shortTitle == 'example007') {
       log(curr.shortTitle);
       _selectedService = curr;
       widget.onChanged(_selectedService);
       setState(() {});
-    }else{
+    } else {
       widget.onChanged(_selectedService);
       log(curr.shortTitle);
       _selectedService = curr;
@@ -228,26 +237,31 @@ class _QuestionsAccordion2State extends State<QuestionsAccordion2> {
                         // log(option.isRadio.toString());
                         option.isLastLeaf;
                         return ListTile(
-                            contentPadding: EdgeInsets.fromLTRB(option.isLastLeaf ? 40 : 12, 8, 8, 8),
-                            // onTap: () => _toggleOption(option),
-                            title: Text(
-                              option.shortTitle,
-                              style: TextStyleTheme.titleSmall.copyWith(
-                                color: ColorTheme.secondaryText,
-                                fontWeight: option.isLastLeaf ? FontWeight.w500 : null,
-                              ),
+                          contentPadding: EdgeInsets.fromLTRB(
+                              option.isLastLeaf ? 40 : 12, 8, 8, 8),
+                          // onTap: () => _toggleOption(option),
+                          title: Text(
+                            option.shortTitle,
+                            style: TextStyleTheme.titleSmall.copyWith(
+                              color: ColorTheme.secondaryText,
+                              fontWeight:
+                                  option.isLastLeaf ? FontWeight.w500 : null,
                             ),
-                            subtitle: option.isLastLeaf ? Text("Rs. ${option.price}"):Text(option.prompt),
-                            trailing: option.isRadio  ? Radio(
-                              groupValue: _selectedService,
-                              value: option,
-                              onChanged: (_) => _selectRadio(option),
-                            ):
-                            Checkbox(
-                              value: _selectedServices.contains(option),
-                              onChanged: (_) => _toggleOption(option),
-                            )
-                            ,);
+                          ),
+                          subtitle: option.isLastLeaf
+                              ? Text("Rs. ${option.price.toInt()}")
+                              : Text(option.prompt),
+                          trailing: option.isRadio
+                              ? Radio(
+                                  groupValue: _selectedService,
+                                  value: option,
+                                  onChanged: (_) => _selectRadio(option),
+                                )
+                              : Checkbox(
+                                  value: _selectedServices.contains(option),
+                                  onChanged: (_) => _toggleOption(option),
+                                ),
+                        );
                       },
                     ))),
           ],
@@ -256,5 +270,3 @@ class _QuestionsAccordion2State extends State<QuestionsAccordion2> {
     );
   }
 }
-
-

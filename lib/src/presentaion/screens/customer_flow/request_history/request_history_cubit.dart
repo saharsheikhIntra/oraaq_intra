@@ -111,7 +111,8 @@ class RequestHistoryCubit extends Cubit<RequestHistoryState> {
   Future<void> fetchCombineRequest() async {
     // emit(RequestHistoryScreenLoading());
 
-    final result = await _servicesRepository.getCombineRequests(1); //user.id);
+    final result =
+        await _servicesRepository.getCombineRequests(user.id); //user.id);
 
     result.fold(
       (l) {
